@@ -302,3 +302,91 @@ export async function runQuickGame(config?: Partial<ClaudeAgentConfig>): Promise
     agentConfig: config,
   });
 }
+
+/**
+ * Options for running from a loaded state.
+ */
+export interface RunFromStateOptions {
+  agentConfig?: ClaudeAgentConfig;
+  onEvent?: PhaseEventListener;
+  onlyPhases?: Phase[];
+  stopAfter?: Phase;
+}
+
+/**
+ * Run a game from a pre-existing state (loaded from snapshot).
+ * This allows resuming games or jumping to specific phases for testing.
+ */
+export async function runFromState(
+  initialState: GameState,
+  options: RunFromStateOptions = {}
+): Promise<GameResult> {
+  const factions = Array.from(initialState.factions.keys());
+  const logger = createLogger(options.agentConfig?.verbose ?? true);
+
+  // Log start
+  logger.gameStart(factions);
+  console.log(`  📂 Resuming from Turn ${initialState.turn}, Phase: ${initialState.phase}\n`);
+
+  // Create agent provider with loaded state
+  const agentProvider = createClaudeAgentProvider(initialState, {
+    ...options.agentConfig,
+    verbose: options.agentConfig?.verbose ?? true,
+  });
+
+  // Create phase manager
+  const phaseManager = new PhaseManager(agentProvider);
+
+  // Register all phase handlers
+  phaseManager.registerHandlers([
+    new SetupPhaseHandler(),
+    new StormPhaseHandler(),
+    new SpiceBlowPhaseHandler(),
+    new ChoamCharityPhaseHandler(),
+    new BiddingPhaseHandler(),
+    new RevivalPhaseHandler(),
+    new ShipmentMovementPhaseHandler(),
+    new BattlePhaseHandler(),
+    new SpiceCollectionPhaseHandler(),
+    new MentatPausePhaseHandler(),
+  ]);
+
+  // Add event listener
+  if (options.onEvent) {
+    phaseManager.addEventListener(options.onEvent);
+  }
+
+  // Add default event logging
+  phaseManager.addEventListener((event) => {
+    const type = event.type;
+    if (type === 'TURN_STARTED') {
+      const turnMatch = event.message.match(/Turn (\d+)/i);
+      const turn = turnMatch ? parseInt(turnMatch[1], 10) : 1;
+      logger.turnStart(turn, initialState.config.maxTurns);
+    } else if (type === 'PHASE_STARTED') {
+      const phase = event.message.replace(/ phase started$/i, '').toUpperCase();
+      logger.phaseStart(phase);
+    } else if (type === 'PHASE_ENDED') {
+      const phase = event.message.replace(/ phase ended$/i, '');
+      logger.phaseEnd(phase);
+    } else if (type !== 'GAME_ENDED') {
+      logger.event(event.message, '📌');
+    }
+  });
+
+  // Build run options
+  const runOptions: GameRunOptions = {
+    onlyPhases: options.onlyPhases,
+    stopAfter: options.stopAfter,
+    skipSetup: initialState.setupComplete, // Skip setup if already done
+  };
+
+  // Run the game from loaded state
+  const result = await phaseManager.runGame(initialState, runOptions);
+
+  // Log summary
+  const winners = result.winner?.winners ?? null;
+  logger.gameEnd(winners, result.totalTurns);
+
+  return result;
+}

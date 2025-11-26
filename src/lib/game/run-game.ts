@@ -14,7 +14,13 @@
 import 'dotenv/config';
 
 import { Faction, Phase, FACTION_NAMES } from './types';
-import { runDuneGame, runQuickGame, type GameRunnerConfig } from './agent';
+import { runDuneGame, runQuickGame, runFromState, type GameRunnerConfig } from './agent';
+import {
+  saveStateToFile,
+  loadStateFromFile,
+  listSnapshots as listSnapshotFiles,
+  generateSnapshotName,
+} from './state/serialize';
 
 // =============================================================================
 // CLI ARGUMENT PARSING
@@ -31,6 +37,12 @@ interface CLIArgs {
   stopAfter: Phase | null;
   /** Skip setup phase (use defaults) */
   skipSetup: boolean;
+  /** Save state to file after run */
+  saveState: string | null;
+  /** Load state from file instead of creating new game */
+  loadState: string | null;
+  /** List available snapshots */
+  listSnapshots: boolean;
 }
 
 function parseArgs(): CLIArgs {
@@ -43,6 +55,9 @@ function parseArgs(): CLIArgs {
     onlyPhases: null,
     stopAfter: null,
     skipSetup: false,
+    saveState: null,
+    loadState: null,
+    listSnapshots: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -77,6 +92,12 @@ function parseArgs(): CLIArgs {
       }
     } else if (arg === '--skip-setup') {
       result.skipSetup = true;
+    } else if (arg === '--save-state' || arg === '--save') {
+      result.saveState = args[++i] || 'auto';
+    } else if (arg === '--load-state' || arg === '--load') {
+      result.loadState = args[++i];
+    } else if (arg === '--list-snapshots' || arg === '--snapshots') {
+      result.listSnapshots = true;
     }
   }
 
@@ -193,14 +214,60 @@ async function main() {
     process.exit(0);
   }
 
-  // Check for API key
+  // List snapshots
+  if (args.listSnapshots) {
+    const snapshots = listSnapshotFiles();
+    if (snapshots.length === 0) {
+      console.log('No snapshots found. Use --save-state to create one.');
+    } else {
+      console.log('Available snapshots:');
+      for (const name of snapshots) {
+        console.log(`  ${name}`);
+      }
+    }
+    process.exit(0);
+  }
+
+  // Check for API key (not needed for list-snapshots)
   if (!process.env.ANTHROPIC_API_KEY) {
     console.error('Error: ANTHROPIC_API_KEY environment variable is required.');
     console.error('Set it with: export ANTHROPIC_API_KEY=your-key-here');
     process.exit(1);
   }
 
-  // Validate factions
+  // Load state from snapshot if specified
+  if (args.loadState) {
+    console.log(`📂 Loading state from snapshot: ${args.loadState}`);
+    try {
+      const loadedState = loadStateFromFile(args.loadState);
+      const factions = Array.from(loadedState.factions.keys());
+      console.log(`   Turn ${loadedState.turn}, Phase: ${loadedState.phase}`);
+      console.log(`   Factions: ${factions.map((f) => FACTION_NAMES[f]).join(', ')}`);
+      console.log('');
+
+      const result = await runFromState(loadedState, {
+        agentConfig: { verbose: args.verbose },
+        onlyPhases: args.onlyPhases ?? undefined,
+        stopAfter: args.stopAfter ?? undefined,
+      });
+
+      // Save state if requested
+      if (args.saveState) {
+        const filename = args.saveState === 'auto'
+          ? generateSnapshotName(result.finalState)
+          : args.saveState;
+        const filepath = saveStateToFile(result.finalState, filename);
+        console.log(`\n💾 State saved to: ${filepath}`);
+      }
+
+      process.exit(result.winner ? 0 : 1);
+    } catch (error) {
+      console.error('Error loading snapshot:', error);
+      process.exit(1);
+    }
+  }
+
+  // Validate factions for new game
   if (args.factions.length < 2) {
     console.error('Error: At least 2 factions are required.');
     console.error('Use --factions atreides,harkonnen,emperor (comma-separated)');
@@ -221,6 +288,9 @@ async function main() {
   if (args.skipSetup) {
     console.log(`  Skip setup: true`);
   }
+  if (args.saveState) {
+    console.log(`  Save state: ${args.saveState}`);
+  }
   console.log('');
 
   try {
@@ -236,6 +306,15 @@ async function main() {
     };
 
     const result = await runDuneGame(config);
+
+    // Save state if requested
+    if (args.saveState) {
+      const filename = args.saveState === 'auto'
+        ? generateSnapshotName(result.finalState)
+        : args.saveState;
+      const filepath = saveStateToFile(result.finalState, filename);
+      console.log(`\n💾 State saved to: ${filepath}`);
+    }
 
     // Exit with success
     process.exit(result.winner ? 0 : 1);

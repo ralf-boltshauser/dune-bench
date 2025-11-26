@@ -20,6 +20,8 @@ export {
   GameRunner,
   runDuneGame,
   runQuickGame,
+  runFromState,
   type GameRunnerConfig,
   type GameSummary,
+  type RunFromStateOptions,
 } from './game-runner';
