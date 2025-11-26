@@ -41,12 +41,7 @@ export class MentatPausePhaseHandler implements PhaseHandler {
   initialize(state: GameState): PhaseStepResult {
     const events: PhaseEvent[] = [];
     let newState = state;
-
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.MENTAT_PAUSE, turn: state.turn },
-      message: `Mentat Pause - Turn ${state.turn} ending`,
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Collect bribes (spice placed in front of shield during the turn)
     for (const [faction, factionState] of state.factions) {
@@ -355,7 +350,7 @@ export class MentatPausePhaseHandler implements PhaseHandler {
         // Check if predicted faction won on predicted turn
         // This is complex - for now, simplified check
         events.push({
-          type: 'PHASE_ENDED',
+          type: 'BG_PREDICTION_REVEALED',
           data: {
             bgPrediction: prediction,
             revealed: true,

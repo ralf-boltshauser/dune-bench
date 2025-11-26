@@ -66,20 +66,15 @@ export class BattlePhaseHandler implements PhaseHandler {
     };
 
     const events: PhaseEvent[] = [];
-
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.BATTLE },
-      message: 'Battle phase started',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Identify all territories with multiple factions
     this.context.pendingBattles = this.identifyBattles(state);
 
     if (this.context.pendingBattles.length === 0) {
       events.push({
-        type: 'PHASE_ENDED',
-        data: { phase: Phase.BATTLE, noBattles: true },
+        type: 'NO_BATTLES',
+        data: { phase: Phase.BATTLE },
         message: 'No battles this turn',
       });
 
@@ -892,10 +887,11 @@ export class BattlePhaseHandler implements PhaseHandler {
     state: GameState,
     events: PhaseEvent[]
   ): PhaseStepResult {
+    // Note: PhaseManager emits PHASE_ENDED event, so we just signal completion
     events.push({
-      type: 'PHASE_ENDED',
+      type: 'BATTLES_COMPLETE',
       data: { phase: Phase.BATTLE },
-      message: 'Battle phase ended',
+      message: 'All battles resolved',
     });
 
     return {

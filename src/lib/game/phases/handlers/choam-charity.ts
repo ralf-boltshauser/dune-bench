@@ -52,10 +52,11 @@ export class ChoamCharityPhaseHandler implements PhaseHandler {
       }
     }
 
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
+    // Just emit eligible factions info
     events.push({
-      type: 'PHASE_STARTED',
+      type: 'CHOAM_ELIGIBLE',
       data: {
-        phase: Phase.CHOAM_CHARITY,
         eligibleFactions: this.eligibleFactions,
       },
       message: `CHOAM Charity: ${this.eligibleFactions.length} factions eligible`,

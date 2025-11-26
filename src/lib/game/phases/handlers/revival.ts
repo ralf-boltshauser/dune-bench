@@ -47,12 +47,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
     this.processedFactions = new Set();
 
     const events: PhaseEvent[] = [];
-
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.REVIVAL },
-      message: 'Revival phase started',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Request revival decisions from all factions in storm order
     return this.requestRevivalDecisions(state, events);

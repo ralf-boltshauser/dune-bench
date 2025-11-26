@@ -45,12 +45,7 @@ export class SpiceCollectionPhaseHandler implements PhaseHandler {
     this.collectionOpportunities = new Map();
 
     const events: PhaseEvent[] = [];
-
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.SPICE_COLLECTION },
-      message: 'Spice Collection phase started',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Calculate collection opportunities for each faction
     for (const [faction, factionState] of state.factions) {

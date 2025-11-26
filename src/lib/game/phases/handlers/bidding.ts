@@ -72,12 +72,7 @@ export class BiddingPhaseHandler implements PhaseHandler {
     this.biddingOrder = [...state.stormOrder];
 
     const events: PhaseEvent[] = [];
-
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.BIDDING },
-      message: 'Bidding phase started',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // DECLARATION PHASE (Rule 1.04.01)
     // Each player, in storm order, must announce if they have at least 1 card or 4 or more cards
@@ -480,10 +475,11 @@ export class BiddingPhaseHandler implements PhaseHandler {
     state: GameState,
     events: PhaseEvent[]
   ): PhaseStepResult {
+    // Note: PhaseManager emits PHASE_ENDED event, so we just emit our own completion marker
     events.push({
-      type: 'PHASE_ENDED',
+      type: 'BIDDING_COMPLETE',
       data: { phase: Phase.BIDDING },
-      message: 'Bidding phase ended',
+      message: 'Bidding complete',
     });
 
     return {

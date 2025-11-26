@@ -58,12 +58,7 @@ export class ShipmentMovementPhaseHandler implements PhaseHandler {
     this.factionsMoved = new Set();
 
     const events: PhaseEvent[] = [];
-
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.SHIPMENT_MOVEMENT, subPhase: 'SHIPMENT' },
-      message: 'Shipment & Movement phase started (Shipment sub-phase)',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Start shipment sub-phase
     return this.requestShipmentDecision(state, events);
@@ -92,7 +87,7 @@ export class ShipmentMovementPhaseHandler implements PhaseHandler {
         this.currentFactionIndex = 0;
 
         events.push({
-          type: 'PHASE_STARTED',
+          type: 'SUBPHASE_STARTED',
           data: { subPhase: 'MOVEMENT' },
           message: 'Movement sub-phase started',
         });
