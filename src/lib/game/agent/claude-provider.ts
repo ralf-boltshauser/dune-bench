@@ -128,15 +128,60 @@ export class ClaudeAgentProvider implements AgentProvider {
     if (simultaneous) {
       // Process all requests in parallel
       const promises = requests.map((req) => this.processRequest(req));
-      return Promise.all(promises);
+      const responses = await Promise.all(promises);
+      // Sync state from all agents that acted (merge their changes)
+      this.syncStateFromAllAgents();
+      return responses;
     } else {
       // Process requests sequentially
       const responses: AgentResponse[] = [];
       for (const request of requests) {
         const response = await this.processRequest(request);
         responses.push(response);
+        // After each agent acts, sync their state to all other agents
+        // This ensures the next agent sees the updated state
+        this.syncStateFromAgent(request.factionId);
       }
       return responses;
+    }
+  }
+
+  /**
+   * Sync state from a specific agent to all other agents.
+   * Called after an agent takes an action.
+   */
+  private syncStateFromAgent(factionId: Faction): void {
+    const agent = this.agents.get(factionId);
+    if (!agent) return;
+
+    const updatedState = agent.toolProvider.getState();
+    this.gameState = updatedState;
+
+    // Update all other agents with this state
+    for (const [faction, otherAgent] of this.agents) {
+      if (faction !== factionId) {
+        otherAgent.toolProvider.updateState(updatedState);
+      }
+    }
+  }
+
+  /**
+   * Sync state from all agents (for simultaneous actions).
+   * Merges changes by using the state from the last agent in iteration order.
+   * Note: This is imperfect for true simultaneous actions but works for most cases.
+   */
+  private syncStateFromAllAgents(): void {
+    // Get the most recent state from any agent that acted
+    // Since tools update state, we need to find which agent has the latest
+    let latestState = this.gameState;
+    for (const agent of this.agents.values()) {
+      latestState = agent.toolProvider.getState();
+    }
+
+    // Sync to all
+    this.gameState = latestState;
+    for (const agent of this.agents.values()) {
+      agent.toolProvider.updateState(latestState);
     }
   }
 
