@@ -71,12 +71,7 @@ export class StormPhaseHandler implements PhaseHandler {
     const dialers = this.getStormDialers(state);
     this.context.dialingFactions = dialers;
 
-    // Emit phase started event
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.STORM, dialers },
-      message: 'Storm phase started',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Fremen special: They control storm movement in advanced rules
     // In advanced rules with Fremen, they use storm deck instead of dials
@@ -167,9 +162,10 @@ export class StormPhaseHandler implements PhaseHandler {
 
     // Collect dial values
     for (const response of responses) {
-      if (response.actionType === 'DIAL_STORM' || !response.passed) {
-        // Tool returns 'dial' property, not 'value'
-        let dialValue = Number(response.data.dial ?? response.data.value ?? 0);
+      // Tool name 'dial_storm' becomes 'DIAL_STORM' actionType
+      if (response.actionType === 'DIAL_STORM') {
+        // Tool returns 'dial' property
+        let dialValue = Number(response.data.dial ?? 0);
 
         // Clamp to valid range
         if (state.turn === 1) {
