@@ -306,9 +306,11 @@ Decide what to do. Use the appropriate tool to take your action.`;
   ): AgentResponse {
     // Check if any tools were called
     const toolCalls = result.steps?.flatMap(s => s.toolCalls ?? []) ?? [];
+    const toolResults = result.steps?.flatMap(s => s.toolResults ?? []) ?? [];
 
     if (toolCalls.length > 0) {
       const lastToolCall = toolCalls[toolCalls.length - 1];
+      const lastToolResult = toolResults[toolResults.length - 1];
 
       // Check if it was a pass action
       const isPass = lastToolCall.toolName.includes('pass');
@@ -318,10 +320,19 @@ Decide what to do. Use the appropriate tool to take your action.`;
         ? lastToolCall.input as Record<string, unknown>
         : {};
 
+      // Tool results contain the actual returned data (e.g., cost, success, etc.)
+      // The result property contains the tool's return value
+      const toolResultData = lastToolResult && 'result' in lastToolResult
+        ? lastToolResult.result as Record<string, unknown>
+        : {};
+
+      // Merge tool input with tool result (result takes precedence for values like cost)
+      const mergedData = { ...toolInput, ...toolResultData };
+
       return {
         factionId: request.factionId,
         actionType: lastToolCall.toolName.toUpperCase(),
-        data: toolInput,
+        data: mergedData,
         passed: isPass,
         reasoning: result.text || undefined,
       };
