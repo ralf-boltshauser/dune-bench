@@ -43,6 +43,12 @@ export interface AgentProvider {
    * This is called before getResponses so agents have the latest state.
    */
   updateState?(state: GameState): void;
+
+  /**
+   * Get the current game state from the agent provider.
+   * Tools may update state internally, so this returns the latest state.
+   */
+  getState?(): GameState;
 }
 
 /**
@@ -281,6 +287,11 @@ export class PhaseManager {
           result.pendingRequests,
           result.simultaneousRequests ?? false
         );
+
+        // Sync state back from agent provider (tools may have updated it)
+        if (this.agentProvider.getState) {
+          state = this.agentProvider.getState();
+        }
       }
 
       // Process next step

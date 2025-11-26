@@ -249,70 +249,36 @@ export class ShipmentMovementPhaseHandler implements PhaseHandler {
     events: PhaseEvent[]
   ): { state: GameState; events: PhaseEvent[] } {
     const newEvents: PhaseEvent[] = [];
-    let newState = state;
+    // Note: Tools update state directly, so we use the state passed in (which was synced from agent provider)
+    // We don't re-execute the shipment - just emit events based on response data
 
     const faction = response.factionId;
-    const shipments = response.data.shipments as ShipmentRequest[] | undefined;
 
-    if (!shipments || shipments.length === 0) {
+    // Tool returns direct params: { territoryId, sector, count, cost, ... }
+    // (not an array of shipments)
+    const territoryId = response.data.territoryId as TerritoryId | undefined;
+    const sector = response.data.sector as number | undefined;
+    const count = response.data.count as number | undefined;
+    const cost = response.data.cost as number | undefined;
+
+    if (!territoryId || count === undefined) {
+      // No shipment data - tool may have failed or returned no action
       return { state, events: newEvents };
     }
 
-    for (const shipment of shipments) {
-      const territoryId = shipment.territoryId as TerritoryId;
-      const sector = shipment.sector;
-      const count = shipment.count;
+    newEvents.push({
+      type: 'FORCES_SHIPPED',
+      data: { faction, territory: territoryId, sector, count, cost },
+      message: `${faction} ships ${count} forces to ${territoryId} (sector ${sector ?? 0}) for ${cost ?? 0} spice`,
+    });
 
-      // Validate shipment
-      const validation = validateShipment(
-        newState,
-        faction,
-        territoryId,
-        sector,
-        count
-      );
-
-      if (!validation.valid) {
-        newEvents.push({
-          type: 'FORCES_SHIPPED',
-          data: {
-            faction,
-            territory: territoryId,
-            sector,
-            count,
-            failed: true,
-            errors: validation.errors,
-          },
-          message: `${faction} shipment failed: ${validation.errors[0]?.message}`,
-        });
-        continue;
-      }
-
-      // Calculate cost
-      const cost = validation.context.cost as number;
-
-      // Execute shipment
-      newState = shipForces(newState, faction, territoryId, sector, count);
-      newState = removeSpice(newState, faction, cost);
-
-      // Pay Guild if in game
-      if (newState.factions.has(Faction.SPACING_GUILD) && faction !== Faction.SPACING_GUILD) {
-        newState = addSpice(newState, Faction.SPACING_GUILD, Math.floor(cost / 2));
-      }
-
-      newEvents.push({
-        type: 'FORCES_SHIPPED',
-        data: { faction, territory: territoryId, sector, count, cost },
-        message: `${faction} ships ${count} forces to ${territoryId} (sector ${sector}) for ${cost} spice`,
-      });
-
-      newState = logAction(newState, 'FORCES_SHIPPED', faction, {
-        territory: territoryId,
-        sector,
-        count,
-        cost,
-      });
-    }
+    // Log the action (state already updated by tool)
+    const newState = logAction(state, 'FORCES_SHIPPED', faction, {
+      territory: territoryId,
+      sector,
+      count,
+      cost,
+    });
 
     return { state: newState, events: newEvents };
   }
@@ -323,76 +289,43 @@ export class ShipmentMovementPhaseHandler implements PhaseHandler {
     events: PhaseEvent[]
   ): { state: GameState; events: PhaseEvent[] } {
     const newEvents: PhaseEvent[] = [];
-    let newState = state;
+    // Note: Tools update state directly, so we use the state passed in (which was synced from agent provider)
+    // We don't re-execute the movement - just emit events based on response data
 
     const faction = response.factionId;
-    const movements = response.data.movements as MovementRequest[] | undefined;
 
-    if (!movements || movements.length === 0) {
+    // Tool returns direct params from the 'from' and 'to' objects
+    // { from: { territory, sector }, to: { territory, sector }, count, ... }
+    const fromData = response.data.from as { territory?: string; sector?: number } | undefined;
+    const toData = response.data.to as { territory?: string; sector?: number } | undefined;
+    const count = response.data.count as number | undefined;
+
+    if (!fromData?.territory || !toData?.territory || count === undefined) {
+      // No movement data - tool may have failed or returned no action
       return { state, events: newEvents };
     }
 
-    for (const movement of movements) {
-      const fromTerritory = movement.fromTerritoryId as TerritoryId;
-      const fromSector = movement.fromSector;
-      const toTerritory = movement.toTerritoryId as TerritoryId;
-      const toSector = movement.toSector;
-      const count = movement.count;
-
-      // Validate movement
-      const validation = validateMovement(
-        newState,
+    newEvents.push({
+      type: 'FORCES_MOVED',
+      data: {
         faction,
-        fromTerritory,
-        fromSector,
-        toTerritory,
-        toSector,
-        count
-      );
-
-      if (!validation.valid) {
-        newEvents.push({
-          type: 'FORCES_MOVED',
-          data: {
-            faction,
-            from: fromTerritory,
-            fromSector,
-            to: toTerritory,
-            toSector,
-            count,
-            failed: true,
-            errors: validation.errors,
-          },
-          message: `${faction} movement failed: ${validation.errors[0]?.message}`,
-        });
-        continue;
-      }
-
-      // Execute movement
-      newState = moveForces(
-        newState,
-        faction,
-        fromTerritory,
-        fromSector,
-        toTerritory,
-        toSector,
-        count
-      );
-
-      newEvents.push({
-        type: 'FORCES_MOVED',
-        data: { faction, from: fromTerritory, fromSector, to: toTerritory, toSector, count },
-        message: `${faction} moves ${count} forces from ${fromTerritory} to ${toTerritory}`,
-      });
-
-      newState = logAction(newState, 'FORCES_MOVED', faction, {
-        from: fromTerritory,
-        fromSector,
-        to: toTerritory,
-        toSector,
+        from: fromData.territory,
+        fromSector: fromData.sector,
+        to: toData.territory,
+        toSector: toData.sector,
         count,
-      });
-    }
+      },
+      message: `${faction} moves ${count} forces from ${fromData.territory} to ${toData.territory}`,
+    });
+
+    // Log the action (state already updated by tool)
+    const newState = logAction(state, 'FORCES_MOVED', faction, {
+      from: fromData.territory,
+      fromSector: fromData.sector,
+      to: toData.territory,
+      toSector: toData.sector,
+      count,
+    });
 
     return { state: newState, events: newEvents };
   }

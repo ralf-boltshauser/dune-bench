@@ -105,6 +105,20 @@ export class ClaudeAgentProvider implements AgentProvider {
   }
 
   /**
+   * Get the current game state.
+   * Tools may have updated state during execution, so this returns the latest.
+   */
+  getState(): GameState {
+    // Get the latest state from any agent's tool provider
+    // (they should all be in sync, but just in case, get from first)
+    const firstAgent = this.agents.values().next().value;
+    if (firstAgent) {
+      return firstAgent.toolProvider.getState();
+    }
+    return this.gameState;
+  }
+
+  /**
    * Get responses from agents for the given requests.
    */
   async getResponses(

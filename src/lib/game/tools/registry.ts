@@ -206,6 +206,14 @@ export class AgentToolProvider {
   }
 
   /**
+   * Get the current game state.
+   * (Method form for interface compatibility)
+   */
+  getState(): GameState {
+    return this.ctx.state;
+  }
+
+  /**
    * Get all tools (for use with prepareStep for dynamic filtering).
    */
   getAllTools(): ToolSet {
