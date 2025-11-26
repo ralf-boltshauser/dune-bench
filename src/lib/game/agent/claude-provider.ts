@@ -321,12 +321,14 @@ Decide what to do. Use the appropriate tool to take your action.`;
         : {};
 
       // Tool results contain the actual returned data (e.g., cost, success, etc.)
-      // The result property contains the tool's return value
-      const toolResultData = lastToolResult && 'result' in lastToolResult
-        ? lastToolResult.result as Record<string, unknown>
+      // Our tools return { success, data: {...}, message, stateUpdated }
+      // We need to extract the nested 'data' property from the result
+      const rawResult = lastToolResult && 'result' in lastToolResult
+        ? lastToolResult.result as { data?: Record<string, unknown> }
         : {};
+      const toolResultData = rawResult?.data ?? {};
 
-      // Merge tool input with tool result (result takes precedence for values like cost)
+      // Merge tool input with tool result data (result takes precedence for computed values like cost)
       const mergedData = { ...toolInput, ...toolResultData };
 
       return {
