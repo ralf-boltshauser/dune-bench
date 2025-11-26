@@ -83,11 +83,7 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
 
     const events: PhaseEvent[] = [];
 
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.SPICE_BLOW, turn: state.turn },
-      message: 'Spice Blow phase started',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Start by revealing Card A - merge events
     const cardResult = this.revealSpiceCard(state, 'A');
