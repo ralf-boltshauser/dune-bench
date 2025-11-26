@@ -322,11 +322,12 @@ Decide what to do. Use the appropriate tool to take your action.`;
 
       // Tool results contain the actual returned data (e.g., cost, success, etc.)
       // Our tools return { success, data: {...}, message, stateUpdated }
-      // We need to extract the nested 'data' property from the result
-      const rawResult = lastToolResult && 'result' in lastToolResult
-        ? lastToolResult.result as { data?: Record<string, unknown> }
+      // AI SDK 5.x tool results have 'output' property containing the tool return value
+      const rawOutput = lastToolResult && 'output' in lastToolResult
+        ? lastToolResult.output as { data?: Record<string, unknown> }
         : {};
-      const toolResultData = rawResult?.data ?? {};
+      // Extract the nested 'data' property from our tool result format
+      const toolResultData = rawOutput?.data ?? {};
 
       // Merge tool input with tool result data (result takes precedence for computed values like cost)
       const mergedData = { ...toolInput, ...toolResultData };
