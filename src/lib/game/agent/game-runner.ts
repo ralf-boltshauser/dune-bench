@@ -1,0 +1,304 @@
+/**
+ * Game Runner
+ *
+ * High-level orchestrator that sets up and runs complete Dune games
+ * with Claude agents playing each faction.
+ */
+
+import { Faction, Phase, type GameState, type WinResult, FACTION_NAMES } from '../types';
+import { createGameState, type CreateGameOptions } from '../state';
+import { PhaseManager, type GameResult, type PhaseEventListener, type GameRunOptions } from '../phases/phase-manager';
+import {
+  SetupPhaseHandler,
+  StormPhaseHandler,
+  SpiceBlowPhaseHandler,
+  ChoamCharityPhaseHandler,
+  BiddingPhaseHandler,
+  RevivalPhaseHandler,
+  ShipmentMovementPhaseHandler,
+  BattlePhaseHandler,
+  SpiceCollectionPhaseHandler,
+  MentatPausePhaseHandler,
+} from '../phases/handlers';
+import { ClaudeAgentProvider, type ClaudeAgentConfig, createClaudeAgentProvider } from './claude-provider';
+import type { PhaseEvent } from '../phases/types';
+import { GameLogger, createLogger } from './logger';
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
+export interface GameRunnerConfig {
+  /** Factions to include in the game */
+  factions: Faction[];
+  /** Maximum turns before game ends */
+  maxTurns?: number;
+  /** Whether to use advanced rules */
+  advancedRules?: boolean;
+  /** Agent configuration */
+  agentConfig?: ClaudeAgentConfig;
+  /** Event listener for game events */
+  onEvent?: PhaseEventListener;
+  /** Called when game state updates */
+  onStateUpdate?: (state: GameState) => void;
+  /** Run only specific phases (for debugging) */
+  onlyPhases?: Phase[];
+  /** Stop after this phase completes (for debugging) */
+  stopAfter?: Phase;
+  /** Skip setup phase, use default values */
+  skipSetup?: boolean;
+}
+
+export interface GameSummary {
+  winner: WinResult | null;
+  totalTurns: number;
+  factions: Faction[];
+  finalScores: Record<Faction, number>;
+  events: PhaseEvent[];
+}
+
+// =============================================================================
+// GAME RUNNER
+// =============================================================================
+
+/**
+ * High-level game runner that orchestrates complete Dune games.
+ */
+export class GameRunner {
+  private config: Required<Omit<GameRunnerConfig, 'onEvent' | 'onStateUpdate' | 'onlyPhases' | 'stopAfter' | 'skipSetup'>>;
+  private onEvent?: PhaseEventListener;
+  private onStateUpdate?: (state: GameState) => void;
+  private events: PhaseEvent[] = [];
+  private logger: GameLogger;
+  /** Phase control for debugging */
+  private onlyPhases?: Phase[];
+  private stopAfter?: Phase;
+  private skipSetup: boolean;
+
+  constructor(config: GameRunnerConfig) {
+    if (config.factions.length < 2) {
+      throw new Error('At least 2 factions are required');
+    }
+
+    this.config = {
+      factions: config.factions,
+      maxTurns: config.maxTurns ?? 10,
+      advancedRules: config.advancedRules ?? false,
+      agentConfig: config.agentConfig ?? {},
+    };
+    this.onEvent = config.onEvent;
+    this.onStateUpdate = config.onStateUpdate;
+    this.logger = createLogger(this.config.agentConfig.verbose ?? true);
+
+    // Phase control options
+    this.onlyPhases = config.onlyPhases;
+    this.stopAfter = config.stopAfter;
+    this.skipSetup = config.skipSetup ?? false;
+  }
+
+  /**
+   * Run a complete game and return the result.
+   */
+  async runGame(): Promise<GameResult> {
+    // Create initial game state
+    const gameOptions: CreateGameOptions = {
+      factions: this.config.factions,
+      maxTurns: this.config.maxTurns,
+      advancedRules: this.config.advancedRules,
+    };
+    const initialState = createGameState(gameOptions);
+
+    // Log game start with colored output
+    this.logger.gameStart(this.config.factions);
+
+    // Create agent provider
+    const agentProvider = createClaudeAgentProvider(initialState, {
+      ...this.config.agentConfig,
+      verbose: this.config.agentConfig.verbose ?? true,
+    });
+
+    // Create phase manager
+    const phaseManager = new PhaseManager(agentProvider);
+
+    // Register all phase handlers
+    phaseManager.registerHandlers([
+      new SetupPhaseHandler(),
+      new StormPhaseHandler(),
+      new SpiceBlowPhaseHandler(),
+      new ChoamCharityPhaseHandler(),
+      new BiddingPhaseHandler(),
+      new RevivalPhaseHandler(),
+      new ShipmentMovementPhaseHandler(),
+      new BattlePhaseHandler(),
+      new SpiceCollectionPhaseHandler(),
+      new MentatPausePhaseHandler(),
+    ]);
+
+    // Add event listener
+    phaseManager.addEventListener((event) => {
+      this.events.push(event);
+      this.logEvent(event);
+      if (this.onEvent) {
+        this.onEvent(event);
+      }
+    });
+
+    // Build phase run options
+    const runOptions: GameRunOptions = {
+      onlyPhases: this.onlyPhases,
+      stopAfter: this.stopAfter,
+      skipSetup: this.skipSetup,
+    };
+
+    // Run the game
+    const result = await phaseManager.runGame(initialState, runOptions);
+
+    // Log summary
+    this.logSummary(result);
+
+    return result;
+  }
+
+  /**
+   * Run a single turn (for testing/debugging).
+   */
+  async runSingleTurn(state: GameState): Promise<GameState> {
+    const agentProvider = createClaudeAgentProvider(state, this.config.agentConfig);
+    const phaseManager = new PhaseManager(agentProvider);
+
+    phaseManager.registerHandlers([
+      new SetupPhaseHandler(),
+      new StormPhaseHandler(),
+      new SpiceBlowPhaseHandler(),
+      new ChoamCharityPhaseHandler(),
+      new BiddingPhaseHandler(),
+      new RevivalPhaseHandler(),
+      new ShipmentMovementPhaseHandler(),
+      new BattlePhaseHandler(),
+      new SpiceCollectionPhaseHandler(),
+      new MentatPausePhaseHandler(),
+    ]);
+
+    phaseManager.addEventListener((event) => {
+      this.logEvent(event);
+      if (this.onEvent) {
+        this.onEvent(event);
+      }
+    });
+
+    const result = await phaseManager.runTurn(state);
+    return result.state;
+  }
+
+  /**
+   * Log a game event to console using the colorful logger.
+   */
+  private logEvent(event: PhaseEvent): void {
+    const type = event.type;
+
+    // Handle turn events
+    if (type === 'TURN_STARTED') {
+      // Extract turn number from event data or message
+      const turnMatch = event.message.match(/Turn (\d+)/i);
+      const turn = turnMatch ? parseInt(turnMatch[1], 10) : 1;
+      this.logger.turnStart(turn, this.config.maxTurns);
+      return;
+    }
+
+    // Handle phase events (exact match to avoid matching SETUP_STEP etc)
+    if (type === 'PHASE_STARTED') {
+      // Extract phase name: "setup phase started" -> "setup"
+      const phase = event.message
+        .replace(/ phase started$/i, '')
+        .replace(/ phase$/i, '')
+        .toUpperCase();
+      this.logger.phaseStart(phase);
+      return;
+    }
+
+    if (type === 'PHASE_ENDED') {
+      // Extract phase name: "setup phase ended" -> "setup"
+      const phase = event.message
+        .replace(/ phase ended$/i, '')
+        .replace(/ phase$/i, '');
+      this.logger.phaseEnd(phase);
+      return;
+    }
+
+    // Skip GAME_ENDED as we handle it in logSummary
+    if (type === 'GAME_ENDED') {
+      return;
+    }
+
+    // Handle other events with appropriate emojis
+    const emoji = this.getEventEmoji(type);
+    this.logger.event(event.message, emoji);
+  }
+
+  /**
+   * Get an emoji for event types.
+   */
+  private getEventEmoji(type: string): string {
+    if (type.includes('STORM')) return '🌪️';
+    if (type.includes('SPICE')) return '🟡';
+    if (type.includes('BATTLE')) return '⚔️';
+    if (type.includes('ALLIANCE')) return '🤝';
+    if (type.includes('VICTORY') || type.includes('WIN') || type.includes('ENDED')) return '🏆';
+    if (type.includes('SHIP')) return '🚀';
+    if (type.includes('MOVE')) return '👣';
+    if (type.includes('BID') || type.includes('AUCTION')) return '💰';
+    if (type.includes('REVIV')) return '💫';
+    if (type.includes('TRAITOR')) return '🗡️';
+    if (type.includes('PREDICT')) return '🔮';
+    return '📌';
+  }
+
+  /**
+   * Log game summary using the colorful logger.
+   */
+  private logSummary(result: GameResult): void {
+    const winners = result.winner?.winners ?? null;
+    this.logger.gameEnd(winners, result.totalTurns);
+  }
+
+  /**
+   * Get a summary of the game.
+   */
+  getSummary(result: GameResult): GameSummary {
+    const finalScores: Record<Faction, number> = {} as Record<Faction, number>;
+    for (const [faction, state] of result.finalState.factions) {
+      finalScores[faction] = state.spice;
+    }
+
+    return {
+      winner: result.winner,
+      totalTurns: result.totalTurns,
+      factions: this.config.factions,
+      finalScores,
+      events: this.events,
+    };
+  }
+}
+
+// =============================================================================
+// FACTORY
+// =============================================================================
+
+/**
+ * Create and run a game with the given configuration.
+ */
+export async function runDuneGame(config: GameRunnerConfig): Promise<GameResult> {
+  const runner = new GameRunner(config);
+  return runner.runGame();
+}
+
+/**
+ * Quick start a 2-player game with Atreides vs Harkonnen.
+ */
+export async function runQuickGame(config?: Partial<ClaudeAgentConfig>): Promise<GameResult> {
+  return runDuneGame({
+    factions: [Faction.ATREIDES, Faction.HARKONNEN],
+    maxTurns: 5,
+    agentConfig: config,
+  });
+}
