@@ -86,11 +86,7 @@ export class SetupPhaseHandler implements PhaseHandler {
       step: 'BG_PREDICTION',
     };
 
-    events.push({
-      type: 'PHASE_STARTED',
-      data: { phase: Phase.SETUP },
-      message: 'Game Setup beginning',
-    });
+    // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
     // Deal 4 traitor cards to each faction from the traitor deck
     // The traitor deck is stored in the game state but we need to access it
@@ -213,8 +209,11 @@ export class SetupPhaseHandler implements PhaseHandler {
     // Process Fremen force distribution (rule 0.13, 2.04.02)
     if (this.context.step === 'FREMEN_FORCE_DISTRIBUTION') {
       for (const response of responses) {
-        if (response.factionId === Faction.FREMEN && response.actionType === 'DISTRIBUTE_FORCES') {
-          const distribution = response.data.distribution as Record<string, number>;
+        // Tool name 'distribute_fremen_forces' becomes 'DISTRIBUTE_FREMEN_FORCES' actionType
+        if (response.factionId === Faction.FREMEN && response.actionType === 'DISTRIBUTE_FREMEN_FORCES') {
+          // The tool passes the distribution directly as top-level data (sietch_tabr, etc.)
+          // not nested under 'distribution'
+          const distribution = response.data as Record<string, number>;
           newState = this.distributeFremenForces(newState, distribution, events);
           this.context.fremenForcesDistributed = true;
         }
@@ -228,11 +227,7 @@ export class SetupPhaseHandler implements PhaseHandler {
     }
 
     // Setup complete
-    events.push({
-      type: 'PHASE_ENDED',
-      data: { phase: Phase.SETUP },
-      message: 'Game Setup complete',
-    });
+    // Note: PhaseManager emits PHASE_ENDED event, so we don't emit it here
 
     return {
       state: newState,
