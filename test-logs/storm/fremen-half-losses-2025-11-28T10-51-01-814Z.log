@@ -1,0 +1,587 @@
+================================================================================
+PHASE TEST LOG: Fremen Half Losses
+================================================================================
+Generated: 2025-11-28T10:51:01.815Z
+Steps: 1
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:51:01 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: storm,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 7,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[11:51:01 AM] INFO
+  Starting scenario: Fremen Half Losses
+
+[11:51:01 AM] INFO
+  Turn: 2, Storm Sector: 7
+
+[11:51:01 AM] INFO
+  Factions: fremen, atreides
+
+[11:51:01 AM] INFO
+  Player Positions:
+  Data:
+    [
+      fremen: sector 6,
+      atreides: sector 10,
+    ]
+
+[11:51:01 AM] INFO
+  Forces: fremen has 5 in meridian sector 9
+
+[11:51:01 AM] INFO
+  Forces: atreides has 5 in meridian sector 9
+
+[11:51:01 AM] INFO
+  Total forces on board: 10
+
+[11:51:01 AM] INFO
+  Spice on board: 0 deposits
+
+[11:51:01 AM] INFO
+  Queued 2 agent responses
+
+[11:51:01 AM] INFO
+    - fremen: DIAL_STORM with data:
+  Data:
+    {
+      dial: 1,
+    }
+
+[11:51:01 AM] INFO
+    - atreides: DIAL_STORM with data:
+  Data:
+    {
+      dial: 1,
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:51:01 AM] REQUEST
+  atreides requested: DIAL_STORM
+  Data:
+    {
+      faction: atreides,
+      requestType: DIAL_STORM,
+      prompt: Dial a number for storm movement (1-3). The total will determine how many sectors the storm moves.,
+      context: {
+        turn: 2,
+        currentStormSector: 7,
+        maxDial: 3,
+        isFirstTurn: false,
+        stormStartSector: null,
+      },
+      availableActions: [
+        DIAL_STORM,
+      ],
+    }
+
+[11:51:01 AM] REQUEST
+  fremen requested: DIAL_STORM
+  Data:
+    {
+      faction: fremen,
+      requestType: DIAL_STORM,
+      prompt: Dial a number for storm movement (1-3). The total will determine how many sectors the storm moves.,
+      context: {
+        turn: 2,
+        currentStormSector: 7,
+        maxDial: 3,
+        isFirstTurn: false,
+        stormStartSector: null,
+      },
+      availableActions: [
+        DIAL_STORM,
+      ],
+    }
+
+[11:51:01 AM] RESPONSE
+  fremen responded: DIAL_STORM (passed: false)
+  Data:
+    {
+      faction: fremen,
+      actionType: DIAL_STORM,
+      data: {
+        dial: 1,
+      },
+      passed: false,
+    }
+
+[11:51:01 AM] RESPONSE
+  atreides responded: DIAL_STORM (passed: false)
+  Data:
+    {
+      faction: atreides,
+      actionType: DIAL_STORM,
+      data: {
+        dial: 1,
+      },
+      passed: false,
+    }
+
+[11:51:01 AM] EVENT
+  Storm moves 2 sectors (7 → 9)
+  Data:
+    {
+      eventType: STORM_MOVED,
+      data: {
+        from: 7,
+        to: 9,
+        movement: 2,
+        sectorsAffected: [
+          8,
+          9,
+        ],
+      },
+    }
+
+[11:51:01 AM] STATE
+  State snapshot: After step 1
+  Data:
+    {
+      turn: 2,
+      phase: storm,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 9,
+      stormOrder: [
+        atreides,
+        fremen,
+      ],
+    }
+
+[11:51:01 AM] INFO
+  Storm Sector: 9
+
+[11:51:01 AM] INFO
+  Storm Order: atreides → fremen
+
+[11:51:01 AM] INFO
+    fremen: 5 forces in meridian sector 9
+
+[11:51:01 AM] INFO
+    atreides: 5 forces in meridian sector 9
+
+[11:51:01 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: storm,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 9,
+      stormOrder: [
+        atreides,
+        fremen,
+      ],
+    }
+
+[11:51:01 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 1
+Total Events: 1
+Completed: Yes
+
+Events:
+  1. [STORM_MOVED] Storm moves 2 sectors (7 → 9)
+
+Final State:
+  Turn: 2
+  Phase: storm
+  Factions: fremen, atreides
+
+  fremen:
+    Spice: 13
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  atreides:
+    Spice: 30
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

@@ -1,0 +1,594 @@
+================================================================================
+PHASE TEST LOG: spice-in-storm
+================================================================================
+Generated: 2025-11-28T10:48:48.745Z
+Steps: 4
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:48 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[11:48:48 AM] INFO
+  Starting scenario: spice-in-storm
+
+[11:48:48 AM] INFO
+  Turn: 2, Storm Sector: 0
+
+[11:48:48 AM] INFO
+  Spice Deck A: 1 cards
+
+[11:48:48 AM] INFO
+  Spice Deck B: 22 cards
+
+[11:48:48 AM] INFO
+  Queued 0 agent responses
+
+[11:48:48 AM] EVENT
+  Spice Card A revealed: Cielago North
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: Cielago North,
+        type: territory,
+        deck: A,
+      },
+    }
+
+[11:48:48 AM] EVENT
+  Cielago North: No spice blow - territory is in storm
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        territory: cielago_north,
+        sector: 0,
+        amount: 8,
+        inStorm: true,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:48 AM] EVENT
+  Spice Card B revealed: Basin
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: Basin,
+        type: territory,
+        deck: B,
+      },
+    }
+
+[11:48:48 AM] EVENT
+  8 spice placed in basin (sector 9)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: basin,
+        sector: 9,
+        amount: 8,
+      },
+    }
+
+[11:48:48 AM] EVENT
+  Nexus! Alliance negotiations may occur.
+  Data:
+    {
+      eventType: NEXUS_STARTED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:48 AM] REQUEST
+  atreides requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: atreides,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          harkonnen,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:48:48 AM] REQUEST
+  harkonnen requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: harkonnen,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          atreides,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:48:48 AM] RESPONSE
+  atreides responded: PASS (passed: true)
+  Data:
+    {
+      faction: atreides,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:48:48 AM] RESPONSE
+  harkonnen responded: PASS (passed: true)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:48:48 AM] EVENT
+  Nexus ends.
+  Data:
+    {
+      eventType: NEXUS_ENDED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:48 AM] EVENT
+  8 spice destroyed by sandworm in basin
+  Data:
+    {
+      eventType: SPICE_DESTROYED_BY_WORM,
+      data: {
+        territory: basin,
+        sector: 9,
+        amount: 8,
+      },
+    }
+
+[11:48:48 AM] EVENT
+  Nexus! Alliance negotiations may occur.
+  Data:
+    {
+      eventType: NEXUS_STARTED,
+      data: {},
+    }
+
+[11:48:48 AM] EVENT
+  Nexus ends.
+  Data:
+    {
+      eventType: NEXUS_ENDED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:48 AM] STATE
+  State snapshot: After step 4
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[11:48:48 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[11:48:48 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 4
+Total Events: 7
+Completed: Yes
+
+Events:
+  1. [SPICE_CARD_REVEALED] Spice Card B revealed: Basin
+  2. [SPICE_PLACED] 8 spice placed in basin (sector 9)
+  3. [NEXUS_STARTED] Nexus! Alliance negotiations may occur.
+  4. [NEXUS_ENDED] Nexus ends.
+  5. [SPICE_DESTROYED_BY_WORM] 8 spice destroyed by sandworm in basin
+  6. [NEXUS_STARTED] Nexus! Alliance negotiations may occur.
+  7. [NEXUS_ENDED] Nexus ends.
+
+Final State:
+  Turn: 2
+  Phase: spice_blow
+  Factions: atreides, harkonnen
+
+  atreides:
+    Spice: 30
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 35
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+
+================================================================================
+END OF LOG
+================================================================================

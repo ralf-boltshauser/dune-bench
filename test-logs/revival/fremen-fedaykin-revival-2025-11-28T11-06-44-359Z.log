@@ -1,0 +1,594 @@
+================================================================================
+PHASE TEST LOG: Fremen Fedaykin Revival
+================================================================================
+Generated: 2025-11-28T11:06:44.360Z
+Steps: 2
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:06:44 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: revival,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 18,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 25,
+            elite: 3,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 3,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 15,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[12:06:44 PM] INFO
+  Starting scenario: Fremen Fedaykin Revival
+
+[12:06:44 PM] INFO
+  Queued 2 agent responses
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[12:06:44 PM] REQUEST
+  fremen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: fremen,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 8 forces in tanks. You get 3 forces for FREE. You may revive up to 0 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 0),
+      context: {
+        forcesInTanks: 8,
+        freeRevivalLimit: 3,
+        maxAdditionalForces: 0,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 18,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:06:44 PM] REQUEST
+  atreides requested: REVIVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 5 forces in tanks. You get 2 forces for FREE. You may revive up to 1 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 1),
+      context: {
+        forcesInTanks: 5,
+        freeRevivalLimit: 2,
+        maxAdditionalForces: 1,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 30,
+        revivableLeaders: [],
+        kwisatzHaderachDead: false,
+        kwisatzHaderachRevivalCost: 2,
+        canReviveKwisatzHaderach: false,
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[12:06:44 PM] REQUEST
+  fremen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: fremen,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 8 forces in tanks. You get 3 forces for FREE. You may revive up to 0 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 0),
+      context: {
+        forcesInTanks: 8,
+        freeRevivalLimit: 3,
+        maxAdditionalForces: 0,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 18,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:06:44 PM] REQUEST
+  atreides requested: REVIVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 5 forces in tanks. You get 2 forces for FREE. You may revive up to 1 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 1),
+      context: {
+        forcesInTanks: 5,
+        freeRevivalLimit: 2,
+        maxAdditionalForces: 1,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 30,
+        revivableLeaders: [],
+        kwisatzHaderachDead: false,
+        kwisatzHaderachRevivalCost: 2,
+        canReviveKwisatzHaderach: false,
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:06:44 PM] RESPONSE
+  fremen responded: REVIVE_FORCES (passed: false)
+  Data:
+    {
+      faction: fremen,
+      actionType: REVIVE_FORCES,
+      data: {
+        count: 0,
+      },
+      passed: false,
+    }
+
+[12:06:44 PM] RESPONSE
+  atreides responded: PASS (passed: true)
+  Data:
+    {
+      faction: atreides,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[12:06:44 PM] EVENT
+  fremen revives 3 forces (3 free, 0 paid for 0 spice)
+  Data:
+    {
+      eventType: FORCES_REVIVED,
+      data: {
+        faction: fremen,
+        count: 3,
+        cost: 0,
+      },
+    }
+
+[12:06:44 PM] STATE
+  State snapshot: After step 2
+  Data:
+    {
+      turn: 2,
+      phase: revival,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 18,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 28,
+            elite: 3,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 3,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 15,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[12:06:44 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: revival,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 18,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 28,
+            elite: 3,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 3,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 15,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[12:06:44 PM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 2
+Total Events: 1
+Completed: Yes
+
+Events:
+  1. [FORCES_REVIVED] fremen revives 3 forces (3 free, 0 paid for 0 spice)
+
+Final State:
+  Turn: 2
+  Phase: revival
+  Factions: fremen, atreides
+
+  fremen:
+    Spice: 18
+    Forces on board: 0 stacks
+    Forces in reserves: 28 regular, 3 elite
+    Leaders: 5 total
+    Hand size: 1
+  atreides:
+    Spice: 30
+    Forces on board: 1 stacks
+    Forces in reserves: 15 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

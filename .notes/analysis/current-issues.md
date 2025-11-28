@@ -1,0 +1,7 @@
+- for storm, the faction token below storm actually counts, it's the one below storm and the one closest in storm order that are moving the storm
+- there should be 2 spice blows and two piles so first card goes on pile 1 and second card goes on pile 2. so in case worms appear that they appear in the correct territory. 
+- in bidding after each card you need to check who is eligible to bid, hadn limits are 4 for everyoen except hark has 8 
+- on card two everyone passed, the the whole bidding phase should be done and all cards go back on the deck. it hsouldn't auction the next cards. 
+- "since advanced rules are disabled" please enable advanced rules, don't disable them
+- the movement of ornithopters only counts if you had forces in arrakeen or carthag at the very start of the movment phase, not when "my move starts" aka after shipping. i can't ship into carthag to then move 3, i need to be there at the very start of the shipment/movement phase.
+- 

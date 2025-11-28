@@ -1,0 +1,1553 @@
+================================================================================
+PHASE TEST LOG: large-scale
+================================================================================
+Generated: 2025-11-28T11:10:06.748Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:10:06 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        atreides,
+        bene_gesserit,
+        emperor,
+        fremen,
+        harkonnen,
+        spacing_guild,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 3,
+              elite: 0,
+              advisors: 0,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 2,
+              elite: 0,
+              advisors: 0,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 0,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [
+            {
+              territory: sihaya_ridge,
+              sector: 4,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 5,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: broken_land,
+              sector: 7,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: spacing_guild,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: old_gap,
+              sector: 8,
+              regular: 6,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: staban_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: esmar_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: master_bewt,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: soo_soo_sook,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: guild_rep,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: hagga_basin,
+          sector: 8,
+          amount: 20,
+        },
+        {
+          territoryId: south_mesa,
+          sector: 2,
+          amount: 10,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 10,
+          amount: 15,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 11,
+          amount: 8,
+        },
+        {
+          territoryId: cielago_north,
+          sector: 0,
+          amount: 20,
+        },
+        {
+          territoryId: sihaya_ridge,
+          sector: 4,
+          amount: 12,
+        },
+        {
+          territoryId: red_chasm,
+          sector: 3,
+          amount: 10,
+        },
+        {
+          territoryId: broken_land,
+          sector: 7,
+          amount: 20,
+        },
+        {
+          territoryId: old_gap,
+          sector: 8,
+          amount: 5,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        bene_gesserit,
+        emperor,
+        fremen,
+        harkonnen,
+        spacing_guild,
+      ],
+    }
+
+[12:10:06 PM] INFO
+  Starting scenario: large-scale
+
+[12:10:06 PM] INFO
+  Spice collection is automatic - no agent responses needed
+
+[12:10:06 PM] INFO
+  Initial Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: hagga_basin,
+          sector: 8,
+          amount: 20,
+        },
+        {
+          territory: south_mesa,
+          sector: 2,
+          amount: 10,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 10,
+          amount: 15,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 11,
+          amount: 8,
+        },
+        {
+          territory: cielago_north,
+          sector: 0,
+          amount: 20,
+        },
+        {
+          territory: sihaya_ridge,
+          sector: 4,
+          amount: 12,
+        },
+        {
+          territory: red_chasm,
+          sector: 3,
+          amount: 10,
+        },
+        {
+          territory: broken_land,
+          sector: 7,
+          amount: 20,
+        },
+        {
+          territory: old_gap,
+          sector: 8,
+          amount: 5,
+        },
+      ],
+    }
+
+[12:10:06 PM] INFO
+  Initial Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: atreides,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 4,
+              elite: 0,
+              total: 4,
+            },
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+          ],
+        },
+        {
+          faction: bene_gesserit,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+          ],
+        },
+        {
+          faction: emperor,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 0,
+              regular: 5,
+              elite: 0,
+              total: 5,
+            },
+          ],
+        },
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [
+            {
+              territory: sihaya_ridge,
+              sector: 4,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+          ],
+        },
+        {
+          faction: harkonnen,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 5,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+            {
+              territory: broken_land,
+              sector: 7,
+              regular: 4,
+              elite: 0,
+              total: 4,
+            },
+          ],
+        },
+        {
+          faction: spacing_guild,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: old_gap,
+              sector: 8,
+              regular: 6,
+              elite: 0,
+              total: 6,
+            },
+          ],
+        },
+      ],
+    }
+
+[12:10:06 PM] EVENT
+  atreides collects 12 spice from hagga_basin sector 8 (4 forces in sector 8 × 3 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: atreides,
+        territory: hagga_basin,
+        sector: 8,
+        amount: 12,
+        forces: 4,
+        collectionRate: 3,
+        forceSector: 8,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  atreides collects 6 spice from south_mesa sector 2 (2 forces in sector 2 × 3 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: atreides,
+        territory: south_mesa,
+        sector: 2,
+        amount: 6,
+        forces: 2,
+        collectionRate: 3,
+        forceSector: 2,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  bene_gesserit collects 6 spice from rock_outcroppings sector 10 (3 forces in sector 10 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: bene_gesserit,
+        territory: rock_outcroppings,
+        sector: 10,
+        amount: 6,
+        forces: 3,
+        collectionRate: 2,
+        forceSector: 10,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  bene_gesserit collects 6 spice from rock_outcroppings sector 11 (3 forces in sector 10 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: bene_gesserit,
+        territory: rock_outcroppings,
+        sector: 11,
+        amount: 6,
+        forces: 3,
+        collectionRate: 2,
+        forceSector: 10,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  bene_gesserit collects 4 spice from rock_outcroppings sector 10 (2 forces in sector 11 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: bene_gesserit,
+        territory: rock_outcroppings,
+        sector: 10,
+        amount: 4,
+        forces: 2,
+        collectionRate: 2,
+        forceSector: 11,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  bene_gesserit collects 2 spice from rock_outcroppings sector 11 (2 forces in sector 11 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: bene_gesserit,
+        territory: rock_outcroppings,
+        sector: 11,
+        amount: 2,
+        forces: 2,
+        collectionRate: 2,
+        forceSector: 11,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  emperor collects 10 spice from cielago_north sector 0 (5 forces in sector 0 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: emperor,
+        territory: cielago_north,
+        sector: 0,
+        amount: 10,
+        forces: 5,
+        collectionRate: 2,
+        forceSector: 0,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  fremen collects 6 spice from sihaya_ridge sector 4 (3 forces in sector 4 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: fremen,
+        territory: sihaya_ridge,
+        sector: 4,
+        amount: 6,
+        forces: 3,
+        collectionRate: 2,
+        forceSector: 4,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  fremen collects 4 spice from red_chasm sector 3 (2 forces in sector 3 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: fremen,
+        territory: red_chasm,
+        sector: 3,
+        amount: 4,
+        forces: 2,
+        collectionRate: 2,
+        forceSector: 3,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  harkonnen collects 12 spice from broken_land sector 7 (4 forces in sector 7 × 3 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: harkonnen,
+        territory: broken_land,
+        sector: 7,
+        amount: 12,
+        forces: 4,
+        collectionRate: 3,
+        forceSector: 7,
+      },
+    }
+
+[12:10:06 PM] EVENT
+  spacing_guild collects 5 spice from old_gap sector 8 (6 forces in sector 8 × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: spacing_guild,
+        territory: old_gap,
+        sector: 8,
+        amount: 5,
+        forces: 6,
+        collectionRate: 2,
+        forceSector: 8,
+      },
+    }
+
+[12:10:06 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        atreides,
+        bene_gesserit,
+        emperor,
+        fremen,
+        harkonnen,
+        spacing_guild,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 38,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 28,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 3,
+              elite: 0,
+              advisors: 0,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 2,
+              elite: 0,
+              advisors: 0,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 0,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 18,
+          forcesOnBoard: [
+            {
+              territory: sihaya_ridge,
+              sector: 4,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 32,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 5,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: broken_land,
+              sector: 7,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: spacing_guild,
+          spice: 15,
+          forcesOnBoard: [
+            {
+              territory: old_gap,
+              sector: 8,
+              regular: 6,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: staban_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: esmar_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: master_bewt,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: soo_soo_sook,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: guild_rep,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: hagga_basin,
+          sector: 8,
+          amount: 8,
+        },
+        {
+          territoryId: south_mesa,
+          sector: 2,
+          amount: 4,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 10,
+          amount: 5,
+        },
+        {
+          territoryId: cielago_north,
+          sector: 0,
+          amount: 10,
+        },
+        {
+          territoryId: sihaya_ridge,
+          sector: 4,
+          amount: 6,
+        },
+        {
+          territoryId: red_chasm,
+          sector: 3,
+          amount: 6,
+        },
+        {
+          territoryId: broken_land,
+          sector: 7,
+          amount: 8,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        bene_gesserit,
+        emperor,
+        fremen,
+        harkonnen,
+        spacing_guild,
+      ],
+    }
+
+[12:10:06 PM] INFO
+  Final Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: hagga_basin,
+          sector: 8,
+          amount: 8,
+        },
+        {
+          territory: south_mesa,
+          sector: 2,
+          amount: 4,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 10,
+          amount: 5,
+        },
+        {
+          territory: cielago_north,
+          sector: 0,
+          amount: 10,
+        },
+        {
+          territory: sihaya_ridge,
+          sector: 4,
+          amount: 6,
+        },
+        {
+          territory: red_chasm,
+          sector: 3,
+          amount: 6,
+        },
+        {
+          territory: broken_land,
+          sector: 7,
+          amount: 8,
+        },
+      ],
+    }
+
+[12:10:06 PM] INFO
+  Final Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: atreides,
+          initialSpice: 20,
+          finalSpice: 38,
+          delta: 18,
+          spice: 38,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 4,
+              elite: 0,
+              total: 4,
+            },
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+          ],
+        },
+        {
+          faction: bene_gesserit,
+          initialSpice: 10,
+          finalSpice: 28,
+          delta: 18,
+          spice: 28,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+          ],
+        },
+        {
+          faction: emperor,
+          initialSpice: 20,
+          finalSpice: 30,
+          delta: 10,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 0,
+              regular: 5,
+              elite: 0,
+              total: 5,
+            },
+          ],
+        },
+        {
+          faction: fremen,
+          initialSpice: 8,
+          finalSpice: 18,
+          delta: 10,
+          spice: 18,
+          forcesOnBoard: [
+            {
+              territory: sihaya_ridge,
+              sector: 4,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+          ],
+        },
+        {
+          faction: harkonnen,
+          initialSpice: 20,
+          finalSpice: 32,
+          delta: 12,
+          spice: 32,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 5,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+            {
+              territory: broken_land,
+              sector: 7,
+              regular: 4,
+              elite: 0,
+              total: 4,
+            },
+          ],
+        },
+        {
+          faction: spacing_guild,
+          initialSpice: 10,
+          finalSpice: 15,
+          delta: 5,
+          spice: 15,
+          forcesOnBoard: [
+            {
+              territory: old_gap,
+              sector: 8,
+              regular: 6,
+              elite: 0,
+              total: 6,
+            },
+          ],
+        },
+      ],
+    }
+
+[12:10:06 PM] INFO
+  Phase completed successfully
+
+[12:10:06 PM] INFO
+  Total collection events: 11
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 11
+Completed: Yes
+
+Events:
+  1. [SPICE_COLLECTED] atreides collects 12 spice from hagga_basin sector 8 (4 forces in sector 8 × 3 spice/force)
+  2. [SPICE_COLLECTED] atreides collects 6 spice from south_mesa sector 2 (2 forces in sector 2 × 3 spice/force)
+  3. [SPICE_COLLECTED] bene_gesserit collects 6 spice from rock_outcroppings sector 10 (3 forces in sector 10 × 2 spice/force)
+  4. [SPICE_COLLECTED] bene_gesserit collects 6 spice from rock_outcroppings sector 11 (3 forces in sector 10 × 2 spice/force)
+  5. [SPICE_COLLECTED] bene_gesserit collects 4 spice from rock_outcroppings sector 10 (2 forces in sector 11 × 2 spice/force)
+  6. [SPICE_COLLECTED] bene_gesserit collects 2 spice from rock_outcroppings sector 11 (2 forces in sector 11 × 2 spice/force)
+  7. [SPICE_COLLECTED] emperor collects 10 spice from cielago_north sector 0 (5 forces in sector 0 × 2 spice/force)
+  8. [SPICE_COLLECTED] fremen collects 6 spice from sihaya_ridge sector 4 (3 forces in sector 4 × 2 spice/force)
+  9. [SPICE_COLLECTED] fremen collects 4 spice from red_chasm sector 3 (2 forces in sector 3 × 2 spice/force)
+  10. [SPICE_COLLECTED] harkonnen collects 12 spice from broken_land sector 7 (4 forces in sector 7 × 3 spice/force)
+  11. [SPICE_COLLECTED] spacing_guild collects 5 spice from old_gap sector 8 (6 forces in sector 8 × 2 spice/force)
+
+Final State:
+  Turn: 1
+  Phase: spice_collection
+  Factions: atreides, bene_gesserit, emperor, fremen, harkonnen, spacing_guild
+
+  atreides:
+    Spice: 38
+    Forces on board: 3 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  bene_gesserit:
+    Spice: 28
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  emperor:
+    Spice: 30
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  fremen:
+    Spice: 18
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 32
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  spacing_guild:
+    Spice: 15
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

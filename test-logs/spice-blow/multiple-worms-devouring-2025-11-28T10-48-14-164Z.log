@@ -1,0 +1,846 @@
+================================================================================
+PHASE TEST LOG: multiple-worms-devouring
+================================================================================
+Generated: 2025-11-28T10:48:14.165Z
+Steps: 4
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:14 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 40,
+          forcesOnBoard: [
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: south_mesa,
+          sector: 2,
+          amount: 10,
+        },
+        {
+          territoryId: red_chasm,
+          sector: 3,
+          amount: 8,
+        },
+      ],
+      stormSector: 5,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:48:14 AM] INFO
+  Starting scenario: multiple-worms-devouring
+
+[11:48:14 AM] INFO
+  Turn: 2, Storm Sector: 5
+
+[11:48:14 AM] INFO
+  Spice Deck A: 5 cards
+
+[11:48:14 AM] INFO
+  Spice Deck B: 22 cards
+
+[11:48:14 AM] INFO
+  Queued 0 agent responses
+
+[11:48:14 AM] EVENT
+  Spice Card A revealed: South Mesa
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: South Mesa,
+        type: territory,
+        deck: A,
+      },
+    }
+
+[11:48:14 AM] EVENT
+  10 spice placed in south_mesa (sector 2)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: south_mesa,
+        sector: 2,
+        amount: 10,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:14 AM] EVENT
+  Spice Card B revealed: The Great Flat
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: The Great Flat,
+        type: territory,
+        deck: B,
+      },
+    }
+
+[11:48:14 AM] EVENT
+  10 spice placed in the_great_flat (sector 14)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: the_great_flat,
+        sector: 14,
+        amount: 10,
+      },
+    }
+
+[11:48:14 AM] EVENT
+  Nexus! Alliance negotiations may occur.
+  Data:
+    {
+      eventType: NEXUS_STARTED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:14 AM] REQUEST
+  atreides requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: atreides,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          harkonnen,
+          emperor,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:48:14 AM] REQUEST
+  harkonnen requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: harkonnen,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          atreides,
+          emperor,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:48:14 AM] REQUEST
+  emperor requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: emperor,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          atreides,
+          harkonnen,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:48:14 AM] RESPONSE
+  atreides responded: PASS (passed: true)
+  Data:
+    {
+      faction: atreides,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:48:14 AM] RESPONSE
+  harkonnen responded: PASS (passed: true)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:48:14 AM] RESPONSE
+  emperor responded: PASS (passed: true)
+  Data:
+    {
+      faction: emperor,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:48:14 AM] EVENT
+  Nexus ends.
+  Data:
+    {
+      eventType: NEXUS_ENDED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:14 AM] EVENT
+  10 spice destroyed by sandworm in the_great_flat
+  Data:
+    {
+      eventType: SPICE_DESTROYED_BY_WORM,
+      data: {
+        territory: the_great_flat,
+        sector: 14,
+        amount: 10,
+      },
+    }
+
+[11:48:14 AM] EVENT
+  Nexus! Alliance negotiations may occur.
+  Data:
+    {
+      eventType: NEXUS_STARTED,
+      data: {},
+    }
+
+[11:48:14 AM] EVENT
+  Nexus ends.
+  Data:
+    {
+      eventType: NEXUS_ENDED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[11:48:14 AM] STATE
+  State snapshot: After step 4
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 40,
+          forcesOnBoard: [
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: red_chasm,
+          sector: 3,
+          amount: 8,
+        },
+      ],
+      stormSector: 5,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:48:14 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 40,
+          forcesOnBoard: [
+            {
+              territory: red_chasm,
+              sector: 3,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: red_chasm,
+          sector: 3,
+          amount: 8,
+        },
+      ],
+      stormSector: 5,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:48:14 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 4
+Total Events: 7
+Completed: Yes
+
+Events:
+  1. [SPICE_CARD_REVEALED] Spice Card B revealed: The Great Flat
+  2. [SPICE_PLACED] 10 spice placed in the_great_flat (sector 14)
+  3. [NEXUS_STARTED] Nexus! Alliance negotiations may occur.
+  4. [NEXUS_ENDED] Nexus ends.
+  5. [SPICE_DESTROYED_BY_WORM] 10 spice destroyed by sandworm in the_great_flat
+  6. [NEXUS_STARTED] Nexus! Alliance negotiations may occur.
+  7. [NEXUS_ENDED] Nexus ends.
+
+Final State:
+  Turn: 2
+  Phase: spice_blow
+  Factions: atreides, harkonnen, emperor
+
+  atreides:
+    Spice: 30
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 35
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  emperor:
+    Spice: 40
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

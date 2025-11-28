@@ -1,0 +1,530 @@
+================================================================================
+PHASE TEST LOG: city-bonus-global
+================================================================================
+Generated: 2025-11-28T11:09:48.297Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:09:48 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: hagga_basin,
+          sector: 8,
+          amount: 15,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 10,
+          amount: 12,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:09:48 PM] INFO
+  Starting scenario: city-bonus-global
+
+[12:09:48 PM] INFO
+  Spice collection is automatic - no agent responses needed
+
+[12:09:48 PM] INFO
+  Initial Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: hagga_basin,
+          sector: 8,
+          amount: 15,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 10,
+          amount: 12,
+        },
+      ],
+    }
+
+[12:09:48 PM] INFO
+  Initial Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: atreides,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 5,
+              elite: 0,
+              total: 5,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+          ],
+        },
+        {
+          faction: harkonnen,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 4,
+              elite: 0,
+              total: 4,
+            },
+          ],
+        },
+      ],
+    }
+
+[12:09:48 PM] EVENT
+  atreides collects 9 spice from hagga_basin sector 8 (3 forces × 3 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: atreides,
+        territory: hagga_basin,
+        sector: 8,
+        amount: 9,
+        forces: 3,
+        collectionRate: 3,
+      },
+    }
+
+[12:09:48 PM] EVENT
+  harkonnen collects 8 spice from rock_outcroppings sector 10 (4 forces × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: harkonnen,
+        territory: rock_outcroppings,
+        sector: 10,
+        amount: 8,
+        forces: 4,
+        collectionRate: 2,
+      },
+    }
+
+[12:09:48 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 29,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 28,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: hagga_basin,
+          sector: 8,
+          amount: 6,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 10,
+          amount: 4,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:09:48 PM] INFO
+  Final Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: hagga_basin,
+          sector: 8,
+          amount: 6,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 10,
+          amount: 4,
+        },
+      ],
+    }
+
+[12:09:48 PM] INFO
+  Final Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: atreides,
+          initialSpice: 20,
+          finalSpice: 29,
+          delta: 9,
+          spice: 29,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 16,
+              regular: 5,
+              elite: 0,
+              total: 5,
+            },
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+          ],
+        },
+        {
+          faction: harkonnen,
+          initialSpice: 20,
+          finalSpice: 28,
+          delta: 8,
+          spice: 28,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 4,
+              elite: 0,
+              total: 4,
+            },
+          ],
+        },
+      ],
+    }
+
+[12:09:48 PM] INFO
+  Phase completed successfully
+
+[12:09:48 PM] INFO
+  Total collection events: 2
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 2
+Completed: Yes
+
+Events:
+  1. [SPICE_COLLECTED] atreides collects 9 spice from hagga_basin sector 8 (3 forces × 3 spice/force)
+  2. [SPICE_COLLECTED] harkonnen collects 8 spice from rock_outcroppings sector 10 (4 forces × 2 spice/force)
+
+Final State:
+  Turn: 1
+  Phase: spice_collection
+  Factions: atreides, harkonnen
+
+  atreides:
+    Spice: 29
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 28
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+
+================================================================================
+END OF LOG
+================================================================================

@@ -1,0 +1,710 @@
+================================================================================
+PHASE TEST LOG: Weather Control
+================================================================================
+Generated: 2025-11-28T10:43:50.120Z
+Steps: 1
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:43:50 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: storm,
+      factions: [
+        atreides,
+        harkonnen,
+        bene_gesserit,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 4,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 5,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 20,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 3,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        bene_gesserit,
+      ],
+    }
+
+[11:43:50 AM] INFO
+  Starting scenario: Weather Control
+
+[11:43:50 AM] INFO
+  Turn: 2, Storm Sector: 3
+
+[11:43:50 AM] INFO
+  Factions: atreides, harkonnen, bene_gesserit
+
+[11:43:50 AM] INFO
+  Player Positions:
+  Data:
+    [
+      atreides: sector 2,
+      harkonnen: sector 4,
+      bene_gesserit: sector 6,
+    ]
+
+[11:43:50 AM] INFO
+  Forces: atreides has 10 in meridian sector 4
+
+[11:43:50 AM] INFO
+  Forces: harkonnen has 8 in cielago_north sector 5
+
+[11:43:50 AM] INFO
+  Total forces on board: 18
+
+[11:43:50 AM] INFO
+  Spice on board: 0 deposits
+
+[11:43:50 AM] INFO
+  Queued 1 agent responses
+
+[11:43:50 AM] INFO
+    - atreides: DIAL_STORM with data:
+  Data:
+    {
+      dial: 5,
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:43:50 AM] REQUEST
+  harkonnen requested: DIAL_STORM
+  Data:
+    {
+      faction: harkonnen,
+      requestType: DIAL_STORM,
+      prompt: Dial a number for storm movement (1-3). The total will determine how many sectors the storm moves.,
+      context: {
+        turn: 2,
+        currentStormSector: 3,
+        maxDial: 3,
+        isFirstTurn: false,
+        stormStartSector: null,
+      },
+      availableActions: [
+        DIAL_STORM,
+      ],
+    }
+
+[11:43:50 AM] REQUEST
+  atreides requested: DIAL_STORM
+  Data:
+    {
+      faction: atreides,
+      requestType: DIAL_STORM,
+      prompt: Dial a number for storm movement (1-3). The total will determine how many sectors the storm moves.,
+      context: {
+        turn: 2,
+        currentStormSector: 3,
+        maxDial: 3,
+        isFirstTurn: false,
+        stormStartSector: null,
+      },
+      availableActions: [
+        DIAL_STORM,
+      ],
+    }
+
+[11:43:50 AM] EVENT
+  Storm moves 0 sectors (3 → 3)
+  Data:
+    {
+      eventType: STORM_MOVED,
+      data: {
+        from: 3,
+        to: 3,
+        movement: 0,
+        sectorsAffected: [],
+      },
+    }
+
+[11:43:50 AM] STATE
+  State snapshot: After step 1
+  Data:
+    {
+      turn: 2,
+      phase: storm,
+      factions: [
+        atreides,
+        harkonnen,
+        bene_gesserit,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 4,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 5,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 20,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 3,
+      stormOrder: [
+        harkonnen,
+        bene_gesserit,
+        atreides,
+      ],
+    }
+
+[11:43:50 AM] INFO
+  Storm Sector: 3
+
+[11:43:50 AM] INFO
+  Storm Order: harkonnen → bene_gesserit → atreides
+
+[11:43:50 AM] INFO
+    atreides: 10 forces in meridian sector 4
+
+[11:43:50 AM] INFO
+    harkonnen: 8 forces in cielago_north sector 5
+
+[11:43:50 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: storm,
+      factions: [
+        atreides,
+        harkonnen,
+        bene_gesserit,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: meridian,
+              sector: 4,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: cielago_north,
+              sector: 5,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 20,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 3,
+      stormOrder: [
+        harkonnen,
+        bene_gesserit,
+        atreides,
+      ],
+    }
+
+[11:43:50 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 1
+Total Events: 1
+Completed: Yes
+
+Events:
+  1. [STORM_MOVED] Storm moves 0 sectors (3 → 3)
+
+Final State:
+  Turn: 2
+  Phase: storm
+  Factions: atreides, harkonnen, bene_gesserit
+
+  atreides:
+    Spice: 30
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  harkonnen:
+    Spice: 35
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  bene_gesserit:
+    Spice: 20
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

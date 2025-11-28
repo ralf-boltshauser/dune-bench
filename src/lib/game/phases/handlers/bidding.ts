@@ -498,8 +498,10 @@ export class BiddingPhaseHandler implements PhaseHandler {
     }
 
     // Rule 1.04.06.03: "Players may not bid more spice than they have."
+    // Exception: Karama card allows bidding over spice limit (Rule 3.01.11)
     // Rule 1.10.02.04: Allies can help pay (but we'll handle that separately)
-    if (bidAmount > factionState.spice) {
+    const karamaBiddingActive = (factionState as any).karamaBiddingActive === true;
+    if (bidAmount > factionState.spice && !karamaBiddingActive) {
       // Can't afford, treat as pass
       this.context.passedFactions.add(faction);
       newEvents.push({
@@ -539,25 +541,63 @@ export class BiddingPhaseHandler implements PhaseHandler {
       // Winner pays for and receives the card
       const winner = this.context.highBidder;
       const amount = this.context.currentBid;
+      let winnerState = getFactionState(newState, winner);
+      const karamaBiddingActive = (winnerState as any).karamaBiddingActive === true;
 
-      // Remove spice from winner
-      newState = removeSpice(newState, winner, amount);
+      // Karama card can be used to buy without paying (Rule 3.01.11)
+      // The tool description says: "This can also be used to buy a card without paying spice for it"
+      // The Karama tool sets karamaBiddingActive flag, which allows:
+      // 1. Bidding over spice limit (but still pay if you win)
+      // 2. Buying without paying (if you choose to use it that way)
+      // For now, we'll check: if they bid over their limit, they used it to bid over limit (still pay)
+      // If they bid within their limit AND have the flag, they might have used it to buy without paying
+      // But the tool description says "If you win the bid, you must still pay" for over-bidding case
+      // So we need a separate indicator for "buy without paying" - for now, assume if they have
+      // enough spice, they're using it to buy without paying (they could have paid normally)
+      const hasEnoughSpice = amount <= winnerState.spice;
+      // If they have Karama active and bid within their means, assume they used it to buy without paying
+      // This is a simplification - in real game, the player would indicate their intent
+      const usedKaramaToBuyWithoutPaying = karamaBiddingActive && hasEnoughSpice;
 
-      // Pay Emperor if in game, otherwise to bank (Rule 2.03.04)
-      if (newState.factions.has(Faction.EMPEROR) && winner !== Faction.EMPEROR) {
-        newState = addSpice(newState, Faction.EMPEROR, amount);
+      if (!usedKaramaToBuyWithoutPaying) {
+        // Normal payment: Remove spice from winner
+        newState = removeSpice(newState, winner, amount);
+
+        // Pay Emperor if in game, otherwise to bank (Rule 2.03.04)
+        if (newState.factions.has(Faction.EMPEROR) && winner !== Faction.EMPEROR) {
+          newState = addSpice(newState, Faction.EMPEROR, amount);
+        }
+      } else {
+        // Karama used to buy without paying - no payment made
+        // Note: Emperor does NOT receive payment when Karama is used this way
+        events.push({
+          type: 'KARAMA_BUY_WITHOUT_PAYING',
+          data: { faction: winner, amount },
+          message: `${FACTION_NAMES[winner]} uses Karama to buy card without paying spice`,
+        });
+      }
+
+      // Clear Karama flag after use
+      if (karamaBiddingActive) {
+        const newFactions = new Map(newState.factions);
+        const updatedWinnerState = { ...winnerState };
+        (updatedWinnerState as any).karamaBiddingActive = false;
+        newFactions.set(winner, updatedWinnerState);
+        newState = { ...newState, factions: newFactions };
+        // Update winnerState reference after clearing flag
+        winnerState = getFactionState(newState, winner);
       }
 
       // Give the specific auction card to winner (not draw from deck!)
       const newFactions = new Map(newState.factions);
-      const winnerState = { ...newFactions.get(winner)! };
+      const currentWinnerState = { ...newFactions.get(winner)! };
       const wonCard: TreacheryCard = {
         ...auctionCard,
         location: CardLocation.HAND,
         ownerId: winner,
       };
-      winnerState.hand = [...winnerState.hand, wonCard];
-      newFactions.set(winner, winnerState);
+      currentWinnerState.hand = [...currentWinnerState.hand, wonCard];
+      newFactions.set(winner, currentWinnerState);
       newState = { ...newState, factions: newFactions };
 
       events.push({

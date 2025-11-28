@@ -70,6 +70,7 @@ export enum BattleSubPhase {
   REVEALING_PLANS = 'revealing_plans',
   TRAITOR_CALL = 'traitor_call',
   BATTLE_RESOLUTION = 'battle_resolution',
+  WINNER_CARD_DISCARD_CHOICE = 'winner_card_discard_choice',
   HARKONNEN_CAPTURE = 'harkonnen_capture',
 }
 

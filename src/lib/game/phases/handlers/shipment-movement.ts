@@ -42,6 +42,7 @@ import {
   getForceCountInTerritory,
   getFactionsInTerritory,
   sendForcesToTanks,
+  sendForcesToReserves,
 } from '../../state';
 import { GAME_CONSTANTS } from '../../data';
 import { checkOrnithopterAccess, getMovementRange, validateShipment, validateMovement } from '../../rules';
@@ -679,31 +680,125 @@ export class ShipmentMovementPhaseHandler implements PhaseHandler {
   ): { state: GameState; events: PhaseEvent[] } {
     const newEvents: PhaseEvent[] = [];
     const faction = response.factionId;
+    const actionType = response.actionType;
 
-    // Tool returns: { territoryId, sector, count, cost, ... }
-    const territoryId = response.data.territoryId as TerritoryId | undefined;
-    const sector = response.data.sector as number | undefined;
-    const count = response.data.count as number | undefined;
-    const cost = response.data.cost as number | undefined;
+    let newState = state;
 
-    if (!territoryId || count === undefined) {
-      return { state, events: newEvents };
+    // Handle different shipment types
+    if (actionType === 'GUILD_CROSS_SHIP') {
+      // Guild cross-ship: Move forces between territories (Rule 2.06.05.01)
+      const fromTerritoryId = response.data.fromTerritoryId as TerritoryId | undefined;
+      const fromSector = response.data.fromSector as number | undefined;
+      const toTerritoryId = response.data.toTerritoryId as TerritoryId | undefined;
+      const toSector = response.data.toSector as number | undefined;
+      const count = response.data.count as number | undefined;
+      const useElite = response.data.useElite as boolean | undefined;
+      const cost = response.data.cost as number | undefined;
+
+      if (fromTerritoryId && toTerritoryId && count !== undefined && fromSector !== undefined && toSector !== undefined) {
+        newState = moveForces(
+          state,
+          faction,
+          fromTerritoryId,
+          fromSector,
+          toTerritoryId,
+          toSector,
+          count,
+          useElite ?? false
+        );
+
+        // Handle spice cost
+        if (cost !== undefined && cost > 0) {
+          newState = removeSpice(newState, faction, cost);
+        }
+
+        console.log(`   ✅ Cross-shipped ${count} forces from ${fromTerritoryId} to ${toTerritoryId} for ${cost ?? 0} spice\n`);
+
+        newEvents.push({
+          type: 'FORCES_SHIPPED',
+          data: { faction, from: fromTerritoryId, to: toTerritoryId, count, cost },
+          message: `${FACTION_NAMES[faction]} cross-ships ${count} forces from ${fromTerritoryId} to ${toTerritoryId} for ${cost ?? 0} spice`,
+        });
+      }
+    } else if (actionType === 'GUILD_SHIP_OFF_PLANET') {
+      // Guild off-planet: Ship forces from board back to reserves (Rule 2.06.05.02)
+      const fromTerritoryId = response.data.fromTerritoryId as TerritoryId | undefined;
+      const fromSector = response.data.fromSector as number | undefined;
+      const count = response.data.count as number | undefined;
+      const useElite = response.data.useElite as boolean | undefined;
+      const cost = response.data.cost as number | undefined;
+
+      if (fromTerritoryId && count !== undefined && fromSector !== undefined) {
+        newState = sendForcesToReserves(
+          state,
+          faction,
+          fromTerritoryId,
+          fromSector,
+          count,
+          useElite ?? false
+        );
+
+        // Handle spice cost
+        if (cost !== undefined && cost > 0) {
+          newState = removeSpice(newState, faction, cost);
+        }
+
+        console.log(`   ✅ Shipped ${count} forces off-planet from ${fromTerritoryId} for ${cost ?? 0} spice\n`);
+
+        newEvents.push({
+          type: 'FORCES_SHIPPED',
+          data: { faction, from: fromTerritoryId, count, cost },
+          message: `${FACTION_NAMES[faction]} ships ${count} forces off-planet from ${fromTerritoryId} for ${cost ?? 0} spice`,
+        });
+      }
+    } else {
+      // Normal shipment or Fremen shipment: Ship from reserves to board
+      const territoryId = response.data.territoryId as TerritoryId | undefined;
+      const sector = response.data.sector as number | undefined;
+      const count = response.data.count as number | undefined;
+      const cost = response.data.cost as number | undefined;
+      const useElite = response.data.useElite as boolean | undefined;
+
+      if (territoryId && count !== undefined && sector !== undefined) {
+        // Actually mutate state - call the state mutation function
+        // This is needed because in tests, tools aren't called, so state isn't updated
+        newState = shipForces(
+          state,
+          faction,
+          territoryId,
+          sector,
+          count,
+          useElite ?? false
+        );
+
+        // Handle spice cost (if any)
+        if (cost !== undefined && cost > 0) {
+          // Check if Guild is in game - they receive payment
+          const hasGuild = newState.factions.has(Faction.SPACING_GUILD);
+          if (hasGuild && faction !== Faction.SPACING_GUILD) {
+            // Guild receives payment (Rule 2.06.04)
+            newState = removeSpice(newState, faction, cost);
+            newState = addSpice(newState, Faction.SPACING_GUILD, cost);
+          } else {
+            // Spice goes to bank
+            newState = removeSpice(newState, faction, cost);
+          }
+        }
+
+        console.log(`   ✅ Shipped ${count} forces to ${territoryId} (sector ${sector}) for ${cost ?? 0} spice\n`);
+
+        newEvents.push({
+          type: 'FORCES_SHIPPED',
+          data: { faction, territory: territoryId, sector, count, cost },
+          message: `${FACTION_NAMES[faction]} ships ${count} forces to ${territoryId} (sector ${sector}) for ${cost ?? 0} spice`,
+        });
+      }
     }
 
-    console.log(`   ✅ Shipped ${count} forces to ${territoryId} (sector ${sector ?? 0}) for ${cost ?? 0} spice\n`);
-
-    newEvents.push({
-      type: 'FORCES_SHIPPED',
-      data: { faction, territory: territoryId, sector, count, cost },
-      message: `${FACTION_NAMES[faction]} ships ${count} forces to ${territoryId} (sector ${sector ?? 0}) for ${cost ?? 0} spice`,
-    });
-
-    const newState = logAction(state, 'FORCES_SHIPPED', faction, {
-      territory: territoryId,
-      sector,
-      count,
-      cost,
-    });
+    // Log action for all shipment types
+    if (newState !== state) {
+      newState = logAction(newState, 'FORCES_SHIPPED', faction, response.data);
+    }
 
     return { state: newState, events: newEvents };
   }
@@ -716,35 +811,95 @@ export class ShipmentMovementPhaseHandler implements PhaseHandler {
     const newEvents: PhaseEvent[] = [];
     const faction = response.factionId;
 
-    // Tool returns: { from: { territory, sector }, to: { territory, sector }, count }
-    const fromData = response.data.from as { territory?: string; sector?: number } | undefined;
-    const toData = response.data.to as { territory?: string; sector?: number } | undefined;
-    const count = response.data.count as number | undefined;
+    // Tool returns: { fromTerritoryId, fromSector, toTerritoryId, toSector, count, useElite }
+    // OR legacy format: { from: { territory, sector }, to: { territory, sector }, count }
+    let fromTerritoryId: TerritoryId | undefined;
+    let fromSector: number | undefined;
+    let toTerritoryId: TerritoryId | undefined;
+    let toSector: number | undefined;
+    let count: number | undefined;
+    let useElite: boolean | undefined;
 
-    if (!fromData?.territory || !toData?.territory || count === undefined) {
+    // Check for new format first
+    if (response.data.fromTerritoryId && response.data.toTerritoryId) {
+      fromTerritoryId = response.data.fromTerritoryId as TerritoryId;
+      fromSector = response.data.fromSector as number | undefined;
+      toTerritoryId = response.data.toTerritoryId as TerritoryId;
+      toSector = response.data.toSector as number | undefined;
+      count = response.data.count as number | undefined;
+      useElite = response.data.useElite as boolean | undefined;
+    } else {
+      // Legacy format
+      const fromData = response.data.from as { territory?: string; sector?: number } | undefined;
+      const toData = response.data.to as { territory?: string; sector?: number } | undefined;
+      count = response.data.count as number | undefined;
+
+      if (fromData?.territory && toData?.territory) {
+        fromTerritoryId = fromData.territory as TerritoryId;
+        fromSector = fromData.sector;
+        toTerritoryId = toData.territory as TerritoryId;
+        toSector = toData.sector;
+      }
+    }
+
+    if (!fromTerritoryId || !toTerritoryId || count === undefined || fromSector === undefined || toSector === undefined) {
       return { state, events: newEvents };
     }
 
-    console.log(`   ✅ Moved ${count} forces from ${fromData.territory} to ${toData.territory}\n`);
+    // Validate movement before executing (since tools aren't called in tests)
+    // Use ornithopter access override if available (from phase start)
+    const hasOrnithoptersOverride = this.ornithopterAccessAtPhaseStart.has(faction);
+    const validation = validateMovement(
+      state,
+      faction,
+      fromTerritoryId,
+      fromSector,
+      toTerritoryId,
+      toSector,
+      count,
+      hasOrnithoptersOverride
+    );
+
+    if (!validation.valid) {
+      const error = validation.errors[0];
+      console.error(`   ❌ Movement rejected: ${error.message}\n`);
+      // Still return state (no mutation), but log the error
+      return { state, events: newEvents };
+    }
+
+    // Actually mutate state - call the state mutation function
+    // This is needed because in tests, tools aren't called, so state isn't updated
+    let newState = moveForces(
+      state,
+      faction,
+      fromTerritoryId,
+      fromSector,
+      toTerritoryId,
+      toSector,
+      count,
+      useElite ?? false
+    );
+
+    console.log(`   ✅ Moved ${count} forces from ${fromTerritoryId} to ${toTerritoryId}\n`);
 
     newEvents.push({
       type: 'FORCES_MOVED',
       data: {
         faction,
-        from: fromData.territory,
-        fromSector: fromData.sector,
-        to: toData.territory,
-        toSector: toData.sector,
+        from: fromTerritoryId,
+        fromSector,
+        to: toTerritoryId,
+        toSector,
         count,
       },
-      message: `${FACTION_NAMES[faction]} moves ${count} forces from ${fromData.territory} to ${toData.territory}`,
+      message: `${FACTION_NAMES[faction]} moves ${count} forces from ${fromTerritoryId} to ${toTerritoryId}`,
     });
 
-    const newState = logAction(state, 'FORCES_MOVED', faction, {
-      from: fromData.territory,
-      fromSector: fromData.sector,
-      to: toData.territory,
-      toSector: toData.sector,
+    newState = logAction(newState, 'FORCES_MOVED', faction, {
+      from: fromTerritoryId,
+      fromSector,
+      to: toTerritoryId,
+      toSector,
       count,
     });
 

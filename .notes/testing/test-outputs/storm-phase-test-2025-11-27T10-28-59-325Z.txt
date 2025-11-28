@@ -1,0 +1,845 @@
+================================================================================
+STORM PHASE TEST - INITIAL STORM PLACEMENT
+================================================================================
+
+Test Date: 2025-11-27T10:28:59.324Z
+Duration: 33.44 seconds
+
+Factions: Atreides, Harkonnen, Emperor, Fremen, Spacing Guild, Bene Gesserit
+Total Factions: 6
+
+================================================================================
+CONSOLE OUTPUT
+================================================================================
+
+[LOG] 
+[33m════════════════════════════════════════════════════════════[0m
+[LOG] [33m[1m  🏜️  DUNE: AI SIMULATION[0m
+[LOG] [33m════════════════════════════════════════════════════════════[0m
+[LOG] 
+[LOG] [2mFactions in game:[0m
+[LOG]   [42m[30m[1m Atreides [0m
+[LOG]   [41m[30m[1m Harkonnen [0m
+[LOG]   [43m[30m[1m Emperor [0m
+[LOG]   [44m[30m[1m Fremen [0m
+[LOG]   [46m[30m[1m Spacing Guild [0m
+[LOG]   [45m[30m[1m Bene Gesserit [0m
+[LOG] 
+[LOG] 
+[LOG] [36m[1m  ▶ SETUP PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] [37m    📌 Bene Gesserit must make their secret prediction[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BG_PREDICTION[0m
+[LOG] [2m    Make your secret prediction: Which faction will win, and on which turn? If correct, you win instead![0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: bg_prediction[0m
+[LOG] [2m       {
+         "faction": "fremen",
+         "turn": 1
+       }[0m
+[LOG] [95m[1m    ✓ Action: BG_PREDICTION[0m
+[LOG] [2m      ⏱️  10397ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Prediction Made: Fremen wins on Turn 1**
+
+**Reasoning:**
+- In a 1-turn [0m
+[LOG] [2m       game, the Fremen have the advantage of controlling their home stronghold [0m
+[LOG] [2m       (Sietch Tabr) and having deep desert presence
+- With only one turn [0m
+[LOG] [2m       available, quick consolidation of stronghold control is essential
+- The [0m
+[LOG] [2m       Fremen's desert mobility and starting position make them strong [0m
+[LOG] [2m       contenders for a rapid victory
+- If my prediction is correct, I win the [0m
+[LOG] [2m       game instead of the Fremen! [0m
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Harkonnen (Auto-keeps all 4)
+[LOG] ================================================================================
+[LOG] 
+📋 Harkonnen automatically keeps all 4 traitors:
+
+[LOG]   1. Paul Atreides
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 5
+[LOG]      ID: paul_atreides
+[LOG] 
+[LOG]   2. Captain Iakin Nefud
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 2
+[LOG]      ID: captain_iakin_nefud
+[LOG] 
+[LOG]   3. Princess Irulan
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: princess_irulan
+[LOG] 
+[LOG]   4. Count Hasimir Fenring
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 6
+[LOG]      ID: hasimir_fenring
+[LOG] 
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Harkonnen
+[LOG] ================================================================================
+[LOG] 
+  Selected: Paul Atreides
+[LOG]     Faction: Atreides (atreides)
+[LOG]     Strength: 5
+[LOG]     ID: paul_atreides
+[LOG] 
+  Selected: Captain Iakin Nefud
+[LOG]     Faction: Harkonnen (harkonnen)
+[LOG]     Strength: 2
+[LOG]     ID: captain_iakin_nefud
+[LOG] 
+  Selected: Princess Irulan
+[LOG]     Faction: Bene Gesserit (bene_gesserit)
+[LOG]     Strength: 5
+[LOG]     ID: princess_irulan
+[LOG] 
+  Selected: Count Hasimir Fenring
+[LOG]     Faction: Emperor (emperor)
+[LOG]     Strength: 6
+[LOG]     ID: hasimir_fenring
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Atreides
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Master Bewt
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 3
+[LOG]      ID: master_bewt
+[LOG] 
+[LOG]   2. Duncan Idaho
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 2
+[LOG]      ID: duncan_idaho
+[LOG] 
+[LOG]   3. Bashar
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 2
+[LOG]      ID: bashar
+[LOG] 
+[LOG]   4. Piter de Vries
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 3
+[LOG]      ID: piter_de_vries
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Emperor
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Feyd-Rautha
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 6
+[LOG]      ID: feyd_rautha
+[LOG] 
+[LOG]   2. Captain Aramsham
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 5
+[LOG]      ID: captain_aramsham
+[LOG] 
+[LOG]   3. Caid
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 3
+[LOG]      ID: caid
+[LOG] 
+[LOG]   4. Jamis
+[LOG]      Faction: Fremen (fremen)
+[LOG]      Strength: 2
+[LOG]      ID: jamis
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Fremen
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Thufir Hawat
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 5
+[LOG]      ID: thufir_hawat
+[LOG] 
+[LOG]   2. Guild Representative
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 1
+[LOG]      ID: guild_rep
+[LOG] 
+[LOG]   3. Chani
+[LOG]      Faction: Fremen (fremen)
+[LOG]      Strength: 6
+[LOG]      ID: chani
+[LOG] 
+[LOG]   4. Staban Tuek
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 5
+[LOG]      ID: staban_tuek
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Spacing Guild
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Dr. Yueh
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 1
+[LOG]      ID: dr_yueh
+[LOG] 
+[LOG]   2. Beast Rabban
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 4
+[LOG]      ID: beast_rabban
+[LOG] 
+[LOG]   3. Esmar Tuek
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 3
+[LOG]      ID: esmar_tuek
+[LOG] 
+[LOG]   4. Gurney Halleck
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 4
+[LOG]      ID: gurney_halleck
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Bene Gesserit
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Soo-Soo Sook
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 2
+[LOG]      ID: soo_soo_sook
+[LOG] 
+[LOG]   2. Lady Margot Fenring
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: margot_fenring
+[LOG] 
+[LOG]   3. Reverend Mother Mohiam
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: reverend_mother
+[LOG] 
+[LOG]   4. Shadout Mapes
+[LOG]      Faction: Fremen (fremen)
+[LOG]      Strength: 3
+[LOG]      ID: shadout_mapes
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] [37m    🔮 Bene Gesserit has made their secret prediction[0m
+[LOG] [37m    📌 Traitor selection beginning[0m
+[LOG] [37m    🗡️ harkonnen has selected 4 traitors[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] [93m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "feyd_rautha"
+       }[0m
+[LOG] [93m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  5227ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! I've selected **Feyd-Rautha as my traitor**. This is a strong [0m
+[LOG] [2m       strategic choice because:
+- He's worth 6 strength - a high-value leader
+- [0m
+[LOG] [2m       The Harkonnen are a major rival faction
+- If they use him in battle [0m
+[LOG] [2m       against me, I can instantly win that battle and eliminate their strongest [0m
+[LOG] [2m       leader
+- This gives me a significant psychological advantage and tactical [0m
+[LOG] [2m       trump card [0m
+[LOG] [95m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "shadout_mapes"
+       }[0m
+[LOG] [95m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6161ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Selection Made: Shadout Mapes (Fremen, Strength 3)**
+
+This is the [0m
+[LOG] [2m       optimal choice because:
+- It's the only viable option (can't betray my [0m
+[LOG] [2m       own faction)
+- Fremen are a strong faction that will likely use their [0m
+[LOG] [2m       leaders in key battles
+- A strength-3 leader is meaningful enough to be [0m
+[LOG] [2m       worth calling as a traitor
+- This gives me a powerful defensive tool for [0m
+[LOG] [2m       critical battles throughout the game [0m
+[LOG] [92m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "piter_de_vries"
+       }[0m
+[LOG] [92m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6280ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Excellent! I've successfully selected **Piter de Vries** (Harkonnen, [0m
+[LOG] [2m       Strength 3) as my traitor. This is a strong choice because:
+- It's a [0m
+[LOG] [2m       high-strength leader from an enemy faction
+- Harkonnen is likely to be a [0m
+[LOG] [2m       major rival throughout the game
+- If Piter is used against me in battle, [0m
+[LOG] [2m       I can call "Traitor!" to automatically win that battle and eliminate [0m
+[LOG] [2m       their leader
+- This gives me a significant tactical advantage in key [0m
+[LOG] [2m       engagements [0m
+[LOG] [94m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "thufir_hawat"
+       }[0m
+[LOG] [94m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6324ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Done!** I've selected **Thufir Hawat** as my traitor. If the Atreides [0m
+[LOG] [2m       player uses him in battle against me, I can call "Traitor!" to [0m
+[LOG] [2m       automatically win that battle and eliminate their leader. This is a [0m
+[LOG] [2m       strong strategic choice against a major opponent. [0m
+[LOG] [96m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "beast_rabban"
+       }[0m
+[LOG] [96m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6419ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision Made: Beast Rabban (Harkonnen, Strength 4)**
+
+This is a strong [0m
+[LOG] [2m       strategic choice because:
+- Beast Rabban is a high-strength leader (4) [0m
+[LOG] [2m       that the Harkonnen will likely deploy in important battles
+- Holding this [0m
+[LOG] [2m       traitor gives me a powerful "auto-win" tool if Harkonnen uses him against [0m
+[LOG] [2m       me
+- This will make the Harkonnen think twice about committing Beast [0m
+[LOG] [2m       Rabban to battles, giving me a psychological advantage
+- The Harkonnen [0m
+[LOG] [2m       are typically a major player in Dune, making this traitor valuable [0m
+[LOG] [2m       throughout the game [0m
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Atreides
+[LOG] ================================================================================
+[LOG] 
+  Selected: Piter de Vries
+[LOG]     Faction: Harkonnen (harkonnen)
+[LOG]     Strength: 3
+[LOG]     ID: piter_de_vries
+[LOG] 
+  Not Selected:
+[LOG]     - Master Bewt (Spacing Guild, Strength: 3)
+[LOG]     - Duncan Idaho (Atreides, Strength: 2)
+[LOG]     - Bashar (Emperor, Strength: 2)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Emperor
+[LOG] ================================================================================
+[LOG] 
+  Selected: Feyd-Rautha
+[LOG]     Faction: Harkonnen (harkonnen)
+[LOG]     Strength: 6
+[LOG]     ID: feyd_rautha
+[LOG] 
+  Not Selected:
+[LOG]     - Captain Aramsham (Emperor, Strength: 5)
+[LOG]     - Caid (Emperor, Strength: 3)
+[LOG]     - Jamis (Fremen, Strength: 2)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Fremen
+[LOG] ================================================================================
+[LOG] 
+  Selected: Thufir Hawat
+[LOG]     Faction: Atreides (atreides)
+[LOG]     Strength: 5
+[LOG]     ID: thufir_hawat
+[LOG] 
+  Not Selected:
+[LOG]     - Guild Representative (Spacing Guild, Strength: 1)
+[LOG]     - Chani (Fremen, Strength: 6)
+[LOG]     - Staban Tuek (Spacing Guild, Strength: 5)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Spacing Guild
+[LOG] ================================================================================
+[LOG] 
+  Selected: Beast Rabban
+[LOG]     Faction: Harkonnen (harkonnen)
+[LOG]     Strength: 4
+[LOG]     ID: beast_rabban
+[LOG] 
+  Not Selected:
+[LOG]     - Dr. Yueh (Atreides, Strength: 1)
+[LOG]     - Esmar Tuek (Spacing Guild, Strength: 3)
+[LOG]     - Gurney Halleck (Atreides, Strength: 4)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Bene Gesserit
+[LOG] ================================================================================
+[LOG] 
+  Selected: Shadout Mapes
+[LOG]     Faction: Fremen (fremen)
+[LOG]     Strength: 3
+[LOG]     ID: shadout_mapes
+[LOG] 
+  Not Selected:
+[LOG]     - Soo-Soo Sook (Spacing Guild, Strength: 2)
+[LOG]     - Lady Margot Fenring (Bene Gesserit, Strength: 5)
+[LOG]     - Reverend Mother Mohiam (Bene Gesserit, Strength: 5)
+[LOG] ================================================================================
+
+[LOG] [37m    🗡️ atreides has selected 1 traitor[0m
+[LOG] [37m    🗡️ emperor has selected 1 traitor[0m
+[LOG] [37m    🗡️ fremen has selected 1 traitor[0m
+[LOG] [37m    🗡️ spacing_guild has selected 1 traitor[0m
+[LOG] [37m    🗡️ bene_gesserit has selected 1 traitor[0m
+[LOG] [37m    📌 Fremen must distribute starting forces[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DISTRIBUTE_FORCES[0m
+[LOG] [2m    FREMEN STARTING FORCE DISTRIBUTION (Rule 2.04.02)
+
+You must distribute EXACTLY 10 forces total acros...[0m
+[LOG] [94m[1m    🔧 Tool: distribute_fremen_forces[0m
+[LOG] [2m       {
+         "sietch_tabr": 6,
+         "false_wall_south": 2,
+         "false_wall_west": 2
+       }[0m
+[LOG] [94m[1m    ✓ Action: DISTRIBUTE_FREMEN_FORCES[0m
+[LOG] [2m      ⏱️  6177ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! My forces are now distributed:
+- **Sietch Tabr: 6 forces** - [0m
+[LOG] [2m       Solid stronghold defense
+- **False Wall South: 2 forces** - Defensive [0m
+[LOG] [2m       position
+- **False Wall West: 2 forces** - Defensive position
+
+This setup [0m
+[LOG] [2m       gives me:
+1. A well-defended stronghold (essential for victory)
+2. [0m
+[LOG] [2m       Presence in surrounding territories to control spice and defend against [0m
+[LOG] [2m       early aggression
+3. Flexibility to move forces across the desert using my [0m
+[LOG] [2m       faction's superior mobility
+
+The game is now ready to begin! 🏜️ [0m
+[LOG] 
+[Fremen Force Distribution] Agent submitted:
+[LOG]   Distribution: {
+  "sietch_tabr": 6,
+  "false_wall_south": 2,
+  "false_wall_west": 2,
+  "distribution": {
+    "sietch_tabr": 6,
+    "false_wall_south": 2,
+    "false_wall_west": 2
+  }
+}
+[LOG]   Validated totals by territory:
+[LOG]     sietch_tabr: 6
+[LOG]     false_wall_south: 2
+[LOG]     false_wall_west: 2
+[LOG]   Total: 10 (required: 10)
+[LOG]   WARNING: Invalid territory keys ignored: distribution
+[LOG]   VALID: Distribution accepted.
+[LOG] 
+================================================================================
+[LOG] 📍 PLAYER TOKEN POSITIONS
+[LOG] ================================================================================
+[LOG] 
+Player tokens placed around board edge (18 sectors):
+
+[LOG]   Atreides: Sector 0
+[LOG]   Harkonnen: Sector 3
+[LOG]   Emperor: Sector 6
+[LOG]   Fremen: Sector 9
+[LOG]   Spacing Guild: Sector 12
+[LOG]   Bene Gesserit: Sector 15
+[LOG] 
+💡 Storm order will be determined by which player token the storm next approaches counterclockwise.
+[LOG]    If storm is ON a player token, the NEXT player (counterclockwise) is first.
+
+[LOG] ================================================================================
+
+[LOG] [37m    📌 Fremen distributed 10 starting forces: 6 in sietch tabr, 2 in false wall south, 2 in false wall west[0m
+[LOG] [2m  ✓ setup complete[0m
+[LOG] 
+[37m┌──────────────────────────────────────────────────────────┐[0m
+[LOG] [37m[1m│  📅 TURN 1 / 1                                            │[0m
+[LOG] [37m└──────────────────────────────────────────────────────────┘[0m
+[LOG] 
+[LOG] [36m[1m  ▶ STORM PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 🌪️  INITIAL STORM PLACEMENT (Turn 1)
+[LOG] ================================================================================
+[LOG] 
+📍 Storm Start Sector: 0
+[LOG] 
+📊 Player Positions (relative to Storm Start Sector 0):
+[LOG]   Atreides: Sector 0 ⚠️  (AT Storm Start - not a dialer)
+[LOG]   Harkonnen: Sector 3 (3 sectors after storm start)
+[LOG]   Emperor: Sector 6 (6 sectors after storm start)
+[LOG]   Fremen: Sector 9 (9 sectors before storm start)
+[LOG]   Spacing Guild: Sector 12 (6 sectors before storm start)
+[LOG]   Bene Gesserit: Sector 15 (3 sectors before storm start)
+[LOG] 
+🎯 Dialers: Harkonnen and Bene Gesserit
+[LOG]    (Two players nearest to Storm Start Sector on either side)
+[LOG] ================================================================================
+
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DIAL_STORM[0m
+[LOG] [2m    Initial Storm Placement: Dial a number from 0 to 20. The total will determine where the storm starts...[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DIAL_STORM[0m
+[LOG] [2m    Initial Storm Placement: Dial a number from 0 to 20. The total will determine where the storm starts...[0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: dial_storm[0m
+[LOG] [2m       {
+         "dial": 12
+       }[0m
+[LOG] [95m[1m    ✓ Action: DIAL_STORM[0m
+[LOG] [2m      ⏱️  10430ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Complete:** I've dialed **12** for the initial storm [0m
+[LOG] [2m       placement.
+
+**Reasoning:**
+- This is a moderate dial that won't be too [0m
+[LOG] [2m       predictable
+- Combined with the other faction's dial, it should place the [0m
+[LOG] [2m       storm in a strategic location
+- As Bene Gesserit, I'm playing the long [0m
+[LOG] [2m       game - I need to survive early turns while positioning myself to [0m
+[LOG] [2m       manipulate the board toward my predicted victory
+- My single force in [0m
+[LOG] [2m       Polar Sink is relatively safe regardless of storm placement
+- The [0m
+[LOG] [2m       moderate dial gives me flexibility for future storm dials in subsequent [0m
+[LOG] [2m       turns
+
+Now we await the other faction's dial to determine the actual [0m
+[LOG] [2m       storm position. [0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: dial_storm[0m
+[LOG] [2m       {
+         "dial": 15
+       }[0m
+[LOG] [91m[1m    ✓ Action: DIAL_STORM[0m
+[LOG] [2m      ⏱️  10433ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: Dialed 15 for initial storm placement**
+
+**Reasoning:**
+- [0m
+[LOG] [2m       By dialing 15, I'm pushing the storm to the opposite side of the board [0m
+[LOG] [2m       from my position at Carthag (sector 11)
+- This keeps my forces safe from [0m
+[LOG] [2m       immediate storm destruction
+- Even if Atreides dials low (trying to keep [0m
+[LOG] [2m       storm away from Arrakeen at sector 0), the combined total will place the [0m
+[LOG] [2m       storm in sectors 15-20, well away from my stronghold
+- This gives me [0m
+[LOG] [2m       freedom to maneuver and attack without worrying about storm interference [0m
+[LOG] [2m       in the early game
+- The storm will be positioned to potentially threaten [0m
+[LOG] [2m       other factions (Fremen, Spacing Guild) more than me, which could be [0m
+[LOG] [2m       advantageous [0m
+[LOG] 
+================================================================================
+[LOG] 🎲 STORM DIAL REVEAL
+[LOG] ================================================================================
+[LOG] 
+  Harkonnen: 15 (range: 0-20)
+[LOG] 
+  Bene Gesserit: 12 (range: 0-20)
+[LOG] 
+  📊 Total: 27 sectors
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🌪️  STORM MOVEMENT CALCULATION
+[LOG] ================================================================================
+[LOG] 
+  Starting Sector: 0 (Storm Start Sector)
+[LOG]   Movement: 27 sectors counterclockwise
+[LOG]   Ending Sector: 9
+[LOG] 
+================================================================================
+[LOG] 📋 STORM ORDER DETERMINATION
+[LOG] ================================================================================
+[LOG] 
+  Storm Position: Sector 9
+[LOG] 
+  Player Positions:
+[LOG]     Atreides: Sector 0 (distance: 9)
+[LOG]     Harkonnen: Sector 3 (distance: 12)
+[LOG]     Emperor: Sector 6 (distance: 15)
+[LOG]     Fremen: Sector 9 (distance: 0 ⚠️  (ON STORM - goes last))
+[LOG]     Spacing Guild: Sector 12 (distance: 3)
+[LOG]     Bene Gesserit: Sector 15 (distance: 6)
+[LOG] 
+  Storm Order (First → Last):
+[LOG]     1. Spacing Guild (Sector 12, distance: 3)
+[LOG]     2. Bene Gesserit (Sector 15, distance: 6)
+[LOG]     3. Atreides (Sector 0, distance: 9)
+[LOG]     4. Harkonnen (Sector 3, distance: 12)
+[LOG]     5. Emperor (Sector 6, distance: 15)
+[LOG]     6. Fremen (Sector 9, distance: 0)
+[LOG] 
+  ✅ First Player: Spacing Guild
+[LOG] ================================================================================
+
+[LOG] [37m    🌪️ Storm moves 27 sectors (0 → 9)[0m
+[LOG] [2m  ✓ storm complete[0m
+[LOG] 
+[37m┌──────────────────────────────────────────────────────────┐[0m
+[LOG] [37m[1m│  📅 TURN 2 / 1                                            │[0m
+[LOG] [37m└──────────────────────────────────────────────────────────┘[0m
+[LOG] 
+[33m════════════════════════════════════════════════════════════[0m
+[LOG] [33m[1m  🏆 GAME OVER[0m
+[LOG] [33m════════════════════════════════════════════════════════════[0m
+[LOG] 
+[LOG] [2m  No winner (max turns reached)[0m
+[LOG] 
+[LOG] [2m  Total turns: 2[0m
+[LOG] 
+
+================================================================================
+PHASE EVENTS
+================================================================================
+
+[1] PHASE_STARTED
+   Message: setup phase started
+   Data: {
+  "phase": "setup"
+}
+[2] SETUP_STEP
+   Message: Bene Gesserit must make their secret prediction
+   Data: {
+  "step": "BG_PREDICTION"
+}
+[3] BG_PREDICTION_MADE
+   Message: Bene Gesserit has made their secret prediction
+   Data: {
+  "message": "Bene Gesserit has made their secret prediction"
+}
+[4] SETUP_STEP
+   Message: Traitor selection beginning
+   Data: {
+  "step": "TRAITOR_SELECTION"
+}
+[5] TRAITOR_SELECTED
+   Message: harkonnen has selected 4 traitors
+   Data: {
+  "faction": "harkonnen",
+  "count": 4
+}
+[6] TRAITOR_SELECTED
+   Message: atreides has selected 1 traitor
+   Data: {
+  "faction": "atreides",
+  "count": 1
+}
+[7] TRAITOR_SELECTED
+   Message: emperor has selected 1 traitor
+   Data: {
+  "faction": "emperor",
+  "count": 1
+}
+[8] TRAITOR_SELECTED
+   Message: fremen has selected 1 traitor
+   Data: {
+  "faction": "fremen",
+  "count": 1
+}
+[9] TRAITOR_SELECTED
+   Message: spacing_guild has selected 1 traitor
+   Data: {
+  "faction": "spacing_guild",
+  "count": 1
+}
+[10] TRAITOR_SELECTED
+   Message: bene_gesserit has selected 1 traitor
+   Data: {
+  "faction": "bene_gesserit",
+  "count": 1
+}
+[11] SETUP_STEP
+   Message: Fremen must distribute starting forces
+   Data: {
+  "step": "FREMEN_FORCE_DISTRIBUTION"
+}
+[12] FORCES_PLACED
+   Message: Fremen distributed 10 starting forces: 6 in sietch tabr, 2 in false wall south, 2 in false wall west
+   Data: {
+  "faction": "fremen",
+  "distribution": {
+    "sietch_tabr": 6,
+    "false_wall_south": 2,
+    "false_wall_west": 2
+  }
+}
+[13] PHASE_ENDED
+   Message: setup phase ended
+   Data: {
+  "phase": "setup"
+}
+[14] TURN_STARTED
+   Message: Turn 1 started
+   Data: {
+  "turn": 1
+}
+[15] PHASE_STARTED
+   Message: storm phase started
+   Data: {
+  "phase": "storm"
+}
+[16] STORM_MOVED
+   Message: Storm moves 27 sectors (0 → 9)
+   Data: {
+  "from": 0,
+  "to": 9,
+  "movement": 27,
+  "sectorsAffected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ]
+}
+[17] PHASE_ENDED
+   Message: storm phase ended
+   Data: {
+  "phase": "storm"
+}
+[18] TURN_STARTED
+   Message: Turn 2 started
+   Data: {
+  "turn": 2
+}
+[19] GAME_ENDED
+   Message: Game ended after 2 turns
+   Data: {
+  "winner": null,
+  "turn": 2,
+  "stoppedEarly": false
+}
+
+================================================================================
+GAME STATE SUMMARY
+================================================================================
+
+Turn: 2
+Phase: storm
+Storm Sector: 9
+Storm Order: Spacing Guild → Bene Gesserit → Atreides → Harkonnen → Emperor → Fremen
+
+Player Positions:
+  Atreides: Sector 0
+  Harkonnen: Sector 3
+  Emperor: Sector 6
+  Fremen: Sector 9
+  Spacing Guild: Sector 12
+  Bene Gesserit: Sector 15
+
+================================================================================
+VALIDATION
+================================================================================
+
+✅ Storm moved: Yes
+✅ Storm order determined: Yes
+✅ First player: Spacing Guild
+
+================================================================================
+END OF TEST
+================================================================================

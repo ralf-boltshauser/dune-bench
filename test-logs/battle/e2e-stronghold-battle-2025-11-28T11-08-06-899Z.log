@@ -1,0 +1,678 @@
+================================================================================
+PHASE TEST LOG: E2E Stronghold Battle
+================================================================================
+Generated: 2025-11-28T11:08:06.903Z
+Steps: 18
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: battle,
+      factions: [
+        atreides,
+        bene_gesserit,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 20,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 8,
+              elite: 0,
+              advisors: 0,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: arrakeen,
+          sector: 9,
+          amount: 20,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        bene_gesserit,
+      ],
+    }
+
+[12:08:06 PM] INFO
+  Starting E2E battle phase test
+
+[12:08:06 PM] EVENT
+  battle phase started
+  Data:
+    {
+      eventType: PHASE_STARTED,
+      data: {
+        phase: battle,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  1 potential battles identified
+  Data:
+    {
+      eventType: BATTLE_STARTED,
+      data: {
+        totalBattles: 1,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  Battle: atreides attacks bene_gesserit in arrakeen
+  Data:
+    {
+      eventType: BATTLE_STARTED,
+      data: {
+        territory: arrakeen,
+        sector: 9,
+        aggressor: atreides,
+        defender: bene_gesserit,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  Bene Gesserit uses Voice: [object Object]
+  Data:
+    {
+      eventType: VOICE_USED,
+      data: {
+        command: {
+          type: not_play,
+          cardType: poison_weapon,
+        },
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  Atreides uses prescience to see bene_gesserit's weapon
+  Data:
+    {
+      eventType: PRESCIENCE_USED,
+      data: {
+        target: weapon,
+        opponent: bene_gesserit,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 5
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  Atreides sees opponent's weapon: not playing weapon (Atreides cannot ask about a different element per the rules)
+  Data:
+    {
+      eventType: PRESCIENCE_USED,
+      data: {
+        target: weapon,
+        revealed: null,
+        opponent: bene_gesserit,
+        cannotAskDifferent: true,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 6
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  atreides submits battle plan
+  Data:
+    {
+      eventType: BATTLE_PLAN_SUBMITTED,
+      data: {
+        faction: atreides,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 7
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  bene_gesserit submits battle plan
+  Data:
+    {
+      eventType: BATTLE_PLAN_SUBMITTED,
+      data: {
+        faction: bene_gesserit,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 8
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  Battle plans revealed!
+  Data:
+    {
+      eventType: BATTLE_PLAN_SUBMITTED,
+      data: {
+        aggressor: atreides,
+        aggressorPlan: {
+          factionId: atreides,
+          leaderId: [redacted],
+          forcesDialed: [redacted],
+          weaponCardId: null,
+          defenseCardId: [redacted],
+          announcedNoLeader: false,
+        },
+        defender: bene_gesserit,
+        defenderPlan: {
+          factionId: bene_gesserit,
+          leaderId: [redacted],
+          forcesDialed: [redacted],
+          weaponCardId: null,
+          defenseCardId: [redacted],
+          announcedNoLeader: false,
+        },
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 9
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  atreides complies with Voice command
+  Data:
+    {
+      eventType: VOICE_COMPLIED,
+      data: {
+        faction: atreides,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 10
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  atreides wins the battle (10 vs 9)
+  Data:
+    {
+      eventType: BATTLE_RESOLVED,
+      data: {
+        winner: atreides,
+        loser: bene_gesserit,
+        winnerTotal: 10,
+        loserTotal: 9,
+        traitorRevealed: false,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 11
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  atreides loses 5 regular + 0 elite forces (5 losses)
+  Data:
+    {
+      eventType: BATTLE_RESOLVED,
+      data: {
+        faction: atreides,
+        lossesDialed: 5,
+        regularLost: 5,
+        eliteLost: 0,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 12
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  atreides pays 5 spice to bank for spice dialing
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: atreides,
+        amount: -5,
+        reason: Spice dialing payment to bank,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 13
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  bene_gesserit pays 4 spice to bank for spice dialing
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: bene_gesserit,
+        amount: -4,
+        reason: Spice dialing payment to bank,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 14
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  atreides chooses to keep all cards
+  Data:
+    {
+      eventType: CARD_DISCARD_CHOICE,
+      data: {
+        faction: atreides,
+        cardsDiscarded: [],
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 15
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  bene_gesserit discards Shield
+  Data:
+    {
+      eventType: CARD_DISCARDED,
+      data: {
+        faction: bene_gesserit,
+        cardId: shield_2,
+        cardName: Shield,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 16
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  All battles resolved
+  Data:
+    {
+      eventType: BATTLES_COMPLETE,
+      data: {
+        phase: battle,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 17
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] EVENT
+  battle phase ended
+  Data:
+    {
+      eventType: PHASE_ENDED,
+      data: {
+        phase: battle,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 18
+────────────────────────────────────────────────────────────────────────────────
+
+[12:08:06 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: battle,
+      factions: [
+        atreides,
+        bene_gesserit,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 25,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: bene_gesserit,
+          spice: 16,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 8,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: arrakeen,
+          sector: 9,
+          amount: 20,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        bene_gesserit,
+      ],
+    }
+
+[12:08:06 PM] INFO
+  
+=== E2E Test Summary ===
+
+[12:08:06 PM] INFO
+  Atreides forces: 5
+
+[12:08:06 PM] INFO
+  Atreides spice: 25
+
+[12:08:06 PM] INFO
+  BG forces: 0
+
+[12:08:06 PM] INFO
+  BG spice: 16
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 18
+Total Events: 18
+Completed: Yes
+
+Events:
+  1. [PHASE_STARTED] battle phase started
+  2. [BATTLE_STARTED] 1 potential battles identified
+  3. [BATTLE_STARTED] Battle: atreides attacks bene_gesserit in arrakeen
+  4. [VOICE_USED] Bene Gesserit uses Voice: [object Object]
+  5. [PRESCIENCE_USED] Atreides uses prescience to see bene_gesserit's weapon
+  6. [PRESCIENCE_USED] Atreides sees opponent's weapon: not playing weapon (Atreides cannot ask about a different element per the rules)
+  7. [BATTLE_PLAN_SUBMITTED] atreides submits battle plan
+  8. [BATTLE_PLAN_SUBMITTED] bene_gesserit submits battle plan
+  9. [BATTLE_PLAN_SUBMITTED] Battle plans revealed!
+  10. [VOICE_COMPLIED] atreides complies with Voice command
+  11. [BATTLE_RESOLVED] atreides wins the battle (10 vs 9)
+  12. [BATTLE_RESOLVED] atreides loses 5 regular + 0 elite forces (5 losses)
+  13. [SPICE_COLLECTED] atreides pays 5 spice to bank for spice dialing
+  14. [SPICE_COLLECTED] bene_gesserit pays 4 spice to bank for spice dialing
+  15. [CARD_DISCARD_CHOICE] atreides chooses to keep all cards
+  16. [CARD_DISCARDED] bene_gesserit discards Shield
+  17. [BATTLES_COMPLETE] All battles resolved
+  18. [PHASE_ENDED] battle phase ended
+
+Final State:
+  Turn: 1
+  Phase: battle
+  Factions: atreides, bene_gesserit
+
+  atreides:
+    Spice: 25
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  bene_gesserit:
+    Spice: 16
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

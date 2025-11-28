@@ -1,0 +1,454 @@
+================================================================================
+SETUP PHASE TEST - 6 FACTIONS
+================================================================================
+
+Test Date: 2025-11-27T10:06:22.567Z
+Duration: 22.80 seconds
+
+Factions: Atreides, Harkonnen, Emperor, Fremen, Spacing Guild, Bene Gesserit
+Total Factions: 6
+
+================================================================================
+CONSOLE OUTPUT
+================================================================================
+
+[LOG] 
+[33m════════════════════════════════════════════════════════════[0m
+[LOG] [33m[1m  🏜️  DUNE: AI SIMULATION[0m
+[LOG] [33m════════════════════════════════════════════════════════════[0m
+[LOG] 
+[LOG] [2mFactions in game:[0m
+[LOG]   [42m[30m[1m Atreides [0m
+[LOG]   [41m[30m[1m Harkonnen [0m
+[LOG]   [43m[30m[1m Emperor [0m
+[LOG]   [44m[30m[1m Fremen [0m
+[LOG]   [46m[30m[1m Spacing Guild [0m
+[LOG]   [45m[30m[1m Bene Gesserit [0m
+[LOG] 
+[LOG] 
+[LOG] [36m[1m  ▶ SETUP PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] [37m    📌 Bene Gesserit must make their secret prediction[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BG_PREDICTION[0m
+[LOG] [2m    Make your secret prediction: Which faction will win, and on which turn? If correct, you win instead![0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "atreides"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "harkonnen"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "fremen"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "emperor"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "spacing_guild"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: bg_prediction[0m
+[LOG] [2m       {
+         "faction": "fremen",
+         "turn": 7
+       }[0m
+[LOG] [95m[1m    ✓ Action: BG_PREDICTION[0m
+[LOG] [2m      ⏱️  9828ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Analysis:**
+
+Looking at the starting position:
+- **Atreides**: Controls [0m
+[LOG] [2m       Arrakeen (1 stronghold) - strong position with 10 forces
+- **Harkonnen**: [0m
+[LOG] [2m       Controls Carthag (1 stronghold) - strong position with 10 forces
+- [0m
+[LOG] [2m       **Spacing Guild**: Controls Tuek's Sietch (1 stronghold) - weaker with [0m
+[LOG] [2m       only 5 forces
+- **Emperor & Fremen**: No strongholds yet, need to build [0m
+[LOG] [2m       up
+- **Bene Gesserit**: No strongholds, but have resources to work [0m
+[LOG] [2m       with
+
+**Strategic Assessment:**
+
+The **Atreides and Harkonnen** are the [0m
+[LOG] [2m       dominant factions at game start, both controlling strongholds and having [0m
+[LOG] [2m       10 forces deployed. They are natural rivals and will likely clash [0m
+[LOG] [2m       heavily.
+
+The **Fremen** are positioned to potentially dominate mid-game [0m
+[LOG] [2m       by leveraging their desert advantages and ability to accumulate spice [0m
+[LOG] [2m       quickly. With Sietch Tabr available and their natural stronghold [0m
+[LOG] [2m       presence, they can expand aggressively.
+
+Given the early dominance of [0m
+[LOG] [2m       Atreides and Harkonnen but the Fremen's natural advantages in desert [0m
+[LOG] [2m       warfare and resource generation, I predict the **Fremen** will ultimately [0m
+[LOG] [2m       achieve victory. With 6 factions in play, it will take time for them to [0m
+[LOG] [2m       consolidate power and reach 3 strongholds, but their faction abilities [0m
+[LOG] [2m       make them strong contenders.
+
+For timing: With 6 factions competing, the [0m
+[LOG] [2m       game will likely reach a turning point around turn 7-8 when resource [0m
+[LOG] [2m       advantages compound and stronghold control becomes decisive.
+
+Let me make [0m
+[LOG] [2m       my prediction: [0m
+[LOG] [37m    🔮 Bene Gesserit has made their secret prediction[0m
+[LOG] [37m    📌 Traitor selection beginning[0m
+[LOG] [37m    🗡️ harkonnen has selected 4 traitors[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] [93m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "piter_de_vries"
+       }[0m
+[LOG] [93m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6263ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Done!** I've selected **Piter de Vries** as my traitor. This gives me a [0m
+[LOG] [2m       powerful tool to neutralize the Harkonnen's strongest leader if they [0m
+[LOG] [2m       deploy him in battle against me. Since the Harkonnen are typically [0m
+[LOG] [2m       aggressive players, this is a strategically sound choice that could turn [0m
+[LOG] [2m       a critical battle in my favor at a decisive moment. [0m
+[LOG] [95m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "duncan_idaho"
+       }[0m
+[LOG] [95m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6707ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! I've selected **Duncan Idaho** as my traitor.
+
+**Reasoning:**
+- [0m
+[LOG] [2m       Duncan Idaho is a premier Atreides leader who will likely see combat
+- [0m
+[LOG] [2m       Holding this traitor gives me a powerful "Traitor!" call in battles [0m
+[LOG] [2m       against Atreides
+- This provides excellent defensive insurance against [0m
+[LOG] [2m       what's likely to be a competitive faction
+- I avoided Princess Irulan (my [0m
+[LOG] [2m       own faction's leader) since betraying myself would be counterproductive
+- [0m
+[LOG] [2m       This choice gives me better strategic value than the Emperor or Fremen [0m
+[LOG] [2m       options for upcoming battles [0m
+[LOG] [94m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "beast_rabban"
+       }[0m
+[LOG] [94m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  7093ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision Made: Beast Rabban (Harkonnen)**
+
+I've selected Beast Rabban [0m
+[LOG] [2m       as my traitor. This is a strong strategic choice because:
+- **Harkonnen [0m
+[LOG] [2m       are aggressive**: They'll likely be in multiple battles
+- **Beast Rabban [0m
+[LOG] [2m       is likely a strong leader**: Harkonnen tend to have powerful combat [0m
+[LOG] [2m       leaders, so he'll probably be deployed in important battles
+- **High [0m
+[LOG] [2m       probability of use**: A traitor is only valuable if your opponent [0m
+[LOG] [2m       actually uses that leader in battle
+
+This gives me a powerful defensive [0m
+[LOG] [2m       tool against the Harkonnen faction throughout the game. [0m
+[LOG] [92m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "stilgar"
+       }[0m
+[LOG] [92m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  7237ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision Made: I'm keeping Stilgar as my traitor.**
+
+**Rationale:**
+- [0m
+[LOG] [2m       Stilgar is a key Fremen leader likely to see combat action
+- The Fremen [0m
+[LOG] [2m       are a major faction on Arrakis and will be a significant threat to my [0m
+[LOG] [2m       Atreides position
+- Having this traitor gives me a powerful defensive [0m
+[LOG] [2m       tool: if the Fremen use Stilgar in battle against me, I can call [0m
+[LOG] [2m       "Traitor!" and automatically win that battle while eliminating their [0m
+[LOG] [2m       leader
+- This is more valuable than the other options, as it targets a [0m
+[LOG] [2m       faction I'm most likely to directly conflict with [0m
+[LOG] [96m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "paul_atreides"
+       }[0m
+[LOG] [96m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  7348ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! I've selected **Paul Atreides** as my traitor. This is a strong [0m
+[LOG] [2m       strategic choice because:
+
+- Paul is one of the strongest leaders in Dune [0m
+[LOG] [2m       and the Atreides will likely rely on him in critical battles
+- Having [0m
+[LOG] [2m       this traitor gives me a guaranteed battle win if Atreides deploys him [0m
+[LOG] [2m       against me
+- This helps offset any disadvantages I might face in direct [0m
+[LOG] [2m       combat, allowing me to focus on my economic and intrusion strategies
+- [0m
+[LOG] [2m       It's a high-probability bet that will likely pay off during the game
+
+Now [0m
+[LOG] [2m       I'm ready to proceed with the game! [0m
+[LOG] [37m    🗡️ atreides has selected 1 traitor[0m
+[LOG] [37m    🗡️ emperor has selected 1 traitor[0m
+[LOG] [37m    🗡️ fremen has selected 1 traitor[0m
+[LOG] [37m    🗡️ spacing_guild has selected 1 traitor[0m
+[LOG] [37m    🗡️ bene_gesserit has selected 1 traitor[0m
+[LOG] [37m    📌 Fremen must distribute starting forces[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DISTRIBUTE_FORCES[0m
+[LOG] [2m    FREMEN STARTING FORCE DISTRIBUTION (Rule 2.04.02)
+
+You must distribute EXACTLY 10 forces total acros...[0m
+[LOG] [94m[1m    🔧 Tool: distribute_fremen_forces[0m
+[LOG] [2m       {
+         "sietch_tabr": 6,
+         "false_wall_south": 2,
+         "false_wall_west": 2
+       }[0m
+[LOG] [94m[1m    ✓ Action: DISTRIBUTE_FREMEN_FORCES[0m
+[LOG] [2m      ⏱️  5614ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Distribution Complete!**
+
+I've placed my forces as follows:
+- **Sietch [0m
+[LOG] [2m       Tabr (6 forces)**: Heavy garrison at my stronghold to defend it and [0m
+[LOG] [2m       establish a strong presence
+- **False Wall South (2 forces)**: Light [0m
+[LOG] [2m       defensive position
+- **False Wall West (2 forces)**: Light defensive [0m
+[LOG] [2m       position
+
+**Strategic Reasoning:**
+- Securing my stronghold with 6 forces [0m
+[LOG] [2m       gives me a strong defensive position early
+- The False Wall positions [0m
+[LOG] [2m       provide early warning and defensive buffers against incursions
+- This [0m
+[LOG] [2m       distribution allows me to leverage my desert mobility and worm-riding [0m
+[LOG] [2m       abilities to project power across the map
+- I can afford lighter [0m
+[LOG] [2m       garrisons in the False Walls because of my superior desert movement (2 [0m
+[LOG] [2m       territories without ornithopters)
+
+Ready for the game to begin! [0m
+[LOG] 
+[Fremen Force Distribution] Agent submitted:
+[LOG]   Distribution: {
+  "sietch_tabr": 6,
+  "false_wall_south": 2,
+  "false_wall_west": 2,
+  "distribution": {
+    "sietch_tabr": 6,
+    "false_wall_south": 2,
+    "false_wall_west": 2
+  }
+}
+[LOG]   Validated totals by territory:
+[LOG]     sietch_tabr: 6
+[LOG]     false_wall_south: 2
+[LOG]     false_wall_west: 2
+[LOG]   Total: 10 (required: 10)
+[LOG]   WARNING: Invalid territory keys ignored: distribution
+[LOG]   VALID: Distribution accepted.
+[LOG] [37m    📌 Fremen distributed 10 starting forces: 6 in sietch tabr, 2 in false wall south, 2 in false wall west[0m
+[LOG] [2m  ✓ setup complete[0m
+[LOG] 
+[33m════════════════════════════════════════════════════════════[0m
+[LOG] [33m[1m  🏆 GAME OVER[0m
+[LOG] [33m════════════════════════════════════════════════════════════[0m
+[LOG] 
+[LOG] [2m  No winner (max turns reached)[0m
+[LOG] 
+[LOG] [2m  Total turns: 1[0m
+[LOG] 
+
+================================================================================
+PHASE EVENTS
+================================================================================
+
+[1] PHASE_STARTED
+   Message: setup phase started
+   Data: {
+  "phase": "setup"
+}
+[2] SETUP_STEP
+   Message: Bene Gesserit must make their secret prediction
+   Data: {
+  "step": "BG_PREDICTION"
+}
+[3] BG_PREDICTION_MADE
+   Message: Bene Gesserit has made their secret prediction
+   Data: {
+  "message": "Bene Gesserit has made their secret prediction"
+}
+[4] SETUP_STEP
+   Message: Traitor selection beginning
+   Data: {
+  "step": "TRAITOR_SELECTION"
+}
+[5] TRAITOR_SELECTED
+   Message: harkonnen has selected 4 traitors
+   Data: {
+  "faction": "harkonnen",
+  "count": 4
+}
+[6] TRAITOR_SELECTED
+   Message: atreides has selected 1 traitor
+   Data: {
+  "faction": "atreides",
+  "count": 1
+}
+[7] TRAITOR_SELECTED
+   Message: emperor has selected 1 traitor
+   Data: {
+  "faction": "emperor",
+  "count": 1
+}
+[8] TRAITOR_SELECTED
+   Message: fremen has selected 1 traitor
+   Data: {
+  "faction": "fremen",
+  "count": 1
+}
+[9] TRAITOR_SELECTED
+   Message: spacing_guild has selected 1 traitor
+   Data: {
+  "faction": "spacing_guild",
+  "count": 1
+}
+[10] TRAITOR_SELECTED
+   Message: bene_gesserit has selected 1 traitor
+   Data: {
+  "faction": "bene_gesserit",
+  "count": 1
+}
+[11] SETUP_STEP
+   Message: Fremen must distribute starting forces
+   Data: {
+  "step": "FREMEN_FORCE_DISTRIBUTION"
+}
+[12] FORCES_PLACED
+   Message: Fremen distributed 10 starting forces: 6 in sietch tabr, 2 in false wall south, 2 in false wall west
+   Data: {
+  "faction": "fremen",
+  "distribution": {
+    "sietch_tabr": 6,
+    "false_wall_south": 2,
+    "false_wall_west": 2
+  }
+}
+[13] PHASE_ENDED
+   Message: setup phase ended
+   Data: {
+  "phase": "setup"
+}
+[14] GAME_ENDED
+   Message: Game stopped after undefined phase
+   Data: {
+  "winner": null,
+  "turn": 1,
+  "stoppedEarly": true
+}
+
+================================================================================
+GAME STATE SUMMARY
+================================================================================
+
+Turn: 1
+Phase: storm
+Setup Complete: true
+
+Faction States:
+  Atreides:
+    Spice: 10
+    Traitors: 1
+    Leaders: 5
+    Forces in Reserves: 10
+    Forces on Board: 1 stacks
+  Harkonnen:
+    Spice: 10
+    Traitors: 4
+    Leaders: 5
+    Forces in Reserves: 10
+    Forces on Board: 1 stacks
+  Emperor:
+    Spice: 10
+    Traitors: 1
+    Leaders: 5
+    Forces in Reserves: 20
+    Forces on Board: 0 stacks
+  Fremen:
+    Spice: 3
+    Traitors: 1
+    Leaders: 5
+    Forces in Reserves: 10
+    Forces on Board: 3 stacks
+  Spacing Guild:
+    Spice: 5
+    Traitors: 1
+    Leaders: 5
+    Forces in Reserves: 15
+    Forces on Board: 1 stacks
+  Bene Gesserit:
+    Spice: 5
+    Traitors: 1
+    Leaders: 5
+    Forces in Reserves: 19
+    Forces on Board: 1 stacks
+    BG Prediction: Turn 7, Faction fremen
+
+================================================================================
+VALIDATION
+================================================================================
+
+✅ Setup phase completed: true
+✅ All factions have traitors: true
+✅ Harkonnen has 4 traitors: true
+✅ Other factions have 1 traitor: true
+✅ BG prediction made: true
+✅ Fremen forces distributed: true
+
+================================================================================
+END OF TEST
+================================================================================

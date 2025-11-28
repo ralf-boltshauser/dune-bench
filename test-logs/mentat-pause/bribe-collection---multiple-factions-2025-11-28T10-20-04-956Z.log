@@ -1,0 +1,265 @@
+================================================================================
+PHASE TEST LOG: Bribe Collection - Multiple Factions
+================================================================================
+Generated: 2025-11-28T10:20:04.958Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:20:04 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: mentat_pause,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 20,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 25,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:20:04 AM] INFO
+  Starting scenario: Bribe Collection - Multiple Factions
+
+[11:20:04 AM] EVENT
+  atreides collects 5 spice in bribes
+  Data:
+    {
+      eventType: BRIBE_COLLECTED,
+      data: {
+        faction: atreides,
+        amount: 5,
+      },
+    }
+
+[11:20:04 AM] EVENT
+  harkonnen collects 3 spice in bribes
+  Data:
+    {
+      eventType: BRIBE_COLLECTED,
+      data: {
+        faction: harkonnen,
+        amount: 3,
+      },
+    }
+
+[11:20:04 AM] EVENT
+  emperor collects 7 spice in bribes
+  Data:
+    {
+      eventType: BRIBE_COLLECTED,
+      data: {
+        faction: emperor,
+        amount: 7,
+      },
+    }
+
+[11:20:04 AM] EVENT
+  Turn 1 complete. Proceeding to turn 2
+  Data:
+    {
+      eventType: TURN_ENDED,
+      data: {
+        turn: 1,
+        nextTurn: 2,
+      },
+    }
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 0
+Completed: Yes
+
+Events:
+
+Final State:
+  Turn: 1
+  Phase: mentat_pause
+  Factions: atreides, harkonnen, emperor
+
+  atreides:
+    Spice: 25
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 28
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  emperor:
+    Spice: 37
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

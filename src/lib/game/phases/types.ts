@@ -56,6 +56,7 @@ export type AgentRequestType =
   // Spice Blow / Nexus
   | 'PLACE_SANDWORM' // Fremen ability
   | 'WORM_RIDE' // Fremen ability
+  | 'PROTECT_ALLY_FROM_WORM' // Fremen alliance ability
   | 'ALLIANCE_DECISION'
 
   // Bidding
@@ -65,6 +66,7 @@ export type AgentRequestType =
   // Revival
   | 'REVIVE_FORCES'
   | 'REVIVE_LEADER'
+  | 'GRANT_FREMEN_REVIVAL_BOOST'
 
   // Shipment & Movement
   | 'SHIP_FORCES'
@@ -81,10 +83,15 @@ export type AgentRequestType =
   | 'USE_VOICE' // BG ability
   | 'COMPLY_WITH_VOICE'
   | 'CALL_TRAITOR'
-  | 'CAPTURE_LEADER' // Harkonnen ability
+  | 'CAPTURE_LEADER' // Harkonnen ability (legacy)
+  | 'CAPTURE_LEADER_CHOICE' // Harkonnen ability: choose kill or capture
+  | 'CHOOSE_CARDS_TO_DISCARD' // Winner chooses which cards to discard after winning
 
   // Collection
   | 'COLLECT_SPICE'
+
+  // CHOAM Charity
+  | 'CLAIM_CHARITY'
 
   // Any time
   | 'USE_KARAMA'
@@ -185,6 +192,8 @@ export type PhaseEventType =
   | 'SPICE_DESTROYED_BY_WORM'
   | 'FORCES_DEVOURED'
   | 'FREMEN_WORM_IMMUNITY'
+  | 'FREMEN_PROTECTED_ALLY'
+  | 'LEADER_PROTECTED_FROM_WORM'
   | 'NEXUS_STARTED'
   | 'NEXUS_ENDED'
 
@@ -192,7 +201,7 @@ export type PhaseEventType =
   | 'ALLIANCE_FORMED'
   | 'ALLIANCE_BROKEN'
 
-  // CHOAM
+  // CHOAM Charity
   | 'CHARITY_CLAIMED'
   | 'CHOAM_ELIGIBLE'
 
@@ -222,16 +231,28 @@ export type PhaseEventType =
   | 'NO_BATTLES'
   | 'BATTLES_COMPLETE'
   | 'BATTLE_PLAN_SUBMITTED'
+  | 'NO_LEADER_ANNOUNCED'
   | 'PRESCIENCE_USED'
   | 'VOICE_USED'
+  | 'VOICE_COMPLIED'
+  | 'VOICE_VIOLATION'
   | 'TRAITOR_REVEALED'
   | 'TRAITOR_BLOCKED'
+  | 'TWO_TRAITORS'
   | 'BATTLE_RESOLVED'
   | 'LEADER_KILLED'
   | 'LEADER_CAPTURED'
+  | 'LEADER_CAPTURED_AND_KILLED'
   | 'LEADER_RETURNED'
+  | 'HARKONNEN_CAPTURE_OPPORTUNITY'
+  | 'CARD_DISCARDED'
+  | 'PRISON_BREAK'
   | 'LASGUN_SHIELD_EXPLOSION'
   | 'KWISATZ_HADERACH_ACTIVATED'
+  | 'KWISATZ_HADERACH_USED'
+  | 'KWISATZ_HADERACH_KILLED'
+  | 'KWISATZ_HADERACH_REVIVED'
+  | 'SPICE_AWARDED'
 
   // Collection
   | 'SPICE_COLLECTED'
@@ -282,9 +303,13 @@ export interface PhaseHandler {
 export interface StormPhaseContext {
   dialingFactions: [Faction, Faction] | null;
   dials: Map<Faction, number>;
-  stormMovement: number | null;
+  stormMovement: number | null; // Calculated movement (locked in after dials)
   weatherControlUsed: boolean;
   weatherControlBy: Faction | null;
+  familyAtomicsUsed: boolean;
+  familyAtomicsBy: Faction | null;
+  waitingForFamilyAtomics: boolean; // After dials, before movement
+  waitingForWeatherControl: boolean; // After Family Atomics (or dials if no Family Atomics), before movement
 }
 
 /** Bidding phase tracking */
@@ -325,12 +350,14 @@ export interface CurrentBattle {
   prescienceUsed: boolean;
   prescienceTarget: 'leader' | 'weapon' | 'defense' | 'number' | null;
   prescienceOpponent: Faction | null; // Which faction's plan was viewed with prescience
-  prescienceResult: { type: string; value: string | number } | null;
+  prescienceResult: { type: string; value: string | number | null } | null; // null value means "not playing"
+  prescienceBlocked: boolean; // If weapon/defense asked and opponent said "not playing", cannot ask different element
   voiceUsed: boolean;
-  voiceCommand: unknown;
+  voiceCommand: { type: 'play' | 'not_play'; cardType: string; specificCardName?: string } | null;
   traitorCalled: boolean;
   traitorCalledBy: Faction | null;
   traitorCallsByBothSides: boolean; // Track if BOTH sides called traitor (TWO TRAITORS rule)
+  battleResult?: import('../rules/types').BattleResult; // Stored temporarily for winner card discard choice
 }
 
 /** Nexus tracking */

@@ -26,6 +26,8 @@ export interface Leader {
   hasBeenKilled: boolean; // Has this leader ever been killed?
   usedThisTurn: boolean; // Has fought in a territory this turn?
   usedInTerritoryId: TerritoryId | null; // Where they fought this turn
+  originalFaction: Faction; // Track original owner (for captured leaders)
+  capturedBy: Faction | null; // Track captor (null if not captured)
 }
 
 export enum LeaderLocation {
@@ -115,6 +117,8 @@ export interface ForceStack {
   territoryId: TerritoryId;
   sector: number;
   forces: ForceCount;
+  // BG-specific: track advisor vs fighter count (only used for Bene Gesserit)
+  advisors?: number; // Number of forces in advisor form (spiritual, striped side)
 }
 
 // Count of different force types
@@ -162,6 +166,8 @@ export interface BattlePlan {
   kwisatzHaderachUsed: boolean;
   // Advanced rules
   spiceDialed: number;
+  // Leader announcement (battle.md line 14)
+  announcedNoLeader: boolean; // True if player announced they cannot play leader/hero
   // Computed values (filled in during resolution)
   totalStrength?: number;
   leaderKilled?: boolean;

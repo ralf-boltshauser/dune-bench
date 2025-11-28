@@ -126,10 +126,23 @@ export const PlaceBidSchema = z.object({
 export const ReviveForcesSchema = z.object({
   count: z.number()
     .int()
-    .min(1)
+    .min(0)
     .max(3)
-    .describe('Number of forces to revive. Free revival varies by faction (usually 2). Additional forces cost 2 spice each.'),
-});
+    .optional()
+    .describe('Number of regular forces to revive. Free revival varies by faction (usually 2). Additional forces cost 2 spice each.'),
+  eliteCount: z.number()
+    .int()
+    .min(0)
+    .max(1)
+    .optional()
+    .describe('Number of elite forces (Sardaukar/Fedaykin) to revive. Maximum 1 per turn for Emperor/Fremen.'),
+}).refine(
+  (data) => (data.count ?? 0) + (data.eliteCount ?? 0) > 0,
+  { message: "Must revive at least 1 force (either count or eliteCount must be > 0)" }
+).refine(
+  (data) => (data.count ?? 0) + (data.eliteCount ?? 0) <= 3,
+  { message: "Total forces revived cannot exceed 3 per turn" }
+);
 
 /**
  * Revive leader parameters.
@@ -137,6 +150,49 @@ export const ReviveForcesSchema = z.object({
 export const ReviveLeaderSchema = z.object({
   leaderId: z.string()
     .describe('ID of the leader to revive. Leader must be in the Tleilaxu Tanks. Cost equals leader strength in spice.'),
+});
+
+/**
+ * Revive Kwisatz Haderach parameters (no parameters needed, but schema required).
+ */
+export const ReviveKwisatzHaderachSchema = z.object({});
+
+/**
+ * Emperor pays for ally revival parameters.
+ */
+export const EmperorPayAllyRevivalSchema = z.object({
+  forceCount: z.number()
+    .int()
+    .min(1)
+    .max(3)
+    .describe('Number of ally forces to revive (1-3). Emperor pays 2 spice per force. Only available when Emperor is allied and ally has forces in tanks.'),
+});
+
+/**
+ * Fremen grants ally 3 free revivals (no parameters needed).
+ */
+export const GrantFremenRevivalBoostSchema = z.object({});
+
+/**
+ * Fremen denies ally the revival boost (no parameters needed).
+ */
+export const DenyFremenRevivalBoostSchema = z.object({});
+
+/**
+ * Use Tleilaxu Ghola card for extra revival.
+ */
+export const UseTleilaxuGholaSchema = z.object({
+  reviveType: z.enum(['leader', 'forces'])
+    .describe('Type of revival: revive a leader OR revive forces'),
+  leaderId: z.string()
+    .optional()
+    .describe('Leader ID to revive (required if reviveType is "leader")'),
+  forceCount: z.number()
+    .int()
+    .min(1)
+    .max(5)
+    .optional()
+    .describe('Number of forces to revive (1-5, required if reviveType is "forces")'),
 });
 
 // =============================================================================
@@ -304,6 +360,17 @@ export const BattlePlanSchema = z.object({
     .optional()
     .default(false)
     .describe('Whether to use Cheap Hero card instead of a leader'),
+  announcedNoLeader: z.boolean()
+    .optional()
+    .default(false)
+    .describe('Set to true to announce you cannot play a leader or Cheap Hero. Only required when you have no available leaders and no Cheap Hero card.'),
+  spiceDialed: z.number()
+    .int()
+    .min(0)
+    .max(20)
+    .optional()
+    .default(0)
+    .describe('Spice to pay for full-strength forces (advanced rules only). Each force needs 1 spice to count at full strength. Unspiced forces count at half strength. Fremen do not need spice (BATTLE HARDENED). When traitor is revealed, winner keeps spice paid.'),
 });
 
 /**
@@ -312,6 +379,15 @@ export const BattlePlanSchema = z.object({
 export const CallTraitorSchema = z.object({
   leaderId: z.string()
     .describe('ID of the opponent leader to call as traitor. Must match a traitor card in your hand.'),
+});
+
+/**
+ * Choose cards to discard after winning a battle.
+ * Rule: "The winning player may discard any of the cards they played"
+ */
+export const ChooseCardsToDiscardSchema = z.object({
+  cardsToDiscard: z.array(CardIdSchema)
+    .describe('Array of card IDs to discard. Can be empty (keep all), partial (discard some), or full (discard all). Cards that say "Discard after use" are automatically discarded and not included in this choice.'),
 });
 
 // =============================================================================
@@ -383,6 +459,11 @@ export const BiddingSchemas = {
 export const RevivalSchemas = {
   reviveForces: ReviveForcesSchema,
   reviveLeader: ReviveLeaderSchema,
+  reviveKwisatzHaderach: ReviveKwisatzHaderachSchema,
+  emperorPayAllyRevival: EmperorPayAllyRevivalSchema,
+  grantFremenRevivalBoost: GrantFremenRevivalBoostSchema,
+  denyFremenRevivalBoost: DenyFremenRevivalBoostSchema,
+  useTleilaxuGhola: UseTleilaxuGholaSchema,
   pass: PassActionSchema,
 };
 
@@ -402,6 +483,7 @@ export const BattleSchemas = {
   chooseBattle: ChooseBattleSchema,
   submitBattlePlan: BattlePlanSchema,
   callTraitor: CallTraitorSchema,
+  chooseCardsToDiscard: ChooseCardsToDiscardSchema,
   pass: PassActionSchema,
 };
 

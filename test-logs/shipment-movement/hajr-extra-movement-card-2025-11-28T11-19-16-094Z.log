@@ -1,0 +1,1706 @@
+================================================================================
+PHASE TEST LOG: HAJR Extra Movement Card
+================================================================================
+Generated: 2025-11-28T11:19:16.096Z
+Steps: 4
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:19:16 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: shipment_movement,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: imperial_basin,
+              sector: 9,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:19:16 PM] INFO
+  Starting scenario: HAJR Extra Movement Card
+
+[12:19:16 PM] INFO
+  Queued 6 agent responses
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[12:19:16 PM] REQUEST
+  atreides requested: SHIP_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: SHIP_FORCES,
+      prompt: Shipment: You have 20 forces in reserves. Cost: 1 spice per force to strongholds, 2 elsewhere. Do you want to ship forces?,
+      context: {
+        reservesRegular: 20,
+        reservesElite: 0,
+        totalReserves: 20,
+        spiceAvailable: 30,
+        shippingCostToStronghold: 1,
+        shippingCostElsewhere: 2,
+        isGuild: false,
+        isFremen: false,
+        guildInGame: false,
+        validDestinations: [
+          {
+            territoryId: arrakeen,
+            sector: 9,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: carthag,
+            sector: 10,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: sietch_tabr,
+            sector: 13,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: habbanya_sietch,
+            sector: 16,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: tueks_sietch,
+            sector: 4,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 9,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_north,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_north,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_south,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_south,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: meridian,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_east,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_east,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_west,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_depression,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_depression,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: south_mesa,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: south_mesa,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: south_mesa,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: funeral_plain,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_great_flat,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_greater_flat,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_erg,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_erg,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_ridge_flat,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_ridge_flat,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_west,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_west,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_west,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass_north,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass_north,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: red_chasm,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: sihaya_ridge,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: shield_wall,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: shield_wall,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: hole_in_the_rock,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: basin,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: rim_wall_west,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: gara_kulon,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: old_gap,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: old_gap,
+            sector: 9,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: old_gap,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: broken_land,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: broken_land,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: tsimpo,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: tsimpo,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: tsimpo,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: arsunt,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: arsunt,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: plastic_basin,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: plastic_basin,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: plastic_basin,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: hagga_basin,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: hagga_basin,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: rock_outcroppings,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: rock_outcroppings,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: bight_of_the_cliff,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: bight_of_the_cliff,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_south,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_south,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: harg_pass,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: harg_pass,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+        ],
+        phase: shipment,
+        willMoveAfter: true,
+      },
+      availableActions: [
+        ship_forces,
+        pass_shipment,
+      ],
+    }
+
+[12:19:16 PM] RESPONSE
+  atreides responded: SHIP_FORCES (passed: false)
+  Data:
+    {
+      faction: atreides,
+      actionType: SHIP_FORCES,
+      data: {
+        territoryId: basin,
+        sector: 9,
+        count: 5,
+        useElite: false,
+      },
+      passed: false,
+    }
+
+[12:19:16 PM] EVENT
+  Atreides ships 5 forces to basin (sector 9) for 0 spice
+  Data:
+    {
+      eventType: FORCES_SHIPPED,
+      data: {
+        faction: atreides,
+        territory: basin,
+        sector: 9,
+        count: 5,
+        cost: null,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[12:19:16 PM] REQUEST
+  atreides requested: MOVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: MOVE_FORCES,
+      prompt: Movement: You have 3 force stacks. Movement range: 3 territories (ornithopters).,
+      context: {
+        movableForces: [
+          {
+            territoryId: arrakeen,
+            sector: 9,
+            regular: 5,
+            elite: 0,
+            total: 5,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 9,
+            regular: 3,
+            elite: 0,
+            total: 3,
+          },
+          {
+            territoryId: basin,
+            sector: 9,
+            regular: 5,
+            elite: 0,
+            total: 5,
+          },
+        ],
+        movementRange: 3,
+        hasOrnithopters: true,
+        hasOrnithoptersFromPhaseStart: true,
+        stormSector: 0,
+        phase: movement,
+      },
+      availableActions: [
+        MOVE_FORCES,
+        PASS,
+      ],
+    }
+
+[12:19:16 PM] RESPONSE
+  atreides responded: MOVE_FORCES (passed: false)
+  Data:
+    {
+      faction: atreides,
+      actionType: MOVE_FORCES,
+      data: {
+        fromTerritoryId: arrakeen,
+        fromSector: 9,
+        toTerritoryId: imperial_basin,
+        toSector: 9,
+        count: 5,
+        useElite: false,
+      },
+      passed: false,
+    }
+
+[12:19:16 PM] EVENT
+  Atreides moves 5 forces from arrakeen to imperial_basin
+  Data:
+    {
+      eventType: FORCES_MOVED,
+      data: {
+        faction: atreides,
+        from: arrakeen,
+        fromSector: 9,
+        to: imperial_basin,
+        toSector: 9,
+        count: 5,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[12:19:16 PM] REQUEST
+  harkonnen requested: SHIP_FORCES
+  Data:
+    {
+      faction: harkonnen,
+      requestType: SHIP_FORCES,
+      prompt: Shipment: You have 20 forces in reserves. Cost: 1 spice per force to strongholds, 2 elsewhere. Do you want to ship forces?,
+      context: {
+        reservesRegular: 20,
+        reservesElite: 0,
+        totalReserves: 20,
+        spiceAvailable: 35,
+        shippingCostToStronghold: 1,
+        shippingCostElsewhere: 2,
+        isGuild: false,
+        isFremen: false,
+        guildInGame: false,
+        validDestinations: [
+          {
+            territoryId: arrakeen,
+            sector: 9,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: carthag,
+            sector: 10,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: sietch_tabr,
+            sector: 13,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: habbanya_sietch,
+            sector: 16,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: tueks_sietch,
+            sector: 4,
+            isStronghold: true,
+            costMultiplier: 1,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 9,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: imperial_basin,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_north,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_north,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_south,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_south,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: meridian,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_east,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_east,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_west,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_depression,
+            sector: 1,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: cielago_depression,
+            sector: 2,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: south_mesa,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: south_mesa,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: south_mesa,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: funeral_plain,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_great_flat,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_greater_flat,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_erg,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_erg,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_ridge_flat,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: habbanya_ridge_flat,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_west,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_west,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_west,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass_north,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass_north,
+            sector: 17,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: the_minor_erg,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: pasty_mesa,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: red_chasm,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: sihaya_ridge,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: shield_wall,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: shield_wall,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: hole_in_the_rock,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: basin,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: rim_wall_west,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: gara_kulon,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: old_gap,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: old_gap,
+            sector: 9,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: old_gap,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: broken_land,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: broken_land,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: tsimpo,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: tsimpo,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: tsimpo,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: arsunt,
+            sector: 10,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: arsunt,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: plastic_basin,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: plastic_basin,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: plastic_basin,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: hagga_basin,
+            sector: 11,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: hagga_basin,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: rock_outcroppings,
+            sector: 12,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: rock_outcroppings,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 15,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: wind_pass,
+            sector: 16,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: bight_of_the_cliff,
+            sector: 13,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: bight_of_the_cliff,
+            sector: 14,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_south,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_south,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 5,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 6,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 7,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: false_wall_east,
+            sector: 8,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: harg_pass,
+            sector: 3,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+          {
+            territoryId: harg_pass,
+            sector: 4,
+            isStronghold: false,
+            costMultiplier: 2,
+          },
+        ],
+        phase: shipment,
+        willMoveAfter: true,
+      },
+      availableActions: [
+        ship_forces,
+        pass_shipment,
+      ],
+    }
+
+[12:19:16 PM] RESPONSE
+  harkonnen responded: PASS_SHIPMENT (passed: true)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: PASS_SHIPMENT,
+      data: {},
+      passed: true,
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[12:19:16 PM] REQUEST
+  harkonnen requested: MOVE_FORCES
+  Data:
+    {
+      faction: harkonnen,
+      requestType: MOVE_FORCES,
+      prompt: Movement: You have 1 force stacks. Movement range: 3 territories (ornithopters).,
+      context: {
+        movableForces: [
+          {
+            territoryId: carthag,
+            sector: 9,
+            regular: 5,
+            elite: 0,
+            total: 5,
+          },
+        ],
+        movementRange: 3,
+        hasOrnithopters: true,
+        hasOrnithoptersFromPhaseStart: true,
+        stormSector: 0,
+        phase: movement,
+      },
+      availableActions: [
+        MOVE_FORCES,
+        PASS,
+      ],
+    }
+
+[12:19:16 PM] RESPONSE
+  atreides responded: MOVE_FORCES (passed: false)
+  Data:
+    {
+      faction: atreides,
+      actionType: MOVE_FORCES,
+      data: {
+        fromTerritoryId: imperial_basin,
+        fromSector: 9,
+        toTerritoryId: hole_in_the_rock,
+        toSector: 9,
+        count: 8,
+        useElite: false,
+      },
+      passed: false,
+    }
+
+[12:19:16 PM] STATE
+  State snapshot: After step 4
+  Data:
+    {
+      turn: 1,
+      phase: shipment_movement,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: imperial_basin,
+              sector: 9,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: basin,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 15,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:19:16 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: shipment_movement,
+      factions: [
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: imperial_basin,
+              sector: 9,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: basin,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 15,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:19:16 PM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 4
+Total Events: 2
+Completed: Yes
+
+Events:
+  1. [FORCES_SHIPPED] Atreides ships 5 forces to basin (sector 9) for 0 spice
+  2. [FORCES_MOVED] Atreides moves 5 forces from arrakeen to imperial_basin
+
+Final State:
+  Turn: 1
+  Phase: shipment_movement
+  Factions: atreides, harkonnen
+
+  atreides:
+    Spice: 30
+    Forces on board: 2 stacks
+    Forces in reserves: 15 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  harkonnen:
+    Spice: 35
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+
+================================================================================
+END OF LOG
+================================================================================

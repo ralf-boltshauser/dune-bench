@@ -1,0 +1,750 @@
+================================================================================
+PHASE TEST LOG: fremen-ally-protection
+================================================================================
+Generated: 2025-11-28T10:59:18.840Z
+Steps: 5
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:59:18 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: south_mesa,
+          sector: 2,
+          amount: 10,
+        },
+      ],
+      stormSector: 5,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[11:59:18 AM] INFO
+  Starting scenario: fremen-ally-protection
+
+[11:59:18 AM] INFO
+  Turn: 2, Storm Sector: 5
+
+[11:59:18 AM] INFO
+  Spice Deck A: 3 cards
+
+[11:59:18 AM] INFO
+  Spice Deck B: 22 cards
+
+[11:59:18 AM] INFO
+  Queued 1 agent responses
+
+[11:59:18 AM] EVENT
+  Spice Card A revealed: South Mesa
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: South Mesa,
+        type: territory,
+        deck: A,
+      },
+    }
+
+[11:59:18 AM] EVENT
+  10 spice placed in south_mesa (sector 2)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: south_mesa,
+        sector: 2,
+        amount: 10,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:59:18 AM] EVENT
+  Spice Card B revealed: Shai-Hulud
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: Shai-Hulud,
+        type: shai_hulud,
+        deck: B,
+      },
+    }
+
+[11:59:18 AM] EVENT
+  Shai-Hulud appears!
+  Data:
+    {
+      eventType: SHAI_HULUD_APPEARED,
+      data: {
+        wormNumber: 1,
+      },
+    }
+
+[11:59:18 AM] EVENT
+  20 spice destroyed by sandworm in south_mesa
+  Data:
+    {
+      eventType: SPICE_DESTROYED_BY_WORM,
+      data: {
+        territory: south_mesa,
+        sector: 2,
+        amount: 20,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[11:59:18 AM] REQUEST
+  fremen requested: PROTECT_ALLY_FROM_WORM
+  Data:
+    {
+      faction: fremen,
+      requestType: PROTECT_ALLY_FROM_WORM,
+      prompt: Shai-Hulud appears in south_mesa! Your ally Atreides has 4 forces there. Do you want to protect them from being devoured?,
+      context: {
+        territory: south_mesa,
+        sector: 2,
+        ally: atreides,
+        allyForces: 4,
+      },
+      availableActions: [
+        PROTECT_ALLY,
+        ALLOW_DEVOURING,
+      ],
+    }
+
+[11:59:18 AM] RESPONSE
+  fremen responded: PROTECT_ALLY (passed: false)
+  Data:
+    {
+      faction: fremen,
+      actionType: PROTECT_ALLY,
+      data: {},
+      passed: false,
+    }
+
+[11:59:18 AM] EVENT
+  Spice Card B revealed: Red Chasm
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: Red Chasm,
+        type: territory,
+        deck: B,
+      },
+    }
+
+[11:59:18 AM] EVENT
+  8 spice placed in red_chasm (sector 3)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: red_chasm,
+        sector: 3,
+        amount: 8,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[11:59:18 AM] REQUEST
+  fremen requested: WORM_RIDE
+  Data:
+    {
+      faction: fremen,
+      requestType: WORM_RIDE,
+      prompt: A sandworm appeared! Do you want to ride the worm or let it devour forces?,
+      context: {
+        lastSpiceLocation: {
+          territoryId: red_chasm,
+          sector: 3,
+        },
+        forcesInTerritory: [],
+      },
+      availableActions: [
+        WORM_RIDE,
+        WORM_DEVOUR,
+      ],
+    }
+
+[11:59:18 AM] RESPONSE
+  fremen responded: PASS (passed: true)
+  Data:
+    {
+      faction: fremen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:59:18 AM] EVENT
+  8 spice destroyed by sandworm in red_chasm
+  Data:
+    {
+      eventType: SPICE_DESTROYED_BY_WORM,
+      data: {
+        territory: red_chasm,
+        sector: 3,
+        amount: 8,
+      },
+    }
+
+[11:59:18 AM] EVENT
+  Nexus! Alliance negotiations may occur.
+  Data:
+    {
+      eventType: NEXUS_STARTED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[11:59:18 AM] REQUEST
+  fremen requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: fremen,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: atreides,
+      context: {
+        currentAlly: atreides,
+        availableFactions: [],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:59:18 AM] REQUEST
+  atreides requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: atreides,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: fremen,
+      context: {
+        currentAlly: fremen,
+        availableFactions: [],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[11:59:18 AM] RESPONSE
+  fremen responded: PASS (passed: true)
+  Data:
+    {
+      faction: fremen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:59:18 AM] RESPONSE
+  atreides responded: PASS (passed: true)
+  Data:
+    {
+      faction: atreides,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:59:18 AM] EVENT
+  Nexus ends.
+  Data:
+    {
+      eventType: NEXUS_ENDED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 5
+────────────────────────────────────────────────────────────────────────────────
+
+[11:59:18 AM] STATE
+  State snapshot: After step 5
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 5,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[11:59:18 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        fremen,
+        atreides,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 4,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 5,
+      stormOrder: [
+        fremen,
+        atreides,
+      ],
+    }
+
+[11:59:18 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 5
+Total Events: 8
+Completed: Yes
+
+Events:
+  1. [SPICE_CARD_REVEALED] Spice Card B revealed: Shai-Hulud
+  2. [SHAI_HULUD_APPEARED] Shai-Hulud appears!
+  3. [SPICE_DESTROYED_BY_WORM] 20 spice destroyed by sandworm in south_mesa
+  4. [SPICE_CARD_REVEALED] Spice Card B revealed: Red Chasm
+  5. [SPICE_PLACED] 8 spice placed in red_chasm (sector 3)
+  6. [SPICE_DESTROYED_BY_WORM] 8 spice destroyed by sandworm in red_chasm
+  7. [NEXUS_STARTED] Nexus! Alliance negotiations may occur.
+  8. [NEXUS_ENDED] Nexus ends.
+
+Final State:
+  Turn: 2
+  Phase: spice_blow
+  Factions: fremen, atreides
+
+  fremen:
+    Spice: 13
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  atreides:
+    Spice: 30
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

@@ -1,0 +1,258 @@
+================================================================================
+PHASE TEST LOG: Bene Gesserit Prediction Victory
+================================================================================
+Generated: 2025-11-28T10:34:10.095Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:34:10 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: mentat_pause,
+      factions: [
+        bene_gesserit,
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: bene_gesserit,
+          spice: 5,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: carthag,
+              sector: 10,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: sietch_tabr,
+              sector: 13,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 10,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        bene_gesserit,
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[11:34:10 AM] INFO
+  Starting scenario: Bene Gesserit Prediction Victory
+
+[11:34:10 AM] EVENT
+  Victory! atreides win by stronghold_victory
+  Data:
+    {
+      eventType: VICTORY_ACHIEVED,
+      data: {
+        condition: stronghold_victory,
+        winners: [
+          atreides,
+        ],
+        turn: 2,
+        details: Controls 3 strongholds: arrakeen, carthag, sietch_tabr,
+      },
+    }
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 0
+Completed: Yes
+
+Events:
+
+Final State:
+  Turn: 2
+  Phase: mentat_pause
+  Factions: bene_gesserit, atreides, harkonnen
+
+  bene_gesserit:
+    Spice: 5
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  atreides:
+    Spice: 10
+    Forces on board: 3 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 10
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+
+================================================================================
+END OF LOG
+================================================================================

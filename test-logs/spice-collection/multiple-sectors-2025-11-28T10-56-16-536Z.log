@@ -1,0 +1,566 @@
+================================================================================
+PHASE TEST LOG: multiple-sectors
+================================================================================
+Generated: 2025-11-28T10:56:16.536Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:56:16 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        fremen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 15,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 12,
+              regular: 1,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: rock_outcroppings,
+          sector: 10,
+          amount: 8,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 11,
+          amount: 10,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 12,
+          amount: 5,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        emperor,
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Starting scenario: multiple-sectors
+
+[11:56:16 AM] INFO
+  Spice collection is automatic - no agent responses needed
+
+[11:56:16 AM] INFO
+  Initial Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: rock_outcroppings,
+          sector: 10,
+          amount: 8,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 11,
+          amount: 10,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 12,
+          amount: 5,
+        },
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Initial Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+          ],
+        },
+        {
+          faction: emperor,
+          spice: 15,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 12,
+              regular: 1,
+              elite: 0,
+              total: 1,
+            },
+          ],
+        },
+      ],
+    }
+
+[11:56:16 AM] EVENT
+  fremen collects 4 spice from rock_outcroppings sector 10 (2 forces × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: fremen,
+        territory: rock_outcroppings,
+        sector: 10,
+        amount: 4,
+        forces: 2,
+        collectionRate: 2,
+      },
+    }
+
+[11:56:16 AM] EVENT
+  fremen collects 6 spice from rock_outcroppings sector 11 (3 forces × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: fremen,
+        territory: rock_outcroppings,
+        sector: 11,
+        amount: 6,
+        forces: 3,
+        collectionRate: 2,
+      },
+    }
+
+[11:56:16 AM] EVENT
+  emperor collects 2 spice from rock_outcroppings sector 12 (1 forces × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: emperor,
+        territory: rock_outcroppings,
+        sector: 12,
+        amount: 2,
+        forces: 1,
+        collectionRate: 2,
+      },
+    }
+
+[11:56:16 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        fremen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 18,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 17,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 12,
+              regular: 1,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: rock_outcroppings,
+          sector: 10,
+          amount: 4,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 11,
+          amount: 4,
+        },
+        {
+          territoryId: rock_outcroppings,
+          sector: 12,
+          amount: 3,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        emperor,
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Final Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: rock_outcroppings,
+          sector: 10,
+          amount: 4,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 11,
+          amount: 4,
+        },
+        {
+          territory: rock_outcroppings,
+          sector: 12,
+          amount: 3,
+        },
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Final Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: fremen,
+          initialSpice: 8,
+          finalSpice: 18,
+          delta: 10,
+          spice: 18,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 10,
+              regular: 2,
+              elite: 0,
+              total: 2,
+            },
+            {
+              territory: rock_outcroppings,
+              sector: 11,
+              regular: 3,
+              elite: 0,
+              total: 3,
+            },
+          ],
+        },
+        {
+          faction: emperor,
+          initialSpice: 15,
+          finalSpice: 17,
+          delta: 2,
+          spice: 17,
+          forcesOnBoard: [
+            {
+              territory: rock_outcroppings,
+              sector: 12,
+              regular: 1,
+              elite: 0,
+              total: 1,
+            },
+          ],
+        },
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Phase completed successfully
+
+[11:56:16 AM] INFO
+  Total collection events: 3
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 3
+Completed: Yes
+
+Events:
+  1. [SPICE_COLLECTED] fremen collects 4 spice from rock_outcroppings sector 10 (2 forces × 2 spice/force)
+  2. [SPICE_COLLECTED] fremen collects 6 spice from rock_outcroppings sector 11 (3 forces × 2 spice/force)
+  3. [SPICE_COLLECTED] emperor collects 2 spice from rock_outcroppings sector 12 (1 forces × 2 spice/force)
+
+Final State:
+  Turn: 1
+  Phase: spice_collection
+  Factions: fremen, emperor
+
+  fremen:
+    Spice: 18
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  emperor:
+    Spice: 17
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

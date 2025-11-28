@@ -1,0 +1,482 @@
+================================================================================
+PHASE TEST LOG: Standard Charity - One Spice
+================================================================================
+Generated: 2025-11-28T10:49:08.882Z
+Steps: 2
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:49:08 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: choam_charity,
+      factions: [
+        fremen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 1,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 3,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        emperor,
+      ],
+    }
+
+[11:49:08 AM] INFO
+  Starting scenario: Standard Charity - One Spice
+
+[11:49:08 AM] INFO
+  Queued 1 agent responses
+
+[11:49:08 AM] EVENT
+  CHOAM Charity: 1 factions eligible
+  Data:
+    {
+      eventType: CHOAM_ELIGIBLE,
+      data: {
+        eligibleFactions: [
+          fremen,
+        ],
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:49:08 AM] REQUEST
+  fremen requested: CLAIM_CHARITY
+  Data:
+    {
+      faction: fremen,
+      requestType: CLAIM_CHARITY,
+      prompt: You have 1 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 1,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[11:49:08 AM] REQUEST
+  fremen requested: CLAIM_CHARITY
+  Data:
+    {
+      faction: fremen,
+      requestType: CLAIM_CHARITY,
+      prompt: You have 1 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 1,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+[11:49:08 AM] RESPONSE
+  fremen responded: CLAIM_CHARITY (passed: false)
+  Data:
+    {
+      faction: fremen,
+      actionType: CLAIM_CHARITY,
+      data: {},
+      passed: false,
+    }
+
+[11:49:08 AM] EVENT
+  fremen claims 1 spice in CHOAM Charity (1 → 2)
+  Data:
+    {
+      eventType: CHARITY_CLAIMED,
+      data: {
+        faction: fremen,
+        amount: 1,
+        newTotal: 2,
+      },
+    }
+
+[11:49:08 AM] STATE
+  State snapshot: After step 2
+  Data:
+    {
+      turn: 1,
+      phase: choam_charity,
+      factions: [
+        fremen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 2,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 3,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        emperor,
+      ],
+    }
+
+[11:49:08 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: choam_charity,
+      factions: [
+        fremen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 2,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 3,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        fremen,
+        emperor,
+      ],
+    }
+
+[11:49:08 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 2
+Total Events: 1
+Completed: Yes
+
+Events:
+  1. [CHARITY_CLAIMED] fremen claims 1 spice in CHOAM Charity (1 → 2)
+
+Final State:
+  Turn: 1
+  Phase: choam_charity
+  Factions: fremen, emperor
+
+  fremen:
+    Spice: 2
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  emperor:
+    Spice: 3
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

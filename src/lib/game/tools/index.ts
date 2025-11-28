@@ -153,6 +153,9 @@ export {
   // Revival schemas
   ReviveForcesSchema,
   ReviveLeaderSchema,
+  EmperorPayAllyRevivalSchema,
+  GrantFremenRevivalBoostSchema,
+  DenyFremenRevivalBoostSchema,
   // Movement schemas
   ShipForcesSchema,
   MoveForcesSchema,

@@ -78,6 +78,7 @@ const FREMEN_PROMPT = `## Playing the Fremen
 - **Storm Migration**: You can send forces into storm sectors with only half losses (rounded up)
 - **Storm Immunity**: Your forces in the desert take reduced storm casualties (half)
 - **Free Revival**: You revive 3 forces for free instead of 2
+- **Battle Hardened**: Your forces ALWAYS count at full strength in battle, even without paying spice (in advanced rules)
 - **Special Victory**: You can win if Guild isn't in the game and certain conditions are met
 
 ### Strategic Priorities

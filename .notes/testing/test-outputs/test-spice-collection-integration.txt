@@ -1,0 +1,35 @@
+# Spice Collection Phase Integration Test Results
+
+## Test Date
+2025-11-27
+
+## Test Scenario
+Verify that spice collection phase works correctly in a full game context:
+1. Setup game state with multiple factions
+2. Place forces in territories with spice
+3. Run spice collection phase
+4. Verify automatic collection
+
+## Test Results
+
+### Basic Functionality
+✓ Spice collection is automatic (no agent requests)
+✓ Base rate: 2 spice per force works correctly
+✓ City bonus: 3 spice per force when occupying Arrakeen or Carthag
+✓ Collection limited by available spice
+✓ Per-sector collection works correctly
+✓ Phase completes immediately
+
+### Edge Cases
+✓ Limited spice scenario (10 forces, only 5 spice available) - collects 5
+✓ Multiple sectors in same territory - collects from each sector separately
+✓ No spice to collect - skips silently (no error)
+✓ Forces in city without spice - gets city bonus for other territories
+
+### Rules Compliance
+✓ Rule 1.08 - HARVESTING SPICE: Forces occupying sectors with spice collect automatically
+✓ Rule 1.08 - COLLECTION RATE: 2 spice/force base, 3 spice/force with city
+✓ No optional decision - collection is mandatory when spice is present
+
+## Conclusion
+All tests pass. The spice collection phase now correctly implements the rules with automatic, mandatory collection at the appropriate rate.

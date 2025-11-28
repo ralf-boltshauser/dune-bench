@@ -7,26 +7,22 @@
  * - This is optional (faction can decline)
  */
 
+import { GAME_CONSTANTS } from "../../data";
 import {
-  Faction,
-  Phase,
-  type GameState,
-  FACTION_NAMES,
-} from '../../types';
+  getCharityAmount,
+  getEligibleFactions,
+  isEligibleForCharity,
+} from "../../rules";
+import { addSpice, getFactionState, logAction } from "../../state";
+import { Faction, FACTION_NAMES, Phase, type GameState } from "../../types";
+import { BasePhaseHandler } from "../base-handler";
+import { createAgentRequest } from "../helpers";
 import {
-  addSpice,
-  getFactionState,
-  logAction,
-} from '../../state';
-import { GAME_CONSTANTS } from '../../data';
-import {
-  type PhaseStepResult,
   type AgentRequest,
   type AgentResponse,
   type PhaseEvent,
-} from '../types';
-import { BasePhaseHandler } from '../base-handler';
-import { createAgentRequest } from '../helpers';
+  type PhaseStepResult,
+} from "../types";
 
 // =============================================================================
 // CHOAM CHARITY PHASE HANDLER
@@ -45,44 +41,32 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
 
     const events: PhaseEvent[] = [];
 
-    console.log('\n' + '='.repeat(80));
-    console.log('💰 CHOAM CHARITY PHASE (Turn ' + state.turn + ')');
-    console.log('='.repeat(80));
+    console.log("\n" + "=".repeat(80));
+    console.log("💰 CHOAM CHARITY PHASE (Turn " + state.turn + ")");
+    console.log("=".repeat(80));
 
     // Find factions eligible for charity
-    // Rule 1.03.01: Players with 0 or 1 spice can claim CHOAM Charity
-    // Rule 2.02.09 (Advanced): Bene Gesserit always eligible regardless of spice
-    for (const [faction, factionState] of state.factions) {
-      const currentSpice = factionState.spice;
-      let isEligible = false;
-      let reason = '';
+    this.eligibleFactions = getEligibleFactions(state);
 
-      // Check Bene Gesserit advanced ability
-      if (faction === Faction.BENE_GESSERIT && state.config.advancedRules) {
-        // Rule 2.02.09: Bene Gesserit always receive at least 2 spice regardless of holdings
-        isEligible = true;
-        reason = 'Bene Gesserit (Advanced) - always eligible';
-      } else if (currentSpice <= GAME_CONSTANTS.CHOAM_CHARITY_THRESHOLD) {
-        // Standard eligibility: 0 or 1 spice
-        isEligible = true;
-        reason = `${currentSpice} spice (eligible: 0-1 spice)`;
-      }
-
-      if (isEligible) {
-        this.eligibleFactions.push(faction);
-        console.log(`  ✅ ${FACTION_NAMES[faction]}: ${reason}`);
+    // Log eligibility for all factions
+    for (const [faction] of state.factions) {
+      const eligibility = isEligibleForCharity(state, faction);
+      if (eligibility.isEligible) {
+        console.log(`  ✅ ${FACTION_NAMES[faction]}: ${eligibility.reason}`);
       } else {
-        console.log(`  ❌ ${FACTION_NAMES[faction]}: ${currentSpice} spice (not eligible)`);
+        console.log(`  ❌ ${FACTION_NAMES[faction]}: ${eligibility.reason}`);
       }
     }
 
-    console.log(`\n  📊 ${this.eligibleFactions.length} faction(s) eligible for CHOAM Charity`);
-    console.log('='.repeat(80) + '\n');
+    console.log(
+      `\n  📊 ${this.eligibleFactions.length} faction(s) eligible for CHOAM Charity`
+    );
+    console.log("=".repeat(80) + "\n");
 
     // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
     // Just emit eligible factions info
     events.push({
-      type: 'CHOAM_ELIGIBLE',
+      type: "CHOAM_ELIGIBLE",
       data: {
         eligibleFactions: this.eligibleFactions,
       },
@@ -102,69 +86,19 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
     const events: PhaseEvent[] = [];
     let newState = state;
 
-    console.log('\n' + '='.repeat(80));
-    console.log('💰 PROCESSING CHOAM CHARITY CLAIMS');
-    console.log('='.repeat(80));
+    console.log("\n" + "=".repeat(80));
+    console.log("💰 PROCESSING CHOAM CHARITY CLAIMS");
+    console.log("=".repeat(80));
 
     // Process charity claims
     // Rule 1.03.02: A Player may only Claim CHOAM Charity once a Turn
     for (const response of responses) {
-      // Fraud safeguard: Check if already processed this turn
-      if (this.processedFactions.has(response.factionId)) {
-        console.log(`  ⚠️  ${FACTION_NAMES[response.factionId]}: Already claimed this turn (fraud safeguard)`);
-        continue;
-      }
-
-      this.processedFactions.add(response.factionId);
-
-      if (response.actionType === 'CLAIM_CHARITY' || !response.passed) {
-        // Faction claims charity
-        const factionState = getFactionState(newState, response.factionId);
-        const currentSpice = factionState.spice;
-
-        // Rule 1.03.01: Spice is collected to bring their total to 2 spice
-        // Standard: 0 spice → 2 spice, 1 spice → 1 spice
-        // Bene Gesserit (Advanced): Always receive at least 2 spice
-        let charityAmount: number;
-        if (response.factionId === Faction.BENE_GESSERIT && newState.config.advancedRules) {
-          // Rule 2.02.09: Bene Gesserit always receive at least 2 spice
-          charityAmount = 2;
-          console.log(`  ✅ ${FACTION_NAMES[response.factionId]}: Claims charity (Advanced - always 2 spice)`);
-          console.log(`     Current: ${currentSpice} spice → Receives: ${charityAmount} spice → New total: ${currentSpice + charityAmount} spice`);
-        } else {
-          // Standard: Bring to 2 spice total
-          charityAmount = Math.max(0, 2 - currentSpice);
-          console.log(`  ✅ ${FACTION_NAMES[response.factionId]}: Claims charity`);
-          console.log(`     Current: ${currentSpice} spice → Receives: ${charityAmount} spice → New total: 2 spice`);
-        }
-
-        // TODO: Homeworlds variant - Low Threshold bonus (+1 spice)
-        // This would be added here if homeworlds variant is active
-
-        if (charityAmount > 0) {
-        newState = addSpice(newState, response.factionId, charityAmount);
-
-        events.push({
-          type: 'CHARITY_CLAIMED',
-            data: { faction: response.factionId, amount: charityAmount, newTotal: currentSpice + charityAmount },
-            message: `${response.factionId} claims ${charityAmount} spice in CHOAM Charity (${currentSpice} → ${currentSpice + charityAmount})`,
-        });
-
-        newState = logAction(newState, 'CHOAM_CHARITY_CLAIMED', response.factionId, {
-          amount: charityAmount,
-            previousSpice: currentSpice,
-            newSpice: currentSpice + charityAmount,
-        });
-        } else {
-          console.log(`  ⚠️  ${FACTION_NAMES[response.factionId]}: Already has 2+ spice, no charity needed`);
-        }
-      } else {
-        console.log(`  ❌ ${FACTION_NAMES[response.factionId]}: Declines CHOAM Charity`);
-        // Note: No event for declining charity - only claim events are tracked
-      }
+      const result = this.processCharityResponse(newState, response);
+      newState = result.state;
+      events.push(...result.events);
     }
 
-    console.log('='.repeat(80) + '\n');
+    console.log("=".repeat(80) + "\n");
 
     // Check if all eligible factions have been processed
     const remaining = this.eligibleFactions.filter(
@@ -187,6 +121,106 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
   // PRIVATE METHODS
   // ===========================================================================
 
+  /**
+   * Process a single charity response.
+   * Handles fraud safeguards, amount calculation, and state updates.
+   */
+  private processCharityResponse(
+    state: GameState,
+    response: AgentResponse
+  ): { state: GameState; events: PhaseEvent[] } {
+    const events: PhaseEvent[] = [];
+
+    // Fraud safeguard: Check if already processed this turn
+    // Rule 1.03.02: A Player may only Claim CHOAM Charity once a Turn
+    if (this.processedFactions.has(response.factionId)) {
+      console.log(
+        `  ⚠️  ${
+          FACTION_NAMES[response.factionId]
+        }: Already claimed this turn (fraud safeguard)`
+      );
+      return { state, events };
+    }
+
+    this.processedFactions.add(response.factionId);
+
+    // Check if faction is claiming charity
+    if (response.actionType === "CLAIM_CHARITY" || !response.passed) {
+      return this.processCharityClaim(state, response.factionId, events);
+    } else {
+      // Faction declined charity
+      console.log(
+        `  ❌ ${FACTION_NAMES[response.factionId]}: Declines CHOAM Charity`
+      );
+      // Note: No event for declining charity - only claim events are tracked
+      return { state, events };
+    }
+  }
+
+  /**
+   * Process a charity claim for a faction.
+   * Calculates amount, updates state, and creates events.
+   */
+  private processCharityClaim(
+    state: GameState,
+    faction: Faction,
+    events: PhaseEvent[]
+  ): { state: GameState; events: PhaseEvent[] } {
+    const factionState = getFactionState(state, faction);
+    const currentSpice = factionState.spice;
+
+    // Calculate charity amount using rules helper
+    const charityAmount = getCharityAmount(state, faction, currentSpice);
+
+    // Log claim with appropriate message
+    const isBGAdvanced =
+      faction === Faction.BENE_GESSERIT && state.config.advancedRules;
+    if (isBGAdvanced) {
+      console.log(
+        `  ✅ ${FACTION_NAMES[faction]}: Claims charity (Advanced - always 2 spice)`
+      );
+      console.log(
+        `     Current: ${currentSpice} spice → Receives: ${charityAmount} spice → New total: ${
+          currentSpice + charityAmount
+        } spice`
+      );
+    } else {
+      console.log(`  ✅ ${FACTION_NAMES[faction]}: Claims charity`);
+      console.log(
+        `     Current: ${currentSpice} spice → Receives: ${charityAmount} spice → New total: 2 spice`
+      );
+    }
+
+    if (charityAmount > 0) {
+      let newState = addSpice(state, faction, charityAmount);
+
+      events.push({
+        type: "CHARITY_CLAIMED",
+        data: {
+          faction,
+          amount: charityAmount,
+          newTotal: currentSpice + charityAmount,
+        },
+        message: `${faction} claims ${charityAmount} spice in CHOAM Charity (${currentSpice} → ${
+          currentSpice + charityAmount
+        })`,
+      });
+
+      newState = logAction(newState, "CHOAM_CHARITY_CLAIMED", faction, {
+        amount: charityAmount,
+        previousSpice: currentSpice,
+        newSpice: currentSpice + charityAmount,
+      });
+
+      return { state: newState, events };
+    } else {
+      console.log(
+        `  ⚠️  ${FACTION_NAMES[faction]}: Already has 2+ spice, no charity needed`
+      );
+      return { state, events };
+    }
+  }
+
   private requestCharityDecisions(
     state: GameState,
     events: PhaseEvent[]
@@ -201,13 +235,13 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
       pendingRequests.push(
         createAgentRequest(
           faction,
-          'REVIVE_FORCES', // Reusing type for charity
+          "CLAIM_CHARITY",
           `You have ${factionState.spice} spice and are eligible for CHOAM Charity (${GAME_CONSTANTS.CHOAM_CHARITY_AMOUNT} spice). Do you want to claim it?`,
           {
-          currentSpice: factionState.spice,
-          charityAmount: GAME_CONSTANTS.CHOAM_CHARITY_AMOUNT,
-        },
-          ['CLAIM_CHARITY', 'PASS']
+            currentSpice: factionState.spice,
+            charityAmount: GAME_CONSTANTS.CHOAM_CHARITY_AMOUNT,
+          },
+          ["CLAIM_CHARITY", "PASS"]
         )
       );
     }

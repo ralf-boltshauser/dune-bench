@@ -1,0 +1,2705 @@
+[LOG] 
+[33m════════════════════════════════════════════════════════════[0m
+[LOG] [33m[1m  🏜️  DUNE: AI SIMULATION[0m
+[LOG] [33m════════════════════════════════════════════════════════════[0m
+[LOG] 
+[LOG] [2mFactions in game:[0m
+[LOG]   [42m[30m[1m Atreides [0m
+[LOG]   [41m[30m[1m Harkonnen [0m
+[LOG]   [44m[30m[1m Fremen [0m
+[LOG]   [46m[30m[1m Spacing Guild [0m
+[LOG]   [45m[30m[1m Bene Gesserit [0m
+[LOG]   [43m[30m[1m Emperor [0m
+[LOG] 
+[LOG] 
+[LOG] [36m[1m  ▶ SETUP PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] [37m    📌 Bene Gesserit must make their secret prediction[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BG_PREDICTION[0m
+[LOG] [2m    Make your secret prediction: Which faction will win, and on which turn? If correct, you win instead![0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: bg_prediction[0m
+[LOG] [2m       {
+         "faction": "atreides",
+         "turn": 1
+       }[0m
+[LOG] [95m[1m    ✓ Action: BG_PREDICTION[0m
+[LOG] [2m      ⏱️  8863ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Prediction Made: Atreides will win on Turn 1**
+
+**Reasoning:**
+- [0m
+[LOG] [2m       Atreides already controls Arrakeen (a stronghold)
+- With maxTurns set to [0m
+[LOG] [2m       1, the game is extremely constrained
+- Atreides typically has strong [0m
+[LOG] [2m       starting resources and leadership
+- They're well-positioned to quickly [0m
+[LOG] [2m       secure 2 additional strongholds before the end of turn 1
+- If my [0m
+[LOG] [2m       prediction is correct, I win instead of them!
+
+Now I'll await the game [0m
+[LOG] [2m       progression to see if my prediction comes true! [0m
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Harkonnen (Auto-keeps all 4)
+[LOG] ================================================================================
+[LOG] 
+📋 Harkonnen automatically keeps all 4 traitors:
+
+[LOG]   1. Beast Rabban
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 4
+[LOG]      ID: beast_rabban
+[LOG] 
+[LOG]   2. Lady Margot Fenring
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: margot_fenring
+[LOG] 
+[LOG]   3. Esmar Tuek
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 3
+[LOG]      ID: esmar_tuek
+[LOG] 
+[LOG]   4. Guild Representative
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 1
+[LOG]      ID: guild_rep
+[LOG] 
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Harkonnen
+[LOG] ================================================================================
+[LOG] 
+  Selected: Beast Rabban
+[LOG]     Faction: Harkonnen (harkonnen)
+[LOG]     Strength: 4
+[LOG]     ID: beast_rabban
+[LOG] 
+  Selected: Lady Margot Fenring
+[LOG]     Faction: Bene Gesserit (bene_gesserit)
+[LOG]     Strength: 5
+[LOG]     ID: margot_fenring
+[LOG] 
+  Selected: Esmar Tuek
+[LOG]     Faction: Spacing Guild (spacing_guild)
+[LOG]     Strength: 3
+[LOG]     ID: esmar_tuek
+[LOG] 
+  Selected: Guild Representative
+[LOG]     Faction: Spacing Guild (spacing_guild)
+[LOG]     Strength: 1
+[LOG]     ID: guild_rep
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Atreides
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Bashar
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 2
+[LOG]      ID: bashar
+[LOG] 
+[LOG]   2. Count Hasimir Fenring
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 6
+[LOG]      ID: hasimir_fenring
+[LOG] 
+[LOG]   3. Thufir Hawat
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 5
+[LOG]      ID: thufir_hawat
+[LOG] 
+[LOG]   4. Stilgar
+[LOG]      Faction: Fremen (fremen)
+[LOG]      Strength: 7
+[LOG]      ID: stilgar
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Fremen
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Umman Kudu
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 1
+[LOG]      ID: umman_kudu
+[LOG] 
+[LOG]   2. Duncan Idaho
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 2
+[LOG]      ID: duncan_idaho
+[LOG] 
+[LOG]   3. Gurney Halleck
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 4
+[LOG]      ID: gurney_halleck
+[LOG] 
+[LOG]   4. Captain Iakin Nefud
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 2
+[LOG]      ID: captain_iakin_nefud
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Spacing Guild
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Caid
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 3
+[LOG]      ID: caid
+[LOG] 
+[LOG]   2. Master Bewt
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 3
+[LOG]      ID: master_bewt
+[LOG] 
+[LOG]   3. Chani
+[LOG]      Faction: Fremen (fremen)
+[LOG]      Strength: 6
+[LOG]      ID: chani
+[LOG] 
+[LOG]   4. Alia
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: alia
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Bene Gesserit
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Jamis
+[LOG]      Faction: Fremen (fremen)
+[LOG]      Strength: 2
+[LOG]      ID: jamis
+[LOG] 
+[LOG]   2. Feyd-Rautha
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 6
+[LOG]      ID: feyd_rautha
+[LOG] 
+[LOG]   3. Dr. Yueh
+[LOG]      Faction: Atreides (atreides)
+[LOG]      Strength: 1
+[LOG]      ID: dr_yueh
+[LOG] 
+[LOG]   4. Staban Tuek
+[LOG]      Faction: Spacing Guild (spacing_guild)
+[LOG]      Strength: 5
+[LOG]      ID: staban_tuek
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🎯 TRAITOR SELECTION: Emperor
+[LOG] ================================================================================
+[LOG] 
+📋 Available Traitor Options (choose 1):
+
+[LOG]   1. Wanna Marcus
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: wanna_marcus
+[LOG] 
+[LOG]   2. Captain Aramsham
+[LOG]      Faction: Emperor (emperor)
+[LOG]      Strength: 5
+[LOG]      ID: captain_aramsham
+[LOG] 
+[LOG]   3. Piter de Vries
+[LOG]      Faction: Harkonnen (harkonnen)
+[LOG]      Strength: 3
+[LOG]      ID: piter_de_vries
+[LOG] 
+[LOG]   4. Reverend Mother Mohiam
+[LOG]      Faction: Bene Gesserit (bene_gesserit)
+[LOG]      Strength: 5
+[LOG]      ID: reverend_mother
+[LOG] 
+[LOG] 💡 Strategy: Choose a traitor from a faction you expect to fight.
+[LOG]    Higher strength leaders are more valuable as traitors.
+[LOG] ================================================================================
+
+[LOG] [37m    🔮 Bene Gesserit has made their secret prediction[0m
+[LOG] [37m    📌 Traitor selection beginning[0m
+[LOG] [37m    🗡️ harkonnen has selected 4 traitors[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SELECT_TRAITOR[0m
+[LOG] [2m    Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in ...[0m
+[LOG] [95m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "feyd_rautha"
+       }[0m
+[LOG] [95m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  5746ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Excellent! I've selected **Feyd-Rautha** as my traitor. This gives me a [0m
+[LOG] [2m       powerful tool to automatically win battles against Harkonnen if they [0m
+[LOG] [2m       deploy their strongest leader, which will be crucial for controlling the [0m
+[LOG] [2m       board and potentially influencing which faction wins the game according [0m
+[LOG] [2m       to my prediction. [0m
+[LOG] [93m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "wanna_marcus"
+       }[0m
+[LOG] [93m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6115ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! I've selected **Wanna Marcus** as my traitor. This high-strength [0m
+[LOG] [2m       Bene Gesserit leader will be a valuable asset if we encounter them in [0m
+[LOG] [2m       battle. When they deploy Wanna Marcus, I can call "Traitor!" and [0m
+[LOG] [2m       automatically win that battle while eliminating their leader - a [0m
+[LOG] [2m       significant tactical advantage. [0m
+[LOG] [96m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "chani"
+       }[0m
+[LOG] [96m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6268ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision Made: Chani (Fremen, Strength 6)**
+
+This is the optimal choice [0m
+[LOG] [2m       because:
+- Chani is the strongest leader available to me (strength 6)
+- [0m
+[LOG] [2m       As a Fremen leader, she's likely to be deployed in important battles [0m
+[LOG] [2m       given Fremen's competitive nature
+- If I encounter Chani in battle, I can [0m
+[LOG] [2m       call "Traitor!" to automatically win and eliminate her
+- This gives me a [0m
+[LOG] [2m       powerful defensive tool against the Fremen faction [0m
+[LOG] [92m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "stilgar"
+       }[0m
+[LOG] [92m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6423ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Done!** I've selected **Stilgar** as my traitor. This high-strength [0m
+[LOG] [2m       Fremen leader is the most valuable choice - if an opponent uses him in [0m
+[LOG] [2m       battle against me, I can call "Traitor!" and automatically win that [0m
+[LOG] [2m       engagement, eliminating their strongest leader in the process. This is a [0m
+[LOG] [2m       powerful defensive tool against what's likely to be my primary rival [0m
+[LOG] [2m       faction on Arrakis. [0m
+[LOG] [94m[1m    🔧 Tool: select_traitor[0m
+[LOG] [2m       {
+         "traitorId": "gurney_halleck"
+       }[0m
+[LOG] [94m[1m    ✓ Action: SELECT_TRAITOR[0m
+[LOG] [2m      ⏱️  6507ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Excellent! I've selected **Gurney Halleck** as my traitor. This gives me [0m
+[LOG] [2m       a powerful tool to automatically win battles against the Atreides if they [0m
+[LOG] [2m       deploy this strong 4-strength leader. I can call "Traitor!" during battle [0m
+[LOG] [2m       resolution to instantly win and eliminate their leader - a devastating [0m
+[LOG] [2m       advantage in critical moments. [0m
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Atreides
+[LOG] ================================================================================
+[LOG] 
+  Selected: Stilgar
+[LOG]     Faction: Fremen (fremen)
+[LOG]     Strength: 7
+[LOG]     ID: stilgar
+[LOG] 
+  Not Selected:
+[LOG]     - Bashar (Emperor, Strength: 2)
+[LOG]     - Count Hasimir Fenring (Emperor, Strength: 6)
+[LOG]     - Thufir Hawat (Atreides, Strength: 5)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Fremen
+[LOG] ================================================================================
+[LOG] 
+  Selected: Gurney Halleck
+[LOG]     Faction: Atreides (atreides)
+[LOG]     Strength: 4
+[LOG]     ID: gurney_halleck
+[LOG] 
+  Not Selected:
+[LOG]     - Umman Kudu (Harkonnen, Strength: 1)
+[LOG]     - Duncan Idaho (Atreides, Strength: 2)
+[LOG]     - Captain Iakin Nefud (Harkonnen, Strength: 2)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Spacing Guild
+[LOG] ================================================================================
+[LOG] 
+  Selected: Chani
+[LOG]     Faction: Fremen (fremen)
+[LOG]     Strength: 6
+[LOG]     ID: chani
+[LOG] 
+  Not Selected:
+[LOG]     - Caid (Emperor, Strength: 3)
+[LOG]     - Master Bewt (Spacing Guild, Strength: 3)
+[LOG]     - Alia (Bene Gesserit, Strength: 5)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Bene Gesserit
+[LOG] ================================================================================
+[LOG] 
+  Selected: Feyd-Rautha
+[LOG]     Faction: Harkonnen (harkonnen)
+[LOG]     Strength: 6
+[LOG]     ID: feyd_rautha
+[LOG] 
+  Not Selected:
+[LOG]     - Jamis (Fremen, Strength: 2)
+[LOG]     - Dr. Yueh (Atreides, Strength: 1)
+[LOG]     - Staban Tuek (Spacing Guild, Strength: 5)
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] ✅ TRAITOR SELECTED: Emperor
+[LOG] ================================================================================
+[LOG] 
+  Selected: Wanna Marcus
+[LOG]     Faction: Bene Gesserit (bene_gesserit)
+[LOG]     Strength: 5
+[LOG]     ID: wanna_marcus
+[LOG] 
+  Not Selected:
+[LOG]     - Captain Aramsham (Emperor, Strength: 5)
+[LOG]     - Piter de Vries (Harkonnen, Strength: 3)
+[LOG]     - Reverend Mother Mohiam (Bene Gesserit, Strength: 5)
+[LOG] ================================================================================
+
+[LOG] [37m    🗡️ atreides has selected 1 traitor[0m
+[LOG] [37m    🗡️ fremen has selected 1 traitor[0m
+[LOG] [37m    🗡️ spacing_guild has selected 1 traitor[0m
+[LOG] [37m    🗡️ bene_gesserit has selected 1 traitor[0m
+[LOG] [37m    🗡️ emperor has selected 1 traitor[0m
+[LOG] [37m    📌 Fremen must distribute starting forces[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DISTRIBUTE_FORCES[0m
+[LOG] [2m    FREMEN STARTING FORCE DISTRIBUTION (Rule 2.04.02)
+
+You must distribute EXACTLY 10 forces total acros...[0m
+[LOG] [94m[1m    🔧 Tool: distribute_fremen_forces[0m
+[LOG] [2m       {
+         "sietch_tabr": 6,
+         "false_wall_south": 2,
+         "false_wall_west": 2
+       }[0m
+[LOG] [94m[1m    ✓ Action: DISTRIBUTE_FREMEN_FORCES[0m
+[LOG] [2m      ⏱️  6341ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! My forces are distributed:
+- **Sietch Tabr: 6 forces** - Secure [0m
+[LOG] [2m       stronghold garrison
+- **False Wall South: 2 forces** - Defensive [0m
+[LOG] [2m       outpost
+- **False Wall West: 2 forces** - Defensive outpost
+
+This [0m
+[LOG] [2m       positioning gives me a strong foundation to control my stronghold while [0m
+[LOG] [2m       maintaining the flexibility to leverage my Fremen mobility advantages [0m
+[LOG] [2m       (2-territory movement without ornithopters) to respond to threats or [0m
+[LOG] [2m       pursue spice collection opportunities across the desert. [0m
+[LOG] 
+[Fremen Force Distribution] Agent submitted:
+[LOG]   Distribution: {
+  "sietch_tabr": 6,
+  "false_wall_south": 2,
+  "false_wall_west": 2,
+  "distribution": {
+    "sietch_tabr": 6,
+    "false_wall_south": 2,
+    "false_wall_west": 2
+  }
+}
+[LOG]   Validated totals by territory:
+[LOG]     sietch_tabr: 6
+[LOG]     false_wall_south: 2
+[LOG]     false_wall_west: 2
+[LOG]   Total: 10 (required: 10)
+[LOG]   WARNING: Invalid territory keys ignored: distribution
+[LOG]   VALID: Distribution accepted.
+[LOG] 
+================================================================================
+[LOG] 📍 PLAYER TOKEN POSITIONS
+[LOG] ================================================================================
+[LOG] 
+Player tokens placed around board edge (18 sectors):
+
+[LOG]   Atreides: Sector 0
+[LOG]   Harkonnen: Sector 3
+[LOG]   Fremen: Sector 6
+[LOG]   Spacing Guild: Sector 9
+[LOG]   Bene Gesserit: Sector 12
+[LOG]   Emperor: Sector 15
+[LOG] 
+💡 Storm order will be determined by which player token the storm next approaches counterclockwise.
+[LOG]    If storm is ON a player token, the NEXT player (counterclockwise) is first.
+
+[LOG] ================================================================================
+
+[LOG] [37m    📌 Fremen distributed 10 starting forces: 6 in sietch tabr, 2 in false wall south, 2 in false wall west[0m
+[LOG] [2m  ✓ setup complete[0m
+[LOG] 
+[37m┌──────────────────────────────────────────────────────────┐[0m
+[LOG] [37m[1m│  📅 TURN 1 / 1                                            │[0m
+[LOG] [37m└──────────────────────────────────────────────────────────┘[0m
+[LOG] 
+[LOG] [36m[1m  ▶ STORM PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 🌪️  INITIAL STORM PLACEMENT (Turn 1)
+[LOG] ================================================================================
+[LOG] 
+📍 Storm Start Sector: 0
+[LOG] 
+📊 Player Positions (relative to Storm Start Sector 0):
+[LOG]   Atreides: Sector 0 ⚠️  (AT Storm Start - not a dialer)
+[LOG]   Harkonnen: Sector 3 (3 sectors after storm start)
+[LOG]   Fremen: Sector 6 (6 sectors after storm start)
+[LOG]   Spacing Guild: Sector 9 (9 sectors before storm start)
+[LOG]   Bene Gesserit: Sector 12 (6 sectors before storm start)
+[LOG]   Emperor: Sector 15 (3 sectors before storm start)
+[LOG] 
+🎯 Dialers: Harkonnen and Emperor
+[LOG]    (Two players nearest to Storm Start Sector on either side)
+[LOG] ================================================================================
+
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DIAL_STORM[0m
+[LOG] [2m    Initial Storm Placement: Dial a number from 0 to 20. The total will determine where the storm starts...[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 DIAL_STORM[0m
+[LOG] [2m    Initial Storm Placement: Dial a number from 0 to 20. The total will determine where the storm starts...[0m
+[LOG] [93m[1m    🔧 Tool: dial_storm[0m
+[LOG] [2m       {
+         "dial": 10
+       }[0m
+[LOG] [93m[1m    ✓ Action: DIAL_STORM[0m
+[LOG] [2m      ⏱️  6858ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Dialed **10** for initial storm placement.
+
+The Emperor [0m
+[LOG] [2m       has submitted a dial of 10. The final storm position will be determined [0m
+[LOG] [2m       once the other faction nearest the storm start (likely the Fremen or [0m
+[LOG] [2m       another faction) also dials. The combined total will move the storm [0m
+[LOG] [2m       counterclockwise from Sector 0.
+
+This moderate dial sets up a balanced [0m
+[LOG] [2m       opening position that will allow me to assess the board and plan my [0m
+[LOG] [2m       initial force deployments strategically once I see where the storm [0m
+[LOG] [2m       settles and where opponents position themselves. [0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: dial_storm[0m
+[LOG] [2m       {
+         "dial": 4
+       }[0m
+[LOG] [91m[1m    ✓ Action: DIAL_STORM[0m
+[LOG] [2m      ⏱️  9333ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Strategic Decision: Dialed 4**
+
+**Reasoning:**
+- **Protects Carthag**: [0m
+[LOG] [2m       My 10 forces at Carthag (sector 11) are far from the initial storm [0m
+[LOG] [2m       position
+- **Balanced aggression**: A dial of 4 is moderate and won't [0m
+[LOG] [2m       appear overly aggressive or defensive
+- **Disrupts opponents**: The storm [0m
+[LOG] [2m       will move counterclockwise and create pressure on other factions' [0m
+[LOG] [2m       positions
+- **Flexibility**: Leaves room for the other dial (Atreides) to [0m
+[LOG] [2m       determine final storm placement, but my dial contributes meaningfully to [0m
+[LOG] [2m       board control
+
+Now waiting for Atreides (the other faction in storm [0m
+[LOG] [2m       order) to dial their number, which will determine the final initial storm [0m
+[LOG] [2m       sector. [0m
+[LOG] 
+================================================================================
+[LOG] 🎲 STORM DIAL REVEAL
+[LOG] ================================================================================
+[LOG] 
+  Harkonnen: 4 (range: 0-20)
+[LOG] 
+  Emperor: 10 (range: 0-20)
+[LOG] 
+  📊 Total: 14 sectors
+[LOG] ================================================================================
+
+[LOG] 
+================================================================================
+[LOG] 🌪️  STORM MOVEMENT CALCULATION
+[LOG] ================================================================================
+[LOG] 
+  Starting Sector: 0 (Storm Start Sector)
+[LOG]   Movement: 14 sectors counterclockwise
+[LOG]   Ending Sector: 14
+[LOG] 
+================================================================================
+[LOG] 📋 STORM ORDER DETERMINATION
+[LOG] ================================================================================
+[LOG] 
+  Storm Position: Sector 14
+[LOG] 
+  Player Positions:
+[LOG]     Atreides: Sector 0 (distance: 4)
+[LOG]     Harkonnen: Sector 3 (distance: 7)
+[LOG]     Fremen: Sector 6 (distance: 10)
+[LOG]     Spacing Guild: Sector 9 (distance: 13)
+[LOG]     Bene Gesserit: Sector 12 (distance: 16)
+[LOG]     Emperor: Sector 15 (distance: 1)
+[LOG] 
+  Storm Order (First → Last):
+[LOG]     1. Emperor (Sector 15, distance: 1)
+[LOG]     2. Atreides (Sector 0, distance: 4)
+[LOG]     3. Harkonnen (Sector 3, distance: 7)
+[LOG]     4. Fremen (Sector 6, distance: 10)
+[LOG]     5. Spacing Guild (Sector 9, distance: 13)
+[LOG]     6. Bene Gesserit (Sector 12, distance: 16)
+[LOG] 
+  ✅ First Player: Emperor
+[LOG] ================================================================================
+
+[LOG] [37m    🌪️ Storm moves 14 sectors (0 → 14)[0m
+[LOG] [2m  ✓ storm complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ SPICE_BLOW PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 🌪️  SPICE BLOW PHASE (Turn 1)
+[LOG] ================================================================================
+[LOG] 
+📍 Storm Sector: 14
+[LOG] ⚠️  Turn 1: Shai-Hulud cards will be set aside and reshuffled
+[LOG] ⚠️  Turn 1: No Nexus can occur
+[LOG] ================================================================================
+
+[LOG] 
+🎴 Revealing Spice Card A: Shai-Hulud
+[LOG]    Type: Shai-Hulud (Sandworm)
+[LOG] 
+🎴 Revealing Spice Card A: Sihaya Ridge
+[LOG]    Type: Territory Card
+[LOG]    Territory: sihaya_ridge, Sector: 4, Amount: 6
+[LOG]    In Storm: No - Spice will be placed
+[LOG]    ✅ 6 spice placed in sihaya_ridge (Sector 4)
+[LOG] [37m    🟡 Spice Card A revealed: Sihaya Ridge[0m
+[LOG] [37m    🟡 6 spice placed in sihaya_ridge (sector 4)[0m
+[LOG] [2m  ✓ spice_blow complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ CHOAM_CHARITY PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 💰 CHOAM CHARITY PHASE (Turn 1)
+[LOG] ================================================================================
+[LOG]   ❌ Atreides: 10 spice (not eligible)
+[LOG]   ❌ Harkonnen: 10 spice (not eligible)
+[LOG]   ❌ Fremen: 3 spice (not eligible)
+[LOG]   ❌ Spacing Guild: 5 spice (not eligible)
+[LOG]   ❌ Bene Gesserit: 5 spice (not eligible)
+[LOG]   ❌ Emperor: 10 spice (not eligible)
+[LOG] 
+  📊 0 faction(s) eligible for CHOAM Charity
+[LOG] ================================================================================
+
+[LOG] [37m    📌 CHOAM Charity: 0 factions eligible[0m
+[LOG] [2m  ✓ choam_charity complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ BIDDING PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 💰 BIDDING PHASE (Turn 1)
+[LOG] ================================================================================
+[LOG] 
+📢 HAND SIZE DECLARATIONS (Rule 1.04.01):
+
+[LOG]   Emperor: 1 card(s) (at least 1 card) ✅ Eligible
+[LOG]   Atreides: 1 card(s) (at least 1 card) ✅ Eligible
+[LOG]   Harkonnen: 2 card(s) (at least 1 card) ✅ Eligible
+[LOG]   Fremen: 1 card(s) (at least 1 card) ✅ Eligible
+[LOG]   Spacing Guild: 1 card(s) (at least 1 card) ✅ Eligible
+[LOG]   Bene Gesserit: 1 card(s) (at least 1 card) ✅ Eligible
+[LOG] 
+📊 Eligible Bidders: 6
+[LOG] 📦 Cards to Deal: 6 (1 per eligible bidder)
+
+[LOG] 
+🎴 AUCTION 1/6
+[LOG]    Starting Bidder: Emperor
+[LOG]    Card: Stunner (secret - only Atreides can see)
+
+[LOG] [37m    📌 Hand size declarations: emperor: at least 1 card, atreides: at least 1 card, harkonnen: at least 1 card, fremen: at least 1 card, spacing_guild: at least 1 card, bene_gesserit: at least 1 card[0m
+[LOG] [37m    💰 Auction 1/6: Treachery Card (starting bidder: emperor)[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 10 spice.[0m
+[LOG] [93m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 1
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  8165ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 1 spice on the unknown Treachery [0m
+[LOG] [2m       card.
+
+**Reasoning:** 
+- Low opening bid preserves capital while keeping [0m
+[LOG] [2m       me in the auction
+- If others bid higher, I benefit from the increased [0m
+[LOG] [2m       spice flow to my coffers
+- Maintains flexibility for future decisions in [0m
+[LOG] [2m       this auction round
+- Leaves 9 spice for shipping forces and other [0m
+[LOG] [2m       strategic actions [0m
+[LOG]   💰 Emperor bids 1 spice
+[LOG] [37m    💰 Emperor bids 1 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Stunner. Current bid: 1 by Emperor. Minimum bid: 2. You have 10 spice.[0m
+[LOG] [92m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 2
+       }[0m
+[LOG] [92m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  6341ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action taken**: Bid 2 spice on Stunner.
+
+**Reasoning**: 
+- Minimum [0m
+[LOG] [2m       efficient bid to take the card from the Emperor
+- Preserves my spice (8 [0m
+[LOG] [2m       remaining) for future auctions and actions
+- Stunner is a solid weapon [0m
+[LOG] [2m       that will be useful in battles
+- Early auction positioning means I can [0m
+[LOG] [2m       build hand strength before higher-value cards appear [0m
+[LOG]   💰 Atreides bids 2 spice
+[LOG] [37m    💰 Atreides bids 2 spice[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 2 by Atreides. Minimum bid: 3. You have 10 spice.[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 3
+       }[0m
+[LOG] [91m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  9871ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: BID 3 SPICE**
+
+I've placed a minimum bid of 3 spice on [0m
+[LOG] [2m       this unknown treachery card. This is strategically sound because:
+- It [0m
+[LOG] [2m       keeps me in the auction without overcommitting
+- Harkonnen needs to hoard [0m
+[LOG] [2m       cards for maximum flexibility in battles
+- I have 7 spice remaining with [0m
+[LOG] [2m       5 more auctions ahead
+- Early aggressive bidding can establish dominance [0m
+[LOG] [2m       in the auction phase [0m
+[LOG]   💰 Harkonnen bids 3 spice
+[LOG] [37m    💰 Harkonnen bids 3 spice[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 3 spice.[0m
+[LOG] [94m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6479ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning Summary:**
+I passed because:
+1. **Cannot afford it anyway** - [0m
+[LOG] [2m       I only have 3 spice, need at least 4 to bid
+2. **Preserve resources** - [0m
+[LOG] [2m       Fremen mobility means I don't need to overpay for treachery cards; I [0m
+[LOG] [2m       should save spice for shipping and strategic positioning
+3. **Unknown [0m
+[LOG] [2m       value** - Without seeing the card, bidding blind on limited resources is [0m
+[LOG] [2m       poor strategy
+4. **Let Harkonnen overpay** - If they want it at 3, let [0m
+[LOG] [2m       them have it; I can focus on board control where Fremen excel [0m
+[LOG] [37m    💰 fremen passes[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7115ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I'm passing on this unknown treachery card. [0m
+[LOG] [2m       Preserving my limited spice (5 total) for more strategic uses is better [0m
+[LOG] [2m       than bidding on an unknown card. With 5 more auctions remaining and my [0m
+[LOG] [2m       faction's economic advantages, I should focus on:
+- Maintaining spice [0m
+[LOG] [2m       reserves for shipping forces at half cost
+- Waiting for cards I can [0m
+[LOG] [2m       actually see or higher-value moments
+- Building my position through [0m
+[LOG] [2m       intrusion and strategic shipping [0m
+[LOG] [37m    💰 spacing_guild passes[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  9348ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I'm conserving my spice for more strategic [0m
+[LOG] [2m       moments. With only 5 spice and 5 more auctions ahead, I need to be [0m
+[LOG] [2m       selective and preserve resources for when I can see cards (if available) [0m
+[LOG] [2m       or when the stakes are clearer. [0m
+[LOG] [37m    💰 bene_gesserit passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 10 spice...[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 4
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7220ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 4 spice
+
+I've placed a competitive bid to stay in [0m
+[LOG] [2m       the auction. Now it's back to Harkonnen to decide if they'll raise or [0m
+[LOG] [2m       pass. My remaining spice is 6, which still gives me flexibility for [0m
+[LOG] [2m       subsequent auctions and operations. [0m
+[LOG]   💰 Emperor bids 4 spice
+[LOG] [37m    💰 Emperor bids 4 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Stunner. Current bid: 4 by Emperor. Minimum bid: 5. You have 10 spice.[0m
+[LOG] [92m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 5
+       }[0m
+[LOG] [92m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  5406ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Result**: Successfully bid 5 spice on the Stunner. I now have 5 spice [0m
+[LOG] [2m       remaining. This is a good value play - I've acquired a useful weapon card [0m
+[LOG] [2m       while conserving resources for future auctions and operations. [0m
+[LOG]   💰 Atreides bids 5 spice
+[LOG] [37m    💰 Atreides bids 5 spice[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 5 by Atreides. Minimum bid: 6. You have 10 spice.[0m
+[LOG] [91m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7160ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning**: I've passed to conserve spice. With 10 spice and 5 more [0m
+[LOG] [2m       auctions remaining, maintaining flexibility is crucial. Atreides' modest [0m
+[LOG] [2m       bid suggests this card may not be exceptional, and as Harkonnen, I should [0m
+[LOG] [2m       focus on accumulating cards strategically rather than bidding on every [0m
+[LOG] [2m       opportunity. My advantage comes from having cards when others need them - [0m
+[LOG] [2m       I'll wait for better value. [0m
+[LOG] [37m    💰 harkonnen passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 5 by Atreides. Minimum bid: 6. You have 10 spice.[0m
+[LOG] [93m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  8029ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I've passed on this auction. Since all other [0m
+[LOG] [2m       factions have already passed, Atreides will win the card for their bid of [0m
+[LOG] [2m       5 spice. This is a good economic outcome for me - I maintain my full 10 [0m
+[LOG] [2m       spice reserves while Atreides depletes theirs, and I'll continue to [0m
+[LOG] [2m       benefit from the upcoming auctions where I can make more strategic plays. [0m
+[LOG] 
+🎴 AUCTION 2/6
+[LOG]    Starting Bidder: Atreides
+[LOG]    Card: Snooper (secret - only Atreides can see)
+
+[LOG] [37m    💰 emperor passes[0m
+[LOG] [37m    📌 atreides wins the auction for 5 spice[0m
+[LOG] [37m    💰 Auction 2/6: Treachery Card (starting bidder: atreides)[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on Snooper. You must bid at least 1 spice or pass. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  5909ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Result**: I've passed on the Snooper. Now other factions will bid, or [0m
+[LOG] [2m       if everyone passes, the first eligible faction in storm order takes it [0m
+[LOG] [2m       for free. I'll conserve my spice for the remaining 5 auctions where I can [0m
+[LOG] [2m       make more strategic decisions with my prescience advantage. [0m
+[LOG] [37m    💰 atreides passes[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 10 spice.[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 3
+       }[0m
+[LOG] [91m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  9283ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken**: Bid 3 spice on the unknown treachery card.
+
+I now have [0m
+[LOG] [2m       7 spice remaining. This opening bid establishes my interest in acquiring [0m
+[LOG] [2m       treachery cards while remaining cost-conscious. I'll be ready to either [0m
+[LOG] [2m       increase my bid if others compete, or win this card at a reasonable price [0m
+[LOG] [2m       to build my card advantage. [0m
+[LOG]   💰 Harkonnen bids 3 spice
+[LOG] [37m    💰 Harkonnen bids 3 spice[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 3 spice.[0m
+[LOG] [94m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6758ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Rationale:** I've passed on this auction because I lack the spice to [0m
+[LOG] [2m       meet the minimum bid of 4. With only 3 spice, I need to be strategic [0m
+[LOG] [2m       about where I spend my limited resources. Early in the auction cycle, [0m
+[LOG] [2m       it's better to preserve spice for cards I can actually afford or for [0m
+[LOG] [2m       critical game actions like shipping and revival. [0m
+[LOG] [37m    💰 fremen passes[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6716ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision: PASS**
+
+I'm passing on this auction. With only 5 spice [0m
+[LOG] [2m       available and an unknown card, it's better to preserve resources for [0m
+[LOG] [2m       shipping moves (my core advantage) and future auctions where I might have [0m
+[LOG] [2m       better information or more critical needs. [0m
+[LOG] [37m    💰 spacing_guild passes[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7866ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I've passed on this auction. With limited spice [0m
+[LOG] [2m       reserves (5 total) and an unknown card, the risk-reward is unfavorable. [0m
+[LOG] [2m       Preserving spice for shipping forces and maintaining strategic [0m
+[LOG] [2m       flexibility is more important than acquiring a mystery card at this stage [0m
+[LOG] [2m       of the game. Harkonnen will likely win this auction, which is acceptable [0m
+[LOG] [2m       - I'll focus on the remaining auctions and my prediction strategy. [0m
+[LOG] [37m    💰 bene_gesserit passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Harkonnen. Minimum bid: 4. You have 15 spice...[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 4
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7601ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: Bid 4 spice**
+
+I've outbid Harkonnen by placing a 4-spice [0m
+[LOG] [2m       bid. This is a sound economic move because:
+- As Emperor, I'll receive [0m
+[LOG] [2m       the 4 spice back as income when the card sells
+- I prevent Harkonnen from [0m
+[LOG] [2m       getting a free card via buy-in
+- My remaining spice (11) is still [0m
+[LOG] [2m       sufficient for other actions this turn
+- The minimal cost keeps my [0m
+[LOG] [2m       economic advantage intact while staying competitive [0m
+[LOG]   💰 Emperor bids 4 spice
+[LOG] [37m    💰 Emperor bids 4 spice[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 4 by Emperor. Minimum bid: 5. You have 10 spice.[0m
+[LOG] [91m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 5
+       }[0m
+[LOG] [91m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7065ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 5 spice on the unknown treachery card.
+
+**Result:** [0m
+[LOG] [2m       Successfully bid 5 spice. I now have 5 spice remaining.
+
+This is a smart [0m
+[LOG] [2m       move - I've acquired another treachery card for my collection at a [0m
+[LOG] [2m       reasonable cost, and I still have 5 spice remaining for future auctions [0m
+[LOG] [2m       or military operations. The Emperor will need to decide whether to outbid [0m
+[LOG] [2m       me, but at this early stage with many auctions remaining, I'm comfortable [0m
+[LOG] [2m       with this acquisition. [0m
+[LOG]   💰 Harkonnen bids 5 spice
+[LOG] [37m    💰 Harkonnen bids 5 spice[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 5 by Harkonnen. Minimum bid: 6. You have 15 spice...[0m
+[LOG] [93m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7932ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning Summary**: I passed to preserve spice and maintain [0m
+[LOG] [2m       flexibility. As the Emperor, my wealth is my primary advantage - I should [0m
+[LOG] [2m       spend it strategically on threats that matter, not chase unknown cards [0m
+[LOG] [2m       early in the game. The Harkonnen can have this one; I'll profit when they [0m
+[LOG] [2m       buy their next card! [0m
+[LOG] 
+🎴 AUCTION 3/6
+[LOG]    Starting Bidder: Harkonnen
+[LOG]    Card: Snooper (secret - only Atreides can see)
+
+[LOG] [37m    💰 emperor passes[0m
+[LOG] [37m    📌 harkonnen wins the auction for 5 spice[0m
+[LOG] [37m    📌 Harkonnen draws a free card (TOP CARD ability)[0m
+[LOG] [37m    💰 Auction 3/6: Treachery Card (starting bidder: harkonnen)[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 5 spice.[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 1
+       }[0m
+[LOG] [91m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  8501ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: BID 1 spice**
+
+**Reasoning:** 
+- Opening bids at 1 spice [0m
+[LOG] [2m       are excellent value for treachery cards
+- I have room for 4 more cards [0m
+[LOG] [2m       (currently 4/8), so acquiring cards is a core Harkonnen strategy
+- 1 [0m
+[LOG] [2m       spice is minimal risk - I still have 4 spice remaining for future [0m
+[LOG] [2m       actions
+- Knowledge (cards) is power in Dune, especially for Harkonnen [0m
+[LOG] [2m       with our hoarding advantage
+- This is early in the auction cycle (3/6), [0m
+[LOG] [2m       so I can afford to be aggressive on card acquisition [0m
+[LOG]   💰 Harkonnen bids 1 spice
+[LOG] [37m    💰 Harkonnen bids 1 spice[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Harkonnen. Minimum bid: 2. You have 3 spice.[0m
+[LOG] [94m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6504ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I'm passing on this auction. With limited spice (3 total) and an unknown [0m
+[LOG] [2m       card, it's not worth committing 2/3 of my resources to an uncertain [0m
+[LOG] [2m       outcome. I'll preserve my spice for more strategic opportunities and [0m
+[LOG] [2m       essential game actions like shipping and revival. [0m
+[LOG] [37m    💰 fremen passes[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Harkonnen. Minimum bid: 2. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  8220ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I've passed on this auction. The card will likely go to Harkonnen at [0m
+[LOG] [2m       their bid of 1 spice, which is fine—I'll preserve my spice for more [0m
+[LOG] [2m       strategic uses later in the phase. [0m
+[LOG] [37m    💰 spacing_guild passes[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Harkonnen. Minimum bid: 2. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  9325ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I'm passing on this auction to conserve my [0m
+[LOG] [2m       limited spice resources for more strategically important actions in the [0m
+[LOG] [2m       early game, such as shipping forces and positioning for potential [0m
+[LOG] [2m       stronghold control or advisor placement. [0m
+[LOG] [37m    💰 bene_gesserit passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Harkonnen. Minimum bid: 2. You have 20 spice...[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 2
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7233ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: Bid 2 spice**
+
+I've placed the minimum bid of 2 spice. [0m
+[LOG] [2m       This keeps me in the auction while preserving most of my economic [0m
+[LOG] [2m       advantage. I'll assess Harkonnen's response and the card's value before [0m
+[LOG] [2m       deciding whether to continue bidding or pass on subsequent rounds. [0m
+[LOG]   💰 Emperor bids 2 spice
+[LOG] [37m    💰 Emperor bids 2 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Snooper. Current bid: 2 by Emperor. Minimum bid: 3. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 3
+       }[0m
+[LOG] [92m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7317ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 3 spice on Snooper
+
+**Reasoning:** 
+- Snooper is a [0m
+[LOG] [2m       solid defensive card that pairs well with my prescience ability
+- The bid [0m
+[LOG] [2m       is minimal (only 1 spice more than the Emperor's current bid)
+- This [0m
+[LOG] [2m       leaves me with 2 spice for critical shipping/revival actions later
+- With [0m
+[LOG] [2m       only the Emperor as competition and most factions already passed, they [0m
+[LOG] [2m       may not escalate further
+- This is a good value acquisition early in the [0m
+[LOG] [2m       auction sequence [0m
+[LOG]   💰 Atreides bids 3 spice
+[LOG] [37m    💰 Atreides bids 3 spice[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Atreides. Minimum bid: 4. You have 5 spice.[0m
+[LOG] [91m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  8234ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Result**: I've passed on this auction. This preserves my spice for [0m
+[LOG] [2m       future bidding opportunities where I can make more informed decisions or [0m
+[LOG] [2m       secure cards that better fit my strategy. With 3 more auctions remaining, [0m
+[LOG] [2m       I'll have better chances to build my treachery hand while maintaining [0m
+[LOG] [2m       strategic flexibility. [0m
+[LOG] [37m    💰 harkonnen passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Atreides. Minimum bid: 4. You have 20 spice.[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 4
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7391ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 4 spice on the unknown Treachery [0m
+[LOG] [2m       card.
+
+**Reasoning:** I'm maintaining competitive pressure on Atreides [0m
+[LOG] [2m       while bidding conservatively. My wealth advantage (16 spice remaining) [0m
+[LOG] [2m       allows me to continue bidding if Atreides raises, but I'm not [0m
+[LOG] [2m       overcommitting to an unknown card. This keeps me in control of the [0m
+[LOG] [2m       auction while preserving spice for other strategic needs. [0m
+[LOG]   💰 Emperor bids 4 spice
+[LOG] [37m    💰 Emperor bids 4 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Snooper. Current bid: 4 by Emperor. Minimum bid: 5. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  26933ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning**: I passed on the Snooper. While it's a decent card, [0m
+[LOG] [2m       spending all 5 spice would cripple my ability to act strategically in the [0m
+[LOG] [2m       remaining auctions and game phases. The Emperor will likely acquire it [0m
+[LOG] [2m       cheaply, but preserving my spice reserves is more valuable for Atreides' [0m
+[LOG] [2m       operational flexibility. [0m
+[LOG] 
+🎴 AUCTION 4/6
+[LOG]    Starting Bidder: Fremen
+[LOG]    Card: Cheap Hero (secret - only Atreides can see)
+
+[LOG] [37m    💰 atreides passes[0m
+[LOG] [37m    📌 emperor wins the auction for 4 spice[0m
+[LOG] [37m    💰 Auction 4/6: Treachery Card (starting bidder: fremen)[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 3 spice.[0m
+[LOG] [94m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  5865ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I've passed on the opening bid. This is the right move for Fremen - I [0m
+[LOG] [2m       need to preserve my limited spice for shipping and strategic advantages [0m
+[LOG] [2m       rather than gambling on unknown treachery cards. [0m
+[LOG] [37m    💰 fremen passes[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 1
+       }[0m
+[LOG] [96m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  6436ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Bid placed: 1 spice**
+
+I've made the opening bid at the minimum. This [0m
+[LOG] [2m       conservative approach preserves my spice resources while keeping me in [0m
+[LOG] [2m       contention for the card. I'll see how other factions respond before [0m
+[LOG] [2m       deciding whether to increase my bid. [0m
+[LOG]   💰 Spacing Guild bids 1 spice
+[LOG] [37m    💰 Spacing Guild bids 1 spice[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Spacing Guild. Minimum bid: 2. You have 5 sp...[0m
+[LOG] [95m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7268ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I've passed on this auction to conserve my [0m
+[LOG] [2m       limited spice reserves. With only 5 spice and 2 more auctions remaining, [0m
+[LOG] [2m       I need to be selective about where I spend my resources. As Bene [0m
+[LOG] [2m       Gesserit, my primary victory path is through prediction and subtle [0m
+[LOG] [2m       manipulation rather than treachery card accumulation, so this [0m
+[LOG] [2m       conservative approach aligns with my faction's strategic goals. [0m
+[LOG] [37m    💰 bene_gesserit passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Spacing Guild. Minimum bid: 2. You have 16 s...[0m
+[LOG] [93m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  9828ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I'm passing on this unknown treachery card. As [0m
+[LOG] [2m       the Emperor, my wealth is my advantage, and I should be strategic about [0m
+[LOG] [2m       which cards I acquire. With an unknown card at a low bid, the risk-reward [0m
+[LOG] [2m       isn't favorable. I'll preserve my spice for more certain opportunities or [0m
+[LOG] [2m       for shipping forces to secure strongholds. [0m
+[LOG] [37m    💰 emperor passes[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Cheap Hero. Current bid: 1 by Spacing Guild. Minimum bid: 2. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6878ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I've passed on this auction. The Cheap Hero card isn't worth the spice [0m
+[LOG] [2m       investment, especially early in the bidding sequence. I need to conserve [0m
+[LOG] [2m       my 5 spice for more impactful cards - like powerful weapons, defenses, or [0m
+[LOG] [2m       other special cards that will give me better strategic advantage. The [0m
+[LOG] [2m       Spacing Guild will likely take this at their low bid of 1 spice. [0m
+[LOG] [37m    💰 atreides passes[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Spacing Guild. Minimum bid: 2. You have 5 sp...[0m
+[LOG] [91m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 2
+       }[0m
+[LOG] [91m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  6878ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken**: Bid 2 spice on the unknown treachery [0m
+[LOG] [2m       card.
+
+**Reasoning**: 
+- As Harkonnen, hoarding treachery cards is a key [0m
+[LOG] [2m       strategic advantage (8-card hand limit)
+- With only Spacing Guild [0m
+[LOG] [2m       competing and their minimal bid, this is an efficient acquisition
+- [0m
+[LOG] [2m       Spending 2 of my 5 spice leaves me 3 for future actions while securing [0m
+[LOG] [2m       another card for my arsenal
+- This strengthens my position for upcoming [0m
+[LOG] [2m       battles and negotiations [0m
+[LOG]   💰 Harkonnen bids 2 spice
+[LOG] [37m    💰 Harkonnen bids 2 spice[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 2 by Harkonnen. Minimum bid: 3. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  8783ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I've passed on this treachery card auction. This [0m
+[LOG] [2m       preserves my 5 spice for more strategic uses - whether that's shipping [0m
+[LOG] [2m       forces at half cost or bidding on cards where I have better information. [0m
+[LOG] [2m       Harkonnen will receive this card for free, but maintaining my resource [0m
+[LOG] [2m       position is more important for the Guild's long-term strategy of [0m
+[LOG] [2m       controlling the game through economic leverage and shipping control. [0m
+[LOG] 
+🎴 AUCTION 5/6
+[LOG]    Starting Bidder: Spacing Guild
+[LOG]    Card: Lasgun (secret - only Atreides can see)
+
+[LOG] [37m    💰 spacing_guild passes[0m
+[LOG] [37m    📌 harkonnen wins the auction for 2 spice[0m
+[LOG] [37m    📌 Harkonnen draws a free card (TOP CARD ability)[0m
+[LOG] [37m    💰 Auction 5/6: Treachery Card (starting bidder: spacing_guild)[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: view_valid_actions[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  9472ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action: PASSED**
+
+I'm passing on this blind opening bid to conserve my [0m
+[LOG] [2m       limited 5 spice. My faction's economic engine is based on shipping [0m
+[LOG] [2m       income, so preserving spice for strategic shipping moves and potential [0m
+[LOG] [2m       free card acquisition (if all players pass) is more valuable than a [0m
+[LOG] [2m       speculative 1-spice bid on an unknown card. [0m
+[LOG] [37m    💰 spacing_guild passes[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 1
+       }[0m
+[LOG] [95m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  6608ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: Bid 1 spice**
+
+I've placed a minimal opening bid of 1 [0m
+[LOG] [2m       spice. This conservative approach:
+- Tests the waters with minimal spice [0m
+[LOG] [2m       expenditure
+- Positions me to potentially win cheaply if others pass
+- [0m
+[LOG] [2m       Leaves me with 4 spice for future decisions
+- Allows me to fold if the [0m
+[LOG] [2m       bidding escalates and the card isn't worth it
+
+Now the bidding will [0m
+[LOG] [2m       continue with other factions. [0m
+[LOG]   💰 Bene Gesserit bids 1 spice
+[LOG] [37m    💰 Bene Gesserit bids 1 spice[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Bene Gesserit. Minimum bid: 2. You have 18 s...[0m
+[LOG] [93m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 2
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  8871ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action taken**: Bid 2 spice on this Treachery card.
+
+**Reasoning**: 
+- [0m
+[LOG] [2m       At minimum bid, this is an efficient purchase
+- Building my hand early is [0m
+[LOG] [2m       important for Emperor strategy
+- I still have 16 spice remaining, [0m
+[LOG] [2m       maintaining my wealth advantage
+- The low bid from Bene Gesserit suggests [0m
+[LOG] [2m       they won't fight for it, so I should secure it cheaply [0m
+[LOG]   💰 Emperor bids 2 spice
+[LOG] [37m    💰 Emperor bids 2 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Lasgun. Current bid: 2 by Emperor. Minimum bid: 3. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 3
+       }[0m
+[LOG] [92m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  5379ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken**: Bid 3 spice for the Lasgun
+
+**Reasoning**: 
+- The [0m
+[LOG] [2m       Lasgun is a valuable weapon card worth securing
+- 3 spice is an efficient [0m
+[LOG] [2m       bid that outbids the Emperor
+- I still retain 2 spice for other critical [0m
+[LOG] [2m       actions
+- This strengthens my battle capabilities for upcoming conflicts [0m
+[LOG]   💰 Atreides bids 3 spice
+[LOG] [37m    💰 Atreides bids 3 spice[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Atreides. Minimum bid: 4. You have 3 spice.[0m
+[LOG] [91m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6303ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning:** While I'd prefer to accumulate treachery cards as [0m
+[LOG] [2m       Harkonnen, I'm constrained by my spice reserves. Bidding 4 spice would [0m
+[LOG] [2m       exceed my available resources, so passing is the only viable option. This [0m
+[LOG] [2m       is one of the final auctions (#5 of 6), so I'll have one more opportunity [0m
+[LOG] [2m       to bid if my spice situation improves. [0m
+[LOG] [37m    💰 harkonnen passes[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Atreides. Minimum bid: 4. You have 3 spice.[0m
+[LOG] [94m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  5316ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning:** I've passed on this auction. With only 3 spice and a [0m
+[LOG] [2m       minimum bid of 4, I have no choice. More importantly, as the Fremen, I [0m
+[LOG] [2m       should preserve spice for:
+- Shipping forces (though my desert mobility [0m
+[LOG] [2m       reduces this need)
+- Reviving troops after battles
+- Critical bidding [0m
+[LOG] [2m       situations later in the auction phase
+
+Atreides will likely win this card [0m
+[LOG] [2m       at their current bid of 3 spice. [0m
+[LOG] [37m    💰 fremen passes[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Atreides. Minimum bid: 4. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7950ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning**: I'm passing because:
+- The unknown card combined with [0m
+[LOG] [2m       Atreides' low bid suggests limited value
+- Preserving spice is critical [0m
+[LOG] [2m       for Bene Gesserit strategy (shipping forces, reviving troops, future card [0m
+[LOG] [2m       purchases)
+- With only 5 spice total, spending 4+ on an uncertain card is [0m
+[LOG] [2m       too risky
+- I can rely on my Voice ability in battles rather than loading [0m
+[LOG] [2m       up on treachery cards [0m
+[LOG] [37m    💰 bene_gesserit passes[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Atreides. Minimum bid: 4. You have 18 spice.[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 4
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7283ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 4 spice
+
+**Reasoning:** I'm now the high bidder at [0m
+[LOG] [2m       4 spice. This forces Atreides to decide whether to escalate their bid. As [0m
+[LOG] [2m       the Emperor, I benefit from either outcome:
+- If they pass, I get the [0m
+[LOG] [2m       card for 4 spice (reasonable cost)
+- If they continue bidding, I profit [0m
+[LOG] [2m       from the higher auction price and can potentially outbid them given my [0m
+[LOG] [2m       wealth advantage
+
+Remaining spice: 14 [0m
+[LOG]   💰 Emperor bids 4 spice
+[LOG] [37m    💰 Emperor bids 4 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Lasgun. Current bid: 4 by Emperor. Minimum bid: 5. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6932ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning**: Preserving spice liquidity is more important than [0m
+[LOG] [2m       acquiring a single weapon card. The Emperor will win this auction, but I [0m
+[LOG] [2m       maintain my flexibility for future turns and the final auction card. [0m
+[LOG] 
+🎴 AUCTION 6/6
+[LOG]    Starting Bidder: Bene Gesserit
+[LOG]    Card: Chaumas (secret - only Atreides can see)
+
+[LOG] [37m    💰 atreides passes[0m
+[LOG] [37m    📌 emperor wins the auction for 4 spice[0m
+[LOG] [37m    💰 Auction 6/6: Treachery Card (starting bidder: bene_gesserit)[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 1
+       }[0m
+[LOG] [95m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  11524ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: Bid 1 spice**
+
+**Reasoning:**
+- Minimal opening bid [0m
+[LOG] [2m       preserves spice for shipping forces (critical in early turns)
+- Keeps my [0m
+[LOG] [2m       hand-building options open while remaining competitive
+- 4 spice [0m
+[LOG] [2m       remaining is enough for early shipping actions
+- As Bene Gesserit, I need [0m
+[LOG] [2m       to stay flexible and reactive in the bidding phase [0m
+[LOG]   💰 Bene Gesserit bids 1 spice
+[LOG] [37m    💰 Bene Gesserit bids 1 spice[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 1 by Bene Gesserit. Minimum bid: 2. You have 14 s...[0m
+[LOG] [93m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 2
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  10156ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken**: Bid 2 spice on the unknown Treachery [0m
+[LOG] [2m       card.
+
+**Reasoning**: 
+- Minimal cost bid (just above the minimum) to [0m
+[LOG] [2m       likely win the final auction
+- Fills my last hand slot before movement [0m
+[LOG] [2m       phase
+- Maintains my strong spice position (12 remaining)
+- As Emperor, [0m
+[LOG] [2m       every card purchased by others benefits me financially, so I'm already [0m
+[LOG] [2m       ahead on the auction economy
+- This positions me well for the upcoming [0m
+[LOG] [2m       movement phase with a full hand of options [0m
+[LOG]   💰 Emperor bids 2 spice
+[LOG] [37m    💰 Emperor bids 2 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on Chaumas. Current bid: 2 by Emperor. Minimum bid: 3. You have 5 spice.[0m
+[LOG] [92m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6884ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+I'm passing on Chaumas to preserve my spice [0m
+[LOG] [2m       reserves. With only 5 spice available and this being the final auction, I [0m
+[LOG] [2m       need to maintain flexibility for shipping forces and other strategic [0m
+[LOG] [2m       actions. The Emperor's interest in this weapon/poison card suggests it [0m
+[LOG] [2m       may escalate in price, making it more efficient to let them have it while [0m
+[LOG] [2m       I keep my resources available for board control and positioning. [0m
+[LOG] [37m    💰 atreides passes[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 2 by Emperor. Minimum bid: 3. You have 3 spice.[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  10505ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Rationale**: I passed to preserve my 3 spice for the next phase. [0m
+[LOG] [2m       Spending all my resources on an unknown card at the final auction would [0m
+[LOG] [2m       leave me unable to ship forces or respond to threats. My Harkonnen [0m
+[LOG] [2m       advantage is best used when I can strategically acquire cards I need, not [0m
+[LOG] [2m       by gambling my entire treasury on an unknown card. [0m
+[LOG] [37m    💰 harkonnen passes[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 2 by Emperor. Minimum bid: 3. You have 3 spice.[0m
+[LOG] [94m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7370ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning**: I'm passing to preserve my 3 spice. As Fremen, my strength [0m
+[LOG] [2m       lies in desert mobility and force positioning, not in having a large hand [0m
+[LOG] [2m       of treachery cards. Conserving spice now allows me to maintain [0m
+[LOG] [2m       flexibility for shipping, reviving forces, and future strategic needs. [0m
+[LOG] [37m    💰 fremen passes[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 2 by Emperor. Minimum bid: 3. You have 5 spice.[0m
+[LOG] [96m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  6863ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I've passed on this treachery card. With three other factions already [0m
+[LOG] [2m       passing and an unknown card in play, it makes sense to preserve my 5 [0m
+[LOG] [2m       spice for more impactful uses like shipping forces or securing board [0m
+[LOG] [2m       position. The Emperor will likely win this final auction, and I can focus [0m
+[LOG] [2m       on my core strength: leveraging shipping fees and board control. [0m
+[LOG] [37m    💰 spacing_guild passes[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 2 by Emperor. Minimum bid: 3. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 3
+       }[0m
+[LOG] [95m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  8297ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: BID 3 spice**
+
+**Reasoning**: 
+- I've outbid the Emperor [0m
+[LOG] [2m       with the minimum required increase
+- My conservative bid leaves 2 spice [0m
+[LOG] [2m       in reserve for critical shipping or bidding needs
+- Treachery cards are [0m
+[LOG] [2m       essential for Bene Gesserit's Voice ability in battles
+- With only the [0m
+[LOG] [2m       Emperor remaining as competition and their low initial bid, they may not [0m
+[LOG] [2m       contest further
+- This is the final auction, so securing any treachery [0m
+[LOG] [2m       card strengthens my hand for the action phase ahead
+
+Result: Successfully [0m
+[LOG] [2m       bid 3 spice. Remaining spice: 2. [0m
+[LOG]   💰 Bene Gesserit bids 3 spice
+[LOG] [37m    💰 Bene Gesserit bids 3 spice[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 3 by Bene Gesserit. Minimum bid: 4. You have 14 s...[0m
+[LOG] [93m[1m    🔧 Tool: place_bid[0m
+[LOG] [2m       {
+         "amount": 4
+       }[0m
+[LOG] [93m[1m    ✓ Action: PLACE_BID[0m
+[LOG] [2m      ⏱️  7060ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Bid 4 spice on the treachery card.
+
+**Reasoning:** At [0m
+[LOG] [2m       the final auction with only Bene Gesserit remaining as a competitor, [0m
+[LOG] [2m       bidding the minimum (4 spice) is the right move. This prevents them from [0m
+[LOG] [2m       acquiring the card for free and maintains my economic advantage. Even if [0m
+[LOG] [2m       Bene Gesserit outbids me, I've established that cards cost spice - and as [0m
+[LOG] [2m       the Emperor, I benefit from every auction that drives up prices. My [0m
+[LOG] [2m       remaining 10 spice keeps me well-positioned for future actions. [0m
+[LOG]   💰 Emperor bids 4 spice
+[LOG] [37m    💰 Emperor bids 4 spice[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 BID_OR_PASS[0m
+[LOG] [2m    Bidding on an unknown Treachery card. Current bid: 4 by Emperor. Minimum bid: 5. You have 5 spice.[0m
+[LOG] [95m[1m    🔧 Tool: pass_bid[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_BID[0m
+[LOG] [2m      ⏱️  7847ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Reasoning**: I passed on this final auction to preserve my spice [0m
+[LOG] [2m       reserves. Spending all 5 spice on an unknown card would have left me [0m
+[LOG] [2m       completely resource-depleted. The Emperor can have this card - my [0m
+[LOG] [2m       strength as Bene Gesserit lies in manipulation and prediction, not in [0m
+[LOG] [2m       card collection. I'll need my spice for shipping forces and other [0m
+[LOG] [2m       strategic actions in the coming phases. [0m
+[LOG] [37m    💰 bene_gesserit passes[0m
+[LOG] [37m    📌 emperor wins the auction for 4 spice[0m
+[LOG] [37m    💰 Bidding complete[0m
+[LOG] [2m  ✓ bidding complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ REVIVAL PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 💀 REVIVAL PHASE (Turn 1)
+[LOG] ================================================================================
+[LOG] 
+  Rule 1.05: "There is no Storm Order in this Phase."
+[LOG]   All players may revive simultaneously.
+
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 REVIVE_FORCES[0m
+[LOG] [2m    Revival phase. You have 0 forces in tanks. You get 2 forces for FREE. You may revive up to -2 ADDITI...[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 REVIVE_FORCES[0m
+[LOG] [2m    Revival phase. You have 0 forces in tanks. You get 2 forces for FREE. You may revive up to -2 ADDITI...[0m
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 REVIVE_FORCES[0m
+[LOG] [2m    Revival phase. You have 0 forces in tanks. You get 3 forces for FREE. You may revive up to -3 ADDITI...[0m
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 REVIVE_FORCES[0m
+[LOG] [2m    Revival phase. You have 0 forces in tanks. You get 1 forces for FREE. You may revive up to -1 ADDITI...[0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 REVIVE_FORCES[0m
+[LOG] [2m    Revival phase. You have 0 forces in tanks. You get 1 forces for FREE. You may revive up to -1 ADDITI...[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 REVIVE_FORCES[0m
+[LOG] [2m    Revival phase. You have 0 forces in tanks. You get 1 forces for FREE. You may revive up to -1 ADDITI...[0m
+[LOG] [95m[1m    🔧 Tool: revive_forces[0m
+[LOG] [2m       {
+         "count": 1
+       }[0m
+[LOG] [95m[1m    🔧 Tool: pass_revival[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_REVIVAL[0m
+[LOG] [2m      ⏱️  7105ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action: Passed on revival**
+
+**Reasoning**: Although I was informed I'd [0m
+[LOG] [2m       receive 1 free force, the system confirmed there are actually 0 forces [0m
+[LOG] [2m       available in the Tleilaxu Tanks to revive. With no forces to draw from, I [0m
+[LOG] [2m       cannot execute any revival action and must pass this turn. I'll conserve [0m
+[LOG] [2m       my 5 spice for more impactful uses later in the game. [0m
+[LOG] [92m[1m    🔧 Tool: revive_forces[0m
+[LOG] [2m       {
+         "count": 2
+       }[0m
+[LOG] [92m[1m    🔧 Tool: pass_revival[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: PASS_REVIVAL[0m
+[LOG] [2m      ⏱️  7622ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision: PASS**
+
+**Reasoning:**
+- Despite the initial message stating [0m
+[LOG] [2m       2 free forces are available, the actual game state shows 0 forces in the [0m
+[LOG] [2m       Tleilaxu Tanks
+- The system rejected the revival attempt due to [0m
+[LOG] [2m       insufficient forces
+- With no forces to revive and no revivable leaders [0m
+[LOG] [2m       available, passing is the correct action
+- I preserve my 5 spice for more [0m
+[LOG] [2m       critical uses (shipping, bidding, or future revivals when forces become [0m
+[LOG] [2m       available) [0m
+[LOG] [91m[1m    🔧 Tool: revive_forces[0m
+[LOG] [2m       {
+         "count": 2
+       }[0m
+[LOG] [91m[1m    🔧 Tool: pass_revival[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_REVIVAL[0m
+[LOG] [2m      ⏱️  7621ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision: PASSED on revival**
+
+**Reasoning:**
+Despite the initial [0m
+[LOG] [2m       prompt indicating 2 free forces were available, the actual game state [0m
+[LOG] [2m       shows 0 forces in the Tleilaxu Tanks. Since there are no forces available [0m
+[LOG] [2m       to revive, passing was the correct action. The negative additional [0m
+[LOG] [2m       revival capacity also confirmed that no additional paid revivals were [0m
+[LOG] [2m       possible anyway. [0m
+[LOG] [93m[1m    🔧 Tool: revive_forces[0m
+[LOG] [2m       {
+         "count": 1
+       }[0m
+[LOG] [93m[1m    🔧 Tool: pass_revival[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    ✓ Action: PASS_REVIVAL[0m
+[LOG] [2m      ⏱️  7836ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: Passed on Revival**
+
+**Reasoning**: Despite being told I [0m
+[LOG] [2m       have 1 free force available, the system indicates my tanks are empty (0 [0m
+[LOG] [2m       forces) and won't allow any revival. Rather than waste time on an [0m
+[LOG] [2m       impossible action, I've passed to move the game forward. I'll preserve my [0m
+[LOG] [2m       10 spice for more strategic uses like shipping or bidding on cards in [0m
+[LOG] [2m       upcoming phases. [0m
+[LOG] [94m[1m    🔧 Tool: revive_forces[0m
+[LOG] [2m       {
+         "count": 3
+       }[0m
+[LOG] [94m[1m    🔧 Tool: pass_revival[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: PASS_REVIVAL[0m
+[LOG] [2m      ⏱️  8746ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken: PASS**
+
+**Reasoning:**
+Despite having the ability to [0m
+[LOG] [2m       revive 3 forces for free, there are currently 0 forces in the Tleilaxu [0m
+[LOG] [2m       Tanks to revive. The negative maxAdditionalForces value (-3) combined [0m
+[LOG] [2m       with the empty tanks means I have no viable revival options this turn. [0m
+[LOG] [2m       I've passed on the revival phase to move the game forward. [0m
+[LOG] [96m[1m    🔧 Tool: revive_forces[0m
+[LOG] [2m       {
+         "count": 1
+       }[0m
+[LOG] [96m[1m    🔧 Tool: pass_revival[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_REVIVAL[0m
+[LOG] [2m      ⏱️  9463ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Decision: PASS**
+
+With 0 forces in the tanks, there's nothing to [0m
+[LOG] [2m       revive. The free revival only applies if there are forces available in [0m
+[LOG] [2m       the tanks to revive. Since I have no forces there, the most efficient [0m
+[LOG] [2m       action is to pass and preserve my spice for more impactful uses later in [0m
+[LOG] [2m       the game. [0m
+[LOG] [2m  ✓ revival complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ SHIPMENT_MOVEMENT PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+================================================================================
+[LOG] 🚢 SHIPMENT & MOVEMENT PHASE (Turn 1)
+[LOG] ================================================================================
+[LOG] 
+📍 Storm Sector: 14
+[LOG] 📋 Storm Order: Emperor → Atreides → Harkonnen → Fremen → Spacing Guild → Bene Gesserit
+[LOG] 
+  Rule 1.06: First Player conducts Shipment, then Movement.
+[LOG]   Play proceeds in Storm Order until all players complete.
+
+[LOG] ================================================================================
+
+[LOG] 
+🚢 SHIPMENT: Emperor (1/6 in storm order)
+[LOG]    Reserves: 20 forces (20 regular, 0 elite)
+[LOG]    Spice: 10
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SHIP_FORCES[0m
+[LOG] [2m    Shipment phase. You have 20 forces in reserves (20 regular, 0 elite). Shipping costs 1 spice per for...[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "habbanya_sietch",
+         "sector": 15,
+         "count": 5,
+         "useElite": false
+       }[0m
+[LOG] [93m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen",
+         "sector": 9,
+         "count": 5,
+         "useElite": false
+       }[0m
+[LOG] [93m[1m    ✓ Action: SHIP_FORCES[0m
+[LOG] [2m      ⏱️  11740ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Perfect! **Action Complete:**
+
+I've deployed my initial forces [0m
+[LOG] [2m       strategically:
+- **5 forces to Habbanya Sietch** (uncontrolled [0m
+[LOG] [2m       stronghold) - 5 spice
+- **5 forces to Arrakeen** (Atreides-controlled [0m
+[LOG] [2m       stronghold) - 5 spice
+
+**Rationale:**
+1. **Habbanya Sietch**: This [0m
+[LOG] [2m       uncontrolled stronghold is a prime target. By establishing presence [0m
+[LOG] [2m       first, I can claim it or prepare to take it from future contenders.
+2. [0m
+[LOG] [2m       **Arrakeen**: Placing forces here challenges the Atreides' control and [0m
+[LOG] [2m       gives me a presence at one of the most strategically valuable strongholds [0m
+[LOG] [2m       with ornithopter access.
+3. **Resource Efficiency**: I've spent exactly [0m
+[LOG] [2m       10 spice (all my current reserves), maximizing my deployment while [0m
+[LOG] [2m       preserving flexibility for future turns.
+4. **Economic Advantage**: I've [0m
+[LOG] [2m       used my initial wealth to establish board presence, which is critical for [0m
+[LOG] [2m       Emperor strategy.
+
+I now have 10 forces deployed and 10 in reserves. The [0m
+[LOG] [2m       stage is set for the movement phase where I can consolidate control or [0m
+[LOG] [2m       create additional threats. [0m
+[LOG] 
+🚢 SHIPMENT: Atreides (2/6 in storm order)
+[LOG]    Reserves: 10 forces (10 regular, 0 elite)
+[LOG]    Spice: 5
+[LOG] [37m    🚀 emperor ships 5 forces to arrakeen (sector 9) for 5 spice[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SHIP_FORCES[0m
+[LOG] [2m    Shipment phase. You have 10 forces in reserves (10 regular, 0 elite). Shipping costs 1 spice per for...[0m
+[LOG] [92m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen",
+         "sector": 10,
+         "count": 5,
+         "useElite": false
+       }[0m
+[LOG] [92m[1m    ✓ Action: SHIP_FORCES[0m
+[LOG] [2m      ⏱️  9760ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Action Taken:** Shipped 5 forces to Arrakeen (sector 10)
+- **Cost:** 5 [0m
+[LOG] [2m       spice (1 per force to stronghold)
+- **Result:** I now have 15 total [0m
+[LOG] [2m       forces in Arrakeen (10 + 5), securing it as my first stronghold
+- [0m
+[LOG] [2m       **Strategic Impact:** 
+  - Arrakeen is now solidly under my control with [0m
+[LOG] [2m       no reserves left
+  - I have ornithopter access for flexible movement next [0m
+[LOG] [2m       phase
+  - This gives me a strong defensive position and mobility [0m
+[LOG] [2m       advantage
+  - I'm positioned to expand from this stronghold toward other [0m
+[LOG] [2m       objectives [0m
+[LOG] 
+🚢 SHIPMENT: Harkonnen (3/6 in storm order)
+[LOG]    Reserves: 10 forces (10 regular, 0 elite)
+[LOG]    Spice: 3
+[LOG] [37m    🚀 atreides ships 5 forces to arrakeen (sector 10) for 5 spice[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SHIP_FORCES[0m
+[LOG] [2m    Shipment phase. You have 10 forces in reserves (10 regular, 0 elite). Shipping costs 1 spice per for...[0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen",
+         "sector": 9,
+         "count": 3,
+         "useElite": false
+       }[0m
+[LOG] [91m[1m    🔧 Tool: pass_shipment[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_SHIPMENT[0m
+[LOG] [2m      ⏱️  9667ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Ah, Arrakeen is already at capacity with 2 factions (Atreides and [0m
+[LOG] [2m       Emperor). I cannot ship there. Let me reconsider my options. I should [0m
+[LOG] [2m       position forces strategically without overextending. Given my limited [0m
+[LOG] [2m       spice, I'll pass on this turn to preserve resources for future [0m
+[LOG] [2m       opportunities when I can make more impactful moves. [0m
+[LOG] 
+🚢 SHIPMENT: Fremen (4/6 in storm order)
+[LOG]    Reserves: 10 forces (10 regular, 0 elite)
+[LOG]    Spice: 3
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SHIP_FORCES[0m
+[LOG] [2m    Shipment phase. You have 10 forces in reserves (10 regular, 0 elite). Shipping costs 1 spice per for...[0m
+[LOG] [94m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "sietch_tabr",
+         "sector": 5,
+         "count": 3,
+         "useElite": false
+       }[0m
+[LOG] [94m[1m    🔧 Tool: view_valid_actions[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    ✓ Action: VIEW_MY_FACTION[0m
+[LOG] [2m      ⏱️  7829ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       The system still shows ship_forces as available. Let me view my faction [0m
+[LOG] [2m       details to understand my special Fremen abilities better: [0m
+[LOG] 
+🚢 SHIPMENT: Spacing Guild (5/6 in storm order)
+[LOG]    Reserves: 15 forces (15 regular, 0 elite)
+[LOG]    Spice: 11
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SHIP_FORCES[0m
+[LOG] [2m    Shipment phase. You have 15 forces in reserves (15 regular, 0 elite). Shipping costs 1 spice per for...[0m
+[LOG] [96m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen",
+         "sector": 9,
+         "count": 11,
+         "useElite": false
+       }[0m
+[LOG] [96m[1m    🔧 Tool: pass_shipment[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_SHIPMENT[0m
+[LOG] [2m      ⏱️  13661ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Interesting! Arrakeen already has Atreides and Emperor occupying it, so I [0m
+[LOG] [2m       can't ship there. Let me reconsider and check available strongholds. Let [0m
+[LOG] [2m       me look at the stronghold options and ship to one that's [0m
+[LOG] [2m       available:
+
+Since Arrakeen is blocked, I should focus on building up [0m
+[LOG] [2m       presence strategically. Let me ship to **Carthag** (Harkonnen-controlled) [0m
+[LOG] [2m       to establish a foothold there, or better yet, ship to non-stronghold [0m
+[LOG] [2m       territories to encourage other shipments (which benefits me as the Guild [0m
+[LOG] [2m       through spice collection).
+
+Actually, the best strategic move is to [0m
+[LOG] [2m       **pass** this turn. Here's why:
+
+1. **Encourage Shipments**: Other [0m
+[LOG] [2m       factions will likely ship forces, and I collect spice from ALL shipments [0m
+[LOG] [2m       (half the cost goes to me)
+2. **Economic Advantage**: With 6 factions [0m
+[LOG] [2m       playing, there will be significant shipping activity that generates spice [0m
+[LOG] [2m       for me
+3. **Time is My Ally**: My special victory condition triggers at [0m
+[LOG] [2m       turn 15 - I don't need to rush
+4. **Preserve Resources**: Keeping my [0m
+[LOG] [2m       spice reserves high gives me flexibility for later turns
+5. **Strategic [0m
+[LOG] [2m       Positioning**: I already control Tuek's Sietch; I can expand later when [0m
+[LOG] [2m       the board is more developed [0m
+[LOG] 
+🚢 SHIPMENT: Bene Gesserit (6/6 in storm order)
+[LOG]    Reserves: 19 forces (19 regular, 0 elite)
+[LOG]    Spice: 5
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 SHIP_FORCES[0m
+[LOG] [2m    Shipment phase. You have 19 forces in reserves (19 regular, 0 elite). Shipping costs 1 spice per for...[0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_hand[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen",
+         "sector": 9,
+         "count": 5,
+         "useElite": false
+       }[0m
+[LOG] [95m[1m    🔧 Tool: ship_forces[0m
+[LOG] [2m       {
+         "territoryId": "carthag",
+         "sector": 11,
+         "count": 5,
+         "useElite": false
+       }[0m
+[LOG] [95m[1m    ✓ Action: SHIP_FORCES[0m
+[LOG] [2m      ⏱️  12187ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I see - Arrakeen already has Atreides and Emperor there (2 factions), so [0m
+[LOG] [2m       I can't add a third. Let me check available strongholds and position [0m
+[LOG] [2m       strategically. Since I can coexist with one other faction in strongholds, [0m
+[LOG] [2m       I should target a stronghold with only one faction or none.
+
+Looking at [0m
+[LOG] [2m       the stronghold control:
+- Carthag: Harkonnen (1 faction) - I could [0m
+[LOG] [2m       coexist here
+- Sietch Tabr: Fremen (1 faction) - I could coexist here  
+- [0m
+[LOG] [2m       Habbanya Sietch: Emperor (1 faction) - I could coexist here
+- Tuek's [0m
+[LOG] [2m       Sietch: Spacing Guild (1 faction) - I could coexist here
+- Arrakeen: [0m
+[LOG] [2m       Atreides + Emperor (2 factions) - FULL
+
+I'll position at **Carthag** with [0m
+[LOG] [2m       the Harkonnen. This is a strategic location and gives me presence in a [0m
+[LOG] [2m       key stronghold: [0m
+[LOG] 
+✅ All factions have completed shipment sub-phase
+[LOG]    Starting movement sub-phase...
+
+[LOG] 
+🚶 MOVEMENT: Emperor (1/6 in storm order)
+[LOG]    Movement Range: 3 territoryies (Ornithopters)
+[LOG] [37m    🚀 bene_gesserit ships 5 forces to carthag (sector 11) for 5 spice[0m
+[LOG] [37m    📌 Movement sub-phase started[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 MOVE_FORCES[0m
+[LOG] [2m    Movement phase. You have 2 force stacks on the board. Movement range: 3 territories (ornithopters).[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen"
+       }[0m
+[LOG] [93m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "habbanya_sietch"
+       }[0m
+[LOG] [93m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "carthag"
+       }[0m
+[LOG] [93m[1m    🔧 Tool: move_forces[0m
+[LOG] [2m       {
+         "fromTerritoryId": "arrakeen",
+         "fromSector": 9,
+         "toTerritoryId": "sihaya_ridge",
+         "toSector": 4,
+         "count": 5
+       }[0m
+[LOG] [93m[1m    ✓ Action: MOVE_FORCES[0m
+[LOG] [2m      ⏱️  8517ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Analysis:**
+
+Current situation:
+- I control **Habbanya Sietch** [0m
+[LOG] [2m       (stronghold) with 5 forces
+- I have 5 forces at **Arrakeen** (shared with [0m
+[LOG] [2m       Atreides who has 15 forces there)
+- I have 0 spice and 10 reserves [0m
+[LOG] [2m       off-board
+- **Carthag** has 2 factions (Harkonnen + Bene Gesserit) - [0m
+[LOG] [2m       can't ship there
+- I have ornithopters (can move 3 territories)
+- Spice [0m
+[LOG] [2m       available at **Sihaya Ridge** (6 spice in sector 4)
+
+**Strategic [0m
+[LOG] [2m       Decision:**
+
+My best move is to **consolidate and grab the spice**. I [0m
+[LOG] [2m       should:
+1. Move my 5 forces from **Arrakeen** toward **Sihaya Ridge** to [0m
+[LOG] [2m       collect the spice (this is valuable early game)
+2. Keep my Habbanya [0m
+[LOG] [2m       Sietch forces secure
+
+With ornithopters from Arrakeen, I can reach Sihaya [0m
+[LOG] [2m       Ridge within 3 territories. This will give me spice income to fund future [0m
+[LOG] [2m       operations.
+
+Let me move the forces from Arrakeen to Sihaya Ridge: [0m
+[LOG] 
+🚶 MOVEMENT: Atreides (2/6 in storm order)
+[LOG]    Movement Range: 3 territoryies (Ornithopters)
+[LOG] [37m    👣 emperor moves 5 forces from arrakeen to sihaya_ridge[0m
+[LOG] 
+[LOG]   [42m[30m[1m Atreides [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 MOVE_FORCES[0m
+[LOG] [2m    Movement phase. You have 2 force stacks on the board. Movement range: 3 territories (ornithopters).[0m
+[LOG] [92m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "ARRAKEEN"
+       }[0m
+[LOG] [92m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "CARTHAG"
+       }[0m
+[LOG] [92m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "SIHAYA_RIDGE"
+       }[0m
+[LOG] [92m[1m    🔧 Tool: view_valid_actions[0m
+[LOG] [2m       {}[0m
+[LOG] [92m[1m    ✓ Action: VIEW_VALID_ACTIONS[0m
+[LOG] [2m      ⏱️  5808ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       Let me check the valid actions to understand the movement options better: [0m
+[LOG] 
+🚶 MOVEMENT: Harkonnen (3/6 in storm order)
+[LOG]    Movement Range: 3 territoryies (Ornithopters)
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 MOVE_FORCES[0m
+[LOG] [2m    Movement phase. You have 1 force stacks on the board. Movement range: 3 territories (ornithopters).[0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "carthag"
+       }[0m
+[LOG] [91m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen"
+       }[0m
+[LOG] [91m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "tueks_sietch"
+       }[0m
+[LOG] [91m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "habbanya_sietch"
+       }[0m
+[LOG] [91m[1m    🔧 Tool: pass_movement[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    ✓ Action: PASS_MOVEMENT[0m
+[LOG] [2m      ⏱️  9915ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Analysis:**
+
+Current situation:
+- I have 10 Harkonnen forces in Carthag [0m
+[LOG] [2m       (sector 11) with ornithopter access (3-territory movement range)
+- [0m
+[LOG] [2m       Carthag is currently uncontrolled (I need to establish stronghold [0m
+[LOG] [2m       control)
+- Bene Gesserit also has 5 forces in Carthag (sector 11) - [0m
+[LOG] [2m       sharing the same sector
+- Atreides controls Arrakeen, Emperor controls [0m
+[LOG] [2m       Habbanya Sietch, Spacing Guild controls Tuek's Sietch, Fremen controls [0m
+[LOG] [2m       Sietch Tabr
+- Spice is on Sihaya Ridge
+
+**Strategic Decision:**
+
+I should [0m
+[LOG] [2m       **PASS** on movement this turn. Here's why:
+
+1. **Consolidation**: My 10 [0m
+[LOG] [2m       forces in Carthag are well-positioned. Moving them now could expose them [0m
+[LOG] [2m       to attack or waste the advantage of having ornithopters.
+
+2. **Early Game [0m
+[LOG] [2m       Caution**: It's Turn 1 - I need to see how other factions deploy before [0m
+[LOG] [2m       committing to aggressive movements.
+
+3. **Bene Gesserit Presence**: [0m
+[LOG] [2m       There's already a Bene Gesserit force in my sector. Moving now could [0m
+[LOG] [2m       trigger an unwanted battle when I should be building up strength.
+
+4. [0m
+[LOG] [2m       **Card Advantage Priority**: As Harkonnen, my strength comes from [0m
+[LOG] [2m       accumulating treachery cards and traitors. I should focus on the bidding [0m
+[LOG] [2m       phase to acquire more cards before committing to military action.
+
+5. [0m
+[LOG] [2m       **Spice Constraint**: I only have 3 spice. I need to be strategic about [0m
+[LOG] [2m       when I spend it. [0m
+[LOG] 
+🚶 MOVEMENT: Fremen (4/6 in storm order)
+[LOG]    Movement Range: 2 territoryies
+[LOG] 
+[LOG]   [44m[30m[1m Fremen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 MOVE_FORCES[0m
+[LOG] [2m    Movement phase. You have 3 force stacks on the board. Movement range: 2 territories.[0m
+[LOG] [94m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [94m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "sietch_tabr"
+       }[0m
+[LOG] [94m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "false_wall_south"
+       }[0m
+[LOG] [94m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "false_wall_west"
+       }[0m
+[LOG] [94m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "sihaya_ridge"
+       }[0m
+[LOG] [94m[1m    🔧 Tool: move_forces[0m
+[LOG] [2m       {
+         "fromTerritoryId": "sietch_tabr",
+         "fromSector": 0,
+         "toTerritoryId": "sihaya_ridge",
+         "toSector": 3,
+         "count": 6
+       }[0m
+[LOG] [94m[1m    ✓ Action: MOVE_FORCES[0m
+[LOG] [2m      ⏱️  9273ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Analysis:**
+
+Current situation:
+- I control Sietch Tabr (stronghold) [0m
+[LOG] [2m       with 6 forces
+- I have 2 forces each at False Wall South and False Wall [0m
+[LOG] [2m       West
+- There's 6 spice at Sihaya Ridge, currently occupied by Emperor [0m
+[LOG] [2m       forces
+- I have 3 spice in reserves and 10 forces in reserves
+- Movement [0m
+[LOG] [2m       range: 2 territories (Fremen advantage)
+- Storm is at sector [0m
+[LOG] [2m       14
+
+**Strategic Decision:**
+The key opportunity is the 6 spice at Sihaya [0m
+[LOG] [2m       Ridge. Moving my 6-force stack from Sietch Tabr toward Sihaya Ridge [0m
+[LOG] [2m       would:
+1. Position me to contest the spice
+2. Keep me within my [0m
+[LOG] [2m       2-territory movement range
+3. Potentially force the Emperor to defend or [0m
+[LOG] [2m       abandon the spice
+
+However, I need to check if Sihaya Ridge is within 2 [0m
+[LOG] [2m       territories of Sietch Tabr. Let me move my main force stack to advance [0m
+[LOG] [2m       toward the spice: [0m
+[LOG] 
+🚶 MOVEMENT: Spacing Guild (5/6 in storm order)
+[LOG]    Movement Range: 1 territory
+[LOG] 
+[LOG]   [46m[30m[1m Spacing Guild [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 MOVE_FORCES[0m
+[LOG] [2m    Movement phase. You have 1 force stacks on the board. Movement range: 1 territories.[0m
+[LOG] [96m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "tueks_sietch"
+       }[0m
+[LOG] [96m[1m    🔧 Tool: pass_movement[0m
+[LOG] [2m       {}[0m
+[LOG] [96m[1m    ✓ Action: PASS_MOVEMENT[0m
+[LOG] [2m      ⏱️  10043ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Rationale:** Holding my position in Tuek's Sietch is the optimal play. [0m
+[LOG] [2m       As the Spacing Guild, I benefit from:
+- Controlling a stronghold early [0m
+[LOG] [2m       (1/3 needed)
+- Encouraging other factions to ship forces (generating [0m
+[LOG] [2m       income for me)
+- Avoiding unnecessary battles with limited forces
+- [0m
+[LOG] [2m       Maintaining flexibility for future turns
+
+The game is long, and my [0m
+[LOG] [2m       victory condition improves as time passes. Early aggression isn't [0m
+[LOG] [2m       necessary. [0m
+[LOG] 
+🚶 MOVEMENT: Bene Gesserit (6/6 in storm order)
+[LOG]    Movement Range: 3 territoryies (Ornithopters)
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 MOVE_FORCES[0m
+[LOG] [2m    Movement phase. You have 2 force stacks on the board. Movement range: 3 territories (ornithopters).[0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "carthag"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "polar_sink"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "arrakeen"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: pass_movement[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    ✓ Action: PASS_MOVEMENT[0m
+[LOG] [2m      ⏱️  10327ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Strategic Analysis:**
+
+Current situation:
+- I have 6 forces at Carthag [0m
+[LOG] [2m       (with Harkonnen) and 1 force at Polar Sink
+- Carthag is a stronghold [0m
+[LOG] [2m       already contested (Harkonnen has 10 forces there)
+- I have ornithopters [0m
+[LOG] [2m       (from Carthag) giving me 3-territory movement range
+- No spice currently [0m
+[LOG] [2m       available to me
+- I need to position for prediction victory or work [0m
+[LOG] [2m       toward stronghold control
+
+**Strategic Decision:**
+
+I should **pass this [0m
+[LOG] [2m       movement phase**. Here's why:
+
+1. **Carthag Position**: My 5 forces at [0m
+[LOG] [2m       Carthag are already well-positioned as Spiritual Advisors (Bene Gesserit [0m
+[LOG] [2m       can coexist with one other faction). Moving them would only expose them [0m
+[LOG] [2m       to unnecessary battles.
+
+2. **Polar Sink Isolation**: My single force at [0m
+[LOG] [2m       Polar Sink is too weak to accomplish anything meaningful with a [0m
+[LOG] [2m       3-territory move.
+
+3. **Resource Constraint**: With 0 spice, I cannot [0m
+[LOG] [2m       revive forces if they're lost in battle. Movement creates combat [0m
+[LOG] [2m       risk.
+
+4. **Better Strategy**: Early game, I should consolidate and wait [0m
+[LOG] [2m       for better opportunities to use my Voice ability in battles or position [0m
+[LOG] [2m       advisors strategically.
+
+5. **Prediction Focus**: As Bene Gesserit, my [0m
+[LOG] [2m       primary victory condition is my secret prediction. Moving aggressively [0m
+[LOG] [2m       now risks exposing my strategy before I can manipulate the board [0m
+[LOG] [2m       effectively. [0m
+[LOG] 
+✅ All factions have completed movement sub-phase
+[LOG]    Applying alliance constraint (Rule 1.06.03.08)...
+
+[LOG] [2m  ✓ shipment_movement complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ BATTLE PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] [37m    ⚔️ 1 potential battles identified[0m
+[LOG] 
+[LOG]   [41m[30m[1m Harkonnen [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 CHOOSE_BATTLE[0m
+[LOG] [2m    You are the aggressor. Choose which battle to fight or pass.[0m
+[LOG] [91m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [91m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "CARTHAG"
+       }[0m
+[LOG] [91m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "bene_gesserit"
+       }[0m
+[LOG] [91m[1m    🔧 Tool: choose_battle[0m
+[LOG] [2m       {
+         "territoryId": "carthag",
+         "opponentFaction": "bene_gesserit"
+       }[0m
+[LOG] [91m[1m    ✓ Action: CHOOSE_BATTLE[0m
+[LOG] [2m      ⏱️  8576ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Battle Chosen: Harkonnen vs Bene Gesserit at Carthag**
+
+I'm engaging [0m
+[LOG] [2m       the Bene Gesserit at Carthag with confidence. My 10 forces vs their 5 [0m
+[LOG] [2m       gives me a strong advantage, and I have excellent leaders to support the [0m
+[LOG] [2m       battle. This is a strategic move to secure control of Carthag early in [0m
+[LOG] [2m       the game, which is critical for my faction's ornithopter advantage. [0m
+[LOG] 
+[LOG]   [45m[30m[1m Bene Gesserit [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 CHOOSE_BATTLE[0m
+[LOG] [2m    You are the aggressor. Choose which battle to fight or pass.[0m
+[LOG] [95m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [95m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "CARTHAG"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_faction[0m
+[LOG] [2m       {
+         "faction": "harkonnen"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: view_territory[0m
+[LOG] [2m       {
+         "territoryId": "carthag"
+       }[0m
+[LOG] [95m[1m    🔧 Tool: choose_battle[0m
+[LOG] [2m       {
+         "territoryId": "carthag",
+         "opponentFaction": "harkonnen"
+       }[0m
+[LOG] [95m[1m    ✓ Action: CHOOSE_BATTLE[0m
+[LOG] [2m      ⏱️  8365ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       **Analysis:**
+
+Current situation at Carthag:
+- **My forces**: 5 regular [0m
+[LOG] [2m       troops
+- **Harkonnen forces**: 10 regular troops (2x my strength)
+- [0m
+[LOG] [2m       **Territory**: Stronghold (valuable prize)
+
+This is an unfavorable [0m
+[LOG] [2m       matchup numerically. However, as Bene Gesserit, I have strategic [0m
+[LOG] [2m       advantages:
+1. I have 5 available leaders (all strength 5), giving me [0m
+[LOG] [2m       significant battle flexibility
+2. I can use Voice to force Harkonnen to [0m
+[LOG] [2m       play/not play cards
+3. This is Turn 1 - early battles should be [0m
+[LOG] [2m       considered carefully
+4. Harkonnen is stronger numerically, but I have [0m
+[LOG] [2m       more cards in hand (1 vs their 6, but I have leaders [0m
+[LOG] [2m       available)
+
+**Decision**: I will **CHOOSE_BATTLE** at Carthag against [0m
+[LOG] [2m       Harkonnen.
+
+**Reasoning**: 
+- I'm the aggressor and must fight if I [0m
+[LOG] [2m       choose
+- Carthag is a stronghold - a critical victory point
+- Fighting [0m
+[LOG] [2m       now allows me to use Voice strategically and potentially weaken Harkonnen [0m
+[LOG] [2m       early
+- With my leaders available, I can make this competitive
+- Passing [0m
+[LOG] [2m       would mean losing the initiative in this stronghold [0m
+[LOG] [37m    ⚔️ All battles resolved[0m
+[LOG] [2m  ✓ battle complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ SPICE_COLLECTION PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] 
+[LOG]   [43m[30m[1m Emperor [0m [2mneeds to decide:[0m
+[LOG] [37m[1m    📋 COLLECT_SPICE[0m
+[LOG] [2m    Spice Collection: You have 1 collection opportunities.[0m
+[LOG] [93m[1m    🔧 Tool: view_my_faction[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_game_state[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    🔧 Tool: view_valid_actions[0m
+[LOG] [2m       {}[0m
+[LOG] [93m[1m    ✓ Action: VIEW_VALID_ACTIONS[0m
+[LOG] [2m      ⏱️  7809ms[0m
+[LOG] [37m    💭 Reasoning:[0m
+[LOG] [2m       I notice the valid actions don't show a direct COLLECT_SPICE button in [0m
+[LOG] [2m       the response, but based on the context you provided, I should proceed [0m
+[LOG] [2m       with collecting the spice.
+
+**Action: COLLECT_SPICE from Sihaya [0m
+[LOG] [2m       Ridge**
+
+I'm collecting all 6 available spice from Sihaya Ridge using my [0m
+[LOG] [2m       5 forces stationed there. This gives me 6 spice to start building my [0m
+[LOG] [2m       economic advantage, which is critical for the Emperor faction to compete [0m
+[LOG] [2m       in the auction phase and maintain our strategic position through wealth [0m
+[LOG] [2m       and force deployment. [0m
+[LOG] [2m  ✓ spice_collection complete[0m
+[LOG] 
+[LOG] [36m[1m  ▶ MENTAT_PAUSE PHASE[0m
+[LOG] [2m  ──────────────────────────────────────────────────[0m
+[LOG] [2m  ✓ mentat_pause complete[0m
+[LOG] 
+[33m════════════════════════════════════════════════════════════[0m
+[LOG] [33m[1m  🏆 GAME OVER[0m
+[LOG] [33m════════════════════════════════════════════════════════════[0m
+[LOG] 
+[LOG] [37m[1m  Winner:[0m
+[LOG]     [46m[30m[1m Spacing Guild [0m 🎉
+[LOG] 
+[LOG] [2m  Total turns: 1[0m
+[LOG] 

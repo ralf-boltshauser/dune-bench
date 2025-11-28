@@ -1,0 +1,877 @@
+================================================================================
+PHASE TEST LOG: fremen-worm-immunity
+================================================================================
+Generated: 2025-11-28T11:18:37.075Z
+Steps: 4
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:18:37 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        fremen,
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: habbanya_erg,
+              sector: 14,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [
+            {
+              territory: habbanya_erg,
+              sector: 14,
+              regular: 3,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [
+            {
+              territory: habbanya_erg,
+              sector: 14,
+              regular: 2,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: habbanya_erg,
+          sector: 14,
+          amount: 8,
+        },
+      ],
+      stormSector: 5,
+      stormOrder: [
+        fremen,
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:18:37 PM] INFO
+  Starting scenario: fremen-worm-immunity
+
+[12:18:37 PM] INFO
+  Turn: 2, Storm Sector: 5
+
+[12:18:37 PM] INFO
+  Spice Deck A: 3 cards
+
+[12:18:37 PM] INFO
+  Spice Deck B: 22 cards
+
+[12:18:37 PM] INFO
+  Queued 0 agent responses
+
+[12:18:37 PM] EVENT
+  Spice Card A revealed: Habbanya Erg
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: Habbanya Erg,
+        type: territory,
+        deck: A,
+      },
+    }
+
+[12:18:37 PM] EVENT
+  8 spice placed in habbanya_erg (sector 14)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: habbanya_erg,
+        sector: 14,
+        amount: 8,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[12:18:37 PM] EVENT
+  Spice Card B revealed: Wind Pass
+  Data:
+    {
+      eventType: SPICE_CARD_REVEALED,
+      data: {
+        card: Wind Pass,
+        type: territory,
+        deck: B,
+      },
+    }
+
+[12:18:37 PM] EVENT
+  6 spice placed in wind_pass (sector 13)
+  Data:
+    {
+      eventType: SPICE_PLACED,
+      data: {
+        territory: wind_pass,
+        sector: 13,
+        amount: 6,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[12:18:37 PM] REQUEST
+  fremen requested: WORM_RIDE
+  Data:
+    {
+      faction: fremen,
+      requestType: WORM_RIDE,
+      prompt: A sandworm appeared! Do you want to ride the worm or let it devour forces?,
+      context: {
+        lastSpiceLocation: {
+          territoryId: wind_pass,
+          sector: 13,
+        },
+        forcesInTerritory: [],
+      },
+      availableActions: [
+        WORM_RIDE,
+        WORM_DEVOUR,
+      ],
+    }
+
+[12:18:37 PM] RESPONSE
+  fremen responded: PASS (passed: true)
+  Data:
+    {
+      faction: fremen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[12:18:37 PM] EVENT
+  6 spice destroyed by sandworm in wind_pass
+  Data:
+    {
+      eventType: SPICE_DESTROYED_BY_WORM,
+      data: {
+        territory: wind_pass,
+        sector: 13,
+        amount: 6,
+      },
+    }
+
+[12:18:37 PM] EVENT
+  Nexus! Alliance negotiations may occur.
+  Data:
+    {
+      eventType: NEXUS_STARTED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[12:18:37 PM] REQUEST
+  fremen requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: fremen,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          atreides,
+          harkonnen,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[12:18:37 PM] REQUEST
+  atreides requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: atreides,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          fremen,
+          harkonnen,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[12:18:37 PM] REQUEST
+  harkonnen requested: ALLIANCE_DECISION
+  Data:
+    {
+      faction: harkonnen,
+      requestType: ALLIANCE_DECISION,
+      prompt: Nexus! You may form or break an alliance. Current ally: None,
+      context: {
+        currentAlly: null,
+        availableFactions: [
+          fremen,
+          atreides,
+        ],
+        turn: 2,
+      },
+      availableActions: [
+        FORM_ALLIANCE,
+        BREAK_ALLIANCE,
+        PASS,
+      ],
+    }
+
+[12:18:37 PM] RESPONSE
+  fremen responded: PASS (passed: true)
+  Data:
+    {
+      faction: fremen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[12:18:37 PM] RESPONSE
+  atreides responded: PASS (passed: true)
+  Data:
+    {
+      faction: atreides,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[12:18:37 PM] RESPONSE
+  harkonnen responded: PASS (passed: true)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[12:18:37 PM] EVENT
+  Nexus ends.
+  Data:
+    {
+      eventType: NEXUS_ENDED,
+      data: {},
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[12:18:37 PM] STATE
+  State snapshot: After step 4
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        fremen,
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: habbanya_erg,
+              sector: 14,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 3,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 5,
+      stormOrder: [
+        fremen,
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:18:37 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 2,
+      phase: spice_blow,
+      factions: [
+        fremen,
+        atreides,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: fremen,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: habbanya_erg,
+              sector: 14,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: atreides,
+          spice: 30,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 3,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 35,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 5,
+      stormOrder: [
+        fremen,
+        atreides,
+        harkonnen,
+      ],
+    }
+
+[12:18:37 PM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 4
+Total Events: 5
+Completed: Yes
+
+Events:
+  1. [SPICE_CARD_REVEALED] Spice Card B revealed: Wind Pass
+  2. [SPICE_PLACED] 6 spice placed in wind_pass (sector 13)
+  3. [SPICE_DESTROYED_BY_WORM] 6 spice destroyed by sandworm in wind_pass
+  4. [NEXUS_STARTED] Nexus! Alliance negotiations may occur.
+  5. [NEXUS_ENDED] Nexus ends.
+
+Final State:
+  Turn: 2
+  Phase: spice_blow
+  Factions: fremen, atreides, harkonnen
+
+  fremen:
+    Spice: 13
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  atreides:
+    Spice: 30
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 35
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+
+================================================================================
+END OF LOG
+================================================================================

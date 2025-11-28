@@ -42,6 +42,14 @@ export interface RevivalLimits {
   canReviveLeader: boolean;
   /** Leaders available to revive */
   revivableLeaders: { id: string; name: string; cost: number }[];
+  /** Emperor bonus revivals available (0-3) */
+  emperorBonusAvailable: number;
+  /** Emperor bonus revivals already used this turn */
+  emperorBonusUsed: number;
+  /** Whether Fremen ally can grant 3 free revivals */
+  fremenBoostAvailable: boolean;
+  /** Whether Fremen has granted the boost this turn */
+  fremenBoostGranted: boolean;
 }
 
 /**
@@ -67,13 +75,34 @@ export function getRevivalLimits(state: GameState, faction: Faction): RevivalLim
   // Can revive leader if all leaders dead or all have died at least once
   const canRevive = canReviveLeader(state, faction);
 
+  // Check if Emperor is ally and can provide extra revivals
+  const emperorState = state.factions.get(Faction.EMPEROR);
+  const isEmperorAlly = emperorState?.allyId === faction;
+  const emperorBonusUsed = factionState.emperorAllyRevivalsUsed ?? 0;
+  const emperorBonusAvailable = isEmperorAlly ? Math.max(0, 3 - emperorBonusUsed) : 0;
+
+  // Check if Fremen is ally and can grant 3 free revivals
+  const fremenState = state.factions.get(Faction.FREMEN);
+  const isFremenAlly = fremenState?.allyId === faction;
+  const fremenBoostGranted = factionState.fremenRevivalBoostGranted ?? false;
+
+  // If Fremen granted the boost, override the faction's normal free revival count
+  let freeForces = config.freeRevival;
+  if (isFremenAlly && fremenBoostGranted) {
+    freeForces = 3;
+  }
+
   return {
-    freeForces: config.freeRevival,
+    freeForces,
     maxForces: GAME_CONSTANTS.MAX_FORCE_REVIVAL_PER_TURN,
     forcesInTanks,
     costPerForce: GAME_CONSTANTS.COST_PER_FORCE_REVIVAL,
     canReviveLeader: canRevive && revivableLeaders.length > 0,
     revivableLeaders,
+    emperorBonusAvailable,
+    emperorBonusUsed,
+    fremenBoostAvailable: isFremenAlly,
+    fremenBoostGranted,
   };
 }
 
@@ -131,6 +160,39 @@ export function validateForceRevival(
           actual: eliteCount,
           expected: `0-${tanksElite}`,
           suggestion: tanksElite > 0 ? `Revive ${tanksElite} elite forces` : 'No elite forces in tanks',
+        }
+      )
+    );
+  }
+
+  // Check: Elite revival limit (Fedaykin/Sardaukar - only 1 per turn)
+  if (eliteCount > 1 && (faction === Faction.FREMEN || faction === Faction.EMPEROR)) {
+    errors.push(
+      createError(
+        'ELITE_REVIVAL_LIMIT_EXCEEDED',
+        `Cannot revive ${eliteCount} elite forces, maximum is 1 per turn`,
+        {
+          field: 'eliteCount',
+          actual: eliteCount,
+          expected: '0 or 1',
+          suggestion: 'Revive at most 1 elite force per turn',
+        }
+      )
+    );
+  }
+
+  // Check: Already revived elite forces this turn
+  const alreadyRevived = factionState.eliteForcesRevivedThisTurn ?? 0;
+  if (eliteCount > 0 && alreadyRevived >= 1 && (faction === Faction.FREMEN || faction === Faction.EMPEROR)) {
+    errors.push(
+      createError(
+        'ELITE_REVIVAL_ALREADY_USED',
+        `Cannot revive ${eliteCount} elite forces, you have already revived ${alreadyRevived} elite force(s) this turn`,
+        {
+          field: 'eliteCount',
+          actual: eliteCount,
+          expected: '0',
+          suggestion: 'You can only revive 1 elite force per turn',
         }
       )
     );

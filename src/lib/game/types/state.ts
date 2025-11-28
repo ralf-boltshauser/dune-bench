@@ -60,6 +60,9 @@ export interface FactionState {
   beneGesseritPrediction?: BeneGesseritPrediction;
   kwisatzHaderach?: KwisatzHaderach;
   fremenStormCard?: string | null; // Storm card for next turn
+  emperorAllyRevivalsUsed?: number; // Track Emperor's ally revival bonus used this turn (0-3)
+  fremenRevivalBoostGranted?: boolean; // Track if Fremen granted 3 free revivals to ally this turn
+  eliteForcesRevivedThisTurn?: number; // Track elite forces (Sardaukar/Fedaykin) revived this turn (max 1 for Emperor/Fremen)
 }
 
 // =============================================================================
@@ -130,6 +133,49 @@ export interface VoiceCommand {
 }
 
 // =============================================================================
+// KARAMA INTERRUPT STATE
+// =============================================================================
+
+/**
+ * Tracking for Karama card interrupts.
+ *
+ * Karama allows players to:
+ * 1. Cancel abilities with ✷ after them (after use)
+ * 2. Prevent abilities with ✷ before and after them (before use)
+ * 3. Purchase shipment at Guild rates
+ * 4. Bid without having enough spice
+ */
+export interface KaramaInterruptState {
+  // The current interrupt opportunity window
+  interruptType: "cancel" | "prevent";
+
+  // What ability is being targeted
+  targetFaction: Faction;
+  abilityName: string;
+  abilityContext: Record<string, unknown>; // Context for the ability being interrupted
+
+  // Who can respond with Karama
+  eligibleFactions: Faction[]; // All factions except target
+
+  // Responses collected
+  responses: Map<Faction, KaramaResponse>;
+
+  // Whether an interrupt occurred
+  interrupted: boolean;
+  interruptor: Faction | null;
+
+  // Turn and phase when interrupt was triggered
+  turn: number;
+  phase: Phase;
+}
+
+export interface KaramaResponse {
+  faction: Faction;
+  useKarama: boolean;
+  karamaCardId?: string; // The card used (or worthless card if Bene Gesserit)
+}
+
+// =============================================================================
 // MAIN GAME STATE
 // =============================================================================
 
@@ -181,6 +227,9 @@ export interface GameState {
   // Nexus tracking
   wormCount: number; // Total worms revealed (for Shield Wall variant)
   nexusOccurring: boolean;
+
+  // Karama interrupt tracking
+  karamaState: KaramaInterruptState | null;
 
   // Game log
   actionLog: GameAction[];

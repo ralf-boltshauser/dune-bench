@@ -1,0 +1,1111 @@
+================================================================================
+PHASE TEST LOG: Complex Multi-Faction Revival
+================================================================================
+Generated: 2025-11-28T11:07:44.598Z
+Steps: 2
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:07:44 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 3,
+      phase: revival,
+      factions: [
+        atreides,
+        fremen,
+        emperor,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 25,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 18,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 8,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 25,
+            elite: 2,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 2,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 40,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 26,
+            elite: 1,
+          },
+          forcesInTanks: {
+            regular: 6,
+            elite: 1,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 11,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 11,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 14,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 4,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+        emperor,
+        harkonnen,
+      ],
+    }
+
+[12:07:44 PM] INFO
+  Starting scenario: Complex Multi-Faction Revival
+
+[12:07:44 PM] INFO
+  Queued 5 agent responses
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[12:07:44 PM] REQUEST
+  atreides requested: REVIVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 8 forces in tanks. You get 2 forces for FREE. You may revive up to 1 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 1),
+      context: {
+        forcesInTanks: 8,
+        freeRevivalLimit: 2,
+        maxAdditionalForces: 1,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 25,
+        revivableLeaders: [],
+        kwisatzHaderachDead: false,
+        kwisatzHaderachRevivalCost: 2,
+        canReviveKwisatzHaderach: false,
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] REQUEST
+  fremen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: fremen,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 7 forces in tanks. You get 3 forces for FREE. You may revive up to 0 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 0),
+      context: {
+        forcesInTanks: 7,
+        freeRevivalLimit: 3,
+        maxAdditionalForces: 0,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 8,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] REQUEST
+  emperor requested: REVIVE_FORCES
+  Data:
+    {
+      faction: emperor,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 7 forces in tanks. You get 1 forces for FREE. You may revive up to 2 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 2),
+      context: {
+        forcesInTanks: 7,
+        freeRevivalLimit: 1,
+        maxAdditionalForces: 2,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 40,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] REQUEST
+  harkonnen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: harkonnen,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 4 forces in tanks. You get 2 forces for FREE. You may revive up to 1 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 1),
+      context: {
+        forcesInTanks: 4,
+        freeRevivalLimit: 2,
+        maxAdditionalForces: 1,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 11,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[12:07:44 PM] REQUEST
+  atreides requested: REVIVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 8 forces in tanks. You get 2 forces for FREE. You may revive up to 1 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 1),
+      context: {
+        forcesInTanks: 8,
+        freeRevivalLimit: 2,
+        maxAdditionalForces: 1,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 25,
+        revivableLeaders: [],
+        kwisatzHaderachDead: false,
+        kwisatzHaderachRevivalCost: 2,
+        canReviveKwisatzHaderach: false,
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] REQUEST
+  fremen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: fremen,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 7 forces in tanks. You get 3 forces for FREE. You may revive up to 0 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 0),
+      context: {
+        forcesInTanks: 7,
+        freeRevivalLimit: 3,
+        maxAdditionalForces: 0,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 8,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] REQUEST
+  emperor requested: REVIVE_FORCES
+  Data:
+    {
+      faction: emperor,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 7 forces in tanks. You get 1 forces for FREE. You may revive up to 2 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 2),
+      context: {
+        forcesInTanks: 7,
+        freeRevivalLimit: 1,
+        maxAdditionalForces: 2,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 40,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] REQUEST
+  harkonnen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: harkonnen,
+      requestType: REVIVE_FORCES,
+      prompt: Revival phase. You have 4 forces in tanks. You get 2 forces for FREE. You may revive up to 1 ADDITIONAL forces beyond your free revival at 2 spice each. How many ADDITIONAL forces do you want to revive? (0 to 1),
+      context: {
+        forcesInTanks: 4,
+        freeRevivalLimit: 2,
+        maxAdditionalForces: 1,
+        maxRevivalLimit: 3,
+        paidRevivalCost: 2,
+        spiceAvailable: 11,
+        revivableLeaders: [],
+      },
+      availableActions: [
+        REVIVE_FORCES,
+        REVIVE_LEADER,
+        PASS,
+      ],
+    }
+
+[12:07:44 PM] RESPONSE
+  atreides responded: REVIVE_FORCES (passed: false)
+  Data:
+    {
+      faction: atreides,
+      actionType: REVIVE_FORCES,
+      data: {
+        count: 1,
+      },
+      passed: false,
+    }
+
+[12:07:44 PM] RESPONSE
+  fremen responded: REVIVE_FORCES (passed: false)
+  Data:
+    {
+      faction: fremen,
+      actionType: REVIVE_FORCES,
+      data: {
+        count: 0,
+      },
+      passed: false,
+    }
+
+[12:07:44 PM] RESPONSE
+  emperor responded: REVIVE_FORCES (passed: false)
+  Data:
+    {
+      faction: emperor,
+      actionType: REVIVE_FORCES,
+      data: {
+        count: 2,
+      },
+      passed: false,
+    }
+
+[12:07:44 PM] RESPONSE
+  harkonnen responded: REVIVE_FORCES (passed: false)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: REVIVE_FORCES,
+      data: {
+        count: 0,
+      },
+      passed: false,
+    }
+
+[12:07:44 PM] EVENT
+  atreides revives 3 forces (2 free, 1 paid for 2 spice)
+  Data:
+    {
+      eventType: FORCES_REVIVED,
+      data: {
+        faction: atreides,
+        count: 3,
+        cost: 2,
+      },
+    }
+
+[12:07:44 PM] EVENT
+  fremen revives 3 forces (3 free, 0 paid for 0 spice)
+  Data:
+    {
+      eventType: FORCES_REVIVED,
+      data: {
+        faction: fremen,
+        count: 3,
+        cost: 0,
+      },
+    }
+
+[12:07:44 PM] EVENT
+  emperor revives 3 forces (1 free, 2 paid for 4 spice)
+  Data:
+    {
+      eventType: FORCES_REVIVED,
+      data: {
+        faction: emperor,
+        count: 3,
+        cost: 4,
+      },
+    }
+
+[12:07:44 PM] EVENT
+  harkonnen revives 2 forces (2 free, 0 paid for 0 spice)
+  Data:
+    {
+      eventType: FORCES_REVIVED,
+      data: {
+        faction: harkonnen,
+        count: 2,
+        cost: 0,
+      },
+    }
+
+[12:07:44 PM] STATE
+  State snapshot: After step 2
+  Data:
+    {
+      turn: 3,
+      phase: revival,
+      factions: [
+        atreides,
+        fremen,
+        emperor,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 23,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 21,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 28,
+            elite: 2,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 2,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 36,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 29,
+            elite: 1,
+          },
+          forcesInTanks: {
+            regular: 3,
+            elite: 1,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 11,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 11,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 16,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+        emperor,
+        harkonnen,
+      ],
+    }
+
+[12:07:44 PM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 3,
+      phase: revival,
+      factions: [
+        atreides,
+        fremen,
+        emperor,
+        harkonnen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 23,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 21,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 5,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 8,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 28,
+            elite: 2,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 2,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 36,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 29,
+            elite: 1,
+          },
+          forcesInTanks: {
+            regular: 3,
+            elite: 1,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 11,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 11,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 16,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 2,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+        emperor,
+        harkonnen,
+      ],
+    }
+
+[12:07:44 PM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 2
+Total Events: 4
+Completed: Yes
+
+Events:
+  1. [FORCES_REVIVED] atreides revives 3 forces (2 free, 1 paid for 2 spice)
+  2. [FORCES_REVIVED] fremen revives 3 forces (3 free, 0 paid for 0 spice)
+  3. [FORCES_REVIVED] emperor revives 3 forces (1 free, 2 paid for 4 spice)
+  4. [FORCES_REVIVED] harkonnen revives 2 forces (2 free, 0 paid for 0 spice)
+
+Final State:
+  Turn: 3
+  Phase: revival
+  Factions: atreides, fremen, emperor, harkonnen
+
+  atreides:
+    Spice: 23
+    Forces on board: 1 stacks
+    Forces in reserves: 21 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  fremen:
+    Spice: 8
+    Forces on board: 0 stacks
+    Forces in reserves: 28 regular, 2 elite
+    Leaders: 5 total
+    Hand size: 1
+  emperor:
+    Spice: 36
+    Forces on board: 0 stacks
+    Forces in reserves: 29 regular, 1 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 11
+    Forces on board: 1 stacks
+    Forces in reserves: 16 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+
+================================================================================
+END OF LOG
+================================================================================

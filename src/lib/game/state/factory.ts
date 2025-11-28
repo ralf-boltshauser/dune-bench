@@ -114,6 +114,8 @@ function createLeaders(faction: Faction): Leader[] {
     hasBeenKilled: false,
     usedThisTurn: false,
     usedInTerritoryId: null,
+    originalFaction: def.faction, // Leaders start with their original faction
+    capturedBy: null, // Not captured initially
   }));
 }
 
@@ -137,7 +139,7 @@ function createForces(faction: Faction): FactionForces {
     } else {
       // Forces on board - place in sector 0 of territory by default
       // (actual sector would be determined by territory definition)
-      forces.onBoard.push({
+      const stack: ForceStack = {
         factionId: faction,
         territoryId: startPos.territoryId,
         sector: getDefaultSector(startPos.territoryId),
@@ -145,7 +147,15 @@ function createForces(faction: Faction): FactionForces {
           regular: startPos.isElite ? 0 : startPos.count,
           elite: startPos.isElite ? startPos.count : 0,
         },
-      });
+      };
+
+      // BG-specific: Initialize all forces as advisors (spiritual side) by default
+      if (faction === Faction.BENE_GESSERIT) {
+        const totalCount = startPos.count;
+        stack.advisors = totalCount; // All BG forces start as advisors
+      }
+
+      forces.onBoard.push(stack);
     }
   }
 
@@ -291,6 +301,7 @@ export function createGameState(options: CreateGameOptions): GameState {
     winAttempts: new Map(factions.map((f) => [f, 0])),
     wormCount: 0,
     nexusOccurring: false,
+    karamaState: null,
     actionLog: [],
   };
 

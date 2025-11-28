@@ -1,0 +1,219 @@
+================================================================================
+PHASE TEST LOG: Alliance Victory - 4 Strongholds
+================================================================================
+Generated: 2025-11-28T11:00:43.391Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[12:00:43 PM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 2,
+      phase: mentat_pause,
+      factions: [
+        atreides,
+        fremen,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: carthag,
+              sector: 10,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 3,
+          forcesOnBoard: [
+            {
+              territory: sietch_tabr,
+              sector: 13,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+            {
+              territory: habbanya_sietch,
+              sector: 16,
+              regular: 5,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+      ],
+    }
+
+[12:00:43 PM] INFO
+  Starting scenario: Alliance Victory - 4 Strongholds
+
+[12:00:43 PM] EVENT
+  Victory! atreides & fremen win by stronghold_victory
+  Data:
+    {
+      eventType: VICTORY_ACHIEVED,
+      data: {
+        condition: stronghold_victory,
+        winners: [
+          atreides,
+          fremen,
+        ],
+        turn: 2,
+        details: Atreides & Fremen control 4 strongholds: arrakeen, carthag, sietch_tabr, habbanya_sietch,
+      },
+    }
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 0
+Completed: Yes
+
+Events:
+
+Final State:
+  Turn: 2
+  Phase: mentat_pause
+  Factions: atreides, fremen
+
+  atreides:
+    Spice: 10
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  fremen:
+    Spice: 3
+    Forces on board: 2 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

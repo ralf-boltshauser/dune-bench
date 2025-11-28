@@ -1,0 +1,958 @@
+================================================================================
+PHASE TEST LOG: Multiple Factions Simultaneous
+================================================================================
+Generated: 2025-11-28T10:20:52.800Z
+Steps: 2
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:20:52 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: choam_charity,
+      factions: [
+        atreides,
+        fremen,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 0,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 10,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 1,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 0,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 11,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 10,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 4,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:20:52 AM] INFO
+  Starting scenario: Multiple Factions Simultaneous
+
+[11:20:52 AM] INFO
+  Queued 3 agent responses
+
+[11:20:52 AM] EVENT
+  CHOAM Charity: 3 factions eligible
+  Data:
+    {
+      eventType: CHOAM_ELIGIBLE,
+      data: {
+        eligibleFactions: [
+          atreides,
+          fremen,
+          harkonnen,
+        ],
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:20:52 AM] REQUEST
+  atreides requested: REVIVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: REVIVE_FORCES,
+      prompt: You have 0 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 0,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+[11:20:52 AM] REQUEST
+  fremen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: fremen,
+      requestType: REVIVE_FORCES,
+      prompt: You have 1 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 1,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+[11:20:52 AM] REQUEST
+  harkonnen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: harkonnen,
+      requestType: REVIVE_FORCES,
+      prompt: You have 0 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 0,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[11:20:52 AM] REQUEST
+  atreides requested: REVIVE_FORCES
+  Data:
+    {
+      faction: atreides,
+      requestType: REVIVE_FORCES,
+      prompt: You have 0 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 0,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+[11:20:52 AM] REQUEST
+  fremen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: fremen,
+      requestType: REVIVE_FORCES,
+      prompt: You have 1 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 1,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+[11:20:52 AM] REQUEST
+  harkonnen requested: REVIVE_FORCES
+  Data:
+    {
+      faction: harkonnen,
+      requestType: REVIVE_FORCES,
+      prompt: You have 0 spice and are eligible for CHOAM Charity (2 spice). Do you want to claim it?,
+      context: {
+        currentSpice: 0,
+        charityAmount: 2,
+      },
+      availableActions: [
+        CLAIM_CHARITY,
+        PASS,
+      ],
+    }
+
+[11:20:52 AM] RESPONSE
+  atreides responded: CLAIM_CHARITY (passed: false)
+  Data:
+    {
+      faction: atreides,
+      actionType: CLAIM_CHARITY,
+      data: {},
+      passed: false,
+    }
+
+[11:20:52 AM] RESPONSE
+  fremen responded: CLAIM_CHARITY (passed: false)
+  Data:
+    {
+      faction: fremen,
+      actionType: CLAIM_CHARITY,
+      data: {},
+      passed: false,
+    }
+
+[11:20:52 AM] RESPONSE
+  harkonnen responded: CLAIM_CHARITY (passed: false)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: CLAIM_CHARITY,
+      data: {},
+      passed: false,
+    }
+
+[11:20:52 AM] EVENT
+  atreides claims 2 spice in CHOAM Charity (0 → 2)
+  Data:
+    {
+      eventType: CHARITY_CLAIMED,
+      data: {
+        faction: atreides,
+        amount: 2,
+        newTotal: 2,
+      },
+    }
+
+[11:20:52 AM] EVENT
+  fremen claims 1 spice in CHOAM Charity (1 → 2)
+  Data:
+    {
+      eventType: CHARITY_CLAIMED,
+      data: {
+        faction: fremen,
+        amount: 1,
+        newTotal: 2,
+      },
+    }
+
+[11:20:52 AM] EVENT
+  harkonnen claims 2 spice in CHOAM Charity (0 → 2)
+  Data:
+    {
+      eventType: CHARITY_CLAIMED,
+      data: {
+        faction: harkonnen,
+        amount: 2,
+        newTotal: 2,
+      },
+    }
+
+[11:20:52 AM] STATE
+  State snapshot: After step 2
+  Data:
+    {
+      turn: 1,
+      phase: choam_charity,
+      factions: [
+        atreides,
+        fremen,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 2,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 10,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 2,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 2,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 11,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 10,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 4,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:20:52 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: choam_charity,
+      factions: [
+        atreides,
+        fremen,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 2,
+          forcesOnBoard: [
+            {
+              territory: arrakeen,
+              sector: 9,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 10,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: fremen,
+          spice: 2,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: stilgar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: chani,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: otheym,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: jamis,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+            {
+              id: shadout_mapes,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: fremen,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 2,
+          forcesOnBoard: [
+            {
+              territory: carthag,
+              sector: 11,
+              regular: 10,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 10,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 4,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        fremen,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:20:52 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 2
+Total Events: 3
+Completed: Yes
+
+Events:
+  1. [CHARITY_CLAIMED] atreides claims 2 spice in CHOAM Charity (0 → 2)
+  2. [CHARITY_CLAIMED] fremen claims 1 spice in CHOAM Charity (1 → 2)
+  3. [CHARITY_CLAIMED] harkonnen claims 2 spice in CHOAM Charity (0 → 2)
+
+Final State:
+  Turn: 1
+  Phase: choam_charity
+  Factions: atreides, fremen, harkonnen, emperor
+
+  atreides:
+    Spice: 2
+    Forces on board: 1 stacks
+    Forces in reserves: 10 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  fremen:
+    Spice: 2
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 2
+    Forces on board: 1 stacks
+    Forces in reserves: 10 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  emperor:
+    Spice: 4
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

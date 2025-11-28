@@ -20,6 +20,7 @@ import {
   removeSpiceFromTerritory,
   getFactionState,
   logAction,
+  areSectorsSeparatedByStorm,
 } from '../../state';
 import { GAME_CONSTANTS } from '../../data';
 import {
@@ -50,14 +51,26 @@ export class SpiceCollectionPhaseHandler implements PhaseHandler {
 
       // Process each force stack on the board
       for (const forceStack of factionState.forces.onBoard) {
-        // Check if there's spice in this sector
-        const spiceLocation = newState.spiceOnBoard.find(
-          (s) =>
-            s.territoryId === forceStack.territoryId &&
-            s.sector === forceStack.sector
-        );
+        // Check if there's spice in this territory
+        // Note: Must check all sectors in the territory, not just the force's sector
+        // Forces can collect from any sector in the same territory, unless separated by storm
+        for (const spiceLocation of newState.spiceOnBoard) {
+          // Must be in same territory
+          if (spiceLocation.territoryId !== forceStack.territoryId) {
+            continue;
+          }
 
-        if (spiceLocation && spiceLocation.amount > 0) {
+          // Check if forces and spice are separated by storm
+          // Rule 1.01.04: Forces cannot interact if separated by a storm sector
+          // This applies to spice collection just like it applies to battles
+          if (areSectorsSeparatedByStorm(newState, forceStack.sector, spiceLocation.sector)) {
+            continue; // Cannot collect - separated by storm
+          }
+
+          // Must have spice available
+          if (spiceLocation.amount <= 0) {
+            continue;
+          }
           // Calculate collection amount
           const forceCount = forceStack.forces.regular + forceStack.forces.elite;
           const maxCollection = forceCount * collectionRate;
@@ -68,8 +81,8 @@ export class SpiceCollectionPhaseHandler implements PhaseHandler {
             newState = addSpice(newState, faction, actualCollection);
             newState = removeSpiceFromTerritory(
               newState,
-              forceStack.territoryId,
-              forceStack.sector,
+              spiceLocation.territoryId,
+              spiceLocation.sector,
               actualCollection
             );
 
@@ -78,21 +91,23 @@ export class SpiceCollectionPhaseHandler implements PhaseHandler {
               type: 'SPICE_COLLECTED',
               data: {
                 faction,
-                territory: forceStack.territoryId,
-                sector: forceStack.sector,
+                territory: spiceLocation.territoryId,
+                sector: spiceLocation.sector,
                 amount: actualCollection,
                 forces: forceCount,
                 collectionRate,
+                forceSector: forceStack.sector,
               },
-              message: `${faction} collects ${actualCollection} spice from ${forceStack.territoryId} sector ${forceStack.sector} (${forceCount} forces × ${collectionRate} spice/force)`,
+              message: `${faction} collects ${actualCollection} spice from ${spiceLocation.territoryId} sector ${spiceLocation.sector} (${forceCount} forces in sector ${forceStack.sector} × ${collectionRate} spice/force)`,
             });
 
             newState = logAction(newState, 'SPICE_COLLECTED', faction, {
-              territory: forceStack.territoryId,
-              sector: forceStack.sector,
+              territory: spiceLocation.territoryId,
+              sector: spiceLocation.sector,
               amount: actualCollection,
               forces: forceCount,
               collectionRate,
+              forceSector: forceStack.sector,
             });
           }
         }

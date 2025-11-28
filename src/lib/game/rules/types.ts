@@ -3,7 +3,7 @@
  * Designed to be agent-friendly with clear errors and actionable suggestions.
  */
 
-import { Faction, TerritoryId, TreacheryCardType } from '../types';
+import { Faction, TerritoryId } from "../types";
 
 // =============================================================================
 // VALIDATION RESULT
@@ -62,65 +62,73 @@ export interface ValidationError {
 
 export type ValidationErrorCode =
   // General
-  | 'INVALID_FACTION'
-  | 'INVALID_TERRITORY'
-  | 'INVALID_PHASE'
-  | 'NOT_YOUR_TURN'
+  | "INVALID_FACTION"
+  | "INVALID_TERRITORY"
+  | "INVALID_PHASE"
+  | "NOT_YOUR_TURN"
 
   // Movement/Shipment
-  | 'INSUFFICIENT_RESERVES'
-  | 'INSUFFICIENT_SPICE'
-  | 'INSUFFICIENT_FORCES'
-  | 'TERRITORY_IN_STORM'
-  | 'SECTOR_IN_STORM'
-  | 'DESTINATION_IN_STORM'
-  | 'INVALID_DESTINATION'
-  | 'OCCUPANCY_LIMIT_EXCEEDED'
-  | 'NO_PATH_AVAILABLE'
-  | 'MOVEMENT_BLOCKED_BY_STORM'
-  | 'EXCEEDS_MOVEMENT_RANGE'
-  | 'NO_FORCES_TO_MOVE'
-  | 'CANNOT_SHIP_FROM_BOARD'
-  | 'ALREADY_SHIPPED_THIS_TURN'
-  | 'ALREADY_MOVED_THIS_TURN'
+  | "INSUFFICIENT_RESERVES"
+  | "INSUFFICIENT_SPICE"
+  | "INSUFFICIENT_FORCES"
+  | "TERRITORY_IN_STORM"
+  | "SECTOR_IN_STORM"
+  | "DESTINATION_IN_STORM"
+  | "INVALID_DESTINATION"
+  | "OCCUPANCY_LIMIT_EXCEEDED"
+  | "NO_PATH_AVAILABLE"
+  | "MOVEMENT_BLOCKED_BY_STORM"
+  | "EXCEEDS_MOVEMENT_RANGE"
+  | "NO_FORCES_TO_MOVE"
+  | "CANNOT_SHIP_FROM_BOARD"
+  | "ALREADY_SHIPPED_THIS_TURN"
+  | "ALREADY_MOVED_THIS_TURN"
 
   // Combat
-  | 'NO_FORCES_IN_TERRITORY'
-  | 'FORCES_DIALED_EXCEEDS_AVAILABLE'
-  | 'NO_LEADER_AVAILABLE'
-  | 'LEADER_ALREADY_USED'
-  | 'LEADER_NOT_IN_POOL'
-  | 'INVALID_WEAPON_CARD'
-  | 'INVALID_DEFENSE_CARD'
-  | 'CARD_NOT_IN_HAND'
-  | 'MUST_PLAY_LEADER_OR_CHEAP_HERO'
-  | 'CANNOT_PLAY_TREACHERY_WITHOUT_LEADER'
+  | "NO_FORCES_IN_TERRITORY"
+  | "FORCES_DIALED_EXCEEDS_AVAILABLE"
+  | "NO_LEADER_AVAILABLE"
+  | "LEADER_ALREADY_USED"
+  | "LEADER_NOT_IN_POOL"
+  | "INVALID_WEAPON_CARD"
+  | "INVALID_DEFENSE_CARD"
+  | "CARD_NOT_IN_HAND"
+  | "MUST_PLAY_LEADER_OR_CHEAP_HERO"
+  | "MUST_PLAY_LEADER"
+  | "MUST_PLAY_CHEAP_HERO"
+  | "MUST_ANNOUNCE_NO_LEADER"
+  | "CANNOT_PLAY_TREACHERY_WITHOUT_LEADER"
+  | "VOICE_VIOLATION"
+  | "KH_NOT_ACTIVE"
+  | "KH_ALREADY_USED"
+  | "INVALID_SPICE_DIALING"
 
   // Revival
-  | 'REVIVAL_LIMIT_EXCEEDED'
-  | 'NO_FORCES_IN_TANKS'
-  | 'NO_LEADERS_IN_TANKS'
-  | 'CANNOT_REVIVE_LEADER_YET'
-  | 'LEADER_FACE_DOWN'
+  | "REVIVAL_LIMIT_EXCEEDED"
+  | "NO_FORCES_IN_TANKS"
+  | "NO_LEADERS_IN_TANKS"
+  | "CANNOT_REVIVE_LEADER_YET"
+  | "LEADER_FACE_DOWN"
 
   // Bidding
-  | 'HAND_FULL'
-  | 'BID_TOO_LOW'
-  | 'BID_EXCEEDS_SPICE'
-  | 'NOT_ELIGIBLE_TO_BID'
-  | 'ALREADY_PASSED'
+  | "HAND_FULL"
+  | "BID_TOO_LOW"
+  | "BID_EXCEEDS_SPICE"
+  | "NOT_ELIGIBLE_TO_BID"
+  | "ALREADY_PASSED"
 
   // Alliance
-  | 'ALREADY_ALLIED'
-  | 'CANNOT_ALLY_DURING_PHASE'
-  | 'NO_NEXUS_OCCURRING'
+  | "ALREADY_ALLIED"
+  | "CANNOT_ALLY_DURING_PHASE"
+  | "NO_NEXUS_OCCURRING"
 
   // Faction abilities
-  | 'ABILITY_NOT_AVAILABLE'
-  | 'ABILITY_ALREADY_USED'
-  | 'KARAMA_REQUIRED'
-  | 'INVALID_VOICE_COMMAND'
-  | 'INVALID_PRESCIENCE_TARGET';
+  | "ABILITY_NOT_AVAILABLE"
+  | "ABILITY_ALREADY_USED"
+  | "KARAMA_REQUIRED"
+  | "INVALID_VOICE_COMMAND"
+  | "INVALID_PRESCIENCE_TARGET"
+  | "PRESCIENCE_COMMITMENT_VIOLATION";
 
 // =============================================================================
 // SUGGESTION TYPES
@@ -285,7 +293,7 @@ export function invalidResult<T>(
 export function createError(
   code: ValidationErrorCode,
   message: string,
-  options: Partial<Omit<ValidationError, 'code' | 'message'>> = {}
+  options: Partial<Omit<ValidationError, "code" | "message">> = {}
 ): ValidationError {
   return {
     code,

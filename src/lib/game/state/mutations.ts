@@ -31,6 +31,8 @@ import {
   addToStack,
   removeFromStack,
   moveStackForces,
+  convertAdvisorsToFighters,
+  convertFightersToAdvisors,
 } from './force-utils';
 
 // =============================================================================
@@ -285,21 +287,55 @@ export function moveForces(
 
 /**
  * Send forces to the Tleilaxu Tanks (death).
+ *
+ * This function has two call signatures:
+ * 1. Legacy: sendForcesToTanks(state, faction, territoryId, sector, count, isElite)
+ * 2. New: sendForcesToTanks(state, faction, territoryId, sector, regularCount, eliteCount)
+ *
+ * When called with 5 parameters or with boolean 6th param, uses legacy mode (single type).
+ * When called with 6 numeric parameters, uses new mode (separate regular/elite counts).
+ *
+ * The new mode properly handles elite forces that are worth 2x in taking losses.
  */
 export function sendForcesToTanks(
   state: GameState,
   faction: Faction,
   territoryId: TerritoryId,
   sector: number,
-  count: number,
-  isElite: boolean = false
+  countOrRegular: number,
+  isEliteOrEliteCount?: boolean | number
 ): GameState {
   const factionState = getFactionState(state, faction);
   const forces = factionState.forces;
 
-  // Remove from board, add to tanks
-  const onBoard = removeFromStack(forces.onBoard, territoryId, sector, count, isElite);
-  const tanks = addToForceCount(forces.tanks, count, isElite);
+  let onBoard = forces.onBoard;
+  let tanks = forces.tanks;
+
+  // Determine which calling convention is being used
+  if (typeof isEliteOrEliteCount === 'boolean' || isEliteOrEliteCount === undefined) {
+    // Legacy mode: single force type
+    const count = countOrRegular;
+    const isElite = isEliteOrEliteCount ?? false;
+
+    onBoard = removeFromStack(onBoard, territoryId, sector, count, isElite);
+    tanks = addToForceCount(tanks, count, isElite);
+  } else {
+    // New mode: separate regular and elite counts
+    const regularCount = countOrRegular;
+    const eliteCount = isEliteOrEliteCount;
+
+    // Remove regular forces
+    if (regularCount > 0) {
+      onBoard = removeFromStack(onBoard, territoryId, sector, regularCount, false);
+      tanks = addToForceCount(tanks, regularCount, false);
+    }
+
+    // Remove elite forces
+    if (eliteCount > 0) {
+      onBoard = removeFromStack(onBoard, territoryId, sector, eliteCount, true);
+      tanks = addToForceCount(tanks, eliteCount, true);
+    }
+  }
 
   return updateFactionState(state, faction, {
     forces: { ...forces, onBoard, tanks },
@@ -322,9 +358,17 @@ export function reviveForces(
   const tanks = subtractFromForceCount(forces.tanks, count, isElite);
   const reserves = addToForceCount(forces.reserves, count, isElite);
 
-  return updateFactionState(state, faction, {
+  // Track elite forces revived this turn (for Fedaykin/Sardaukar limit)
+  const updatedState: Partial<FactionState> = {
     forces: { ...forces, tanks, reserves },
-  });
+  };
+
+  if (isElite && (faction === Faction.FREMEN || faction === Faction.EMPEROR)) {
+    const currentEliteRevived = factionState.eliteForcesRevivedThisTurn ?? 0;
+    updatedState.eliteForcesRevivedThisTurn = currentEliteRevived + count;
+  }
+
+  return updateFactionState(state, faction, updatedState);
 }
 
 /**
@@ -351,20 +395,82 @@ export function sendForcesToReserves(
 }
 
 // =============================================================================
+// BENE GESSERIT FORCE MUTATIONS
+// =============================================================================
+
+/**
+ * Convert BG advisors to fighters (flip tokens to battle side).
+ * Only applicable to Bene Gesserit faction.
+ */
+export function convertBGAdvisorsToFighters(
+  state: GameState,
+  territoryId: TerritoryId,
+  sector: number,
+  count: number
+): GameState {
+  const factionState = getFactionState(state, Faction.BENE_GESSERIT);
+  const forces = factionState.forces;
+
+  const onBoard = convertAdvisorsToFighters(forces.onBoard, territoryId, sector, count);
+
+  return updateFactionState(state, Faction.BENE_GESSERIT, {
+    forces: { ...forces, onBoard },
+  });
+}
+
+/**
+ * Convert BG fighters to advisors (flip tokens to spiritual side).
+ * Only applicable to Bene Gesserit faction.
+ */
+export function convertBGFightersToAdvisors(
+  state: GameState,
+  territoryId: TerritoryId,
+  sector: number,
+  count: number
+): GameState {
+  const factionState = getFactionState(state, Faction.BENE_GESSERIT);
+  const forces = factionState.forces;
+
+  const onBoard = convertFightersToAdvisors(forces.onBoard, territoryId, sector, count);
+
+  return updateFactionState(state, Faction.BENE_GESSERIT, {
+    forces: { ...forces, onBoard },
+  });
+}
+
+// =============================================================================
 // LEADER MUTATIONS
 // =============================================================================
 
 /**
  * Kill a leader (send to tanks).
+ *
+ * IMPORTANT: Per battle.md line 23, leaders with LeaderLocation.ON_BOARD are protected
+ * from game effects (storm, sandworms, etc.) but NOT from battle deaths or
+ * Lasgun/Shield explosions (KH PROPHECY BLINDED ability).
+ *
+ * @param allowProtected - Set to true to bypass protection (e.g., for Lasgun/Shield explosions)
  */
 export function killLeader(
   state: GameState,
   faction: Faction,
-  leaderId: string
+  leaderId: string,
+  allowProtected: boolean = false
 ): GameState {
   const factionState = getFactionState(state, faction);
   const leaders = factionState.leaders.map((l) => {
     if (l.definitionId === leaderId) {
+      // Check if leader is protected from game effects
+      // Per battle.md line 23: "SURVIVING LEADERS: Leaders who survive remain in the
+      // Territory where they were used. (Game effects do not kill these leaders while there.)"
+      if (!allowProtected && l.location === LeaderLocation.ON_BOARD) {
+        // Leader is protected - don't kill them
+        console.warn(
+          `[killLeader] Leader ${leaderId} of ${faction} is protected (ON_BOARD) - skipping kill`
+        );
+        return l;
+      }
+
       return {
         ...l,
         location: l.hasBeenKilled
@@ -467,6 +573,174 @@ export function returnLeaderToPool(
   });
 
   return updateFactionState(state, faction, { leaders });
+}
+
+// =============================================================================
+// HARKONNEN CAPTURED LEADERS
+// =============================================================================
+
+/**
+ * Capture an enemy leader (Harkonnen ability).
+ * After winning battle, Harkonnen can capture one active leader from the loser.
+ * The captured leader is transferred to Harkonnen's leader pool.
+ */
+export function captureLeader(
+  state: GameState,
+  captor: Faction,
+  victim: Faction,
+  leaderId: string
+): GameState {
+  // Remove leader from victim's pool
+  const victimState = getFactionState(state, victim);
+  const victimLeaders = victimState.leaders.filter((l) => l.definitionId !== leaderId);
+  let newState = updateFactionState(state, victim, { leaders: victimLeaders });
+
+  // Find the leader being captured
+  const capturedLeader = victimState.leaders.find((l) => l.definitionId === leaderId);
+  if (!capturedLeader) {
+    throw new Error(`Leader ${leaderId} not found in ${victim}'s leaders`);
+  }
+
+  // Add to captor's pool with capture metadata
+  const captorState = getFactionState(newState, captor);
+  const captorLeaders = [
+    ...captorState.leaders,
+    {
+      ...capturedLeader,
+      faction: captor, // Now controlled by captor
+      location: LeaderLocation.LEADER_POOL,
+      capturedBy: captor,
+      usedThisTurn: false,
+      usedInTerritoryId: null,
+    },
+  ];
+  newState = updateFactionState(newState, captor, { leaders: captorLeaders });
+
+  return newState;
+}
+
+/**
+ * Kill a captured leader for 2 spice (Harkonnen ability).
+ * The leader goes face-down into tanks and Harkonnen gains 2 spice.
+ */
+export function killCapturedLeader(
+  state: GameState,
+  captor: Faction,
+  leaderId: string
+): GameState {
+  const captorState = getFactionState(state, captor);
+  const leader = captorState.leaders.find((l) => l.definitionId === leaderId);
+
+  if (!leader) {
+    throw new Error(`Leader ${leaderId} not found in ${captor}'s leaders`);
+  }
+
+  if (!leader.capturedBy) {
+    throw new Error(`Leader ${leaderId} is not captured`);
+  }
+
+  const originalFaction = leader.originalFaction;
+
+  // Remove from captor's pool
+  const captorLeaders = captorState.leaders.filter((l) => l.definitionId !== leaderId);
+  let newState = updateFactionState(state, captor, { leaders: captorLeaders });
+
+  // Add to original faction's tanks (face down per rules: "Place the Leader Disc face down")
+  const originalState = getFactionState(newState, originalFaction);
+  const originalLeaders = [
+    ...originalState.leaders,
+    {
+      ...leader,
+      faction: originalFaction, // Return to original faction
+      location: LeaderLocation.TANKS_FACE_DOWN,
+      capturedBy: null,
+      hasBeenKilled: true,
+      usedThisTurn: false,
+      usedInTerritoryId: null,
+    },
+  ];
+  newState = updateFactionState(newState, originalFaction, { leaders: originalLeaders });
+
+  // Grant 2 spice to captor
+  newState = addSpice(newState, captor, 2);
+
+  return newState;
+}
+
+/**
+ * Return a captured leader to their original owner after being used in battle.
+ * Per rules: "After it is used in a battle, if it wasn't killed during that battle,
+ * the leader is returned to the Active Leader Pool of the player who last had it."
+ */
+export function returnCapturedLeader(state: GameState, leaderId: string): GameState {
+  // Find which faction currently has this leader
+  let currentHolder: Faction | null = null;
+  let leader: Leader | null = null;
+
+  for (const [faction, factionState] of state.factions) {
+    const foundLeader = factionState.leaders.find((l) => l.definitionId === leaderId);
+    if (foundLeader) {
+      currentHolder = faction;
+      leader = foundLeader;
+      break;
+    }
+  }
+
+  if (!currentHolder || !leader) {
+    throw new Error(`Leader ${leaderId} not found in any faction's leaders`);
+  }
+
+  if (!leader.capturedBy) {
+    // Not a captured leader, no action needed
+    return state;
+  }
+
+  const originalFaction = leader.originalFaction;
+
+  // Remove from current holder's pool
+  const currentHolderState = getFactionState(state, currentHolder);
+  const currentHolderLeaders = currentHolderState.leaders.filter(
+    (l) => l.definitionId !== leaderId
+  );
+  let newState = updateFactionState(state, currentHolder, {
+    leaders: currentHolderLeaders,
+  });
+
+  // Return to original faction's pool
+  const originalState = getFactionState(newState, originalFaction);
+  const originalLeaders = [
+    ...originalState.leaders,
+    {
+      ...leader,
+      faction: originalFaction, // Back to original faction
+      location: LeaderLocation.LEADER_POOL,
+      capturedBy: null, // No longer captured
+      usedThisTurn: false,
+      usedInTerritoryId: null,
+    },
+  ];
+  newState = updateFactionState(newState, originalFaction, { leaders: originalLeaders });
+
+  return newState;
+}
+
+/**
+ * Prison Break: Return all captured leaders when all of Harkonnen's own leaders are killed.
+ * Per rules: "When all your own leaders have been killed, you must return all captured
+ * leaders immediately to the players who last had them as an Active Leader."
+ */
+export function returnAllCapturedLeaders(state: GameState, captor: Faction): GameState {
+  const captorState = getFactionState(state, captor);
+  let newState = state;
+
+  // Find all captured leaders
+  const capturedLeaders = captorState.leaders.filter((l) => l.capturedBy !== null);
+
+  for (const leader of capturedLeaders) {
+    newState = returnCapturedLeader(newState, leader.definitionId);
+  }
+
+  return newState;
 }
 
 // =============================================================================
@@ -697,6 +971,37 @@ export function markKwisatzHaderachUsed(
 }
 
 /**
+ * Kill Kwisatz Haderach (PROPHECY BLINDED - only killed by lasgun/shield explosion).
+ */
+export function killKwisatzHaderach(state: GameState): GameState {
+  const atreides = getFactionState(state, Faction.ATREIDES);
+  if (!atreides.kwisatzHaderach || atreides.kwisatzHaderach.isDead) return state;
+
+  return updateFactionState(state, Faction.ATREIDES, {
+    kwisatzHaderach: {
+      ...atreides.kwisatzHaderach,
+      isDead: true,
+    },
+  });
+}
+
+/**
+ * Revive Kwisatz Haderach (REAWAKEN).
+ * Cost: 2 spice (KH strength is +2).
+ */
+export function reviveKwisatzHaderach(state: GameState): GameState {
+  const atreides = getFactionState(state, Faction.ATREIDES);
+  if (!atreides.kwisatzHaderach || !atreides.kwisatzHaderach.isDead) return state;
+
+  return updateFactionState(state, Faction.ATREIDES, {
+    kwisatzHaderach: {
+      ...atreides.kwisatzHaderach,
+      isDead: false,
+    },
+  });
+}
+
+/**
  * Reset Kwisatz Haderach turn state (called at end of battle phase).
  */
 export function resetKwisatzHaderachTurnState(state: GameState): GameState {
@@ -722,4 +1027,76 @@ export function recordWinAttempt(state: GameState, faction: Faction): GameState 
   const newAttempts = new Map(state.winAttempts);
   newAttempts.set(faction, (newAttempts.get(faction) || 0) + 1);
   return { ...state, winAttempts: newAttempts };
+}
+
+// =============================================================================
+// KARAMA INTERRUPT MUTATIONS
+// =============================================================================
+
+/**
+ * Create a Karama interrupt opportunity.
+ * Called when a faction uses an ability that can be cancelled/prevented.
+ */
+export function createKaramaInterrupt(
+  state: GameState,
+  interruptType: 'cancel' | 'prevent',
+  targetFaction: Faction,
+  abilityName: string,
+  abilityContext: Record<string, unknown> = {}
+): GameState {
+  // Eligible factions are all except the target
+  const eligibleFactions = Array.from(state.factions.keys()).filter((f) => f !== targetFaction);
+
+  return {
+    ...state,
+    karamaState: {
+      interruptType,
+      targetFaction,
+      abilityName,
+      abilityContext,
+      eligibleFactions,
+      responses: new Map(),
+      interrupted: false,
+      interruptor: null,
+      turn: state.turn,
+      phase: state.phase,
+    },
+  };
+}
+
+/**
+ * Clear the Karama interrupt state.
+ * Called after all factions have responded or an interrupt occurred.
+ */
+export function clearKaramaInterrupt(state: GameState): GameState {
+  return {
+    ...state,
+    karamaState: null,
+  };
+}
+
+/**
+ * Check if a Karama interrupt is pending.
+ */
+export function hasActiveKaramaInterrupt(state: GameState): boolean {
+  return state.karamaState !== null;
+}
+
+/**
+ * Check if all eligible factions have responded to Karama interrupt.
+ */
+export function allKaramaResponsesReceived(state: GameState): boolean {
+  if (!state.karamaState) return false;
+  return (
+    state.karamaState.responses.size === state.karamaState.eligibleFactions.length ||
+    state.karamaState.interrupted
+  );
+}
+
+/**
+ * Get the Karama interrupt result.
+ * Returns the faction that interrupted, or null if no interrupt.
+ */
+export function getKaramaInterruptor(state: GameState): Faction | null {
+  return state.karamaState?.interruptor ?? null;
 }

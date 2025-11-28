@@ -6,7 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:battle": "tsx src/lib/game/phase-tests/battle/test-battle-phase.ts",
+    "test:battle:stronghold": "tsx src/lib/game/phase-tests/battle/scenarios/stronghold-battle.ts",
+    "test:battle:multi": "tsx src/lib/game/phase-tests/battle/scenarios/multi-faction-battle.ts",
+    "test:battle:e2e": "tsx src/lib/game/phase-tests/battle/scenarios/e2e-stronghold-battle.ts",
+    "test:spice-blow": "tsx src/lib/game/phase-tests/spice-blow/test-spice-blow-phase.ts",
+    "test:spice-collection": "tsx src/lib/game/phase-tests/spice-collection/test-spice-collection.ts",
+    "test:revival": "tsx src/lib/game/phase-tests/revival/test-revival-phase.ts",
+    "test:mentat-pause": "tsx src/lib/game/phase-tests/mentat-pause/test-mentat-pause.ts",
+    "test:choam-charity": "tsx src/lib/game/phase-tests/choam-charity/test-choam-charity.ts",
+    "test:shipment-movement": "tsx src/lib/game/phase-tests/shipment-movement/test-shipment-movement.ts",
+    "test:storm": "tsx src/lib/game/phase-tests/storm/test-storm.ts",
+    "test:bidding": "tsx src/lib/game/phase-tests/bidding/test-bidding-phase.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.49",

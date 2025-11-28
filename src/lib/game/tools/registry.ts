@@ -19,6 +19,7 @@ import {
   createMovementTools,
   createBattleTools,
   createNexusTools,
+  createKaramaTools,
   SETUP_TOOL_NAMES,
   STORM_TOOL_NAMES,
   BIDDING_TOOL_NAMES,
@@ -27,6 +28,7 @@ import {
   MOVEMENT_TOOL_NAMES,
   BATTLE_TOOL_NAMES,
   NEXUS_TOOL_NAMES,
+  KARAMA_TOOL_NAMES,
 } from './actions';
 
 // =============================================================================
@@ -55,18 +57,19 @@ export interface ToolConfig {
 /**
  * Maps each phase to the tool names available during that phase.
  * Information tools are always available and added separately.
+ * Karama tools are available in all phases (as interrupts).
  */
 export const PHASE_TOOLS: Record<Phase, readonly string[]> = {
-  [Phase.SETUP]: [...SETUP_TOOL_NAMES], // Traitor selection, BG prediction
-  [Phase.STORM]: [...STORM_TOOL_NAMES],
-  [Phase.SPICE_BLOW]: [], // Automatic phase, no player actions
-  [Phase.CHOAM_CHARITY]: [], // Simple yes/no handled differently
-  [Phase.BIDDING]: [...BIDDING_TOOL_NAMES],
-  [Phase.REVIVAL]: [...REVIVAL_TOOL_NAMES],
-  [Phase.SHIPMENT_MOVEMENT]: [...SHIPMENT_TOOL_NAMES, ...MOVEMENT_TOOL_NAMES],
-  [Phase.BATTLE]: [...BATTLE_TOOL_NAMES],
-  [Phase.SPICE_COLLECTION]: [], // Automatic phase
-  [Phase.MENTAT_PAUSE]: [...NEXUS_TOOL_NAMES], // Nexus happens here
+  [Phase.SETUP]: [...SETUP_TOOL_NAMES, ...KARAMA_TOOL_NAMES], // Traitor selection, BG prediction
+  [Phase.STORM]: [...STORM_TOOL_NAMES, ...KARAMA_TOOL_NAMES],
+  [Phase.SPICE_BLOW]: [...KARAMA_TOOL_NAMES], // Automatic phase but Karama can interrupt
+  [Phase.CHOAM_CHARITY]: [...KARAMA_TOOL_NAMES], // Simple yes/no but Karama can interrupt
+  [Phase.BIDDING]: [...BIDDING_TOOL_NAMES, ...KARAMA_TOOL_NAMES],
+  [Phase.REVIVAL]: [...REVIVAL_TOOL_NAMES, ...KARAMA_TOOL_NAMES],
+  [Phase.SHIPMENT_MOVEMENT]: [...SHIPMENT_TOOL_NAMES, ...MOVEMENT_TOOL_NAMES, 'use_tleilaxu_ghola', ...KARAMA_TOOL_NAMES], // Tleilaxu Ghola and Karama can be used "at any time"
+  [Phase.BATTLE]: [...BATTLE_TOOL_NAMES, 'use_tleilaxu_ghola', ...KARAMA_TOOL_NAMES], // Tleilaxu Ghola and Karama can be used "at any time"
+  [Phase.SPICE_COLLECTION]: [...KARAMA_TOOL_NAMES], // Automatic phase but Karama can interrupt
+  [Phase.MENTAT_PAUSE]: [...NEXUS_TOOL_NAMES, ...KARAMA_TOOL_NAMES], // Nexus happens here
 };
 
 /**
@@ -106,6 +109,7 @@ export function createAllTools(ctx: ToolContextManager) {
     movement: createMovementTools(ctx),
     battle: createBattleTools(ctx),
     nexus: createNexusTools(ctx),
+    karama: createKaramaTools(ctx),
   };
 }
 
@@ -124,6 +128,7 @@ export function createFlatToolSet(ctx: ToolContextManager): ToolSet {
     ...allTools.movement,
     ...allTools.battle,
     ...allTools.nexus,
+    ...allTools.karama,
   };
 }
 

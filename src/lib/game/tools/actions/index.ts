@@ -13,6 +13,7 @@ import { createShipmentTools, SHIPMENT_TOOL_NAMES, ShipmentToolName } from './sh
 import { createMovementTools, MOVEMENT_TOOL_NAMES, MovementToolName } from './movement';
 import { createBattleTools, BATTLE_TOOL_NAMES, BattleToolName } from './battle';
 import { createNexusTools, NEXUS_TOOL_NAMES, NexusToolName } from './nexus';
+import { createKaramaTools, KARAMA_TOOL_NAMES, KaramaToolName } from './karama';
 
 // Re-export creators
 export {
@@ -24,6 +25,7 @@ export {
   createMovementTools,
   createBattleTools,
   createNexusTools,
+  createKaramaTools,
 };
 
 // Re-export constants
@@ -36,6 +38,7 @@ export {
   MOVEMENT_TOOL_NAMES,
   BATTLE_TOOL_NAMES,
   NEXUS_TOOL_NAMES,
+  KARAMA_TOOL_NAMES,
 };
 
 // Re-export types
@@ -48,6 +51,7 @@ export type {
   MovementToolName,
   BattleToolName,
   NexusToolName,
+  KaramaToolName,
 };
 
 // =============================================================================
@@ -65,7 +69,8 @@ export type ActionToolName =
   | ShipmentToolName
   | MovementToolName
   | BattleToolName
-  | NexusToolName;
+  | NexusToolName
+  | KaramaToolName;
 
 /**
  * All action tool name arrays for iteration.
@@ -79,4 +84,5 @@ export const ALL_ACTION_TOOL_NAMES = [
   ...MOVEMENT_TOOL_NAMES,
   ...BATTLE_TOOL_NAMES,
   ...NEXUS_TOOL_NAMES,
+  ...KARAMA_TOOL_NAMES,
 ] as const;

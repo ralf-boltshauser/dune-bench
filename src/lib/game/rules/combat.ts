@@ -108,21 +108,64 @@ export function validateBattlePlan(
   }
 
   // Check: Leader or Cheap Hero requirement
+  // Rule from battle.md line 12: "A Cheap Hero Card may be played in lieu of a Leader Disc."
+  // Rule from battle.md line 14: "A player must always play either a leader or a Cheap Hero card as part of their Battle Plan if possible."
   if (!plan.leaderId && !plan.cheapHeroUsed) {
     if (hasLeaders || hasCheapHeroCard) {
-      errors.push(
-        createError(
-          'MUST_PLAY_LEADER_OR_CHEAP_HERO',
-          'You must play a leader or Cheap Hero card if available',
-          {
-            suggestion: hasLeaders
-              ? `Play ${availableLeaders[0].definitionId}`
-              : 'Play your Cheap Hero card',
-          }
-        )
-      );
+      // Has leaders OR Cheap Hero available - must play one (player's choice)
+      if (hasLeaders && hasCheapHeroCard) {
+        errors.push(
+          createError(
+            'MUST_PLAY_LEADER_OR_CHEAP_HERO',
+            'You must play either a leader or Cheap Hero (your choice)',
+            {
+              field: 'leaderId',
+              suggestion: `Play ${availableLeaders[0].definitionId} or set cheapHeroUsed to true`,
+            }
+          )
+        );
+      } else if (hasLeaders) {
+        // Only leaders available - must play a leader
+        errors.push(
+          createError(
+            'MUST_PLAY_LEADER',
+            'You must play a leader when you have available leaders',
+            {
+              field: 'leaderId',
+              suggestion: `Play ${availableLeaders[0].definitionId}`,
+            }
+          )
+        );
+      } else if (hasCheapHeroCard) {
+        // Only Cheap Hero available - MUST play it (forced rule)
+        errors.push(
+          createError(
+            'MUST_PLAY_CHEAP_HERO',
+            'You must play Cheap Hero when you have no available leaders',
+            {
+              field: 'cheapHeroUsed',
+              suggestion: 'Set cheapHeroUsed to true',
+            }
+          )
+        );
+      }
+    } else {
+      // No leaders AND no cheap hero - must announce inability
+      // Rule from battle.md line 14: "When it is not possible, a player must
+      // announce that they can not play a leader or Cheap Hero."
+      if (!plan.announcedNoLeader) {
+        errors.push(
+          createError(
+            'MUST_ANNOUNCE_NO_LEADER',
+            'You must announce that you cannot play a leader or Cheap Hero',
+            {
+              field: 'announcedNoLeader',
+              suggestion: 'Set announcedNoLeader to true',
+            }
+          )
+        );
+      }
     }
-    // If no leaders AND no cheap hero, that's legal - just can't play treachery
   }
 
   // Check: Leader validity
@@ -135,6 +178,9 @@ export function validateBattlePlan(
           suggestion: `Choose from: ${availableLeaders.map((l) => l.definitionId).join(', ')}`,
         })
       );
+    } else if (leader.location === LeaderLocation.LEADER_POOL) {
+      // Leader is in pool - valid for battle
+      // No additional checks needed
     } else if (leader.location === LeaderLocation.ON_BOARD) {
       // DEDICATED LEADER: Leaders ON_BOARD can fight multiple times in SAME territory
       if (leader.usedThisTurn && leader.usedInTerritoryId !== territoryId) {
@@ -287,6 +333,46 @@ export function validateBattlePlan(
     }
   }
 
+  // Check: Spice dialing (advanced rules only)
+  if (plan.spiceDialed && plan.spiceDialed > 0) {
+    if (!state.config.advancedRules) {
+      errors.push(
+        createError(
+          'ABILITY_NOT_AVAILABLE',
+          'Spice dialing is only available in advanced rules',
+          { field: 'spiceDialed' }
+        )
+      );
+    } else if (plan.spiceDialed > plan.forcesDialed) {
+      errors.push(
+        createError(
+          'INVALID_SPICE_DIALING',
+          `Cannot dial ${plan.spiceDialed} spice for ${plan.forcesDialed} forces`,
+          {
+            field: 'spiceDialed',
+            actual: plan.spiceDialed,
+            expected: `0-${plan.forcesDialed}`,
+            suggestion: `Dial at most ${plan.forcesDialed} spice (1 spice per force)`,
+          }
+        )
+      );
+    } else if (plan.spiceDialed > factionState.spice) {
+      errors.push(
+        createError(
+          'INSUFFICIENT_SPICE',
+          `Cannot dial ${plan.spiceDialed} spice, only have ${factionState.spice}`,
+          {
+            field: 'spiceDialed',
+            actual: plan.spiceDialed,
+            expected: `0-${factionState.spice}`,
+            suggestion: `Dial at most ${factionState.spice} spice`,
+          }
+        )
+      );
+    }
+    // Note: Fremen don't need spice due to BATTLE HARDENED, but they can still dial if they want
+  }
+
   if (errors.length === 0) {
     const leaderStrength = plan.leaderId
       ? (getLeaderDefinition(plan.leaderId)?.strength ?? 0)
@@ -400,15 +486,17 @@ function generateBattlePlanSuggestions(
     }
   }
 
-  // Cheap hero fallback
-  if (hasCheapHero(state, faction) && leaders.length === 0) {
+  // Cheap Hero - can be played in lieu of a leader (battle.md line 12)
+  // MANDATORY when no leaders available (battle.md line 190)
+  if (hasCheapHero(state, faction)) {
+    const isMandatory = leaders.length === 0;
     suggestions.push({
       forcesDialed: forcesAvailable,
       leaderId: null,
       weaponCardId: weapons[0]?.definitionId ?? null,
       defenseCardId: defenses[0]?.definitionId ?? null,
       estimatedStrength: forcesAvailable,
-      description: `Cheap Hero with ${forcesAvailable} forces`,
+      description: `Cheap Hero with ${forcesAvailable} forces${isMandatory ? ' (MANDATORY - no leaders available)' : ' (optional - can be played in lieu of leader)'}`,
     });
   }
 
@@ -481,19 +569,35 @@ export function resolveBattle(
     : getLeaderStrength(defenderPlan);
 
   // Calculate effective force strength (accounts for elite forces worth 2x)
-  const aggressorForceStrength = calculateForcesDialedStrength(
+  const aggressorBaseForceStrength = calculateForcesDialedStrength(
     state,
     aggressor,
     territoryId,
     aggressorPlan.forcesDialed,
     defender
   );
-  const defenderForceStrength = calculateForcesDialedStrength(
+  const defenderBaseForceStrength = calculateForcesDialedStrength(
     state,
     defender,
     territoryId,
     defenderPlan.forcesDialed,
     aggressor
+  );
+
+  // Apply spice dialing (advanced rules) - Fremen always get full strength
+  const aggressorForceStrength = calculateSpicedForceStrength(
+    aggressor,
+    aggressorBaseForceStrength,
+    aggressorPlan.forcesDialed,
+    aggressorPlan.spiceDialed,
+    state.config.advancedRules
+  );
+  const defenderForceStrength = calculateSpicedForceStrength(
+    defender,
+    defenderBaseForceStrength,
+    defenderPlan.forcesDialed,
+    defenderPlan.spiceDialed,
+    state.config.advancedRules
   );
 
   const aggressorTotal = aggressorForceStrength + aggressorLeaderStrength +
@@ -588,6 +692,56 @@ function calculateForcesDialedStrength(
   const eliteMultiplier = isSardaukarVsFremen ? 1 : 2;
 
   return regularDialed + (eliteDialed * eliteMultiplier);
+}
+
+/**
+ * Calculate effective battle strength considering spice dialing (advanced rules).
+ *
+ * Rule from battle.md line 40-42: "SPICE DIALING: Each Force used in a battle is valued
+ * at its full strength if 1 spice is paid to support it. UNSPICED FORCES: A Force used
+ * in a battle that is not supported by 1 spice is valued at half strength."
+ *
+ * FREMEN EXCEPTION (battle.md line 138): "BATTLE HARDENED: Your Forces do not require
+ * spice to count at full strength in battles." Fremen forces always count at full
+ * strength without requiring spice payment.
+ *
+ * @param faction The faction whose forces are being calculated
+ * @param baseForceStrength The force strength before spice dialing (accounts for elite forces)
+ * @param forcesDialed Number of forces dialed into battle
+ * @param spiceDialed Amount of spice paid to support forces
+ * @param advancedRules Whether advanced rules with spice dialing are enabled
+ * @returns Effective force strength after applying spice dialing rules
+ */
+export function calculateSpicedForceStrength(
+  faction: Faction,
+  baseForceStrength: number,
+  forcesDialed: number,
+  spiceDialed: number,
+  advancedRules: boolean
+): number {
+  // If advanced rules are not enabled, spice dialing doesn't apply
+  if (!advancedRules) return baseForceStrength;
+
+  // BATTLE HARDENED (2.05.09): Fremen don't need spice for full strength
+  // Their forces always count at full value
+  if (faction === Faction.FREMEN) {
+    return baseForceStrength; // Full strength always, no spice needed
+  }
+
+  // Other factions: Calculate spiced vs unspiced forces
+  // Each force can be supported by 1 spice to count at full strength
+  const spicedForces = Math.min(spiceDialed, forcesDialed);
+  const unspicedForces = forcesDialed - spicedForces;
+
+  // Unspiced forces count at half strength (0.5x)
+  // This is a simplified calculation that assumes regular forces
+  // Note: Elite force multipliers are already applied in baseForceStrength
+  // So we need to work backwards to separate regular and elite contributions
+  // For simplicity, we'll apply the half-strength penalty proportionally
+  const spicedProportion = forcesDialed > 0 ? spicedForces / forcesDialed : 0;
+  const unspicedProportion = forcesDialed > 0 ? unspicedForces / forcesDialed : 0;
+
+  return (baseForceStrength * spicedProportion) + (baseForceStrength * unspicedProportion * 0.5);
 }
 
 /**
@@ -1027,7 +1181,8 @@ export function canCallTraitor(
 function checkHasCardOfType(
   state: GameState,
   faction: Faction,
-  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero'
+  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero' | 'specific_weapon' | 'specific_defense',
+  specificCardName?: string
 ): boolean {
   const factionState = getFactionState(state, faction);
 
@@ -1055,6 +1210,18 @@ function checkHasCardOfType(
       case 'cheap_hero':
         if (isCheapHero(def)) return true;
         break;
+      case 'specific_weapon':
+        // Check for specific weapon by name (e.g., 'lasgun')
+        if (specificCardName && def.name.toLowerCase() === specificCardName.toLowerCase()) {
+          return true;
+        }
+        break;
+      case 'specific_defense':
+        // Check for specific defense by name (e.g., 'shield', 'snooper')
+        if (specificCardName && def.name.toLowerCase() === specificCardName.toLowerCase()) {
+          return true;
+        }
+        break;
     }
   }
 
@@ -1066,7 +1233,8 @@ function checkHasCardOfType(
  */
 function planUsesCardType(
   plan: BattlePlan,
-  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero'
+  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero' | 'specific_weapon' | 'specific_defense',
+  specificCardName?: string
 ): boolean {
   // Check weapon card
   if (plan.weaponCardId) {
@@ -1081,6 +1249,11 @@ function planUsesCardType(
           break;
         case 'worthless':
           if (isWorthless(weaponDef)) return true;
+          break;
+        case 'specific_weapon':
+          if (specificCardName && weaponDef.name.toLowerCase() === specificCardName.toLowerCase()) {
+            return true;
+          }
           break;
       }
     }
@@ -1099,6 +1272,11 @@ function planUsesCardType(
           break;
         case 'worthless':
           if (isWorthless(defenseDef)) return true;
+          break;
+        case 'specific_defense':
+          if (specificCardName && defenseDef.name.toLowerCase() === specificCardName.toLowerCase()) {
+            return true;
+          }
           break;
       }
     }
@@ -1122,7 +1300,7 @@ function planUsesCardType(
 export function validateVoiceCompliance(
   state: GameState,
   plan: BattlePlan,
-  voiceCommand: { type: 'play' | 'not_play'; cardType: string } | null
+  voiceCommand: { type: 'play' | 'not_play'; cardType: string; specificCardName?: string } | null
 ): ValidationError[] {
   if (!voiceCommand) return [];
 
@@ -1130,37 +1308,44 @@ export function validateVoiceCompliance(
 
   // Parse the cardType from voice command
   const cardType = voiceCommand.cardType as
-    'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero';
+    'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero' | 'specific_weapon' | 'specific_defense';
+  const specificCardName = voiceCommand.specificCardName;
 
   if (voiceCommand.type === 'play') {
     // Must play this type if able
-    const hasCardOfType = checkHasCardOfType(state, plan.factionId, cardType);
-    if (hasCardOfType && !planUsesCardType(plan, cardType)) {
+    const hasCardOfType = checkHasCardOfType(state, plan.factionId, cardType, specificCardName);
+    if (hasCardOfType && !planUsesCardType(plan, cardType, specificCardName)) {
+      const cardDescription = specificCardName
+        ? `${specificCardName}`
+        : cardType.replace(/_/g, ' ');
       errors.push(
         createError(
           'VOICE_VIOLATION',
-          `Voice commands you to play ${cardType.replace('_', ' ')}`,
+          `Voice commands you to play ${cardDescription}`,
           {
-            field: cardType.includes('weapon') ? 'weaponCardId' :
-                   cardType.includes('defense') ? 'defenseCardId' :
+            field: cardType.includes('weapon') || cardType === 'specific_weapon' ? 'weaponCardId' :
+                   cardType.includes('defense') || cardType === 'specific_defense' ? 'defenseCardId' :
                    'cheapHeroUsed',
-            suggestion: `You must play a ${cardType.replace('_', ' ')} card if you have one`,
+            suggestion: `You must play ${cardDescription} if you have it`,
           }
         )
       );
     }
   } else if (voiceCommand.type === 'not_play') {
     // Must NOT play this type
-    if (planUsesCardType(plan, cardType)) {
+    if (planUsesCardType(plan, cardType, specificCardName)) {
+      const cardDescription = specificCardName
+        ? `${specificCardName}`
+        : cardType.replace(/_/g, ' ');
       errors.push(
         createError(
           'VOICE_VIOLATION',
-          `Voice commands you to NOT play ${cardType.replace('_', ' ')}`,
+          `Voice commands you to NOT play ${cardDescription}`,
           {
-            field: cardType.includes('weapon') ? 'weaponCardId' :
-                   cardType.includes('defense') ? 'defenseCardId' :
+            field: cardType.includes('weapon') || cardType === 'specific_weapon' ? 'weaponCardId' :
+                   cardType.includes('defense') || cardType === 'specific_defense' ? 'defenseCardId' :
                    'cheapHeroUsed',
-            suggestion: `You must NOT play a ${cardType.replace('_', ' ')} card`,
+            suggestion: `You must NOT play ${cardDescription}`,
           }
         )
       );

@@ -1,0 +1,820 @@
+================================================================================
+PHASE TEST LOG: bought-in-rule
+================================================================================
+Generated: 2025-11-28T10:52:24.362Z
+Steps: 4
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:52:24 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: bidding,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:52:24 AM] INFO
+  Starting scenario: bought-in-rule
+
+[11:52:24 AM] INFO
+  Queued 3 agent responses
+
+[11:52:24 AM] EVENT
+  Hand size declarations: atreides: at least 1 card, harkonnen: at least 1 card, emperor: at least 1 card
+  Data:
+    {
+      eventType: HAND_SIZE_DECLARED,
+      data: {
+        declarations: [
+          {
+            faction: atreides,
+            category: at least 1 card,
+            handSize: 1,
+          },
+          {
+            faction: harkonnen,
+            category: at least 1 card,
+            handSize: 2,
+          },
+          {
+            faction: emperor,
+            category: at least 1 card,
+            handSize: 1,
+          },
+        ],
+      },
+    }
+
+[11:52:24 AM] EVENT
+  Auction 1/3: Treachery Card (starting bidder: atreides)
+  Data:
+    {
+      eventType: AUCTION_STARTED,
+      data: {
+        cardIndex: 1,
+        totalCards: 3,
+        startingBidder: atreides,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1
+────────────────────────────────────────────────────────────────────────────────
+
+[11:52:24 AM] REQUEST
+  atreides requested: BID_OR_PASS
+  Data:
+    {
+      faction: atreides,
+      requestType: BID_OR_PASS,
+      prompt: Opening bid on Tleilaxu Ghola. You must bid at least 1 spice or pass. You have 11 spice.,
+      context: {
+        currentBid: 0,
+        highBidder: null,
+        spiceAvailable: 11,
+        minimumBid: 1,
+        isOpeningBid: true,
+        cardInfo: {
+          id: tleilaxu_ghola,
+          name: Tleilaxu Ghola,
+          type: special,
+        },
+        isAtreides: true,
+        passedFactions: [],
+        auctionNumber: 1,
+        totalAuctions: 3,
+      },
+      availableActions: [
+        BID,
+        PASS,
+      ],
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2
+────────────────────────────────────────────────────────────────────────────────
+
+[11:52:24 AM] REQUEST
+  atreides requested: BID_OR_PASS
+  Data:
+    {
+      faction: atreides,
+      requestType: BID_OR_PASS,
+      prompt: Opening bid on Tleilaxu Ghola. You must bid at least 1 spice or pass. You have 11 spice.,
+      context: {
+        currentBid: 0,
+        highBidder: null,
+        spiceAvailable: 11,
+        minimumBid: 1,
+        isOpeningBid: true,
+        cardInfo: {
+          id: tleilaxu_ghola,
+          name: Tleilaxu Ghola,
+          type: special,
+        },
+        isAtreides: true,
+        passedFactions: [],
+        auctionNumber: 1,
+        totalAuctions: 3,
+      },
+      availableActions: [
+        BID,
+        PASS,
+      ],
+    }
+
+[11:52:24 AM] RESPONSE
+  atreides responded: PASS (passed: true)
+  Data:
+    {
+      faction: atreides,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:52:24 AM] EVENT
+  atreides passes
+  Data:
+    {
+      eventType: BID_PASSED,
+      data: {
+        faction: atreides,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3
+────────────────────────────────────────────────────────────────────────────────
+
+[11:52:24 AM] REQUEST
+  harkonnen requested: BID_OR_PASS
+  Data:
+    {
+      faction: harkonnen,
+      requestType: BID_OR_PASS,
+      prompt: Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 11 spice.,
+      context: {
+        currentBid: 0,
+        highBidder: null,
+        spiceAvailable: 11,
+        minimumBid: 1,
+        isOpeningBid: true,
+        cardInfo: null,
+        isAtreides: false,
+        passedFactions: [
+          atreides,
+        ],
+        auctionNumber: 1,
+        totalAuctions: 3,
+      },
+      availableActions: [
+        BID,
+        PASS,
+      ],
+    }
+
+[11:52:24 AM] RESPONSE
+  harkonnen responded: PASS (passed: true)
+  Data:
+    {
+      faction: harkonnen,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:52:24 AM] EVENT
+  harkonnen passes
+  Data:
+    {
+      eventType: BID_PASSED,
+      data: {
+        faction: harkonnen,
+      },
+    }
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4
+────────────────────────────────────────────────────────────────────────────────
+
+[11:52:24 AM] REQUEST
+  emperor requested: BID_OR_PASS
+  Data:
+    {
+      faction: emperor,
+      requestType: BID_OR_PASS,
+      prompt: Opening bid on an unknown Treachery card. You must bid at least 1 spice or pass. You have 11 spice.,
+      context: {
+        currentBid: 0,
+        highBidder: null,
+        spiceAvailable: 11,
+        minimumBid: 1,
+        isOpeningBid: true,
+        cardInfo: null,
+        isAtreides: false,
+        passedFactions: [
+          atreides,
+          harkonnen,
+        ],
+        auctionNumber: 1,
+        totalAuctions: 3,
+      },
+      availableActions: [
+        BID,
+        PASS,
+      ],
+    }
+
+[11:52:24 AM] RESPONSE
+  emperor responded: PASS (passed: true)
+  Data:
+    {
+      faction: emperor,
+      actionType: PASS,
+      data: {},
+      passed: true,
+    }
+
+[11:52:24 AM] EVENT
+  emperor passes
+  Data:
+    {
+      eventType: BID_PASSED,
+      data: {
+        faction: emperor,
+      },
+    }
+
+[11:52:24 AM] EVENT
+  BOUGHT-IN: All 3 remaining card(s) returned to deck. Bidding ends.
+  Data:
+    {
+      eventType: CARD_BOUGHT_IN,
+      data: {
+        cardsReturned: 3,
+        cardIds: [
+          tleilaxu_ghola,
+          karama_1,
+          stunner,
+        ],
+      },
+    }
+
+[11:52:24 AM] EVENT
+  Bidding complete
+  Data:
+    {
+      eventType: BIDDING_COMPLETE,
+      data: {
+        phase: bidding,
+      },
+    }
+
+[11:52:24 AM] STATE
+  State snapshot: After step 4
+  Data:
+    {
+      turn: 1,
+      phase: bidding,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:52:24 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: bidding,
+      factions: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+      factionStates: [
+        {
+          faction: atreides,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: paul_atreides,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: gurney_halleck,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: duncan_idaho,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: thufir_hawat,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+            {
+              id: dr_yueh,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: atreides,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: harkonnen,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: feyd_rautha,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: beast_rabban,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: piter_de_vries,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: captain_iakin_nefud,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+            {
+              id: umman_kudu,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: harkonnen,
+            },
+          ],
+          handSize: 2,
+          traitors: 0,
+        },
+        {
+          faction: emperor,
+          spice: 11,
+          forcesOnBoard: [],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: shaddam_iv,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: hasimir_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: captain_aramsham,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: caid,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+            {
+              id: bashar,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: emperor,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        atreides,
+        harkonnen,
+        emperor,
+      ],
+    }
+
+[11:52:24 AM] INFO
+  Phase completed successfully
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 4
+Total Events: 5
+Completed: Yes
+
+Events:
+  1. [BID_PASSED] atreides passes
+  2. [BID_PASSED] harkonnen passes
+  3. [BID_PASSED] emperor passes
+  4. [CARD_BOUGHT_IN] BOUGHT-IN: All 3 remaining card(s) returned to deck. Bidding ends.
+  5. [BIDDING_COMPLETE] Bidding complete
+
+Final State:
+  Turn: 1
+  Phase: bidding
+  Factions: atreides, harkonnen, emperor
+
+  atreides:
+    Spice: 11
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  harkonnen:
+    Spice: 11
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 2
+  emperor:
+    Spice: 11
+    Forces on board: 0 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

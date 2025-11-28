@@ -39,9 +39,11 @@ export {
 export {
   type BattlePlanSuggestion,
   validateBattlePlan,
+  validateVoiceCompliance,
   resolveBattle,
   resolveTwoTraitorsBattle,
   canCallTraitor,
+  calculateSpicedForceStrength,
 } from './combat';
 
 // Revival validation
@@ -69,3 +71,20 @@ export {
   checkGuildSpecialVictory,
   getVictoryContext,
 } from './victory';
+
+// Karama card helpers
+export {
+  canUseKarama,
+  getKaramaCards,
+  isKaramaCardForFaction,
+  getKaramaCardDisplayName,
+} from './karama';
+
+// CHOAM Charity validation
+export {
+  type CharityEligibility,
+  isEligibleForCharity,
+  getEligibleFactions,
+  calculateCharityAmount,
+  getCharityAmount,
+} from './choam-charity';

@@ -1,0 +1,52 @@
+# 0 Setup of the Game
+
+This category of the rulebook goes over the set up of the game.
+
+**NOTE:** No Deals or Bribes may be made before 1.01.00.
+
+Set up the game by doing the following steps through 0.16.
+
+## 0.00 LENGTH OF GAME
+Determine the number of Turns that will be played. In tournament play, a game will go to a maximum of 10 Turns.
+
+## 0.01 VARIANTS
+Determine what variants will be used, if any.
+
+## 0.02 SPICE BANK
+Place all spice tokens in the Spice Bank.
+
+## 0.03 SPICE DECK
+Shuffle the Spice deck and Put it face down next to the game board. Played cards will be piled face up next to the deck as they are discarded and reshuffled to restock the Spice deck as necessary. +2.01.03
+
+## 0.04 TREACHERY DECK
+Shuffle the Treachery deck and Put it face down next to the game board. Played cards will be piled face up next to the deck as they are discarded and reshuffled to restock the Treachery Deck as necessary. +2.01.03
+
+## 0.05 SEATING ORDER
+Players now determine seating order. In tournament play, remove numbers greater than the number of players from the Prediction deck, each player selects a card at random. The player with number 1 on their card sits nearest Tuek's Sietch. Each player will sit to the right of the player with a lower number, excluding the highest number drawn (the player who drew number 1 will sit to their right). Prediction cards are returned to the Prediction deck.
+
+## 0.06 FACTION SELECTION
+Players now choose factions. In tournament play, each player is dealt two alliance cards (one of a Classic faction and one of an Expansion Faction), each player selects one secretly and returns the other to the box. All players Reveal which card they selected simultaneously. The alliance card they select represents which faction they will play.
+
+## 0.07 FACTION COMPONENTS
+Players take their player shields, player sheets, and corresponding faction pieces/cards.
+
+## 0.08 PLAYER POSITIONS
+Players Place their Player Marker on the player circle closest to their Player Shield and their seat at the table.
+
+## 0.09 TRAITORS
+Remove the cards for all factions that are not in play from the Traitor deck. Then shuffle the Traitor deck thoroughly. Each player is dealt 4 cards. Each player then picks 1 card to keep, Putting it face down behind their shield, this is their Traitor card. The other cards will be Put face down next to their Player Marker, these face down cards may be used for reference throughout the game. -2.05.03 +2.11.19
+
+## 0.10 STARTING SPICE
+Spice equal to the amount indicated by a faction's ability 2.XX.01 is removed from the Spice Bank and Put behind each player's respective shield.
+
+## 0.11 STARTING FORCES
+Each player's Forces are Placed on the board as indicated by their ability 2.XX.02. All Forces in reserves are Put in front of player's respective shield. -2.02.08
+
+## 0.12 STARTING TREACHERY CARD
+Each player Draws 1 card from the Treachery Deck. -2.05.04 -2.07.03 +4.03.01
+
+## 0.13 TURN MARKER
+Place the turn marker at 1 on the Turn Track.
+
+## 0.14 FIRST STORM
+The first time the storm is moved, the Storm Marker is Placed at a random location along the map edge using the following procedure. The two players whose player markers are nearest on either side of the Storm Start Sector will secretly dial a number from 0 to 20 on the Battle Wheels. The two numbers are simultaneously Revealed, totaled, and the Storm Marker moved from the Storm Start Sector counterclockwise around the map for the sum total of Sectors.

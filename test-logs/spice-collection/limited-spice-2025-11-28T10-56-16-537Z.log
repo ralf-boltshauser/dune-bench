@@ -1,0 +1,480 @@
+================================================================================
+PHASE TEST LOG: limited-spice
+================================================================================
+Generated: 2025-11-28T10:56:16.537Z
+Steps: 0
+Completed: Yes
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 0
+────────────────────────────────────────────────────────────────────────────────
+
+[11:56:16 AM] STATE
+  State snapshot: Initial State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        bene_gesserit,
+        spacing_guild,
+      ],
+      factionStates: [
+        {
+          faction: bene_gesserit,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 10,
+              elite: 0,
+              advisors: 0,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: spacing_guild,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: staban_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: esmar_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: master_bewt,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: soo_soo_sook,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: guild_rep,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [
+        {
+          territoryId: hagga_basin,
+          sector: 8,
+          amount: 5,
+        },
+        {
+          territoryId: south_mesa,
+          sector: 2,
+          amount: 3,
+        },
+      ],
+      stormSector: 0,
+      stormOrder: [
+        bene_gesserit,
+        spacing_guild,
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Starting scenario: limited-spice
+
+[11:56:16 AM] INFO
+  Spice collection is automatic - no agent responses needed
+
+[11:56:16 AM] INFO
+  Initial Spice on Board:
+  Data:
+    {
+      spiceLocations: [
+        {
+          territory: hagga_basin,
+          sector: 8,
+          amount: 5,
+        },
+        {
+          territory: south_mesa,
+          sector: 2,
+          amount: 3,
+        },
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Initial Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: bene_gesserit,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 10,
+              elite: 0,
+              total: 10,
+            },
+          ],
+        },
+        {
+          faction: spacing_guild,
+          spice: 10,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 8,
+              elite: 0,
+              total: 8,
+            },
+          ],
+        },
+      ],
+    }
+
+[11:56:16 AM] EVENT
+  bene_gesserit collects 5 spice from hagga_basin sector 8 (10 forces × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: bene_gesserit,
+        territory: hagga_basin,
+        sector: 8,
+        amount: 5,
+        forces: 10,
+        collectionRate: 2,
+      },
+    }
+
+[11:56:16 AM] EVENT
+  spacing_guild collects 3 spice from south_mesa sector 2 (8 forces × 2 spice/force)
+  Data:
+    {
+      eventType: SPICE_COLLECTED,
+      data: {
+        faction: spacing_guild,
+        territory: south_mesa,
+        sector: 2,
+        amount: 3,
+        forces: 8,
+        collectionRate: 2,
+      },
+    }
+
+[11:56:16 AM] STATE
+  State snapshot: Final State
+  Data:
+    {
+      turn: 1,
+      phase: spice_collection,
+      factions: [
+        bene_gesserit,
+        spacing_guild,
+      ],
+      factionStates: [
+        {
+          faction: bene_gesserit,
+          spice: 15,
+          forcesOnBoard: [
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 10,
+              elite: 0,
+              advisors: 0,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: reverend_mother,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: princess_irulan,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: wanna_marcus,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: margot_fenring,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+            {
+              id: alia,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: bene_gesserit,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+        {
+          faction: spacing_guild,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 8,
+              elite: 0,
+              advisors: null,
+            },
+          ],
+          forcesInReserves: {
+            regular: 20,
+            elite: 0,
+          },
+          forcesInTanks: {
+            regular: 0,
+            elite: 0,
+          },
+          leaders: [
+            {
+              id: staban_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: esmar_tuek,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: master_bewt,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: soo_soo_sook,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+            {
+              id: guild_rep,
+              location: leader_pool,
+              usedThisTurn: false,
+              capturedBy: null,
+              originalFaction: spacing_guild,
+            },
+          ],
+          handSize: 1,
+          traitors: 0,
+        },
+      ],
+      spiceOnBoard: [],
+      stormSector: 0,
+      stormOrder: [
+        bene_gesserit,
+        spacing_guild,
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Final Spice on Board:
+  Data:
+    {
+      spiceLocations: [],
+    }
+
+[11:56:16 AM] INFO
+  Final Faction Spice:
+  Data:
+    {
+      factionSpice: [
+        {
+          faction: bene_gesserit,
+          initialSpice: 10,
+          finalSpice: 15,
+          delta: 5,
+          spice: 15,
+          forcesOnBoard: [
+            {
+              territory: hagga_basin,
+              sector: 8,
+              regular: 10,
+              elite: 0,
+              total: 10,
+            },
+          ],
+        },
+        {
+          faction: spacing_guild,
+          initialSpice: 10,
+          finalSpice: 13,
+          delta: 3,
+          spice: 13,
+          forcesOnBoard: [
+            {
+              territory: south_mesa,
+              sector: 2,
+              regular: 8,
+              elite: 0,
+              total: 8,
+            },
+          ],
+        },
+      ],
+    }
+
+[11:56:16 AM] INFO
+  Phase completed successfully
+
+[11:56:16 AM] INFO
+  Total collection events: 2
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Steps: 0
+Total Events: 2
+Completed: Yes
+
+Events:
+  1. [SPICE_COLLECTED] bene_gesserit collects 5 spice from hagga_basin sector 8 (10 forces × 2 spice/force)
+  2. [SPICE_COLLECTED] spacing_guild collects 3 spice from south_mesa sector 2 (8 forces × 2 spice/force)
+
+Final State:
+  Turn: 1
+  Phase: spice_collection
+  Factions: bene_gesserit, spacing_guild
+
+  bene_gesserit:
+    Spice: 15
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+  spacing_guild:
+    Spice: 13
+    Forces on board: 1 stacks
+    Forces in reserves: 20 regular, 0 elite
+    Leaders: 5 total
+    Hand size: 1
+
+================================================================================
+END OF LOG
+================================================================================

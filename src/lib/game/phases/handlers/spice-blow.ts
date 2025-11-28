@@ -21,6 +21,7 @@ import {
   Phase,
   SpiceCardType,
   TerritoryId,
+  LeaderLocation,
   type GameState,
   type SpiceCard,
   TERRITORY_DEFINITIONS,
@@ -31,6 +32,7 @@ import {
   sendForcesToTanks,
   logAction,
   getFactionsInTerritory,
+  getProtectedLeaders,
 } from '../../state';
 import { getSpiceCardDefinition, isShaiHulud } from '../../data';
 import { GAME_CONSTANTS } from '../../data';
@@ -59,6 +61,10 @@ interface SpiceBlowContext {
   // Turn 1 handling: Shai-Hulud cards revealed on turn 1 are set aside
   // and reshuffled back into the deck at the end of the phase (Rule 1.02.02)
   turnOneWormsSetAside: SpiceCard[];
+  // Fremen ally protection tracking
+  fremenProtectionDecision: 'protect' | 'allow' | null;
+  pendingDevourLocation: { territoryId: TerritoryId; sector: number } | null;
+  pendingDevourDeck: 'A' | 'B' | null;
 }
 
 // =============================================================================
@@ -78,6 +84,9 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
     fremenWormChoice: null,
     factionsActedInNexus: new Set(),
     turnOneWormsSetAside: [],
+    fremenProtectionDecision: null,
+    pendingDevourLocation: null,
+    pendingDevourDeck: null,
   };
 
   initialize(state: GameState): PhaseStepResult {
@@ -92,6 +101,9 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
       fremenWormChoice: null,
       factionsActedInNexus: new Set(),
       turnOneWormsSetAside: [],
+      fremenProtectionDecision: null,
+      pendingDevourLocation: null,
+      pendingDevourDeck: null,
     };
 
     const events: PhaseEvent[] = [];
@@ -117,6 +129,11 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
   }
 
   processStep(state: GameState, responses: AgentResponse[]): PhaseStepResult {
+    // Handle Fremen protection decision
+    if (this.context.pendingDevourLocation && this.context.fremenProtectionDecision === null) {
+      return this.processFremenProtectionDecision(state, responses);
+    }
+
     // Handle Nexus responses
     if (this.context.nexusTriggered && !this.context.nexusResolved) {
       return this.processNexusResponses(state, responses);
@@ -410,6 +427,8 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
     deckType: 'A' | 'B',
     events: PhaseEvent[]
   ): PhaseStepResult {
+    // Store the deck type for later use if we need to continue after Fremen protection decision
+    this.context.pendingDevourDeck = deckType;
     // Rule 1.02.02 - FIRST TURN: During the first turn's Spice Blow Phase only,
     // all Shai-Hulud cards Revealed are ignored, Set Aside, then reshuffled
     // back into the Spice deck after this Phase.
@@ -474,9 +493,17 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
     if (devourLocation) {
       console.log(`\n   🐛 Shai-Hulud devours in ${devourLocation.territoryId} (Sector ${devourLocation.sector})`);
       console.log(`   📍 Location from topmost Territory Card in discard pile`);
-      
+
       // Devour forces and spice in that territory
       const devourResult = this.devourForcesInTerritory(newState, devourLocation, events);
+
+      // Check if we need to wait for Fremen protection decision
+      if ('pendingRequests' in devourResult) {
+        // Return the pending request for Fremen protection decision
+        return devourResult;
+      }
+
+      // Continue with normal flow
       newState = devourResult.state;
       events.push(...devourResult.events);
     } else {
@@ -519,12 +546,16 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
   /**
    * Devour forces and spice in a specific territory.
    * Rule 1.02.05: Destroy all spice and Forces in the Territory.
+   *
+   * This returns either:
+   * - A PhaseStepResult if we need to request Fremen protection decision
+   * - An object with { state, events } if devouring is complete
    */
   private devourForcesInTerritory(
     state: GameState,
     location: { territoryId: TerritoryId; sector: number },
     events: PhaseEvent[]
-  ): { state: GameState; events: PhaseEvent[] } {
+  ): { state: GameState; events: PhaseEvent[] } | PhaseStepResult {
     const newEvents: PhaseEvent[] = [];
     const { territoryId, sector } = location;
     let newState = state;
@@ -543,11 +574,97 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
       });
     }
 
+    // Check if Fremen can protect allies from sandworms
+    // Rule: "ALLIANCE: You may decide to protect (or not protect) your allies from being devoured by sandworms."
+    const fremenState = newState.factions.get(Faction.FREMEN);
+    if (fremenState?.allyId) {
+      const ally = fremenState.allyId;
+      const allyState = newState.factions.get(ally);
+
+      // Check if ally has forces in this territory
+      const allyForcesInSector = allyState?.forces.onBoard.find(
+        (f) => f.territoryId === territoryId && f.sector === sector
+      );
+
+      if (allyForcesInSector) {
+        const totalAllyForces = allyForcesInSector.forces.regular + allyForcesInSector.forces.elite;
+
+        console.log(`\n   🤝 Fremen's ally ${ally} has ${totalAllyForces} forces in ${territoryId}`);
+        console.log(`   ❓ Asking Fremen if they want to protect their ally from the sandworm\n`);
+
+        // Store the devour location for later
+        this.context.pendingDevourLocation = location;
+
+        // Request Fremen's protection decision
+        const pendingRequests: AgentRequest[] = [{
+          factionId: Faction.FREMEN,
+          requestType: 'PROTECT_ALLY_FROM_WORM',
+          prompt: `Shai-Hulud appears in ${territoryId}! Your ally ${FACTION_NAMES[ally]} has ${totalAllyForces} forces there. Do you want to protect them from being devoured?`,
+          context: {
+            territory: territoryId,
+            sector,
+            ally,
+            allyForces: totalAllyForces,
+          },
+          availableActions: ['PROTECT_ALLY', 'ALLOW_DEVOURING'],
+        }];
+
+        return {
+          state: newState,
+          phaseComplete: false,
+          pendingRequests,
+          actions: [],
+          events: [...events, ...newEvents],
+        };
+      }
+    }
+
+    // No Fremen protection needed, proceed with normal devouring
+    return this.executeDevour(newState, location, [...events, ...newEvents]);
+  }
+
+  /**
+   * Execute the actual devouring of forces (after Fremen protection decision or if not applicable).
+   */
+  private executeDevour(
+    state: GameState,
+    location: { territoryId: TerritoryId; sector: number },
+    events: PhaseEvent[]
+  ): { state: GameState; events: PhaseEvent[] } {
+    const newEvents: PhaseEvent[] = [];
+    const { territoryId, sector } = location;
+    let newState = state;
+
+    // Determine which factions are protected by Fremen
+    const fremenState = newState.factions.get(Faction.FREMEN);
+    const protectedAlly = this.context.fremenProtectionDecision === 'protect' ? fremenState?.allyId : null;
+
     // Destroy forces in territory
     // Rule 2.04.07: "SHAI-HULUD: When Shai-Hulud appears in a Territory where
     // you have Forces, they are not devoured.✷"
     // Fremen forces are IMMUNE to worm devouring (this is different from storm!)
     for (const [faction, factionState] of newState.factions) {
+      // Check for protected leaders in this territory
+      // Per battle.md line 23: "SURVIVING LEADERS: Leaders who survive remain in the
+      // Territory where they were used. (Game effects do not kill these leaders while there.)"
+      const protectedLeaders = getProtectedLeaders(newState, faction);
+      if (protectedLeaders.length > 0) {
+        const leadersInTerritory = factionState.leaders.filter(
+          (l) => l.location === LeaderLocation.ON_BOARD &&
+                 l.usedInTerritoryId === territoryId
+        );
+        if (leadersInTerritory.length > 0) {
+          console.log(
+            `   🛡️  ${leadersInTerritory.length} ${faction} leader(s) protected from sandworm in ${territoryId}`
+          );
+          newEvents.push({
+            type: 'LEADER_PROTECTED_FROM_WORM',
+            data: { faction, territory: territoryId, sector, count: leadersInTerritory.length },
+            message: `${leadersInTerritory.length} ${faction} leader(s) protected from sandworm`,
+          });
+        }
+      }
+
       // Fremen forces are not devoured by worms
       if (faction === Faction.FREMEN) {
         const forcesInSector = factionState.forces.onBoard.find(
@@ -564,13 +681,30 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
         continue;
       }
 
+      // Check if this faction is protected by Fremen
+      if (protectedAlly === faction) {
+        const forcesInSector = factionState.forces.onBoard.find(
+          (f) => f.territoryId === territoryId && f.sector === sector
+        );
+        if (forcesInSector) {
+          const totalForces = forcesInSector.forces.regular + forcesInSector.forces.elite;
+          newEvents.push({
+            type: 'FREMEN_PROTECTED_ALLY',
+            data: { faction, territory: territoryId, sector, count: totalForces },
+            message: `${totalForces} ${faction} forces protected from sandworm by Fremen`,
+          });
+          console.log(`   🛡️  ${totalForces} ${faction} forces protected by Fremen`);
+        }
+        continue;
+      }
+
       const forcesInSector = factionState.forces.onBoard.find(
         (f) => f.territoryId === territoryId && f.sector === sector
       );
 
       if (forcesInSector) {
         const totalForces = forcesInSector.forces.regular + forcesInSector.forces.elite;
-        // All non-Fremen forces are devoured
+        // All non-Fremen, non-protected forces are devoured
         newState = sendForcesToTanks(newState, faction, territoryId, sector, totalForces);
         newEvents.push({
           type: 'FORCES_DEVOURED',
@@ -585,7 +719,7 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
       sector,
     });
 
-    return { state: newState, events: newEvents };
+    return { state: newState, events: [...events, ...newEvents] };
   }
 
   /**
@@ -594,11 +728,54 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
   private devourForces(
     state: GameState,
     events: PhaseEvent[]
-  ): { state: GameState; events: PhaseEvent[] } {
+  ): { state: GameState; events: PhaseEvent[] } | PhaseStepResult {
     if (!this.context.lastSpiceLocation) {
       return { state, events: [] };
     }
     return this.devourForcesInTerritory(state, this.context.lastSpiceLocation, events);
+  }
+
+  /**
+   * Process Fremen's decision on whether to protect their ally from sandworm devouring.
+   */
+  private processFremenProtectionDecision(
+    state: GameState,
+    responses: AgentResponse[]
+  ): PhaseStepResult {
+    const fremenResponse = responses.find((r) => r.factionId === Faction.FREMEN);
+
+    if (fremenResponse?.actionType === 'PROTECT_ALLY') {
+      this.context.fremenProtectionDecision = 'protect';
+      console.log(`   🛡️  Fremen chooses to PROTECT their ally from the sandworm\n`);
+    } else {
+      this.context.fremenProtectionDecision = 'allow';
+      console.log(`   ⚔️  Fremen allows their ally to be devoured by the sandworm\n`);
+    }
+
+    // Now execute the devour with the protection decision
+    const devourLocation = this.context.pendingDevourLocation;
+    if (!devourLocation) {
+      throw new Error('No pending devour location for Fremen protection decision');
+    }
+
+    const events: PhaseEvent[] = [];
+    const devourResult = this.executeDevour(state, devourLocation, events);
+    let newState = devourResult.state;
+    const newEvents = devourResult.events;
+
+    // Get the deck type before resetting context
+    const deckType = this.context.pendingDevourDeck || 'A';
+
+    // Reset protection context
+    this.context.fremenProtectionDecision = null;
+    this.context.pendingDevourLocation = null;
+    this.context.pendingDevourDeck = null;
+
+    // Rule 1.02.05: "Continue discarding Spice Blow cards until a Territory Card is discarded"
+    // Keep drawing cards until we get a Territory Card
+    console.log(`   🔄 Continuing to draw cards until a Territory Card appears...\n`);
+
+    return this.revealSpiceCard(newState, deckType);
   }
 
   private processFremenWormChoice(
@@ -626,6 +803,12 @@ export class SpiceBlowPhaseHandler implements PhaseHandler {
       const devourLocation = this.context.lastSpiceLocation;
       if (devourLocation) {
         const devourResult = this.devourForcesInTerritory(newState, devourLocation, events);
+
+        // Check if we need to wait for Fremen protection decision
+        if ('pendingRequests' in devourResult) {
+          return devourResult;
+        }
+
         newState = devourResult.state;
         events.push(...devourResult.events);
       }

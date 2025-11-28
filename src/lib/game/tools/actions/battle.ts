@@ -14,6 +14,7 @@ import {
   ChooseBattleSchema,
   BattlePlanSchema,
   CallTraitorSchema,
+  ChooseCardsToDiscardSchema,
   PassActionSchema,
 } from '../schemas';
 import { getFactionState } from '../../state';
@@ -292,6 +293,39 @@ The element could be:
         );
       },
     }),
+
+    /**
+     * Choose which cards to discard after winning a battle.
+     * Rule: "The winning player may discard any of the cards they played"
+     */
+    choose_cards_to_discard: tool({
+      description: `Choose which cards to discard after winning a battle.
+
+Rule: "The winning player may discard any of the cards they played; that player may keep any cards that do not say 'Discard after use'."
+
+You can:
+- Discard all cards (if you want to get rid of worthless cards or duplicates)
+- Discard some cards (keep valuable ones, discard unwanted ones)
+- Discard none (keep all cards)
+
+Cards that say "Discard after use" (like Cheap Hero, Hajr) are automatically discarded and are NOT included in this choice.`,
+      inputSchema: ChooseCardsToDiscardSchema,
+      execute: async (params: z.infer<typeof ChooseCardsToDiscardSchema>, options) => {
+        const { cardsToDiscard } = params;
+        const faction = ctx.faction;
+
+        // Validation happens in the phase handler
+        // This tool just records the choice
+        return successResult(
+          `Chose to discard ${cardsToDiscard.length} card(s)`,
+          {
+            faction,
+            cardsToDiscard,
+          },
+          false // State updated by phase handler
+        );
+      },
+    }),
   };
 }
 
@@ -305,5 +339,6 @@ export const BATTLE_TOOL_NAMES = [
   'call_traitor',
   'pass_traitor',
   'reveal_prescience_element',
+  'choose_cards_to_discard',
 ] as const;
 export type BattleToolName = (typeof BATTLE_TOOL_NAMES)[number];

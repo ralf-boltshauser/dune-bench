@@ -14,6 +14,7 @@ import {
   Phase,
   TerritoryType,
   TerritoryId,
+  LeaderLocation,
   type GameState,
   TERRITORY_DEFINITIONS,
 } from '../../types';
@@ -27,10 +28,13 @@ import {
   getFactionsInTerritory,
   getPlayerPositions,
   getFactionAtPosition,
+  getProtectedLeaders,
 } from '../../state';
 import { FACTION_NAMES } from '../../types';
 import { GAME_CONSTANTS } from '../../data';
 import { calculateStormOrder } from '../../state/factory';
+import { getTreacheryCardDefinition } from '../../data';
+import { isSectorInStorm } from '../../state/queries';
 import {
   type PhaseHandler,
   type PhaseStepResult,
@@ -53,6 +57,10 @@ export class StormPhaseHandler implements PhaseHandler {
     stormMovement: null,
     weatherControlUsed: false,
     weatherControlBy: null,
+    familyAtomicsUsed: false,
+    familyAtomicsBy: null,
+    waitingForFamilyAtomics: false,
+    waitingForWeatherControl: false,
   };
 
   initialize(state: GameState): PhaseStepResult {
@@ -63,6 +71,10 @@ export class StormPhaseHandler implements PhaseHandler {
       stormMovement: null,
       weatherControlUsed: false,
       weatherControlBy: null,
+      familyAtomicsUsed: false,
+      familyAtomicsBy: null,
+      waitingForFamilyAtomics: false,
+      waitingForWeatherControl: false,
     };
 
     const events: PhaseEvent[] = [];
@@ -119,12 +131,32 @@ export class StormPhaseHandler implements PhaseHandler {
     const events: PhaseEvent[] = [];
     const actions: GameAction[] = [];
 
-    // Process dial responses
+    // Step 1: Process dial responses (if not yet dialed)
     if (this.context.stormMovement === null) {
       return this.processDialResponses(state, responses);
     }
 
-    // Storm has been dialed - now apply movement
+    // Step 2: After dials are calculated, check for Family Atomics
+    if (!this.context.familyAtomicsUsed && !this.context.waitingForFamilyAtomics) {
+      return this.checkFamilyAtomics(state);
+    }
+
+    // Step 3: Process Family Atomics response (if waiting)
+    if (this.context.waitingForFamilyAtomics) {
+      return this.processFamilyAtomics(state, responses);
+    }
+
+    // Step 4: After Family Atomics (or if not used), check for Weather Control
+    if (!this.context.weatherControlUsed && !this.context.waitingForWeatherControl) {
+      return this.checkWeatherControl(state);
+    }
+
+    // Step 5: Process Weather Control response (if waiting)
+    if (this.context.waitingForWeatherControl) {
+      return this.processWeatherControl(state, responses);
+    }
+
+    // Step 6: All cards processed - now apply movement
     return this.applyStormMovement(state);
   }
 
@@ -136,6 +168,10 @@ export class StormPhaseHandler implements PhaseHandler {
       stormMovement: null,
       weatherControlUsed: false,
       weatherControlBy: null,
+      familyAtomicsUsed: false,
+      familyAtomicsBy: null,
+      waitingForFamilyAtomics: false,
+      waitingForWeatherControl: false,
     };
     return state;
   }
@@ -335,8 +371,9 @@ export class StormPhaseHandler implements PhaseHandler {
     console.log(`\n  📊 Total: ${totalMovement} sectors`);
     console.log('='.repeat(80) + '\n');
 
-    // Now apply the movement
-    return this.applyStormMovement(state);
+    // Lock in the movement (but don't apply yet - need to check for cards)
+    // Now check for Family Atomics (after movement calculated, before moved)
+    return this.checkFamilyAtomics(state);
   }
 
   private applyStormMovement(state: GameState): PhaseStepResult {
@@ -476,9 +513,19 @@ export class StormPhaseHandler implements PhaseHandler {
 
     // Check each territory
     for (const [territoryId, territory] of Object.entries(TERRITORY_DEFINITIONS)) {
-      // Skip protected territories (rock, polar sink, imperial basin)
-      if (territory.protectedFromStorm) continue;
-      if (territory.type !== TerritoryType.SAND) continue;
+      // Skip protected territories (rock, polar sink, imperial basin, strongholds)
+      // UNLESS Family Atomics was played (removes protection from Imperial Basin, Arrakeen, Carthag)
+      const isCityLosingProtection = state.shieldWallDestroyed && 
+        (territoryId === TerritoryId.IMPERIAL_BASIN || 
+         territoryId === TerritoryId.ARRAKEEN || 
+         territoryId === TerritoryId.CARTHAG);
+      
+      // If this is a protected territory and Family Atomics hasn't removed its protection, skip it
+      if (territory.protectedFromStorm && !isCityLosingProtection) continue;
+      
+      // If this is not a sand territory (rock/stronghold) and Family Atomics hasn't removed its protection, skip it
+      // Note: Imperial Basin is SAND but protected, Arrakeen/Carthag are STRONGHOLD and protected
+      if (territory.type !== TerritoryType.SAND && !isCityLosingProtection) continue;
 
       // Check if any sector of this territory is in the storm
       for (const sector of territory.sectors) {
@@ -486,6 +533,22 @@ export class StormPhaseHandler implements PhaseHandler {
 
         // Find forces in this sector
         for (const [faction, factionState] of state.factions) {
+          // Check for protected leaders in this territory/sector
+          // Per battle.md line 23: "SURVIVING LEADERS: Leaders who survive remain in the
+          // Territory where they were used. (Game effects do not kill these leaders while there.)"
+          const protectedLeaders = getProtectedLeaders(state, faction);
+          if (protectedLeaders.length > 0) {
+            const leadersInTerritory = factionState.leaders.filter(
+              (l) => l.location === LeaderLocation.ON_BOARD &&
+                     l.usedInTerritoryId === territoryId
+            );
+            if (leadersInTerritory.length > 0) {
+              console.log(
+                `   🛡️  ${leadersInTerritory.length} ${FACTION_NAMES[faction]} leader(s) protected from storm in ${territoryId}`
+              );
+            }
+          }
+
           // Fremen lose half forces (rounded up) in storm
           const forceStack = factionState.forces.onBoard.find(
             (f) => f.territoryId === territoryId && f.sector === sector
@@ -525,13 +588,352 @@ export class StormPhaseHandler implements PhaseHandler {
     const affectedSectors = new Set(this.getSectorsBetween(fromSector, toSector));
 
     // Note: Spice is destroyed only in sectors the storm PASSES THROUGH, not where it starts
+    // But spice in protected territories is also protected (unless Family Atomics was played)
     for (const spice of state.spiceOnBoard) {
-      if (affectedSectors.has(spice.sector)) {
-        destroyed.push({
-          territoryId: spice.territoryId,
-          sector: spice.sector,
-          amount: spice.amount,
+      if (!affectedSectors.has(spice.sector)) continue;
+
+      // Check if this spice is in a protected territory
+      const territory = TERRITORY_DEFINITIONS[spice.territoryId];
+      const isCityLosingProtection = state.shieldWallDestroyed && 
+        (spice.territoryId === TerritoryId.IMPERIAL_BASIN || 
+         spice.territoryId === TerritoryId.ARRAKEEN || 
+         spice.territoryId === TerritoryId.CARTHAG);
+
+      // Skip protected territories unless Family Atomics removed their protection
+      if (territory.protectedFromStorm && !isCityLosingProtection) continue;
+
+      destroyed.push({
+        territoryId: spice.territoryId,
+        sector: spice.sector,
+        amount: spice.amount,
+      });
+    }
+
+    return destroyed;
+  }
+
+  // ===========================================================================
+  // FAMILY ATOMICS & WEATHER CONTROL
+  // ===========================================================================
+
+  /**
+   * Check if any faction can play Family Atomics and ask them
+   */
+  private checkFamilyAtomics(state: GameState): PhaseStepResult {
+    const events: PhaseEvent[] = [];
+    const pendingRequests: AgentRequest[] = [];
+
+    // Family Atomics can only be played after Turn 1
+    if (state.turn === 1) {
+      // Skip to Weather Control check
+      return this.checkWeatherControl(state);
+    }
+
+    // Check each faction for Family Atomics card and requirements
+    for (const [faction, factionState] of state.factions) {
+      // Check if faction has Family Atomics card
+      const hasFamilyAtomics = factionState.hand.some(
+        card => {
+          const def = getTreacheryCardDefinition(card.definitionId);
+          return def && def.id === 'family_atomics';
+        }
+      );
+
+      if (!hasFamilyAtomics) continue;
+
+      // Check if faction meets requirements:
+      // - Forces on Shield Wall OR
+      // - Forces in territory adjacent to Shield Wall with no storm between
+      const canPlay = this.canPlayFamilyAtomics(state, faction);
+      
+      if (canPlay) {
+        pendingRequests.push({
+          factionId: faction,
+          requestType: 'PLAY_FAMILY_ATOMICS',
+          prompt: `You have Family Atomics. After storm movement is calculated (${this.context.stormMovement} sectors), you may play it to destroy all forces on the Shield Wall and remove protection from Imperial Basin, Arrakeen, and Carthag. Do you want to play Family Atomics?`,
+          context: {
+            calculatedMovement: this.context.stormMovement,
+            turn: state.turn,
+          },
+          availableActions: ['PLAY_FAMILY_ATOMICS', 'PASS'],
         });
+      }
+    }
+
+    if (pendingRequests.length > 0) {
+      this.context.waitingForFamilyAtomics = true;
+      return {
+        state,
+        phaseComplete: false,
+        pendingRequests,
+        simultaneousRequests: false,
+        actions: [],
+        events,
+      };
+    }
+
+    // No one can play Family Atomics - check Weather Control
+    return this.checkWeatherControl(state);
+  }
+
+  /**
+   * Process Family Atomics response
+   */
+  private processFamilyAtomics(state: GameState, responses: AgentResponse[]): PhaseStepResult {
+    const events: PhaseEvent[] = [];
+    let newState = state;
+
+    this.context.waitingForFamilyAtomics = false;
+
+    // Process responses
+    for (const response of responses) {
+      if (response.actionType === 'PLAY_FAMILY_ATOMICS' && !response.passed) {
+        const faction = response.factionId;
+        this.context.familyAtomicsUsed = true;
+        this.context.familyAtomicsBy = faction;
+
+        // Remove card from hand
+        const factionState = getFactionState(newState, faction);
+        const cardIndex = factionState.hand.findIndex(
+          card => {
+            const def = getTreacheryCardDefinition(card.definitionId);
+            return def && def.id === 'family_atomics';
+          }
+        );
+        
+        if (cardIndex >= 0) {
+          const card = factionState.hand[cardIndex];
+          factionState.hand.splice(cardIndex, 1);
+          // Note: Family Atomics is "Set Aside" (not discarded), but we remove from hand
+          // The card remains in play as a reminder (shieldWallDestroyed flag)
+        }
+
+        // Destroy all forces on Shield Wall
+        const shieldWallForces = this.getForcesOnShieldWall(newState);
+        for (const destruction of shieldWallForces) {
+          newState = sendForcesToTanks(
+            newState,
+            destruction.faction,
+            destruction.territoryId,
+            destruction.sector,
+            destruction.count
+          );
+
+          events.push({
+            type: 'FORCES_KILLED_BY_FAMILY_ATOMICS',
+            data: destruction,
+            message: `${destruction.count} ${destruction.faction} forces destroyed on Shield Wall by Family Atomics`,
+          });
+        }
+
+        // Mark Shield Wall as destroyed
+        newState = { ...newState, shieldWallDestroyed: true };
+
+        // Remove protection from Imperial Basin, Arrakeen, and Carthag
+        // This is done by updating territory definitions - but since they're constants,
+        // we need to track this in state. For now, we'll handle it in destroyForcesInStorm
+        // by checking if shieldWallDestroyed is true and if territory is one of the three cities
+
+        events.push({
+          type: 'FAMILY_ATOMICS_PLAYED',
+          data: { faction, shieldWallDestroyed: true },
+          message: `${faction} played Family Atomics. Shield Wall destroyed. Imperial Basin, Arrakeen, and Carthag lose storm protection.`,
+        });
+
+        console.log(`\n💣 ${FACTION_NAMES[faction]} played Family Atomics!`);
+        console.log(`   Shield Wall destroyed. Cities lose protection.`);
+      }
+    }
+
+    // Now check for Weather Control
+    return this.checkWeatherControl(newState);
+  }
+
+  /**
+   * Check if any faction can play Weather Control and ask them
+   */
+  private checkWeatherControl(state: GameState): PhaseStepResult {
+    const events: PhaseEvent[] = [];
+    const pendingRequests: AgentRequest[] = [];
+
+    // Weather Control can only be played after Turn 1
+    if (state.turn === 1) {
+      // Skip to applying movement
+      return this.applyStormMovement(state);
+    }
+
+    // Check each faction for Weather Control card
+    for (const [faction, factionState] of state.factions) {
+      // Check if faction has Weather Control card
+      const hasWeatherControl = factionState.hand.some(
+        card => {
+          const def = getTreacheryCardDefinition(card.definitionId);
+          return def && def.id === 'weather_control';
+        }
+      );
+
+      if (!hasWeatherControl) continue;
+
+      // Ask if they want to play it
+      pendingRequests.push({
+        factionId: faction,
+        requestType: 'PLAY_WEATHER_CONTROL',
+        prompt: `You have Weather Control. You may play it to control the storm this phase. You can move it 1-10 sectors counterclockwise OR prevent it from moving. The calculated movement is ${this.context.stormMovement} sectors. Do you want to play Weather Control?`,
+        context: {
+          calculatedMovement: this.context.stormMovement,
+          turn: state.turn,
+        },
+        availableActions: ['PLAY_WEATHER_CONTROL', 'PASS'],
+      });
+    }
+
+    if (pendingRequests.length > 0) {
+      this.context.waitingForWeatherControl = true;
+      return {
+        state,
+        phaseComplete: false,
+        pendingRequests,
+        simultaneousRequests: false,
+        actions: [],
+        events,
+      };
+    }
+
+    // No one wants to play Weather Control - apply movement
+    return this.applyStormMovement(state);
+  }
+
+  /**
+   * Process Weather Control response
+   */
+  private processWeatherControl(state: GameState, responses: AgentResponse[]): PhaseStepResult {
+    const events: PhaseEvent[] = [];
+    let newState = state;
+
+    this.context.waitingForWeatherControl = false;
+
+    // Process responses
+    for (const response of responses) {
+      if (response.actionType === 'PLAY_WEATHER_CONTROL' && !response.passed) {
+        const faction = response.factionId;
+        this.context.weatherControlUsed = true;
+        this.context.weatherControlBy = faction;
+
+        // Get movement choice (1-10 or 0 for no movement)
+        const movement = Number(response.data.movement ?? 0);
+        const clampedMovement = Math.max(0, Math.min(10, movement));
+
+        // Override calculated movement
+        this.context.stormMovement = clampedMovement;
+
+        // Remove card from hand (discard after use)
+        const factionState = getFactionState(newState, faction);
+        const cardIndex = factionState.hand.findIndex(
+          card => {
+            const def = getTreacheryCardDefinition(card.definitionId);
+            return def && def.id === 'weather_control';
+          }
+        );
+        
+        if (cardIndex >= 0) {
+          const card = factionState.hand[cardIndex];
+          factionState.hand.splice(cardIndex, 1);
+          // Add to discard pile
+          newState.treacheryDiscard.push(card);
+        }
+
+        events.push({
+          type: 'WEATHER_CONTROL_PLAYED',
+          data: { faction, movement: clampedMovement },
+          message: `${faction} played Weather Control. Storm movement: ${clampedMovement === 0 ? 'no movement' : clampedMovement + ' sectors'}`,
+        });
+
+        console.log(`\n🌤️  ${FACTION_NAMES[faction]} played Weather Control!`);
+        console.log(`   Storm movement: ${clampedMovement === 0 ? 'NO MOVEMENT' : clampedMovement + ' sectors'}`);
+      }
+    }
+
+    // Now apply movement
+    return this.applyStormMovement(newState);
+  }
+
+  /**
+   * Check if a faction can play Family Atomics
+   */
+  private canPlayFamilyAtomics(state: GameState, faction: Faction): boolean {
+    const factionState = getFactionState(state, faction);
+
+    // Check if forces are on Shield Wall
+    const forcesOnShieldWall = factionState.forces.onBoard.some(
+      stack => stack.territoryId === TerritoryId.SHIELD_WALL
+    );
+
+    if (forcesOnShieldWall) {
+      return true;
+    }
+
+    // Check if forces are in territory adjacent to Shield Wall with no storm between
+    const shieldWallDef = TERRITORY_DEFINITIONS[TerritoryId.SHIELD_WALL];
+    for (const stack of factionState.forces.onBoard) {
+      if (shieldWallDef.adjacentTerritories.includes(stack.territoryId)) {
+        // Check if storm is between the sector and Shield Wall
+        // Shield Wall is in sectors 7, 8
+        const shieldWallSectors = [7, 8];
+        const hasStormBetween = shieldWallSectors.some(swSector => {
+          // Check if storm is between stack.sector and swSector
+          return isSectorInStorm(state, stack.sector) || 
+                 this.isStormBetweenSectors(state, stack.sector, swSector);
+        });
+
+        if (!hasStormBetween) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Check if storm is between two sectors
+   */
+  private isStormBetweenSectors(state: GameState, sector1: number, sector2: number): boolean {
+    const stormSector = state.stormSector;
+    const min = Math.min(sector1, sector2);
+    const max = Math.max(sector1, sector2);
+
+    // Direct path
+    if (stormSector > min && stormSector < max) {
+      return true;
+    }
+
+    // Wrapped path
+    if (stormSector < min || stormSector > max) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Get all forces on Shield Wall
+   */
+  private getForcesOnShieldWall(state: GameState): Array<{ faction: Faction; territoryId: TerritoryId; sector: number; count: number }> {
+    const destroyed: Array<{ faction: Faction; territoryId: TerritoryId; sector: number; count: number }> = [];
+
+    for (const [faction, factionState] of state.factions) {
+      for (const stack of factionState.forces.onBoard) {
+        if (stack.territoryId === TerritoryId.SHIELD_WALL) {
+          const totalForces = stack.forces.regular + stack.forces.elite;
+          if (totalForces > 0) {
+            destroyed.push({
+              faction,
+              territoryId: TerritoryId.SHIELD_WALL,
+              sector: stack.sector,
+              count: totalForces,
+            });
+          }
+        }
       }
     }
 
