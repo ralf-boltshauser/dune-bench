@@ -109,6 +109,8 @@ export type ValidationErrorCode =
   | "NO_LEADERS_IN_TANKS"
   | "CANNOT_REVIVE_LEADER_YET"
   | "LEADER_FACE_DOWN"
+  | "ELITE_REVIVAL_LIMIT_EXCEEDED"
+  | "ELITE_REVIVAL_ALREADY_USED"
 
   // Bidding
   | "HAND_FULL"

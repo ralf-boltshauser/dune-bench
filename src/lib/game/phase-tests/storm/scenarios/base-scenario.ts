@@ -110,15 +110,15 @@ export async function runStormScenario(
       initResult.simultaneousRequests || false
     );
     
-    // Log responses
-    responsesQueue.forEach(response => {
-      logger.logResponse(1, {
-        factionId: response.factionId,
-        actionType: response.actionType,
-        data: response.data,
-        passed: response.passed,
+      // Log responses
+      responsesQueue.forEach(response => {
+        logger.logResponse(1, {
+          factionId: response.factionId,
+          actionType: response.actionType,
+          data: response.data,
+          passed: response.passed ?? false,
+        });
       });
-    });
   }
 
   // Process steps
@@ -167,7 +167,7 @@ export async function runStormScenario(
           factionId: response.factionId,
           actionType: response.actionType,
           data: response.data,
-          passed: response.passed,
+          passed: response.passed ?? false,
         });
       });
     } else {

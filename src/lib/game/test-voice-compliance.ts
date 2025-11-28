@@ -2,14 +2,14 @@
  * Test Voice command compliance validation
  */
 
-import { Faction, TreacheryCardType, type BattlePlan, type GameState } from './types';
+import { Faction, TreacheryCardType, CardLocation, type BattlePlan, type GameState } from './types';
 import { validateVoiceCompliance } from './rules';
-import { createInitialGameState } from './state';
+import { createGameState } from './state/factory';
 
 console.log('=== Testing Voice Command Compliance ===\n');
 
 // Create a test game state
-const state = createInitialGameState({
+const state = createGameState({
   factions: [Faction.BENE_GESSERIT, Faction.ATREIDES],
   maxTurns: 10,
   advancedRules: false,
@@ -26,25 +26,25 @@ atreidesState.hand = [
   {
     definitionId: 'crysknife',
     type: TreacheryCardType.WEAPON_POISON,
-    location: 'hand' as const,
+    location: CardLocation.HAND,
     ownerId: Faction.ATREIDES,
   },
   {
     definitionId: 'maula_pistol',
     type: TreacheryCardType.WEAPON_PROJECTILE,
-    location: 'hand' as const,
+    location: CardLocation.HAND,
     ownerId: Faction.ATREIDES,
   },
   {
     definitionId: 'snooper',
     type: TreacheryCardType.DEFENSE_POISON,
-    location: 'hand' as const,
+    location: CardLocation.HAND,
     ownerId: Faction.ATREIDES,
   },
   {
     definitionId: 'shield',
     type: TreacheryCardType.DEFENSE_PROJECTILE,
-    location: 'hand' as const,
+    location: CardLocation.HAND,
     ownerId: Faction.ATREIDES,
   },
 ];
@@ -60,6 +60,7 @@ const plan1: BattlePlan = {
   defenseCardId: 'shield',
   kwisatzHaderachUsed: false,
   spiceDialed: 0,
+  announcedNoLeader: false,
 };
 
 const voiceCommand1 = {
@@ -82,6 +83,7 @@ const plan2: BattlePlan = {
   defenseCardId: 'shield',
   kwisatzHaderachUsed: false,
   spiceDialed: 0,
+  announcedNoLeader: false,
 };
 
 const errors2 = validateVoiceCompliance(state, plan2, voiceCommand1);
@@ -99,6 +101,7 @@ const plan3: BattlePlan = {
   defenseCardId: 'snooper', // Poison defense (not projectile)
   kwisatzHaderachUsed: false,
   spiceDialed: 0,
+  announcedNoLeader: false,
 };
 
 const voiceCommand3 = {
@@ -121,6 +124,7 @@ const plan4: BattlePlan = {
   defenseCardId: 'shield', // Shield is projectile defense (violation!)
   kwisatzHaderachUsed: false,
   spiceDialed: 0,
+  announcedNoLeader: false,
 };
 
 const errors4 = validateVoiceCompliance(state, plan4, voiceCommand3);
@@ -138,6 +142,7 @@ const plan5: BattlePlan = {
   defenseCardId: 'snooper',
   kwisatzHaderachUsed: false,
   spiceDialed: 0,
+  announcedNoLeader: false,
 };
 
 const voiceCommand5 = {

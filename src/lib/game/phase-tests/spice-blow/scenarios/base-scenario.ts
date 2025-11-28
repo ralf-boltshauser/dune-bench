@@ -94,7 +94,7 @@ export async function runSpiceBlowScenario(
         factionId: response.factionId,
         actionType: response.actionType,
         data: response.data,
-        passed: response.passed,
+        passed: response.passed ?? false,
       });
     });
 

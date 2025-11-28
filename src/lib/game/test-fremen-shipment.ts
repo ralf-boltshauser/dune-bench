@@ -4,8 +4,8 @@
  * Test Fremen shipment tool validation
  */
 
-import { TerritoryId, TERRITORY_DEFINITIONS } from './src/lib/game/types/territories';
-import { getTerritoriesWithinDistance } from './src/lib/game/rules/movement';
+import { TerritoryId, TERRITORY_DEFINITIONS } from './types/territories';
+import { getTerritoriesWithinDistance } from './rules/movement';
 
 // Test the distance function
 const greatFlat = TerritoryId.THE_GREAT_FLAT;

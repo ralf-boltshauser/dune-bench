@@ -77,7 +77,6 @@ export async function testEmperorPayment() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'emperor-payment'
   );
 

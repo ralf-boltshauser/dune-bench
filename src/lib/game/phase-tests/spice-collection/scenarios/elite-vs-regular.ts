@@ -22,7 +22,7 @@ export async function testEliteVsRegular() {
       { faction: Faction.HARKONNEN, territory: TerritoryId.CARTHAG, sector: 5, regular: 2 }, // Gives city bonus
       { faction: Faction.HARKONNEN, territory: TerritoryId.HAGGA_BASIN, sector: 8, regular: 2, elite: 3 },
       // Fremen: 4 elite forces (no city bonus)
-      { faction: Faction.FREMEN, territory: TerritoryId.SOUTH_MESA, sector: 2, elite: 4 },
+      { faction: Faction.FREMEN, territory: TerritoryId.SOUTH_MESA, sector: 2, regular: 0, elite: 4 },
     ],
     territorySpice: [
       { territory: TerritoryId.HAGGA_BASIN, sector: 8, amount: 20 },

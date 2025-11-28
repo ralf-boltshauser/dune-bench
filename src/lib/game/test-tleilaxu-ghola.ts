@@ -9,7 +9,7 @@
  */
 
 import { createGameState } from './state/factory';
-import { Faction, Phase, LeaderLocation, CardLocation } from './types';
+import { Faction, Phase, LeaderLocation, CardLocation, TerritoryId, TreacheryCardType } from './types';
 import { createAgentToolProvider } from './tools/registry';
 import { killLeader, sendForcesToTanks } from './state/mutations';
 import type { TreacheryCard } from './types';
@@ -28,12 +28,12 @@ async function testTleilaxuGhola() {
   // Setup: Kill a leader and send forces to tanks
   console.log('Setup: Killing Paul Atreides and sending 10 forces to tanks...');
   state = killLeader(state, Faction.ATREIDES, 'paul_atreides');
-  state = sendForcesToTanks(state, Faction.ATREIDES, 'ARRAKEEN', 0, 10, false);
+  state = sendForcesToTanks(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, 0, 10, false);
 
   // Give Atreides the Tleilaxu Ghola card
   const gholaCard: TreacheryCard = {
     definitionId: 'tleilaxu_ghola',
-    type: 6, // TreacheryCardType.SPECIAL
+    type: TreacheryCardType.SPECIAL,
     location: CardLocation.HAND,
     ownerId: Faction.ATREIDES,
   };
@@ -63,7 +63,10 @@ async function testTleilaxuGhola() {
   const leaderRevivalResult = await gholaTool.execute?.({
     reviveType: 'leader',
     leaderId: 'paul_atreides',
-  }, {});
+  }, {
+    toolCallId: 'test-1',
+    messages: [],
+  });
 
   if (!leaderRevivalResult || typeof leaderRevivalResult === 'object' && Symbol.asyncIterator in leaderRevivalResult) {
     console.error('ERROR: Unexpected result type');
@@ -98,7 +101,7 @@ async function testTleilaxuGhola() {
     factions: [Faction.ATREIDES, Faction.HARKONNEN],
   });
   state = { ...state, phase: Phase.REVIVAL, turn: 2 };
-  state = sendForcesToTanks(state, Faction.ATREIDES, 'ARRAKEEN', 0, 10, false);
+  state = sendForcesToTanks(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, 0, 10, false);
 
   const atreidesState2 = state.factions.get(Faction.ATREIDES)!;
   const updatedAtreides2 = {
@@ -114,7 +117,10 @@ async function testTleilaxuGhola() {
   const forceRevivalResult = await gholaTool2.execute?.({
     reviveType: 'forces',
     forceCount: 5,
-  }, {});
+  }, {
+    toolCallId: 'test-2',
+    messages: [],
+  });
 
   if (!forceRevivalResult || typeof forceRevivalResult === 'object' && Symbol.asyncIterator in forceRevivalResult) {
     console.error('ERROR: Unexpected result type');
@@ -154,7 +160,7 @@ async function testTleilaxuGhola() {
     factions: [Faction.ATREIDES, Faction.HARKONNEN],
   });
   state = { ...state, phase: Phase.REVIVAL, turn: 2 };
-  state = sendForcesToTanks(state, Faction.ATREIDES, 'ARRAKEEN', 0, 10, false);
+  state = sendForcesToTanks(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, 0, 10, false);
 
   const provider3 = createAgentToolProvider(state, Faction.ATREIDES);
   const tools3 = provider3.getToolsForPhase(Phase.REVIVAL);
@@ -163,7 +169,10 @@ async function testTleilaxuGhola() {
   const noCardResult = await gholaTool3.execute?.({
     reviveType: 'forces',
     forceCount: 5,
-  }, {});
+  }, {
+    toolCallId: 'test-3',
+    messages: [],
+  });
 
   if (!noCardResult || typeof noCardResult === 'object' && Symbol.asyncIterator in noCardResult) {
     console.error('ERROR: Unexpected result type');

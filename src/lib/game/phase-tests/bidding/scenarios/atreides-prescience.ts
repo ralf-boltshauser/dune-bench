@@ -61,7 +61,6 @@ export async function testAtreidesPrescience() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'atreides-prescience'
   );
 

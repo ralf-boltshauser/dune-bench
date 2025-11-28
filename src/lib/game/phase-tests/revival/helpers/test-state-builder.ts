@@ -15,6 +15,7 @@ import {
   Faction,
   Phase,
   LeaderLocation,
+  CardLocation,
   type GameState,
 } from '../../../types';
 import { getLeaderDefinition } from '../../../data';
@@ -84,15 +85,18 @@ export function buildTestState(config: TestStateConfig): GameState {
         );
         if (!stack) {
           stack = {
+            factionId: faction,
             territoryId,
             sector,
             forces: { regular: 0, elite: 0 },
           };
           factionState.forces.onBoard.push(stack);
         }
-        stack.forces.regular += forces.regular;
-        if (forces.elite && forces.elite > 0) {
-          stack.forces.elite += forces.elite;
+        if (stack) {
+          stack.forces.regular += forces.regular;
+          if (forces.elite && forces.elite > 0) {
+            stack.forces.elite += forces.elite;
+          }
         }
         
         // Now send them to tanks
@@ -182,6 +186,8 @@ export function buildTestState(config: TestStateConfig): GameState {
         factionState.hand.push({
           definitionId: cardId,
           type: 'special' as any, // Type doesn't matter for testing
+          location: CardLocation.HAND,
+          ownerId: faction,
         });
       }
     }

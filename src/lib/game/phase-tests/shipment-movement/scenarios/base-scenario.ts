@@ -72,7 +72,7 @@ export async function runPhaseScenario(
     if (pendingRequests.length > 0) {
       // Log pending requests
       pendingRequests.forEach(req => {
-        logger.logRequest(stepCount, handler['context']?.subPhase, {
+        logger.logRequest(stepCount, undefined, {
           factionId: req.factionId,
           requestType: req.requestType,
           prompt: req.prompt,
@@ -99,7 +99,7 @@ export async function runPhaseScenario(
         factionId: response.factionId,
         actionType: response.actionType,
         data: response.data,
-        passed: response.passed,
+        passed: response.passed ?? false,
       });
     });
 

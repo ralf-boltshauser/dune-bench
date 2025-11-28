@@ -59,7 +59,6 @@ export async function testHarkonnenTopCard() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'harkonnen-top-card'
   );
 

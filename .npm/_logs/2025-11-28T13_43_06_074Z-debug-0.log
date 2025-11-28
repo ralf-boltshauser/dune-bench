@@ -1,0 +1,16 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@10.8.2
+2 info using node@v20.19.6
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/workspace/.npmrc
+5 silly config load:file:/workspace/.config/pnpm/rc
+6 verbose title npm config get registry
+7 verbose argv "config" "get" "registry"
+8 verbose logfile logs-max:10 dir:/workspace/.npm/_logs/2025-11-28T13_43_06_074Z-
+9 verbose logfile /workspace/.npm/_logs/2025-11-28T13_43_06_074Z-debug-0.log
+10 verbose cwd /workspace
+11 verbose os Linux 6.17.8-orbstack-00308-g8f9c941121b1
+12 verbose node v20.19.6
+13 verbose npm  v10.8.2
+14 verbose exit 0
+15 info ok

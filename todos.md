@@ -1,0 +1,2 @@
+- worthless cards etc can be played in battle
+- 

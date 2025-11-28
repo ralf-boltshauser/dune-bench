@@ -5,14 +5,13 @@
  */
 
 import { testKaramaBuyWithoutPaying } from './scenarios/karama-buy-without-paying';
-// Note: Other scenarios still use mocked responses - update them to use real agents if needed
-// import { testMultipleFactionsBiddingWar } from './scenarios/multiple-factions-bidding-war';
-// import { testAtreidesPrescience } from './scenarios/atreides-prescience';
-// import { testEmperorPayment } from './scenarios/emperor-payment';
-// import { testHarkonnenTopCard } from './scenarios/harkonnen-top-card';
-// import { testBoughtInRule } from './scenarios/bought-in-rule';
-// import { testHandSizeChanges } from './scenarios/hand-size-changes';
-// import { testComplexMultiCard } from './scenarios/complex-multi-card';
+import { testMultipleFactionsBiddingWar } from './scenarios/multiple-factions-bidding-war';
+import { testAtreidesPrescience } from './scenarios/atreides-prescience';
+import { testEmperorPayment } from './scenarios/emperor-payment';
+import { testHarkonnenTopCard } from './scenarios/harkonnen-top-card';
+import { testBoughtInRule } from './scenarios/bought-in-rule';
+import { testHandSizeChanges } from './scenarios/hand-size-changes';
+import { testComplexMultiCard } from './scenarios/complex-multi-card';
 
 async function runAllTests() {
   console.log('='.repeat(80));

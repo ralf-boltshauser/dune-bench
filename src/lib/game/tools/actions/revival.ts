@@ -508,7 +508,6 @@ Use this to help your ally rebuild their forces after losses.`,
             {
               code: 'NOT_FREMEN',
               message: 'This ability is exclusive to the Fremen faction',
-              faction,
             },
             false
           );
@@ -560,7 +559,6 @@ Your ally will use their normal free revival count instead.`,
             {
               code: 'NOT_FREMEN',
               message: 'This ability is exclusive to the Fremen faction',
-              faction,
             },
             false
           );

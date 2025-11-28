@@ -229,3 +229,4 @@ The "Battling Blind" rule (handwritten-rules/battle.md line 5) is **correctly im
 
 The rule is working as intended.
 
+

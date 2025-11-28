@@ -18,10 +18,11 @@ import {
   Phase,
   TerritoryId,
   LeaderLocation,
+  CardLocation,
   type GameState,
   type FactionState,
 } from '../../../types';
-import { getTreacheryCardDefinition } from '../../../data';
+import { getTreacheryCardDefinition, getLeaderDefinition } from '../../../data';
 
 export interface ForcePlacement {
   faction: Faction;
@@ -226,6 +227,8 @@ export function addCardToHand(
   factionState.hand.push({
     definitionId: cardDef.id,
     type: cardDef.type,
+    location: CardLocation.HAND,
+    ownerId: faction,
   });
 
   // Remove from deck if present
@@ -249,9 +252,15 @@ export function addTraitorCard(
   targetFaction: Faction
 ): GameState {
   const factionState = getFactionState(state, faction);
+  const leaderDef = getLeaderDefinition(targetLeaderId);
+  if (!leaderDef) {
+    throw new Error(`Leader not found: ${targetLeaderId}`);
+  }
   factionState.traitors.push({
     leaderId: targetLeaderId,
-    faction: targetFaction,
+    leaderName: leaderDef.name,
+    leaderFaction: targetFaction,
+    heldBy: faction,
   });
   return state;
 }

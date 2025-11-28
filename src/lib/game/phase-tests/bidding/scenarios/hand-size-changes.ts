@@ -55,7 +55,6 @@ export async function testHandSizeChanges() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'hand-size-changes'
   );
 

@@ -52,6 +52,8 @@ export type AgentRequestType =
 
   // Storm
   | 'DIAL_STORM'
+  | 'PLAY_WEATHER_CONTROL'
+  | 'PLAY_FAMILY_ATOMICS'
 
   // Spice Blow / Nexus
   | 'PLACE_SANDWORM' // Fremen ability
@@ -184,6 +186,9 @@ export type PhaseEventType =
   | 'STORM_MOVED'
   | 'FORCES_KILLED_BY_STORM'
   | 'SPICE_DESTROYED_BY_STORM'
+  | 'WEATHER_CONTROL_PLAYED'
+  | 'FAMILY_ATOMICS_PLAYED'
+  | 'FORCES_KILLED_BY_FAMILY_ATOMICS'
 
   // Spice Blow
   | 'SPICE_CARD_REVEALED'
@@ -214,6 +219,7 @@ export type PhaseEventType =
   | 'CARD_BOUGHT_IN'
   | 'CARD_RETURNED_TO_DECK'
   | 'CARD_DRAWN_FREE'
+  | 'KARAMA_BUY_WITHOUT_PAYING'
   | 'BIDDING_COMPLETE'
 
   // Revival

@@ -43,7 +43,6 @@ export async function testBoughtInRule() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'bought-in-rule'
   );
 

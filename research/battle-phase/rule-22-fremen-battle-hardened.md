@@ -285,3 +285,4 @@ The ability provides Fremen with a significant strategic advantage in advanced r
 - Documentation: `FREMEN_BATTLE_HARDENED_IMPLEMENTATION.md`
 - Agent prompts: `src/lib/game/agent/prompts.ts` line 81
 
+

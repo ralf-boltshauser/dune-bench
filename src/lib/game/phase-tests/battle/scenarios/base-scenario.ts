@@ -70,7 +70,7 @@ export async function runBattleScenario(
     // Log pending requests
     if (stepCount === 1 && initResult.pendingRequests.length > 0) {
       initResult.pendingRequests.forEach(req => {
-        logger.logRequest(stepCount, handler['context'].subPhase, {
+        logger.logRequest(stepCount, undefined, {
           factionId: req.factionId,
           requestType: req.requestType,
           prompt: req.prompt,
@@ -90,7 +90,7 @@ export async function runBattleScenario(
         factionId: response.factionId,
         actionType: response.actionType,
         data: response.data,
-        passed: response.passed,
+        passed: response.passed ?? false,
       });
     });
 
@@ -110,7 +110,7 @@ export async function runBattleScenario(
     // Log pending requests for next step
     if (stepResult.pendingRequests.length > 0) {
       stepResult.pendingRequests.forEach(req => {
-        logger.logRequest(stepCount + 1, handler['context'].subPhase, {
+        logger.logRequest(stepCount + 1, undefined, {
           factionId: req.factionId,
           requestType: req.requestType,
           prompt: req.prompt,

@@ -115,7 +115,6 @@ export async function testComplexMultiCard() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'complex-multi-card'
   );
 

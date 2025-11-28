@@ -284,6 +284,7 @@ export type GameActionType =
   // Revival
   | "FORCES_REVIVED"
   | "LEADER_REVIVED"
+  | "KWISATZ_HADERACH_REVIVED"
   // Shipment & Movement
   | "FORCES_SHIPPED"
   | "FORCES_MOVED"

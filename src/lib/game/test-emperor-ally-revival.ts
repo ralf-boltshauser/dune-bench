@@ -4,7 +4,7 @@
  * Tests the Emperor's ability to pay for up to 3 extra ally revivals per turn.
  */
 
-import { Faction, Phase, LeaderLocation } from './types';
+import { Faction, Phase, LeaderLocation, TerritoryId } from './types';
 import { createGameState } from './state/factory';
 import { getRevivalLimits } from './rules/revival';
 import {
@@ -45,7 +45,7 @@ state = addSpice(state, Faction.EMPEROR, 20);
 console.log('✓ Gave Emperor 20 spice');
 
 // Put some Harkonnen forces in tanks
-state = sendForcesToTanks(state, Faction.HARKONNEN, 10);
+state = sendForcesToTanks(state, Faction.HARKONNEN, TerritoryId.ARRAKEEN, 0, 10, false);
 console.log('✓ Put 10 Harkonnen forces in tanks');
 
 // Test 1: Check revival limits for Harkonnen (should show Emperor bonus available)

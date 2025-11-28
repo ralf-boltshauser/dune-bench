@@ -3,11 +3,10 @@
  * Tests that Fremen can grant their ally 3 free revivals at their discretion.
  */
 
-import { Faction } from './src/lib/game/types';
-import { createGameState, getFactionState, sendForcesToTanks } from './src/lib/game/state';
-import { getRevivalLimits } from './src/lib/game/rules';
-import { getFactionConfig } from './src/lib/game/data';
-import { TerritoryId } from './src/lib/game/types';
+import { Faction, TerritoryId } from './types';
+import { createGameState, getFactionState, sendForcesToTanks } from './state';
+import { getRevivalLimits } from './rules';
+import { getFactionConfig } from './data';
 
 // Create test game state
 let state = createGameState({
@@ -105,7 +104,7 @@ console.log('\n' + '-'.repeat(80));
 console.log('TEST 3: Verify Fremen revival limits are unaffected');
 console.log('-'.repeat(80));
 
-state = sendForcesToTanks(state, Faction.FREMEN, TerritoryId.HABBANYA_ERG_BASIN, 0, 5);
+state = sendForcesToTanks(state, Faction.FREMEN, TerritoryId.HABBANYA_ERG, 0, 5);
 const fremenLimits = getRevivalLimits(state, Faction.FREMEN);
 console.log('\nFremen Revival Limits:');
 console.log(`  - Free forces: ${fremenLimits.freeForces}`);

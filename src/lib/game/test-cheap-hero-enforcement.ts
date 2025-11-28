@@ -6,15 +6,16 @@
  * when you have no leaders available."
  */
 
-import { validateBattlePlan } from './src/lib/game/rules/combat';
-import { createGameState } from './src/lib/game/state/factory';
+import { validateBattlePlan } from './rules/combat';
+import { createGameState } from './state/factory';
 import {
   Faction,
   TerritoryId,
   BattlePlan,
   LeaderLocation,
   CardLocation,
-} from './src/lib/game/types';
+  TreacheryCardType,
+} from './types';
 
 // Create test state
 const state = createGameState({
@@ -26,6 +27,7 @@ const state = createGameState({
 const atreidesFaction = state.factions.get(Faction.ATREIDES)!;
 const cheapHeroCard = {
   definitionId: 'cheap_hero_1',
+  type: TreacheryCardType.SPECIAL,
   location: CardLocation.HAND,
   ownerId: Faction.ATREIDES,
 };
@@ -33,7 +35,7 @@ atreidesFaction.hand.push(cheapHeroCard);
 
 // Put all Atreides leaders in tanks (make them unavailable) - modify state directly
 for (const leader of atreidesFaction.leaders) {
-  leader.location = LeaderLocation.TANKS;
+  leader.location = LeaderLocation.TANKS_FACE_UP;
 }
 
 console.log('=== TEST: Cheap Hero Enforcement ===\n');
@@ -43,7 +45,6 @@ console.log('=== TEST: Cheap Hero Enforcement ===\n');
 console.log('Test 1: No leaders available, Cheap Hero not used (should fail)');
 const invalidPlan: BattlePlan = {
   factionId: Faction.ATREIDES,
-  territoryId: TerritoryId.ARRAKEEN,
   forcesDialed: 1,
   leaderId: null,
   cheapHeroUsed: false,
@@ -51,6 +52,7 @@ const invalidPlan: BattlePlan = {
   defenseCardId: null,
   spiceDialed: 0,
   kwisatzHaderachUsed: false,
+  announcedNoLeader: false,
 };
 
 const result1 = validateBattlePlan(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, invalidPlan);
@@ -65,7 +67,6 @@ console.log();
 console.log('Test 2: No leaders available, Cheap Hero used (should pass)');
 const validPlan: BattlePlan = {
   factionId: Faction.ATREIDES,
-  territoryId: TerritoryId.ARRAKEEN,
   forcesDialed: 1,
   leaderId: null,
   cheapHeroUsed: true,
@@ -73,6 +74,7 @@ const validPlan: BattlePlan = {
   defenseCardId: null,
   spiceDialed: 0,
   kwisatzHaderachUsed: false,
+  announcedNoLeader: false,
 };
 
 const result2 = validateBattlePlan(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, validPlan);
@@ -88,7 +90,6 @@ atreidesFaction.leaders[0].location = LeaderLocation.LEADER_POOL;
 
 const planWithoutLeader: BattlePlan = {
   factionId: Faction.ATREIDES,
-  territoryId: TerritoryId.ARRAKEEN,
   forcesDialed: 1,
   leaderId: null,
   cheapHeroUsed: false,
@@ -96,6 +97,7 @@ const planWithoutLeader: BattlePlan = {
   defenseCardId: null,
   spiceDialed: 0,
   kwisatzHaderachUsed: false,
+  announcedNoLeader: false,
 };
 
 const result3 = validateBattlePlan(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, planWithoutLeader);

@@ -496,11 +496,8 @@ export class BattlePhaseHandler implements PhaseHandler {
     // Aggressor cannot pass - they must fight all their battles
     // If they somehow passed, treat it as invalid and move to next aggressor
     if (response.passed) {
-      events.push({
-        type: "INVALID_ACTION",
-        data: { faction: response.factionId, action: "PASS" },
-        message: `${response.factionId} attempted to pass, but aggressors must fight all their battles. Moving to next aggressor.`,
-      });
+      // Log error but don't emit invalid event type - just move to next aggressor
+      console.warn(`${response.factionId} attempted to pass, but aggressors must fight all their battles. Moving to next aggressor.`);
       this.context.currentAggressorIndex++;
       return this.requestBattleChoice(state, events);
     }
@@ -1283,12 +1280,21 @@ export class BattlePhaseHandler implements PhaseHandler {
 
     if (response && !response.passed && response.actionType === "USE_VOICE") {
       this.context.currentBattle!.voiceUsed = true;
-      this.context.currentBattle!.voiceCommand = response.data.command;
+      this.context.currentBattle!.voiceCommand = response.data.command as {
+        type: 'play' | 'not_play';
+        cardType: string;
+        specificCardName?: string;
+      } | null;
 
+      const voiceCommand = response.data.command as {
+        type: 'play' | 'not_play';
+        cardType: string;
+        specificCardName?: string;
+      };
       events.push({
         type: "VOICE_USED",
-        data: { command: response.data.command },
-        message: `Bene Gesserit uses Voice: ${response.data.command}`,
+        data: { command: voiceCommand },
+        message: `Bene Gesserit uses Voice: ${JSON.stringify(voiceCommand)}`,
       });
     }
 
@@ -1766,6 +1772,7 @@ export class BattlePhaseHandler implements PhaseHandler {
     // HARKONNEN CAPTURED LEADERS: Check if Harkonnen won and can capture a leader
     if (
       result.winner === Faction.HARKONNEN &&
+      result.loser !== null &&
       !result.lasgunjShieldExplosion &&
       state.factions.has(Faction.HARKONNEN)
     ) {
@@ -1796,7 +1803,7 @@ export class BattlePhaseHandler implements PhaseHandler {
           newState,
           events,
           captureTarget.definitionId,
-          result.loser
+          result.loser!
         );
       }
     }
@@ -2432,7 +2439,7 @@ export class BattlePhaseHandler implements PhaseHandler {
           return cardDef?.name || cardId;
         });
         events.push({
-          type: "CARD_DISCARD_CHOICE",
+          type: "CARD_DISCARDED",
           data: {
             faction: winner,
             cardsDiscarded: cardsToDiscard,
@@ -2442,7 +2449,7 @@ export class BattlePhaseHandler implements PhaseHandler {
         });
       } else {
         events.push({
-          type: "CARD_DISCARD_CHOICE",
+          type: "CARD_DISCARDED",
           data: {
             faction: winner,
             cardsDiscarded: [],

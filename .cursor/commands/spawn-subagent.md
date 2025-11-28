@@ -1,7 +1,9 @@
-You can spawn a new agent by opening a url with a prompt in this format: 
-https://cursor.com/link/prompt?text=Research+and+find+one+bug+in+this+codebase
+You can spawn a new sub agent in non-interactive mode in this command
+```bash
+cursor-agent -p "fix build issues"                
+```
 
-Also ensure you tell them clearly how to document their findings / actions, in .notes/agent-communication/... so that you can review later! 
+Also ensure you tell them clearly how to document their findings / actions, in .notes/agent-communication/... so that you can review later!
 
 You need to give them full context in the prompt, since they start from scratch. You can also give them instructions in a file and then tell them to read it. 
 

@@ -12,7 +12,7 @@ import {
   isLeaderProtectedOnBoard,
   getProtectedLeaders,
 } from './state';
-import { Faction, LeaderLocation } from './types';
+import { Faction, LeaderLocation, TerritoryId } from './types';
 
 console.log('\n' + '='.repeat(80));
 console.log('LEADER PROTECTION TEST');
@@ -23,9 +23,9 @@ const initialState = createGameState({
   factions: [Faction.ATREIDES, Faction.HARKONNEN],
   advancedRules: false,
   variants: {
-    advancedCombat: false,
-    advancedKarama: false,
     shieldWallStronghold: false,
+    leaderSkillCards: false,
+    homeworlds: false,
   },
 });
 
@@ -37,7 +37,7 @@ console.log(`   Protected leaders: ${getProtectedLeaders(initialState, Faction.A
 // Simulate a leader being used in battle (moves to ON_BOARD status)
 console.log('\n2. Mark leader as used in battle (survives)');
 const leaderId = atreidesFaction.leaders[0].definitionId;
-let state = markLeaderUsed(initialState, Faction.ATREIDES, leaderId, 'ARRAKEEN');
+let state = markLeaderUsed(initialState, Faction.ATREIDES, leaderId, TerritoryId.ARRAKEEN);
 const updatedFaction = state.factions.get(Faction.ATREIDES)!;
 const usedLeader = updatedFaction.leaders.find(l => l.definitionId === leaderId)!;
 console.log(`   Leader ${leaderId} status: ${usedLeader.location}`);

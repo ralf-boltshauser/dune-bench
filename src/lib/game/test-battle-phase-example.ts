@@ -20,6 +20,7 @@ import { BattlePhaseHandler } from './phases/handlers/battle';
 import { MockAgentProvider } from './phases/phase-manager';
 import { Faction, Phase, TerritoryId } from './types';
 import type { AgentResponse } from './phases/types';
+import { getLeaderDefinition } from './data';
 
 async function testBattlePhaseExample() {
   console.log('='.repeat(80));
@@ -71,12 +72,12 @@ async function testBattlePhaseExample() {
   console.log('\n--- Step 3: Placing Forces ---');
   
   // Battle 1: Atreides vs Harkonnen in Arrakeen
-  state = shipForces(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, 9, 10, 0);
-  state = shipForces(state, Faction.HARKONNEN, TerritoryId.ARRAKEEN, 9, 8, 2); // 2 elite
+  state = shipForces(state, Faction.ATREIDES, TerritoryId.ARRAKEEN, 9, 10, false);
+  state = shipForces(state, Faction.HARKONNEN, TerritoryId.ARRAKEEN, 9, 8, true); // 2 elite
   
   // Battle 2: Bene Gesserit vs Fremen in Arrakeen (different sector)
-  state = shipForces(state, Faction.BENE_GESSERIT, TerritoryId.ARRAKEEN, 10, 5, 0);
-  state = shipForces(state, Faction.FREMEN, TerritoryId.ARRAKEEN, 10, 6, 3); // 3 Fedaykin
+  state = shipForces(state, Faction.BENE_GESSERIT, TerritoryId.ARRAKEEN, 10, 5, false);
+  state = shipForces(state, Faction.FREMEN, TerritoryId.ARRAKEEN, 10, 6, true); // 3 Fedaykin
 
   console.log('✓ Forces placed:');
   console.log(`  - Atreides: 10 regular in Arrakeen sector 9`);
@@ -108,11 +109,16 @@ async function testBattlePhaseExample() {
 
   // Give Bene Gesserit a traitor card
   const bgState = getFactionState(state, Faction.BENE_GESSERIT);
-  bgState.traitors.push({
-    leaderId: 'paul-atreides',
-    faction: Faction.ATREIDES,
-  });
-  console.log('✓ Bene Gesserit has traitor card for Paul Atreides');
+  const paulLeader = getLeaderDefinition('paul-atreides');
+  if (paulLeader) {
+    bgState.traitors.push({
+      leaderId: 'paul-atreides',
+      leaderName: paulLeader.name,
+      leaderFaction: Faction.ATREIDES,
+      heldBy: Faction.BENE_GESSERIT,
+    });
+    console.log('✓ Bene Gesserit has traitor card for Paul Atreides');
+  }
 
   // Form alliance (optional)
   // state = formAlliance(state, Faction.ATREIDES, Faction.FREMEN);
@@ -220,7 +226,7 @@ async function testBattlePhaseExample() {
   
   const initResult = handler.initialize(state);
   
-  const battlesEvent = initResult.events.find(e => e.type === 'BATTLES_IDENTIFIED');
+  const battlesEvent = initResult.events.find(e => e.type === 'BATTLE_STARTED');
   if (battlesEvent) {
     console.log(`✓ ${battlesEvent.message}`);
   }

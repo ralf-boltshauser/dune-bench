@@ -91,7 +91,7 @@ export async function runPhaseScenario(
         factionId: response.factionId,
         actionType: response.actionType,
         data: response.data,
-        passed: response.passed,
+        passed: response.passed ?? false,
       });
     });
 

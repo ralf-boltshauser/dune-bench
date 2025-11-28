@@ -81,7 +81,6 @@ export async function testMultipleFactionsBiddingWar() {
 
   const result = await runBiddingScenario(
     state,
-    responses,
     'multiple-factions-bidding-war'
   );
 

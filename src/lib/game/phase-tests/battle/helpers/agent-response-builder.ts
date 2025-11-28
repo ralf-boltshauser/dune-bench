@@ -44,17 +44,27 @@ export class AgentResponseBuilder {
 
   /**
    * Queue a prescience response
+   * If target is null, queues a pass response
    */
   queuePrescience(
     faction: Faction,
-    target: 'leader' | 'weapon' | 'defense' | 'number'
+    target: 'leader' | 'weapon' | 'defense' | 'number' | null
   ): this {
-    this.queueResponse('USE_PRESCIENCE', {
-      factionId: faction,
-      actionType: 'USE_PRESCIENCE',
-      data: { target },
-      passed: false,
-    });
+    if (target === null) {
+      this.queueResponse('USE_PRESCIENCE', {
+        factionId: faction,
+        actionType: 'USE_PRESCIENCE',
+        data: {},
+        passed: true,
+      });
+    } else {
+      this.queueResponse('USE_PRESCIENCE', {
+        factionId: faction,
+        actionType: 'USE_PRESCIENCE',
+        data: { target },
+        passed: false,
+      });
+    }
     return this;
   }
 

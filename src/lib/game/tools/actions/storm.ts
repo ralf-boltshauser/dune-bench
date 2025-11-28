@@ -65,6 +65,72 @@ The storm destroys forces in sand territories and spice in its path.`,
         );
       },
     }),
+
+    /**
+     * Play Weather Control card to control storm movement.
+     */
+    play_weather_control: tool({
+      description: `Play Weather Control card to control the storm movement this phase.
+
+You can move the storm 0-10 sectors counterclockwise:
+- 0 = prevent the storm from moving (no movement)
+- 1-10 = move the storm that many sectors counterclockwise
+
+This card overrides the normal storm dialing procedure. The card is discarded after use.
+
+If you do not want to play Weather Control this turn, simply do not call this tool - you can save the card for a future turn.
+
+Only available after Turn 1 (cannot be played on Turn 1).`,
+      inputSchema: z.object({
+        movement: z.number()
+          .int()
+          .min(0)
+          .max(10)
+          .describe('Number of sectors to move the storm (0 = no movement, 1-10 = move that many sectors)'),
+      }),
+      execute: async (params: { movement: number }, options) => {
+        const { movement } = params;
+        const state = ctx.state;
+
+        // Weather Control cannot be played on Turn 1
+        if (state.turn === 1) {
+          return failureResult(
+            'Weather Control cannot be played on Turn 1',
+            {
+              code: 'INVALID_PHASE',
+              message: 'Weather Control can only be played after Turn 1',
+            },
+            false
+          );
+        }
+
+        // Validate movement range
+        if (movement < 0 || movement > 10) {
+          return failureResult(
+            `Invalid Weather Control movement: ${movement}`,
+            {
+              code: 'INVALID_MOVEMENT',
+              message: 'Weather Control movement must be between 0 and 10',
+              suggestion: 'Choose a number from 0 (no movement) to 10 (maximum movement)',
+              field: 'movement',
+              providedValue: movement,
+              validRange: { min: 0, max: 10 },
+            },
+            false
+          );
+        }
+
+        // Note: Actual Weather Control processing happens in the phase handler
+        // This tool just validates and returns the movement value
+        return successResult(
+          movement === 0
+            ? 'Played Weather Control to prevent storm movement'
+            : `Played Weather Control to move storm ${movement} sectors`,
+          { movement, faction: ctx.faction },
+          false // State is updated by phase handler
+        );
+      },
+    }),
   };
 }
 
@@ -72,5 +138,5 @@ The storm destroys forces in sand territories and spice in its path.`,
 // TOOL LIST
 // =============================================================================
 
-export const STORM_TOOL_NAMES = ['dial_storm'] as const;
+export const STORM_TOOL_NAMES = ['dial_storm', 'play_weather_control'] as const;
 export type StormToolName = (typeof STORM_TOOL_NAMES)[number];

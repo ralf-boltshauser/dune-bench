@@ -10,7 +10,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import type { GameState } from '../../../types';
+import type { GameState } from '../../types';
 
 export interface LogEntry {
   timestamp: string;
@@ -94,7 +94,7 @@ export class TestLogger {
         faction: response.factionId,
         actionType: response.actionType,
         data: response.data,
-        passed: response.passed,
+        passed: response.passed ?? false,
       },
     });
   }

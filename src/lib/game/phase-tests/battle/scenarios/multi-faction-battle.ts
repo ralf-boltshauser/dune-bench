@@ -31,7 +31,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
       // Fremen: Mix of regular and elite Fedaykin
       {
         faction: Faction.FREMEN,
-        territory: TerritoryId.GREAT_FLAT, // Sand territory
+        territory: TerritoryId.THE_GREAT_FLAT, // Sand territory
         sector: 5,
         regular: 6,
         elite: 3, // 3 Fedaykin
@@ -39,7 +39,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
       // Harkonnen: Strong force to ensure victory
       {
         faction: Faction.HARKONNEN,
-        territory: TerritoryId.GREAT_FLAT,
+        territory: TerritoryId.THE_GREAT_FLAT,
         sector: 5,
         regular: 10,
         elite: 0,
@@ -47,7 +47,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
       // Emperor: Weak force (will lose)
       {
         faction: Faction.EMPEROR,
-        territory: TerritoryId.GREAT_FLAT,
+        territory: TerritoryId.THE_GREAT_FLAT,
         sector: 5,
         regular: 4,
         elite: 0,
@@ -55,7 +55,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
     ],
     territorySpice: [
       {
-        territory: TerritoryId.GREAT_FLAT,
+        territory: TerritoryId.THE_GREAT_FLAT,
         sector: 5,
         amount: 15,
       },
@@ -78,7 +78,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
   // Assuming Fremen is aggressor (first in storm order)
   responses.queueBattleChoice(
     Faction.FREMEN,
-    TerritoryId.GREAT_FLAT,
+    TerritoryId.THE_GREAT_FLAT,
     Faction.HARKONNEN
   );
 
@@ -115,7 +115,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
   // Harkonnen chooses to fight Emperor
   responses.queueBattleChoice(
     Faction.HARKONNEN,
-    TerritoryId.GREAT_FLAT,
+    TerritoryId.THE_GREAT_FLAT,
     Faction.EMPEROR
   );
 
