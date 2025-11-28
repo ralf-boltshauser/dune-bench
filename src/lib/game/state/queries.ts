@@ -435,3 +435,34 @@ export function isEarlierInStormOrder(
   const index2 = state.stormOrder.indexOf(faction2);
   return index1 < index2;
 }
+
+// =============================================================================
+// PLAYER POSITION QUERIES
+// =============================================================================
+
+/**
+ * Get the player token position (sector 0-17) for a faction.
+ */
+export function getPlayerPosition(state: GameState, faction: Faction): number {
+  return state.playerPositions.get(faction) ?? 0;
+}
+
+/**
+ * Get all player positions.
+ */
+export function getPlayerPositions(state: GameState): Map<Faction, number> {
+  return state.playerPositions;
+}
+
+/**
+ * Find which faction has their player token at a specific sector.
+ * Returns null if no faction is at that sector.
+ */
+export function getFactionAtPosition(state: GameState, sector: number): Faction | null {
+  for (const [faction, position] of state.playerPositions) {
+    if (position === sector) {
+      return faction;
+    }
+  }
+  return null;
+}

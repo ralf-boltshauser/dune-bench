@@ -257,6 +257,41 @@ You might pass if:
         );
       },
     }),
+
+    /**
+     * Reveal prescience element (opponent responds to Atreides prescience).
+     */
+    reveal_prescience_element: tool({
+      description: `Pre-commit the battle plan element Atreides chose to see with prescience.
+
+Atreides has used their prescience ability to see ONE element of your battle plan.
+You must now commit to what you will use for that element BEFORE submitting your full plan.
+This is binding - you must use this element in your actual battle plan.
+
+The element could be:
+- leader: Which leader you plan to use (or null for no leader)
+- weapon: Which weapon card you plan to use (or null for no weapon)
+- defense: Which defense card you plan to use (or null for no defense)
+- number: How many forces and/or spice you plan to dial`,
+      inputSchema: z.object({
+        leaderId: z.string().nullable().optional().describe('Leader you will use (if prescience target is "leader")'),
+        weaponCardId: z.string().nullable().optional().describe('Weapon card you will use (if prescience target is "weapon")'),
+        defenseCardId: z.string().nullable().optional().describe('Defense card you will use (if prescience target is "defense")'),
+        forcesDialed: z.number().nullable().optional().describe('Number of forces you will dial (if prescience target is "number")'),
+        spiceDialed: z.number().nullable().optional().describe('Amount of spice you will dial (if prescience target is "number")'),
+      }),
+      execute: async (params, options) => {
+        // Just record the commitment - actual validation happens during battle plan submission
+        return successResult(
+          'Prescience element revealed to Atreides',
+          {
+            faction: ctx.faction,
+            ...params,
+          },
+          false // State updated by phase handler
+        );
+      },
+    }),
   };
 }
 
@@ -269,5 +304,6 @@ export const BATTLE_TOOL_NAMES = [
   'submit_battle_plan',
   'call_traitor',
   'pass_traitor',
+  'reveal_prescience_element',
 ] as const;
 export type BattleToolName = (typeof BATTLE_TOOL_NAMES)[number];

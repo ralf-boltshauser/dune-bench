@@ -6,6 +6,7 @@
 import {
   Phase,
   PHASE_ORDER,
+  Faction,
   type GameState,
   type WinResult,
 } from '../types';
@@ -49,6 +50,12 @@ export interface AgentProvider {
    * Tools may update state internally, so this returns the latest state.
    */
   getState?(): GameState;
+
+  /**
+   * Set ornithopter access override for a specific faction.
+   * Used during shipment-movement phase to lock ornithopter access at phase start.
+   */
+  setOrnithopterAccessOverride?(faction: Faction, hasAccess: boolean | undefined): void;
 }
 
 /**
@@ -283,10 +290,33 @@ export class PhaseManager {
         if (this.agentProvider.updateState) {
           this.agentProvider.updateState(state);
         }
+
+        // Set ornithopter access override if specified in request context
+        // This is used during shipment-movement phase to lock ornithopter access at phase start
+        if (this.agentProvider.setOrnithopterAccessOverride) {
+          for (const request of result.pendingRequests) {
+            if (request.context?.hasOrnithoptersFromPhaseStart !== undefined) {
+              this.agentProvider.setOrnithopterAccessOverride(
+                request.factionId,
+                request.context.hasOrnithoptersFromPhaseStart as boolean
+              );
+            }
+          }
+        }
+
         responses = await this.agentProvider.getResponses(
           result.pendingRequests,
           result.simultaneousRequests ?? false
         );
+
+        // Clear ornithopter access override after responses
+        if (this.agentProvider.setOrnithopterAccessOverride) {
+          for (const request of result.pendingRequests) {
+            if (request.context?.hasOrnithoptersFromPhaseStart !== undefined) {
+              this.agentProvider.setOrnithopterAccessOverride(request.factionId, undefined);
+            }
+          }
+        }
 
         // Sync state back from agent provider (tools may have updated it)
         if (this.agentProvider.getState) {

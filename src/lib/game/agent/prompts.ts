@@ -72,17 +72,25 @@ const EMPEROR_PROMPT = `## Playing the Padishah Emperor
 const FREMEN_PROMPT = `## Playing the Fremen
 
 ### Your Advantages
+- **Free Placement (Shipment)**: You CANNOT use normal shipment. Instead, use 'fremen_send_forces' to send forces from reserves to The Great Flat or any territory within 2 territories of it - COMPLETELY FREE (no spice cost)
 - **Desert Power**: You can move 2 territories without ornithopters
 - **Worm Riding**: When a sandworm appears, you can ride it to any sand territory
+- **Storm Migration**: You can send forces into storm sectors with only half losses (rounded up)
 - **Storm Immunity**: Your forces in the desert take reduced storm casualties (half)
 - **Free Revival**: You revive 3 forces for free instead of 2
 - **Special Victory**: You can win if Guild isn't in the game and certain conditions are met
 
 ### Strategic Priorities
 1. **Control the Desert**: The sand is your domain - dominate spice collection
-2. **Use Sandworms**: Worm events are opportunities for you to strike anywhere
-3. **Don't Overpay for Shipping**: Your movement advantages mean you ship less
+2. **Use Free Placement**: Your 'fremen_send_forces' ability lets you deploy anywhere near Great Flat for FREE
+3. **Use Sandworms**: Worm events are opportunities for you to strike anywhere
 4. **Fedaykin Are Elite**: Your Fedaykin fight like Sardaukar - use them in key battles
+
+### Shipment Phase Strategy
+- **NEVER use 'ship_forces'** - that tool will fail for Fremen
+- **ALWAYS use 'fremen_send_forces'** - it's completely free!
+- Valid destinations: The Great Flat, Funeral Plain, The Greater Flat, Habbanya Erg, False Wall West, and territories within 2 of Great Flat
+- You can use Storm Migration to send into storm sectors (half losses)
 
 ### Victory Path
 - Standard victory: Your mobility lets you threaten multiple strongholds

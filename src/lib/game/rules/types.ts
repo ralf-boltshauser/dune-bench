@@ -70,8 +70,11 @@ export type ValidationErrorCode =
   // Movement/Shipment
   | 'INSUFFICIENT_RESERVES'
   | 'INSUFFICIENT_SPICE'
+  | 'INSUFFICIENT_FORCES'
   | 'TERRITORY_IN_STORM'
   | 'SECTOR_IN_STORM'
+  | 'DESTINATION_IN_STORM'
+  | 'INVALID_DESTINATION'
   | 'OCCUPANCY_LIMIT_EXCEEDED'
   | 'NO_PATH_AVAILABLE'
   | 'MOVEMENT_BLOCKED_BY_STORM'
@@ -163,11 +166,11 @@ export interface RevivalSuggestion {
 
 /** Complete result of a battle resolution */
 export interface BattleResult {
-  /** The faction that won the battle */
-  winner: Faction;
+  /** The faction that won the battle (null in two-traitors case) */
+  winner: Faction | null;
 
-  /** The faction that lost the battle */
-  loser: Faction;
+  /** The faction that lost the battle (null in two-traitors case) */
+  loser: Faction | null;
 
   /** Final battle total for the winner */
   winnerTotal: number;
@@ -183,6 +186,9 @@ export interface BattleResult {
 
   /** Whether a lasgun/shield explosion occurred */
   lasgunjShieldExplosion: boolean;
+
+  /** Whether both leaders were traitors (TWO TRAITORS rule) */
+  twoTraitors?: boolean;
 
   /** Details about each side's resolution */
   aggressorResult: BattleSideResult;

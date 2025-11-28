@@ -49,7 +49,14 @@ export class RevivalPhaseHandler implements PhaseHandler {
     const events: PhaseEvent[] = [];
     // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
-    // Request revival decisions from all factions in storm order
+    console.log('\n' + '='.repeat(80));
+    console.log('💀 REVIVAL PHASE (Turn ' + state.turn + ')');
+    console.log('='.repeat(80));
+    console.log('\n  Rule 1.05: "There is no Storm Order in this Phase."');
+    console.log('  All players may revive simultaneously.\n');
+
+    // Rule 1.05: "There is no Storm Order in this Phase."
+    // Request revival decisions from all factions simultaneously
     return this.requestRevivalDecisions(state, events);
   }
 
@@ -70,8 +77,11 @@ export class RevivalPhaseHandler implements PhaseHandler {
 
       // Handle force revival
       if (response.actionType === 'REVIVE_FORCES') {
-        const count = Number(response.data.count ?? 0);
-        const result = this.processForceRevival(newState, faction, count, limits, events);
+        // Response should be ADDITIONAL forces beyond free revival
+        const additionalCount = Number(response.data.count ?? 0);
+        // Total = free + additional
+        const totalCount = limits.freeForces + additionalCount;
+        const result = this.processForceRevival(newState, faction, totalCount, limits, events);
         newState = result.state;
         events.push(...result.events);
       }
@@ -119,7 +129,9 @@ export class RevivalPhaseHandler implements PhaseHandler {
   ): PhaseStepResult {
     const pendingRequests: AgentRequest[] = [];
 
-    for (const faction of state.stormOrder) {
+    // Rule 1.05: "There is no Storm Order in this Phase."
+    // Process all factions (not in storm order)
+    for (const faction of state.factions.keys()) {
       if (this.processedFactions.has(faction)) continue;
 
       const factionState = getFactionState(state, faction);
@@ -132,13 +144,19 @@ export class RevivalPhaseHandler implements PhaseHandler {
           l.location === LeaderLocation.TANKS_FACE_DOWN
       );
 
+      // Calculate how many additional forces can be revived beyond free revival
+      const maxAdditionalForces = Math.max(0, limits.maxForces - limits.freeForces);
+      const maxAffordableAdditional = Math.max(0, Math.floor(factionState.spice / GAME_CONSTANTS.PAID_REVIVAL_COST));
+      const actualMaxAdditional = Math.min(maxAdditionalForces, maxAffordableAdditional, limits.forcesInTanks - limits.freeForces);
+      
       pendingRequests.push({
         factionId: faction,
         requestType: 'REVIVE_FORCES',
-        prompt: `Revival phase. You have ${limits.forcesInTanks} forces in tanks. Free revival: ${limits.freeForces}. Max revival: ${limits.maxForces}. Cost for paid revival: ${GAME_CONSTANTS.PAID_REVIVAL_COST} spice each.`,
+        prompt: `Revival phase. You have ${limits.forcesInTanks} forces in tanks. You get ${limits.freeForces} forces for FREE. You may revive up to ${actualMaxAdditional} ADDITIONAL forces beyond your free revival at ${GAME_CONSTANTS.PAID_REVIVAL_COST} spice each. How many ADDITIONAL forces do you want to revive? (0 to ${actualMaxAdditional})`,
         context: {
           forcesInTanks: limits.forcesInTanks,
           freeRevivalLimit: limits.freeForces,
+          maxAdditionalForces: actualMaxAdditional,
           maxRevivalLimit: limits.maxForces,
           paidRevivalCost: GAME_CONSTANTS.PAID_REVIVAL_COST,
           spiceAvailable: factionState.spice,
@@ -168,7 +186,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
       state,
       phaseComplete: false,
       pendingRequests,
-      simultaneousRequests: false, // Storm order
+      simultaneousRequests: true, // Rule 1.05: No storm order - all players revive simultaneously
       actions: [],
       events,
     };

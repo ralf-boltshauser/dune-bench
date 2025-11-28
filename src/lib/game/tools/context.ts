@@ -34,6 +34,7 @@ export class ToolContextManager {
   private _state: GameState;
   private _faction: Faction;
   private _stateUpdateCallback: ((state: GameState) => void) | null = null;
+  private _ornithopterAccessOverride: boolean | undefined = undefined;
 
   constructor(initialState: GameState, faction: Faction) {
     this._state = initialState;
@@ -76,6 +77,22 @@ export class ToolContextManager {
    */
   onStateUpdate(callback: (state: GameState) => void): void {
     this._stateUpdateCallback = callback;
+  }
+
+  /**
+   * Set ornithopter access override (used during shipment-movement phase).
+   * When set, tools will use this value instead of checking current board state.
+   * This ensures ornithopter access is determined at phase start, not dynamically.
+   */
+  setOrnithopterAccessOverride(hasAccess: boolean | undefined): void {
+    this._ornithopterAccessOverride = hasAccess;
+  }
+
+  /**
+   * Get ornithopter access override (if set).
+   */
+  get ornithopterAccessOverride(): boolean | undefined {
+    return this._ornithopterAccessOverride;
   }
 
   /**

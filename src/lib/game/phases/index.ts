@@ -26,3 +26,17 @@ export { PhaseManager, MockAgentProvider, type AgentProvider, type PhaseEventLis
 
 // All handlers
 export * from './handlers';
+
+// Helpers and base classes
+export {
+  createCompleteResult,
+  createPendingResult,
+  createIncompleteResult,
+  createAgentRequest,
+  createAgentRequests,
+  createPhaseEvent,
+  createInfoEvent,
+  allFactionsProcessed,
+  getRemainingFactions,
+} from './helpers';
+export { BasePhaseHandler } from './base-handler';

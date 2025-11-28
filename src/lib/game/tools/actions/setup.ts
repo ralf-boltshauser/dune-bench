@@ -59,9 +59,11 @@ export function createSetupTools(ctx: ToolContextManager) {
     select_traitor: tool({
       description: `Choose one traitor to keep from the 4 dealt to you.
 
+IMPORTANT: You CANNOT select a leader from your own faction as a traitor - it would be useless since you can't use it against yourself. Only select leaders from OTHER factions.
+
 When you hold a traitor card matching an opponent's leader, you can call "Traitor!" during battle resolution if they use that leader. The battle is automatically won and their leader is killed.
 
-Choose wisely - pick a leader you think opponents will use in battle. Strong leaders (4-5 strength) are often used.`,
+Choose wisely - pick a high-strength leader (4-7) from a faction you expect to fight. Strong leaders are more likely to be used in important battles.`,
       inputSchema: SelectTraitorSchema,
       execute: async (params: z.infer<typeof SelectTraitorSchema>) => {
         const { traitorId } = params;

@@ -24,11 +24,15 @@ export {
 export {
   validateShipment,
   validateMovement,
+  validateCrossShip,
+  validateOffPlanetShipment,
   calculateShipmentCost,
   checkOrnithopterAccess,
   getMovementRange,
+  getMovementRangeForFaction,
   findPath,
   getReachableTerritories,
+  getTerritoriesWithinDistance,
 } from './movement';
 
 // Combat validation and resolution
@@ -36,6 +40,7 @@ export {
   type BattlePlanSuggestion,
   validateBattlePlan,
   resolveBattle,
+  resolveTwoTraitorsBattle,
   canCallTraitor,
 } from './combat';
 

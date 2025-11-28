@@ -19,7 +19,9 @@ import {
   getFactionState,
   logAction,
 } from '../../state';
-import { getFactionConfig, GAME_CONSTANTS } from '../../data';
+import { getFactionConfig, GAME_CONSTANTS, getLeaderDefinition } from '../../data';
+import { FACTION_NAMES } from '../../types';
+import { getPlayerPositions } from '../../state';
 import {
   type PhaseHandler,
   type PhaseStepResult,
@@ -157,6 +159,16 @@ export class SetupPhaseHandler implements PhaseHandler {
             // Validate selection is from dealt cards
             const validSelection = pendingCards.find(t => t.leaderId === selectedId);
             if (validSelection) {
+              // Check if selecting own faction's leader (useless but not forbidden by rules)
+              const leaderDef = getLeaderDefinition(selectedId);
+              if (leaderDef && leaderDef.faction === response.factionId) {
+                console.warn(
+                  `\n⚠️  WARNING: ${FACTION_NAMES[response.factionId]} selected their own leader (${leaderDef.name}) as traitor!`,
+                  `This is strategically useless - you cannot use a traitor against yourself.`,
+                  `Consider selecting a leader from an opponent faction instead.\n`
+                );
+              }
+              
               newState = this.completeTraitorSelection(
                 newState,
                 response.factionId,
@@ -229,6 +241,20 @@ export class SetupPhaseHandler implements PhaseHandler {
     // Setup complete
     // Note: PhaseManager emits PHASE_ENDED event, so we don't emit it here
 
+    // Log player positions for verification
+    const playerPositions = getPlayerPositions(newState);
+    console.log('\n' + '='.repeat(80));
+    console.log('📍 PLAYER TOKEN POSITIONS');
+    console.log('='.repeat(80));
+    console.log('\nPlayer tokens placed around board edge (18 sectors):\n');
+    const sortedPositions = Array.from(playerPositions.entries()).sort((a, b) => a[1] - b[1]);
+    sortedPositions.forEach(([faction, sector]) => {
+      console.log(`  ${FACTION_NAMES[faction]}: Sector ${sector}`);
+    });
+    console.log('\n💡 Storm order will be determined by which player token the storm next approaches counterclockwise.');
+    console.log('   If storm is ON a player token, the NEXT player (counterclockwise) is first.\n');
+    console.log('='.repeat(80) + '\n');
+
     return {
       state: newState,
       phaseComplete: true,
@@ -291,6 +317,21 @@ export class SetupPhaseHandler implements PhaseHandler {
     if (state.factions.has(Faction.HARKONNEN)) {
       const dealt = this.context.pendingTraitorSelection.get(Faction.HARKONNEN);
       if (dealt) {
+        // Log Harkonnen's automatic selection
+        console.log('\n' + '='.repeat(80));
+        console.log(`🎯 TRAITOR SELECTION: ${FACTION_NAMES[Faction.HARKONNEN]} (Auto-keeps all 4)`);
+        console.log('='.repeat(80));
+        console.log(`\n📋 Harkonnen automatically keeps all 4 traitors:\n`);
+        dealt.forEach((traitor, index) => {
+          const leaderDef = getLeaderDefinition(traitor.leaderId);
+          console.log(`  ${index + 1}. ${leaderDef?.name ?? traitor.leaderName}`);
+          console.log(`     Faction: ${FACTION_NAMES[traitor.leaderFaction]} (${traitor.leaderFaction})`);
+          console.log(`     Strength: ${leaderDef?.strength ?? 0}`);
+          console.log(`     ID: ${traitor.leaderId}`);
+          console.log('');
+        });
+        console.log('='.repeat(80) + '\n');
+        
         newState = this.completeTraitorSelection(
           newState,
           Faction.HARKONNEN,
@@ -315,18 +356,46 @@ export class SetupPhaseHandler implements PhaseHandler {
       if (faction === Faction.HARKONNEN) continue;
       if (this.context.completedTraitorSelection.has(faction)) continue;
 
-      const traitorOptions = dealtCards.map(t => ({
+      // Build detailed traitor options with full leader info
+      const traitorOptions = dealtCards.map(t => {
+        const leaderDef = getLeaderDefinition(t.leaderId);
+        return {
         id: t.leaderId,
-        name: t.leaderName,
+          name: leaderDef?.name ?? t.leaderName,
         faction: t.leaderFaction,
-      }));
+          factionName: FACTION_NAMES[t.leaderFaction],
+          strength: leaderDef?.strength ?? 0,
+        };
+      });
+
+      // Log all traitor options for this faction
+      console.log('\n' + '='.repeat(80));
+      console.log(`🎯 TRAITOR SELECTION: ${FACTION_NAMES[faction]}`);
+      console.log('='.repeat(80));
+      console.log(`\n📋 Available Traitor Options (choose 1):\n`);
+      traitorOptions.forEach((option, index) => {
+        console.log(`  ${index + 1}. ${option.name}`);
+        console.log(`     Faction: ${option.factionName} (${option.faction})`);
+        console.log(`     Strength: ${option.strength}`);
+        console.log(`     ID: ${option.id}`);
+        console.log('');
+      });
+      console.log('💡 Strategy: Choose a traitor from a faction you expect to fight.');
+      console.log('   Higher strength leaders are more valuable as traitors.');
+      console.log('='.repeat(80) + '\n');
 
       pendingRequests.push({
         factionId: faction,
         requestType: 'SELECT_TRAITOR',
         prompt: `Choose 1 traitor to keep from the 4 dealt to you. You can use this traitor to betray an opponent in battle if they use this leader.`,
         context: {
-          traitorOptions,
+          traitorOptions: traitorOptions.map(o => ({
+            id: o.id,
+            name: o.name,
+            faction: o.faction,
+            factionName: o.factionName,
+            strength: o.strength,
+          })),
           mustKeep: 1,
         },
         availableActions: ['SELECT_TRAITOR'],
@@ -355,6 +424,31 @@ export class SetupPhaseHandler implements PhaseHandler {
     // Get the selected traitor cards
     const keptTraitors = pendingCards.filter(t => selectedIds.includes(t.leaderId));
     keptTraitors.forEach(t => t.heldBy = faction);
+
+    // Log the selection with full details
+    console.log('\n' + '='.repeat(80));
+    console.log(`✅ TRAITOR SELECTED: ${FACTION_NAMES[faction]}`);
+    console.log('='.repeat(80));
+    
+    keptTraitors.forEach((traitor) => {
+      const leaderDef = getLeaderDefinition(traitor.leaderId);
+      console.log(`\n  Selected: ${leaderDef?.name ?? traitor.leaderName}`);
+      console.log(`    Faction: ${FACTION_NAMES[traitor.leaderFaction]} (${traitor.leaderFaction})`);
+      console.log(`    Strength: ${leaderDef?.strength ?? 0}`);
+      console.log(`    ID: ${traitor.leaderId}`);
+    });
+    
+    // Show what was NOT selected (for comparison)
+    const notSelected = pendingCards.filter(t => !selectedIds.includes(t.leaderId));
+    if (notSelected.length > 0) {
+      console.log(`\n  Not Selected:`);
+      notSelected.forEach((traitor) => {
+        const leaderDef = getLeaderDefinition(traitor.leaderId);
+        console.log(`    - ${leaderDef?.name ?? traitor.leaderName} (${FACTION_NAMES[traitor.leaderFaction]}, Strength: ${leaderDef?.strength ?? 0})`);
+      });
+    }
+    
+    console.log('='.repeat(80) + '\n');
 
     // Update faction state
     const newFactions = new Map(state.factions);

@@ -63,6 +63,7 @@ export const PHASE_ORDER: Phase[] = [
 export enum BattleSubPhase {
   AGGRESSOR_CHOOSING = 'aggressor_choosing',
   PRESCIENCE_OPPORTUNITY = 'prescience_opportunity',
+  PRESCIENCE_REVEAL = 'prescience_reveal',
   CREATING_BATTLE_PLANS = 'creating_battle_plans',
   VOICE_OPPORTUNITY = 'voice_opportunity',
   VOICE_COMPLIANCE = 'voice_compliance',

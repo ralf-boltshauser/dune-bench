@@ -21,11 +21,18 @@ import {
   killLeader,
   markLeaderUsed,
   resetLeaderTurnState,
+  returnLeaderToPool,
   getFactionState,
   logAction,
   getFactionsInTerritory,
+  getAlly,
+  addSpice,
+  updateKwisatzHaderach,
+  markKwisatzHaderachUsed,
+  resetKwisatzHaderachTurnState,
+  removeTraitorCard,
 } from '../../state';
-import { resolveBattle, validateBattlePlan, type BattleResult } from '../../rules';
+import { resolveBattle, resolveTwoTraitorsBattle, validateBattlePlan, validateVoiceCompliance, type BattleResult } from '../../rules';
 import { getLeaderDefinition, getTreacheryCardDefinition } from '../../data';
 import {
   type PhaseHandler,
@@ -100,7 +107,7 @@ export class BattlePhaseHandler implements PhaseHandler {
 
   processStep(state: GameState, responses: AgentResponse[]): PhaseStepResult {
     const events: PhaseEvent[] = [];
-    let newState = state;
+    const newState = state;
 
     switch (this.context.subPhase) {
       case BattleSubPhase.AGGRESSOR_CHOOSING:
@@ -108,6 +115,9 @@ export class BattlePhaseHandler implements PhaseHandler {
 
       case BattleSubPhase.PRESCIENCE_OPPORTUNITY:
         return this.processPrescience(newState, responses, events);
+
+      case BattleSubPhase.PRESCIENCE_REVEAL:
+        return this.processPrescienceReveal(newState, responses, events);
 
       case BattleSubPhase.CREATING_BATTLE_PLANS:
         return this.processBattlePlans(newState, responses, events);
@@ -155,6 +165,9 @@ export class BattlePhaseHandler implements PhaseHandler {
 
     for (const [faction, factionState] of state.factions) {
       for (const forceStack of factionState.forces.onBoard) {
+        // NEUTRAL ZONE: Players cannot battle in the Polar Sink
+        if (forceStack.territoryId === TerritoryId.POLAR_SINK) continue;
+
         const locationKey = `${forceStack.territoryId}-${forceStack.sector}`;
         if (checkedLocations.has(locationKey)) continue;
         checkedLocations.add(locationKey);
@@ -273,11 +286,13 @@ export class BattlePhaseHandler implements PhaseHandler {
       defenderPlan: null,
       prescienceUsed: false,
       prescienceTarget: null,
+      prescienceOpponent: null,
       prescienceResult: null,
       voiceUsed: false,
       voiceCommand: null,
       traitorCalled: false,
       traitorCalledBy: null,
+      traitorCallsByBothSides: false,
     };
 
     events.push({
@@ -295,10 +310,21 @@ export class BattlePhaseHandler implements PhaseHandler {
     if (state.factions.has(Faction.ATREIDES)) {
       const atreidesInBattle =
         aggressor === Faction.ATREIDES || defender === Faction.ATREIDES;
+      const atreidesAlly = getAlly(state, Faction.ATREIDES);
+      const allyInBattle = atreidesAlly && (aggressor === atreidesAlly || defender === atreidesAlly);
 
-      if (atreidesInBattle) {
+      if (atreidesInBattle || allyInBattle) {
+        // Determine opponent to use prescience against
+        let prescienceTarget: Faction;
+        if (atreidesInBattle) {
+          prescienceTarget = aggressor === Faction.ATREIDES ? defender : aggressor;
+        } else {
+          // Ally's battle - target is ally's opponent
+          prescienceTarget = aggressor === atreidesAlly ? defender : aggressor;
+        }
+
         this.context.subPhase = BattleSubPhase.PRESCIENCE_OPPORTUNITY;
-        return this.requestPrescience(state, events);
+        return this.requestPrescience(state, events, prescienceTarget);
       }
     }
 
@@ -313,19 +339,29 @@ export class BattlePhaseHandler implements PhaseHandler {
 
   private requestPrescience(
     state: GameState,
-    events: PhaseEvent[]
+    events: PhaseEvent[],
+    prescienceTarget: Faction
   ): PhaseStepResult {
     const battle = this.context.currentBattle!;
-    const isAggressor = battle.aggressor === Faction.ATREIDES;
-    const opponent = isAggressor ? battle.defender : battle.aggressor;
+    const atreidesInBattle =
+      battle.aggressor === Faction.ATREIDES || battle.defender === Faction.ATREIDES;
+    const atreidesAlly = getAlly(state, Faction.ATREIDES);
+    const isAllyBattle = atreidesAlly && (battle.aggressor === atreidesAlly || battle.defender === atreidesAlly);
+
+    let promptMessage = `Use prescience to see one element of ${prescienceTarget}'s battle plan?`;
+    if (isAllyBattle && !atreidesInBattle) {
+      promptMessage = `Your ally ${atreidesAlly} is in battle against ${prescienceTarget}. Use prescience on your ally's opponent?`;
+    }
 
     const pendingRequests: AgentRequest[] = [
       {
         factionId: Faction.ATREIDES,
         requestType: 'USE_PRESCIENCE',
-        prompt: `Use prescience to see one element of ${opponent}'s battle plan?`,
+        prompt: promptMessage,
         context: {
-          opponent,
+          opponent: prescienceTarget,
+          allyBattle: isAllyBattle && !atreidesInBattle,
+          ally: atreidesAlly,
           options: ['leader', 'weapon', 'defense', 'number'],
         },
         availableActions: ['USE_PRESCIENCE', 'PASS'],
@@ -347,15 +383,148 @@ export class BattlePhaseHandler implements PhaseHandler {
     events: PhaseEvent[]
   ): PhaseStepResult {
     const response = responses.find((r) => r.factionId === Faction.ATREIDES);
+    const battle = this.context.currentBattle!;
 
     if (response && !response.passed && response.actionType === 'USE_PRESCIENCE') {
-      this.context.currentBattle!.prescienceUsed = true;
-      this.context.currentBattle!.prescienceTarget = response.data.target as string;
+      battle.prescienceUsed = true;
+      battle.prescienceTarget = response.data.target as 'leader' | 'weapon' | 'defense' | 'number';
+
+      // Determine who the prescience is used against
+      const isAggressor = battle.aggressor === Faction.ATREIDES;
+      battle.prescienceOpponent = isAggressor ? battle.defender : battle.aggressor;
 
       events.push({
         type: 'PRESCIENCE_USED',
-        data: { target: response.data.target },
+        data: { target: response.data.target, opponent: battle.prescienceOpponent },
         message: `Atreides uses prescience to see opponent's ${response.data.target}`,
+      });
+
+      // Move to reveal phase to get opponent's pre-committed element
+      this.context.subPhase = BattleSubPhase.PRESCIENCE_REVEAL;
+      return this.requestPrescienceReveal(state, events);
+    }
+
+    // Atreides passed, move directly to battle plans
+    this.context.subPhase = BattleSubPhase.CREATING_BATTLE_PLANS;
+    return this.requestBattlePlans(state, events);
+  }
+
+  // ===========================================================================
+  // PRESCIENCE REVEAL
+  // ===========================================================================
+
+  private requestPrescienceReveal(
+    state: GameState,
+    events: PhaseEvent[]
+  ): PhaseStepResult {
+    const battle = this.context.currentBattle!;
+    const opponent = battle.prescienceOpponent!;
+    const target = battle.prescienceTarget!;
+
+    const factionState = getFactionState(state, opponent);
+
+    // Build context based on what's being revealed
+    const context: Record<string, unknown> = {
+      prescienceTarget: target,
+      territory: battle.territoryId,
+      sector: battle.sector,
+    };
+
+    // Provide information about what the opponent can choose from
+    if (target === 'leader') {
+      const availableLeaders = factionState.leaders
+        .filter((l) => l.location === LeaderLocation.LEADER_POOL)
+        .map((l) => {
+          const def = getLeaderDefinition(l.definitionId);
+          return {
+            id: l.definitionId,
+            name: def?.name,
+            strength: def?.strength,
+          };
+        });
+      context.availableLeaders = availableLeaders;
+    } else if (target === 'weapon' || target === 'defense') {
+      const availableCards = factionState.hand.map((c) => {
+        const def = getTreacheryCardDefinition(c.definitionId);
+        return {
+          id: c.definitionId,
+          name: def?.name,
+          type: def?.type,
+        };
+      });
+      context.availableCards = availableCards;
+    } else if (target === 'number') {
+      const forces = factionState.forces.onBoard.find(
+        (f) => f.territoryId === battle.territoryId && f.sector === battle.sector
+      );
+      const totalForces = forces
+        ? forces.forces.regular + forces.forces.elite
+        : 0;
+      context.totalForces = totalForces;
+      context.spiceAvailable = factionState.spice;
+    }
+
+    const pendingRequests: AgentRequest[] = [
+      {
+        factionId: opponent,
+        requestType: 'REVEAL_PRESCIENCE_ELEMENT',
+        prompt: `Atreides prescience: Pre-commit your ${target} for this battle.`,
+        context,
+        availableActions: ['REVEAL_PRESCIENCE_ELEMENT'],
+      },
+    ];
+
+    return {
+      state,
+      phaseComplete: false,
+      pendingRequests,
+      actions: [],
+      events,
+    };
+  }
+
+  private processPrescienceReveal(
+    state: GameState,
+    responses: AgentResponse[],
+    events: PhaseEvent[]
+  ): PhaseStepResult {
+    const battle = this.context.currentBattle!;
+    const response = responses.find((r) => r.factionId === battle.prescienceOpponent);
+
+    if (response && response.actionType === 'REVEAL_PRESCIENCE_ELEMENT') {
+      const target = battle.prescienceTarget!;
+      let revealedValue: string | number;
+
+      // Extract the revealed value based on the target type
+      if (target === 'leader') {
+        revealedValue = response.data.leaderId as string;
+      } else if (target === 'weapon') {
+        revealedValue = response.data.weaponCardId as string;
+      } else if (target === 'defense') {
+        revealedValue = response.data.defenseCardId as string;
+      } else if (target === 'number') {
+        // Number could be forces or spice (we store both)
+        revealedValue = {
+          forces: response.data.forcesDialed as number,
+          spice: response.data.spiceDialed as number,
+        } as unknown as string;
+      } else {
+        revealedValue = 'unknown';
+      }
+
+      battle.prescienceResult = {
+        type: target,
+        value: revealedValue,
+      };
+
+      events.push({
+        type: 'PRESCIENCE_USED',
+        data: {
+          target,
+          revealed: revealedValue,
+          opponent: battle.prescienceOpponent,
+        },
+        message: `Atreides sees opponent's ${target}: ${JSON.stringify(revealedValue)}`,
       });
     }
 
@@ -417,7 +586,8 @@ export class BattlePhaseHandler implements PhaseHandler {
       ) {
         prescienceInfo = {
           target: this.context.currentBattle!.prescienceTarget,
-          // Will be filled after opponent submits
+          opponent: this.context.currentBattle!.prescienceOpponent,
+          result: this.context.currentBattle!.prescienceResult,
         };
       }
 
@@ -612,6 +782,40 @@ export class BattlePhaseHandler implements PhaseHandler {
       message: 'Battle plans revealed!',
     });
 
+    // Validate Voice compliance if Voice was used
+    if (battle.voiceUsed && battle.voiceCommand) {
+      const bgFaction = battle.aggressor === Faction.BENE_GESSERIT ? battle.aggressor : battle.defender;
+      const opponentFaction = battle.aggressor === Faction.BENE_GESSERIT ? battle.defender : battle.aggressor;
+      const opponentPlan = battle.aggressor === Faction.BENE_GESSERIT ? battle.defenderPlan : battle.aggressorPlan;
+
+      if (opponentPlan) {
+        const voiceErrors = validateVoiceCompliance(state, opponentPlan, battle.voiceCommand);
+
+        if (voiceErrors.length > 0) {
+          // Opponent violated Voice command
+          events.push({
+            type: 'VOICE_VIOLATION',
+            data: {
+              faction: opponentFaction,
+              command: battle.voiceCommand,
+              errors: voiceErrors,
+            },
+            message: `${opponentFaction} violated Voice command: ${voiceErrors[0].message}`,
+          });
+
+          // Note: In the actual game, Voice violations are handled by house rules.
+          // For AI simulation, we log the violation but continue with the battle.
+          // A stricter implementation could force the plan to be resubmitted.
+        } else {
+          events.push({
+            type: 'VOICE_COMPLIED',
+            data: { faction: opponentFaction },
+            message: `${opponentFaction} complies with Voice command`,
+          });
+        }
+      }
+    }
+
     // Check for traitor opportunity
     this.context.subPhase = BattleSubPhase.TRAITOR_CALL;
     return this.requestTraitorCall(state, events);
@@ -638,6 +842,27 @@ export class BattlePhaseHandler implements PhaseHandler {
         factionState.traitors.some((t) => t.leaderId === opponentLeader);
 
       if (hasTraitor) {
+        // ATREIDES LOYALTY: A leader accompanied by Kwisatz Haderach cannot turn traitor
+        // (battle.md line 61: "A leader accompanied by Kwisatz Haderach can not turn traitor.")
+        const opponentUsedKH =
+          opponent === Faction.ATREIDES &&
+          opponentPlan?.kwisatzHaderachUsed === true;
+
+        if (opponentUsedKH) {
+          // Kwisatz Haderach protects the leader from being called as traitor
+          events.push({
+            type: 'TRAITOR_BLOCKED',
+            data: {
+              faction,
+              opponent,
+              opponentLeader,
+              reason: 'kwisatz_haderach_protection',
+            },
+            message: `${faction} cannot call traitor on ${opponent}'s leader: protected by Kwisatz Haderach`,
+          });
+          continue; // Skip this traitor opportunity
+        }
+
         pendingRequests.push({
           factionId: faction,
           requestType: 'CALL_TRAITOR',
@@ -672,10 +897,12 @@ export class BattlePhaseHandler implements PhaseHandler {
     responses: AgentResponse[],
     events: PhaseEvent[]
   ): PhaseStepResult {
+    // Count how many sides called traitor
+    const traitorCallers: Faction[] = [];
+
     for (const response of responses) {
       if (!response.passed && response.actionType === 'CALL_TRAITOR') {
-        this.context.currentBattle!.traitorCalled = true;
-        this.context.currentBattle!.traitorCalledBy = response.factionId;
+        traitorCallers.push(response.factionId);
 
         events.push({
           type: 'TRAITOR_REVEALED',
@@ -685,9 +912,27 @@ export class BattlePhaseHandler implements PhaseHandler {
           },
           message: `${response.factionId} calls traitor!`,
         });
-
-        break; // Only one traitor can be called
       }
+    }
+
+    // Check for TWO TRAITORS scenario
+    if (traitorCallers.length === 2) {
+      // Both sides called traitor - TWO TRAITORS rule applies
+      this.context.currentBattle!.traitorCalled = true;
+      this.context.currentBattle!.traitorCalledBy = null; // Both called, so null
+      this.context.currentBattle!.traitorCallsByBothSides = true;
+
+      events.push({
+        type: 'TWO_TRAITORS',
+        data: {
+          callers: traitorCallers,
+        },
+        message: 'TWO TRAITORS! Both leaders are traitors for each other.',
+      });
+    } else if (traitorCallers.length === 1) {
+      // Single traitor call - normal traitor resolution
+      this.context.currentBattle!.traitorCalled = true;
+      this.context.currentBattle!.traitorCalledBy = traitorCallers[0];
     }
 
     // Resolve battle
@@ -706,23 +951,37 @@ export class BattlePhaseHandler implements PhaseHandler {
     const aggressorPlan = battle.aggressorPlan ?? this.createDefaultPlan(battle.aggressor);
     const defenderPlan = battle.defenderPlan ?? this.createDefaultPlan(battle.defender);
 
-    // Resolve the battle
-    const traitorTarget = battle.traitorCalled
-      ? (battle.traitorCalledBy === battle.aggressor
-          ? defenderPlan.leaderId
-          : aggressorPlan.leaderId)
-      : null;
+    // Check for TWO TRAITORS scenario first
+    let result: BattleResult;
+    if (battle.traitorCallsByBothSides) {
+      // Use the TWO TRAITORS resolution
+      result = resolveTwoTraitorsBattle(
+        state,
+        battle.territoryId,
+        battle.aggressor,
+        battle.defender,
+        aggressorPlan,
+        defenderPlan
+      );
+    } else {
+      // Normal battle resolution (including single traitor)
+      const traitorTarget = battle.traitorCalled
+        ? (battle.traitorCalledBy === battle.aggressor
+            ? defenderPlan.leaderId
+            : aggressorPlan.leaderId)
+        : null;
 
-    const result = resolveBattle(
-      state,
-      battle.territoryId,
-      battle.aggressor,
-      battle.defender,
-      aggressorPlan,
-      defenderPlan,
-      battle.traitorCalled ? battle.traitorCalledBy : null,
-      traitorTarget
-    );
+      result = resolveBattle(
+        state,
+        battle.territoryId,
+        battle.aggressor,
+        battle.defender,
+        aggressorPlan,
+        defenderPlan,
+        battle.traitorCalled ? battle.traitorCalledBy : null,
+        traitorTarget
+      );
+    }
 
     // Apply battle results
     newState = this.applyBattleResult(newState, battle, result, events);
@@ -836,9 +1095,11 @@ export class BattlePhaseHandler implements PhaseHandler {
       });
     }
 
-    // Winner loses forces equal to opponent's strength minus defense
+    // Winner loses forces equal to the number they dialed on the Battle Wheel
     const winner = result.winner;
-    const winnerLosses = Math.max(0, result.loserTotal);
+    const winnerPlan =
+      winner === battle.aggressor ? battle.aggressorPlan : battle.defenderPlan;
+    const winnerLosses = winnerPlan?.forcesDialed ?? 0;
     if (winnerLosses > 0) {
       const winnerForces = getFactionState(newState, winner).forces.onBoard.find(
         (f) =>
@@ -859,16 +1120,49 @@ export class BattlePhaseHandler implements PhaseHandler {
       }
     }
 
-    // Mark leaders as used
-    const winnerPlan =
-      winner === battle.aggressor ? battle.aggressorPlan : battle.defenderPlan;
+    // Mark leaders as used (unless traitor was revealed - winner's leader returns to pool)
     if (winnerPlan?.leaderId) {
-      newState = markLeaderUsed(
-        newState,
-        winner,
-        winnerPlan.leaderId,
-        battle.territoryId
-      );
+      if (result.traitorRevealed) {
+        // Winner's leader returns to pool immediately per traitor rules
+        newState = returnLeaderToPool(newState, winner, winnerPlan.leaderId);
+        events.push({
+          type: 'LEADER_RETURNED',
+          data: { faction: winner, leaderId: winnerPlan.leaderId },
+          message: `${winner}'s leader returns to pool after traitor reveal`,
+        });
+      } else {
+        newState = markLeaderUsed(
+          newState,
+          winner,
+          winnerPlan.leaderId,
+          battle.territoryId
+        );
+      }
+    }
+
+    // Mark Kwisatz Haderach as used if applicable
+    if (winnerPlan?.kwisatzHaderachUsed && winner === Faction.ATREIDES) {
+      newState = markKwisatzHaderachUsed(newState, battle.territoryId);
+      events.push({
+        type: 'KWISATZ_HADERACH_USED',
+        data: { territory: battle.territoryId },
+        message: 'Atreides uses Kwisatz Haderach (+2 strength)',
+      });
+    }
+
+    // Apply spice payouts for killed leaders
+    // Winner receives spice equal to the strength of all killed leaders
+    for (const payout of result.spicePayouts) {
+      newState = addSpice(newState, payout.faction, payout.amount);
+      events.push({
+        type: 'SPICE_COLLECTED',
+        data: {
+          faction: payout.faction,
+          amount: payout.amount,
+          reason: payout.reason,
+        },
+        message: `${payout.faction} receives ${payout.amount} spice: ${payout.reason}`,
+      });
     }
 
     newState = logAction(newState, 'BATTLE_RESOLVED', null, {

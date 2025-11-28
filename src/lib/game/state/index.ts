@@ -8,6 +8,7 @@ export {
   createGameState,
   shuffle,
   calculateStormOrder,
+  calculatePlayerPositions,
   getDefaultPlayerPositions,
   type CreateGameOptions,
 } from './factory';
@@ -47,6 +48,9 @@ export {
   getFirstPlayer,
   getNextInStormOrder,
   isEarlierInStormOrder,
+  getPlayerPosition,
+  getPlayerPositions,
+  getFactionAtPosition,
 } from './queries';
 
 // Mutations
@@ -64,10 +68,13 @@ export {
   moveForces,
   sendForcesToTanks,
   reviveForces,
+  sendForcesToReserves,
   killLeader,
   reviveLeader,
   markLeaderUsed,
   resetLeaderTurnState,
+  returnLeaderToPool,
+  removeTraitorCard,
   drawTreacheryCard,
   discardTreacheryCard,
   formAlliance,
@@ -76,6 +83,9 @@ export {
   updateStormOrder,
   addDeal,
   removeDeal,
+  updateKwisatzHaderach,
+  markKwisatzHaderachUsed,
+  resetKwisatzHaderachTurnState,
   recordWinAttempt,
 } from './mutations';
 

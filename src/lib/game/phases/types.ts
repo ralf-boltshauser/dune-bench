@@ -69,12 +69,14 @@ export type AgentRequestType =
   // Shipment & Movement
   | 'SHIP_FORCES'
   | 'MOVE_FORCES'
+  | 'GUILD_TIMING_DECISION' // Spacing Guild: act now or wait
   | 'SEND_ADVISOR' // BG ability
   | 'FLIP_ADVISORS' // BG ability
 
   // Battle
   | 'CHOOSE_BATTLE'
   | 'USE_PRESCIENCE' // Atreides ability
+  | 'REVEAL_PRESCIENCE_ELEMENT' // Opponent reveals chosen element to Atreides
   | 'CREATE_BATTLE_PLAN'
   | 'USE_VOICE' // BG ability
   | 'COMPLY_WITH_VOICE'
@@ -158,6 +160,7 @@ export type PhaseEventType =
   | 'PHASE_STARTED'
   | 'PHASE_ENDED'
   | 'PHASE_SKIPPED'
+  | 'SUBPHASE_STARTED'
   | 'TURN_STARTED'
   | 'TURN_ENDED'
   | 'GAME_ENDED'
@@ -166,6 +169,7 @@ export type PhaseEventType =
   | 'SETUP_STEP'
   | 'TRAITOR_SELECTED'
   | 'BG_PREDICTION_MADE'
+  | 'BG_PREDICTION_REVEALED'
   | 'FORCES_PLACED'
 
   // Storm
@@ -178,7 +182,9 @@ export type PhaseEventType =
   | 'SPICE_CARD_REVEALED'
   | 'SPICE_PLACED'
   | 'SHAI_HULUD_APPEARED'
+  | 'SPICE_DESTROYED_BY_WORM'
   | 'FORCES_DEVOURED'
+  | 'FREMEN_WORM_IMMUNITY'
   | 'NEXUS_STARTED'
   | 'NEXUS_ENDED'
 
@@ -188,6 +194,7 @@ export type PhaseEventType =
 
   // CHOAM
   | 'CHARITY_CLAIMED'
+  | 'CHOAM_ELIGIBLE'
 
   // Bidding
   | 'HAND_SIZE_DECLARED'
@@ -197,6 +204,8 @@ export type PhaseEventType =
   | 'CARD_WON'
   | 'CARD_BOUGHT_IN'
   | 'CARD_RETURNED_TO_DECK'
+  | 'CARD_DRAWN_FREE'
+  | 'BIDDING_COMPLETE'
 
   // Revival
   | 'FORCES_REVIVED'
@@ -210,14 +219,19 @@ export type PhaseEventType =
 
   // Battle
   | 'BATTLE_STARTED'
+  | 'NO_BATTLES'
+  | 'BATTLES_COMPLETE'
   | 'BATTLE_PLAN_SUBMITTED'
   | 'PRESCIENCE_USED'
   | 'VOICE_USED'
   | 'TRAITOR_REVEALED'
+  | 'TRAITOR_BLOCKED'
   | 'BATTLE_RESOLVED'
   | 'LEADER_KILLED'
   | 'LEADER_CAPTURED'
+  | 'LEADER_RETURNED'
   | 'LASGUN_SHIELD_EXPLOSION'
+  | 'KWISATZ_HADERACH_ACTIVATED'
 
   // Collection
   | 'SPICE_COLLECTED'
@@ -309,12 +323,14 @@ export interface CurrentBattle {
   aggressorPlan: BattlePlan | null;
   defenderPlan: BattlePlan | null;
   prescienceUsed: boolean;
-  prescienceTarget: string | null;
-  prescienceResult: unknown;
+  prescienceTarget: 'leader' | 'weapon' | 'defense' | 'number' | null;
+  prescienceOpponent: Faction | null; // Which faction's plan was viewed with prescience
+  prescienceResult: { type: string; value: string | number } | null;
   voiceUsed: boolean;
   voiceCommand: unknown;
   traitorCalled: boolean;
   traitorCalledBy: Faction | null;
+  traitorCallsByBothSides: boolean; // Track if BOTH sides called traitor (TWO TRAITORS rule)
 }
 
 /** Nexus tracking */

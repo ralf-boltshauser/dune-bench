@@ -14,6 +14,8 @@ import { createAgentToolProvider, type ToolSet } from '../tools';
 import { getFactionPrompt } from './prompts';
 import { FACTION_NAMES } from '../types';
 import { GameLogger, createLogger } from './logger';
+import { eventStreamer } from '../stream/event-streamer';
+import { AgentActivityEvent } from '../stream/types';
 
 // =============================================================================
 // TYPES
@@ -49,6 +51,7 @@ export class ClaudeAgentProvider implements AgentProvider {
   private agents: Map<Faction, FactionAgent> = new Map();
   private gameState: GameState;
   private logger: GameLogger;
+  private gameId: string; // Store gameId to ensure consistency
 
   constructor(initialState: GameState, config: ClaudeAgentConfig = {}) {
     // Use Foundry API key if available, otherwise standard API key
@@ -76,13 +79,17 @@ export class ClaudeAgentProvider implements AgentProvider {
     }
 
     this.gameState = initialState;
+    this.gameId = initialState.gameId; // Store gameId at creation time
     this.logger = createLogger(this.config.verbose);
 
     // Create an agent for each faction in the game
+    // Enable streaming on tool providers - tools automatically emit events
     for (const faction of initialState.factions.keys()) {
       this.agents.set(faction, {
         faction,
-        toolProvider: createAgentToolProvider(initialState, faction),
+        toolProvider: createAgentToolProvider(initialState, faction, {
+          streaming: { gameId: this.gameId },
+        }),
       });
     }
   }
@@ -101,6 +108,17 @@ export class ClaudeAgentProvider implements AgentProvider {
     this.gameState = newState;
     for (const agent of this.agents.values()) {
       agent.toolProvider.updateState(newState);
+    }
+  }
+
+  /**
+   * Set ornithopter access override for a specific faction.
+   * Used during shipment-movement phase to lock ornithopter access at phase start.
+   */
+  setOrnithopterAccessOverride(faction: Faction, hasAccess: boolean | undefined): void {
+    const agent = this.agents.get(faction);
+    if (agent) {
+      agent.toolProvider.setOrnithopterAccessOverride(hasAccess);
     }
   }
 
@@ -208,6 +226,14 @@ export class ClaudeAgentProvider implements AgentProvider {
       this.logger.agentRequest(agent.faction, request.requestType, request.prompt);
       this.logger.agentThinking(agent.faction);
 
+      // Emit AGENT_THINKING event
+      await eventStreamer.emit(AgentActivityEvent.AGENT_THINKING, this.gameId, {
+        faction: agent.faction,
+        requestType: request.requestType,
+        phase: this.gameState.phase,
+        prompt: request.prompt,
+      });
+
       // Call Claude
       const result = await generateText({
         model: anthropic(this.config.model),
@@ -219,7 +245,7 @@ export class ClaudeAgentProvider implements AgentProvider {
         stopWhen: stepCountIs(3), // Allow up to 3 LLM calls (steps)
       });
 
-      // Log tool calls
+      // Log tool calls (events are emitted automatically by streaming-wrapped tools)
       const toolCalls = result.steps?.flatMap(s => s.toolCalls ?? []) ?? [];
       for (const toolCall of toolCalls) {
         const toolInput = 'input' in toolCall ? toolCall.input as Record<string, unknown> : {};
@@ -229,6 +255,14 @@ export class ClaudeAgentProvider implements AgentProvider {
       // Parse the response
       const response = this.parseResponse(request, result);
       const duration = Date.now() - startTime;
+
+      // Emit AGENT_DECISION event
+      await eventStreamer.emit(AgentActivityEvent.AGENT_DECISION, this.gameId, {
+        faction: agent.faction,
+        actionType: response.actionType,
+        reasoning: response.reasoning,
+        data: response.data,
+      });
 
       // Log the response
       this.logger.agentResponse(agent.faction, response.actionType, duration, response.reasoning);

@@ -197,6 +197,7 @@ function createFactionState(
       isActive: false,
       forcesLostCount: 0,
       isDead: false,
+      usedInTerritoryThisTurn: null,
     };
   }
 
@@ -222,7 +223,7 @@ export function createGameState(options: CreateGameOptions): GameState {
   const {
     factions,
     maxTurns = GAME_CONSTANTS.DEFAULT_MAX_TURNS,
-    advancedRules = false,
+    advancedRules = true,
     variants = {},
   } = options;
 
@@ -234,6 +235,9 @@ export function createGameState(options: CreateGameOptions): GameState {
   // Create decks
   const treacheryDeck = createTreacheryDeck();
   const spiceDeck = createSpiceDeck();
+  // Create two identical spice decks for the two-pile system
+  const spiceDeckA = createSpiceDeck();
+  const spiceDeckB = createSpiceDeck();
   // Note: Traitor deck is created during setup phase from leaders in game
 
   // Create faction states (traitors will be dealt during setup phase)
@@ -266,12 +270,15 @@ export function createGameState(options: CreateGameOptions): GameState {
     setupComplete: false,
     factions: factionStates,
     stormOrder: [...factions], // Will be determined by first storm
+    playerPositions: calculatePlayerPositions(factions), // Initialize player token positions
     stormSector: 0, // Will be set during first storm phase
     shieldWallDestroyed: false,
     spiceOnBoard: [],
     treacheryDeck,
     treacheryDiscard: [],
-    spiceDeck,
+    spiceDeck, // DEPRECATED: for backward compatibility
+    spiceDeckA,
+    spiceDeckB,
     spiceDiscardA: [],
     spiceDiscardB: [],
     alliances: [],
@@ -346,35 +353,74 @@ function dealStartingTreacheryCards(
 /**
  * Determine storm order based on storm position.
  * First player is the one whose marker the storm next approaches counterclockwise.
+ * 
+ * IMPORTANT: If the storm is exactly ON a player token (distance = 0),
+ * the NEXT player (counterclockwise) is first, not the one at the storm position.
  */
-export function calculateStormOrder(
-  factions: Faction[],
-  stormSector: number,
-  playerPositions: Map<Faction, number>
-): Faction[] {
+export function calculateStormOrder(state: GameState): Faction[] {
+  const factions = Array.from(state.factions.keys());
+  const stormSector = state.stormSector;
+  const playerPositions = state.playerPositions;
+
   // Sort factions by their position relative to storm (counterclockwise)
   return [...factions].sort((a, b) => {
     const posA = playerPositions.get(a) ?? 0;
     const posB = playerPositions.get(b) ?? 0;
 
     // Calculate distance counterclockwise from storm
-    const distA = (posA - stormSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
-    const distB = (posB - stormSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+    let distA = (posA - stormSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+    let distB = (posB - stormSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+
+    // If storm is ON a player token (distance = 0), treat it as if they're "behind" the storm
+    // This makes the NEXT player (counterclockwise) first
+    if (distA === 0) {
+      distA = GAME_CONSTANTS.TOTAL_SECTORS; // Put them at the end
+    }
+    if (distB === 0) {
+      distB = GAME_CONSTANTS.TOTAL_SECTORS; // Put them at the end
+    }
 
     return distA - distB;
   });
 }
 
 /**
- * Default player positions around the board (evenly distributed).
+ * Calculate player positions around the board edge.
+ * 
+ * Rules:
+ * - 2 players: Across from each other (9 sectors apart)
+ * - 6 players: Every 3rd sector (0, 3, 6, 9, 12, 15)
+ * - Other counts: Evenly distributed (18 / numFactions)
  */
-export function getDefaultPlayerPositions(factions: Faction[]): Map<Faction, number> {
+export function calculatePlayerPositions(factions: Faction[]): Map<Faction, number> {
   const positions = new Map<Faction, number>();
-  const spacing = Math.floor(GAME_CONSTANTS.TOTAL_SECTORS / factions.length);
+  const numFactions = factions.length;
+  const totalSectors = GAME_CONSTANTS.TOTAL_SECTORS;
 
+  if (numFactions === 2) {
+    // Two players: across from each other (9 sectors apart)
+    positions.set(factions[0], 0);
+    positions.set(factions[1], 9);
+  } else if (numFactions === 6) {
+    // Six players: every 3rd sector
+    factions.forEach((faction, index) => {
+      positions.set(faction, index * 3);
+    });
+  } else {
+    // Other counts: evenly distributed
+    const spacing = totalSectors / numFactions;
   factions.forEach((faction, index) => {
-    positions.set(faction, index * spacing);
+      positions.set(faction, Math.floor(index * spacing));
   });
+  }
 
   return positions;
+}
+
+/**
+ * Default player positions around the board (evenly distributed).
+ * @deprecated Use calculatePlayerPositions() instead
+ */
+export function getDefaultPlayerPositions(factions: Faction[]): Map<Faction, number> {
+  return calculatePlayerPositions(factions);
 }

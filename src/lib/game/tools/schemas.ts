@@ -162,6 +162,88 @@ export const ShipForcesSchema = z.object({
     .describe('Whether to use elite forces (Sardaukar/Fedaykin) if available'),
 });
 
+/**
+ * Fremen send forces parameters (special free shipment).
+ */
+export const FremenSendForcesSchema = z.object({
+  territoryId: TerritoryIdSchema
+    .describe('Target territory (must be Great Flat or within 2 territories of Great Flat)'),
+  sector: SectorSchema
+    .describe('Sector within the territory to land in'),
+  count: z.number()
+    .int()
+    .min(1)
+    .max(20)
+    .describe('Number of forces to send from reserves'),
+  useElite: z.boolean()
+    .optional()
+    .default(false)
+    .describe('Whether to use Fedaykin (elite forces)'),
+  allowStormMigration: z.boolean()
+    .optional()
+    .default(false)
+    .describe('Allow sending into storm (half forces destroyed upon arrival)'),
+});
+
+/**
+ * Guild cross-ship parameters (territory to territory).
+ */
+export const GuildCrossShipSchema = z.object({
+  fromTerritoryId: TerritoryIdSchema
+    .describe('Territory to ship forces from'),
+  fromSector: SectorSchema
+    .describe('Sector to ship forces from'),
+  toTerritoryId: TerritoryIdSchema
+    .describe('Territory to ship forces to'),
+  toSector: SectorSchema
+    .describe('Sector to ship forces to'),
+  count: z.number()
+    .int()
+    .min(1)
+    .max(20)
+    .describe('Number of forces to cross-ship'),
+  useElite: z.boolean()
+    .optional()
+    .default(false)
+    .describe('Whether to use elite forces if available'),
+});
+
+/**
+ * Guild off-planet shipment parameters (territory to reserves).
+ */
+export const GuildOffPlanetSchema = z.object({
+  fromTerritoryId: TerritoryIdSchema
+    .describe('Territory to ship forces from'),
+  fromSector: SectorSchema
+    .describe('Sector to ship forces from'),
+  count: z.number()
+    .int()
+    .min(1)
+    .max(20)
+    .describe('Number of forces to ship back to reserves'),
+  useElite: z.boolean()
+    .optional()
+    .default(false)
+    .describe('Whether to use elite forces if available'),
+});
+
+/**
+ * Bene Gesserit spiritual advisor parameters.
+ * Rule 2.02.05: Whenever any other faction ships, BG may send 1 force for free.
+ * Rule 2.02.11 (Advanced): Can send advisor to same territory instead of Polar Sink.
+ */
+export const BGSpiritualAdvisorSchema = z.object({
+  choice: z.enum(['polar_sink', 'same_territory', 'pass'])
+    .describe('Where to send the spiritual advisor: polar_sink (basic), same_territory (advanced), or pass'),
+  // These are only needed if choice is 'same_territory'
+  territoryId: TerritoryIdSchema
+    .optional()
+    .describe('Territory to send advisor to (required if choice is same_territory)'),
+  sector: SectorSchema
+    .optional()
+    .describe('Sector to send advisor to (required if choice is same_territory)'),
+});
+
 // =============================================================================
 // MOVEMENT PHASE SCHEMAS
 // =============================================================================
@@ -306,6 +388,8 @@ export const RevivalSchemas = {
 
 export const ShipmentSchemas = {
   shipForces: ShipForcesSchema,
+  fremenSendForces: FremenSendForcesSchema,
+  bgSpiritualAdvisor: BGSpiritualAdvisorSchema,
   pass: PassActionSchema,
 };
 

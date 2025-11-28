@@ -215,4 +215,5 @@ export interface KwisatzHaderach {
   isActive: boolean;
   forcesLostCount: number; // Activates at 7+
   isDead: boolean;
+  usedInTerritoryThisTurn: TerritoryId | null; // Track territory where KH was used this turn
 }

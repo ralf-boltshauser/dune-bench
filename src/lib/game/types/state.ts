@@ -4,26 +4,26 @@
  */
 
 import {
+  Alliance,
+  BattlePlan,
+  BeneGesseritPrediction,
+  Deal,
+  FactionForces,
+  KwisatzHaderach,
+  Leader,
+  SpiceCard,
+  SpiceLocation,
+  TraitorCard,
+  TreacheryCard,
+} from "./entities";
+import {
+  AllianceStatus,
+  BattleSubPhase,
   Faction,
   Phase,
-  BattleSubPhase,
   WinCondition,
-  AllianceStatus,
-} from './enums';
-import { TerritoryId } from './territories';
-import {
-  Leader,
-  TreacheryCard,
-  SpiceCard,
-  TraitorCard,
-  FactionForces,
-  SpiceLocation,
-  BattlePlan,
-  Deal,
-  Alliance,
-  BeneGesseritPrediction,
-  KwisatzHaderach,
-} from './entities';
+} from "./enums";
+import { TerritoryId } from "./territories";
 
 // =============================================================================
 // GAME CONFIGURATION
@@ -103,7 +103,7 @@ export interface Battle {
   defenderPlan: BattlePlan | null;
   // Atreides prescience
   prescienceUsed: boolean;
-  prescienceTarget: 'leader' | 'weapon' | 'defense' | 'number' | null;
+  prescienceTarget: "leader" | "weapon" | "defense" | "number" | null;
   prescienceResult: string | null;
   // Bene Gesserit voice
   voiceUsed: boolean;
@@ -116,15 +116,17 @@ export interface Battle {
 }
 
 export interface VoiceCommand {
-  type: 'play' | 'not_play';
+  type: "play" | "not_play";
   cardType:
-    | 'poison_weapon'
-    | 'projectile_weapon'
-    | 'poison_defense'
-    | 'projectile_defense'
-    | 'worthless'
-    | 'cheap_hero';
-  specificCard?: string; // For named special cards
+    | "poison_weapon"
+    | "projectile_weapon"
+    | "poison_defense"
+    | "projectile_defense"
+    | "worthless"
+    | "cheap_hero"
+    | "specific_weapon"
+    | "specific_defense";
+  specificCardName?: string; // For named special cards (e.g., 'lasgun', 'shield')
 }
 
 // =============================================================================
@@ -144,6 +146,7 @@ export interface GameState {
   // Faction states
   factions: Map<Faction, FactionState>;
   stormOrder: Faction[]; // Order for current turn, determined by storm
+  playerPositions: Map<Faction, number>; // Player token positions (sector 0-17) around board edge
 
   // Board state
   stormSector: number;
@@ -153,7 +156,9 @@ export interface GameState {
   // Decks
   treacheryDeck: TreacheryCard[];
   treacheryDiscard: TreacheryCard[];
-  spiceDeck: SpiceCard[];
+  spiceDeck: SpiceCard[]; // DEPRECATED: Use spiceDeckA and spiceDeckB instead
+  spiceDeckA: SpiceCard[]; // Pile A deck (always used)
+  spiceDeckB: SpiceCard[]; // Pile B deck (only used in advanced rules)
   spiceDiscardA: SpiceCard[];
   spiceDiscardB: SpiceCard[]; // Only used in advanced rules
 
@@ -208,59 +213,60 @@ export interface GameAction {
 
 export type GameActionType =
   // Storm
-  | 'DIAL_STORM'
-  | 'STORM_MOVED'
-  | 'FORCES_DESTROYED_BY_STORM'
-  | 'SPICE_DESTROYED_BY_STORM'
+  | "DIAL_STORM"
+  | "STORM_MOVED"
+  | "FORCES_DESTROYED_BY_STORM"
+  | "SPICE_DESTROYED_BY_STORM"
   // Spice Blow
-  | 'SPICE_BLOW'
-  | 'SHAI_HULUD'
-  | 'NEXUS_STARTED'
-  | 'NEXUS_ENDED'
+  | "SPICE_BLOW"
+  | "SHAI_HULUD"
+  | "NEXUS_STARTED"
+  | "NEXUS_ENDED"
   // CHOAM
-  | 'CHOAM_CHARITY_CLAIMED'
+  | "CHOAM_CHARITY_CLAIMED"
   // Bidding
-  | 'HAND_SIZE_DECLARED'
-  | 'BID_PLACED'
-  | 'BID_PASSED'
-  | 'CARD_PURCHASED'
-  | 'CARD_DRAWN_FREE' // Harkonnen ability
-  | 'CARDS_RETURNED_TO_DECK' // Rule 1.04.06 - cards no one bid on
-  | 'BIDDING_ENDED'
+  | "HAND_SIZE_DECLARED"
+  | "BID_PLACED"
+  | "BID_PASSED"
+  | "CARD_PURCHASED"
+  | "CARD_DRAWN_FREE" // Harkonnen ability
+  | "CARDS_RETURNED_TO_DECK" // Rule 1.04.06 - cards no one bid on
+  | "BIDDING_ENDED"
   // Revival
-  | 'FORCES_REVIVED'
-  | 'LEADER_REVIVED'
+  | "FORCES_REVIVED"
+  | "LEADER_REVIVED"
   // Shipment & Movement
-  | 'FORCES_SHIPPED'
-  | 'FORCES_MOVED'
-  | 'ADVISOR_SENT' // Bene Gesserit
-  | 'ADVISORS_FLIPPED'
-  | 'WORM_RIDE' // Fremen
+  | "FORCES_SHIPPED"
+  | "FORCES_MOVED"
+  | "ADVISOR_SENT" // Bene Gesserit
+  | "ADVISORS_FLIPPED"
+  | "WORM_RIDE" // Fremen
   // Battle
-  | 'BATTLE_STARTED'
-  | 'PRESCIENCE_USED'
-  | 'BATTLE_PLAN_SUBMITTED'
-  | 'VOICE_USED'
-  | 'VOICE_COMPLIED'
-  | 'TRAITOR_CALLED'
-  | 'BATTLE_RESOLVED'
-  | 'LEADER_CAPTURED' // Harkonnen
+  | "BATTLE_STARTED"
+  | "PRESCIENCE_USED"
+  | "BATTLE_PLAN_SUBMITTED"
+  | "VOICE_USED"
+  | "VOICE_COMPLIED"
+  | "VOICE_VIOLATION"
+  | "TRAITOR_CALLED"
+  | "BATTLE_RESOLVED"
+  | "LEADER_CAPTURED" // Harkonnen
   // Collection
-  | 'SPICE_COLLECTED'
+  | "SPICE_COLLECTED"
   // Mentat Pause
-  | 'BRIBE_COLLECTED'
-  | 'VICTORY_CHECK'
+  | "BRIBE_COLLECTED"
+  | "VICTORY_CHECK"
   // Alliances
-  | 'ALLIANCE_FORMED'
-  | 'ALLIANCE_BROKEN'
+  | "ALLIANCE_FORMED"
+  | "ALLIANCE_BROKEN"
   // Deals
-  | 'DEAL_PROPOSED'
-  | 'DEAL_ACCEPTED'
-  | 'DEAL_REJECTED'
+  | "DEAL_PROPOSED"
+  | "DEAL_ACCEPTED"
+  | "DEAL_REJECTED"
   // Special
-  | 'KARAMA_USED'
-  | 'FAMILY_ATOMICS_USED'
-  | 'KWISATZ_HADERACH_ACTIVATED';
+  | "KARAMA_USED"
+  | "FAMILY_ATOMICS_USED"
+  | "KWISATZ_HADERACH_ACTIVATED";
 
 // =============================================================================
 // CONTEXT FOR AGENTS
@@ -329,7 +335,11 @@ export interface StormPhaseContext {
 
 export interface SpiceBlowContext {
   phase: Phase.SPICE_BLOW;
-  spiceBlowResult: { territoryId: TerritoryId; sector: number; amount: number } | null;
+  spiceBlowResult: {
+    territoryId: TerritoryId;
+    sector: number;
+    amount: number;
+  } | null;
   shaiHuludAppeared: boolean;
   nexusOccurring: boolean;
 }

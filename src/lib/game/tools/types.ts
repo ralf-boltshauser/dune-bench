@@ -140,7 +140,7 @@ export const PHASE_TO_TOOL_CATEGORY: Record<Phase, ToolCategory[]> = {
     ToolCategory.MOVEMENT,
   ],
   [Phase.BATTLE]: [ToolCategory.INFORMATION, ToolCategory.BATTLE],
-  [Phase.SPICE_COLLECTION]: [ToolCategory.INFORMATION],
+  [Phase.SPICE_COLLECTION]: [], // Automatic phase - no tools needed
   [Phase.MENTAT_PAUSE]: [ToolCategory.INFORMATION, ToolCategory.NEXUS],
 };
 

@@ -69,7 +69,7 @@ export const POISON_WEAPONS: TreacheryCardDefinition[] = [
     id: 'ellaca_drug',
     name: 'Ellaca Drug',
     type: TreacheryCardType.WEAPON_POISON,
-    description: 'Kills opponent\'s leader. Opponent may protect with Poison Defense.',
+    description: 'Kills opponent\'s leader. Opponent may protect with Projectile Defense.',
     isPoison: true,
     discardAfterUse: false,
   },

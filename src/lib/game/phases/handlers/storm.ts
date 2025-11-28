@@ -25,9 +25,12 @@ import {
   logAction,
   getFactionState,
   getFactionsInTerritory,
+  getPlayerPositions,
+  getFactionAtPosition,
 } from '../../state';
+import { FACTION_NAMES } from '../../types';
 import { GAME_CONSTANTS } from '../../data';
-import { calculateStormOrder, getDefaultPlayerPositions } from '../../state/factory';
+import { calculateStormOrder } from '../../state/factory';
 import {
   type PhaseHandler,
   type PhaseStepResult,
@@ -83,15 +86,20 @@ export class StormPhaseHandler implements PhaseHandler {
         ? GAME_CONSTANTS.FIRST_STORM_MAX_DIAL
         : GAME_CONSTANTS.MAX_STORM_DIAL;
 
+      const startingSector = state.turn === 1 ? 0 : state.stormSector; // Turn 1 starts from Storm Start Sector (0)
+      
       pendingRequests.push({
         factionId: faction,
         requestType: 'DIAL_STORM',
-        prompt: `Dial a number for storm movement (0-${maxDial}). The total will determine how many sectors the storm moves.`,
+        prompt: state.turn === 1
+          ? `Initial Storm Placement: Dial a number from 0 to ${maxDial}. The total will determine where the storm starts on the board (moves from Storm Start Sector 0 counterclockwise).`
+          : `Dial a number for storm movement (1-${maxDial}). The total will determine how many sectors the storm moves.`,
         context: {
           turn: state.turn,
-          currentStormSector: state.stormSector,
+          currentStormSector: startingSector,
           maxDial,
           isFirstTurn: state.turn === 1,
+          stormStartSector: state.turn === 1 ? 0 : undefined,
         },
         availableActions: ['DIAL_STORM'],
       });
@@ -138,17 +146,144 @@ export class StormPhaseHandler implements PhaseHandler {
 
   private getStormDialers(state: GameState): [Faction, Faction] {
     const factions = Array.from(state.factions.keys());
+    const playerPositions = getPlayerPositions(state);
 
     if (state.turn === 1) {
-      // First turn: two players nearest storm start (sector 0)
-      // For simplicity, use first two in list
-      return [factions[0], factions[1] ?? factions[0]];
+      // First turn: two players nearest Storm Start Sector (sector 0) on either side
+      const stormStartSector = 0;
+      
+      // Find all factions with their distances from storm start
+      // We need to find the nearest on EITHER side (before and after sector 0)
+      const factionsWithInfo = factions.map((faction) => {
+        const position = playerPositions.get(faction) ?? 0;
+        // Calculate counterclockwise distance from storm start (forward/after)
+        const distanceForward = (position - stormStartSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+        // Calculate clockwise distance (backward/before) - going the other way around
+        // If position is 0, backward distance is 0. Otherwise, it's 18 - forward distance
+        const distanceBackward = position === stormStartSector 
+          ? GAME_CONSTANTS.TOTAL_SECTORS // At start, treat as far
+          : (stormStartSector - position + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+        return { 
+          faction, 
+          position, 
+          distanceForward, 
+          distanceBackward,
+          // If at sector 0, treat as very far (not a dialer)
+          isAtStart: position === stormStartSector
+        };
+      });
+
+      // Filter out faction at sector 0 (if any), then find nearest forward and backward
+      const notAtStart = factionsWithInfo.filter(f => !f.isAtStart);
+      
+      // Find nearest forward (after sector 0, counterclockwise)
+      const nearestForward = notAtStart.reduce((min, curr) => 
+        curr.distanceForward < min.distanceForward ? curr : min, 
+        notAtStart[0] || factionsWithInfo[0]
+      );
+      
+      // Find nearest backward (before sector 0, clockwise)
+      const nearestBackward = notAtStart.reduce((min, curr) => 
+        curr.distanceBackward < min.distanceBackward ? curr : min, 
+        notAtStart[0] || factionsWithInfo[0]
+      );
+
+      // If we have both, use them. Otherwise fall back to two nearest overall
+      let dialer1: Faction;
+      let dialer2: Faction;
+      
+      if (nearestForward && nearestBackward && nearestForward.faction !== nearestBackward.faction) {
+        dialer1 = nearestForward.faction;
+        dialer2 = nearestBackward.faction;
+      } else {
+        // Fallback: two nearest overall (excluding any at sector 0)
+        const sorted = notAtStart.length > 0 
+          ? [...notAtStart].sort((a, b) => a.distanceForward - b.distanceForward)
+          : [...factionsWithInfo].sort((a, b) => a.distanceForward - b.distanceForward);
+        dialer1 = sorted[0]?.faction ?? factions[0];
+        dialer2 = sorted[1]?.faction ?? sorted[0]?.faction ?? factions[0];
+      }
+
+      // Log for debugging
+      console.log('\n' + '='.repeat(80));
+      console.log('🌪️  INITIAL STORM PLACEMENT (Turn 1)');
+      console.log('='.repeat(80));
+      console.log(`\n📍 Storm Start Sector: ${stormStartSector}`);
+      console.log('\n📊 Player Positions (relative to Storm Start Sector 0):');
+      factionsWithInfo.forEach(({ faction, position, distanceForward, distanceBackward, isAtStart }) => {
+        if (isAtStart) {
+          console.log(`  ${FACTION_NAMES[faction]}: Sector ${position} ⚠️  (AT Storm Start - not a dialer)`);
+        } else {
+          const direction = distanceForward < distanceBackward ? 'forward' : 'backward';
+          const dist = Math.min(distanceForward, distanceBackward);
+          console.log(`  ${FACTION_NAMES[faction]}: Sector ${position} (${dist} sectors ${direction === 'forward' ? 'after' : 'before'} storm start)`);
+        }
+      });
+      console.log(`\n🎯 Dialers: ${FACTION_NAMES[dialer1]} and ${FACTION_NAMES[dialer2]}`);
+      console.log('   (Two players nearest to Storm Start Sector on either side)');
+      console.log('='.repeat(80) + '\n');
+
+      return [dialer1, dialer2];
     }
 
     // Later turns: players who last used battle wheels
-    // For simplicity, use first and last in storm order
-    const order = state.stormOrder;
-    return [order[0], order[order.length - 1]];
+    // Since we don't track battle participation, we use the two players whose
+    // markers are nearest to the storm position on either side:
+    // 1. The player marker at or immediately after the storm (counterclockwise)
+    // 2. The player marker closest before the storm (clockwise from storm)
+
+    const currentStormSector = state.stormSector;
+
+    // Find all factions with their distances from storm
+    const factionsWithInfo = factions.map((faction) => {
+      const position = playerPositions.get(faction) ?? 0;
+      // Calculate counterclockwise distance from storm (after/ahead)
+      const distanceForward = (position - currentStormSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+      // Calculate clockwise distance (before/behind)
+      const distanceBackward = (currentStormSector - position + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+      return {
+        faction,
+        position,
+        distanceForward,
+        distanceBackward,
+        isOnStorm: distanceForward === 0
+      };
+    });
+
+    // Find nearest forward (at or after storm, counterclockwise)
+    // This is the player marker the storm "approaches next" or is on top of
+    const nearestForward = factionsWithInfo.reduce((min, curr) =>
+      curr.distanceForward < min.distanceForward ? curr : min
+    );
+
+    // Find nearest backward (before storm, clockwise)
+    // This is the player marker closest to storm going the other direction
+    const nearestBackward = factionsWithInfo.reduce((min, curr) =>
+      curr.distanceBackward < min.distanceBackward ? curr : min
+    );
+
+    const dialer1 = nearestForward.faction;
+    const dialer2 = nearestBackward.faction;
+
+    console.log('\n' + '='.repeat(80));
+    console.log('🌪️  STORM MOVEMENT (Turn ' + state.turn + ')');
+    console.log('='.repeat(80));
+    console.log(`\n📍 Current Storm Sector: ${currentStormSector}`);
+    console.log('\n📊 Player Positions (relative to Storm):');
+    factionsWithInfo.forEach(({ faction, position, distanceForward, distanceBackward, isOnStorm }) => {
+      if (isOnStorm) {
+        console.log(`  ${FACTION_NAMES[faction]}: Sector ${position} ⚠️  (ON STORM)`);
+      } else {
+        console.log(`  ${FACTION_NAMES[faction]}: Sector ${position} (${distanceForward} sectors ahead, ${distanceBackward} sectors behind)`);
+      }
+    });
+    console.log(`\n🎯 Dialers: ${FACTION_NAMES[dialer1]} and ${FACTION_NAMES[dialer2]}`);
+    console.log(`   ${FACTION_NAMES[dialer1]}: Nearest at/after storm (${nearestForward.distanceForward} sectors ahead)`);
+    console.log(`   ${FACTION_NAMES[dialer2]}: Nearest before storm (${nearestBackward.distanceBackward} sectors behind)`);
+    console.log('   (Two players whose markers are nearest to storm on either side)');
+    console.log('='.repeat(80) + '\n');
+
+    return [dialer1, dialer2];
   }
 
   private processDialResponses(
@@ -159,6 +294,10 @@ export class StormPhaseHandler implements PhaseHandler {
     const maxDial = state.turn === 1
       ? GAME_CONSTANTS.FIRST_STORM_MAX_DIAL
       : GAME_CONSTANTS.MAX_STORM_DIAL;
+
+    console.log('\n' + '='.repeat(80));
+    console.log('🎲 STORM DIAL REVEAL');
+    console.log('='.repeat(80));
 
     // Collect dial values
     for (const response of responses) {
@@ -176,6 +315,8 @@ export class StormPhaseHandler implements PhaseHandler {
 
         this.context.dials.set(response.factionId, dialValue);
 
+        console.log(`\n  ${FACTION_NAMES[response.factionId]}: ${dialValue} (range: ${state.turn === 1 ? '0-20' : '1-3'})`);
+
         events.push({
           type: 'STORM_DIAL_REVEALED',
           data: { faction: response.factionId, value: dialValue },
@@ -191,6 +332,9 @@ export class StormPhaseHandler implements PhaseHandler {
     }
     this.context.stormMovement = totalMovement;
 
+    console.log(`\n  📊 Total: ${totalMovement} sectors`);
+    console.log('='.repeat(80) + '\n');
+
     // Now apply the movement
     return this.applyStormMovement(state);
   }
@@ -200,11 +344,25 @@ export class StormPhaseHandler implements PhaseHandler {
     let newState = state;
 
     const movement = this.context.stormMovement ?? 0;
-    const oldSector = state.stormSector;
+    const oldSector = state.turn === 1 ? 0 : state.stormSector; // Turn 1 starts from Storm Start Sector (0)
 
+    console.log('\n' + '='.repeat(80));
+    console.log('🌪️  STORM MOVEMENT CALCULATION');
+    console.log('='.repeat(80));
+    console.log(`\n  Starting Sector: ${oldSector}${state.turn === 1 ? ' (Storm Start Sector)' : ''}`);
+    console.log(`  Movement: ${movement} sectors counterclockwise`);
+    
     // Move storm
     const newSector = (oldSector + movement) % GAME_CONSTANTS.TOTAL_SECTORS;
-    newState = moveStorm(newState, newSector);
+    console.log(`  Ending Sector: ${newSector}`);
+    
+    // Update state with new sector (if not turn 1, or if turn 1 and we're actually moving)
+    if (state.turn === 1) {
+      // Turn 1: storm starts at 0, then moves
+      newState = moveStorm(newState, newSector);
+    } else {
+      newState = moveStorm(newState, newSector);
+    }
 
     events.push({
       type: 'STORM_MOVED',
@@ -253,13 +411,33 @@ export class StormPhaseHandler implements PhaseHandler {
     }
 
     // Update storm order based on new storm position
-    const playerPositions = getDefaultPlayerPositions(Array.from(newState.factions.keys()));
-    const newOrder = calculateStormOrder(
-      Array.from(newState.factions.keys()),
-      newSector,
-      playerPositions
-    );
+    // Note: calculateStormOrder now uses state.playerPositions internally
+    const newOrder = calculateStormOrder(newState);
     newState = updateStormOrder(newState, newOrder);
+
+    // Log storm order calculation
+    console.log('\n' + '='.repeat(80));
+    console.log('📋 STORM ORDER DETERMINATION');
+    console.log('='.repeat(80));
+    console.log(`\n  Storm Position: Sector ${newSector}`);
+    console.log('\n  Player Positions:');
+    const playerPositions = getPlayerPositions(newState);
+    const factions = Array.from(newState.factions.keys());
+    factions.forEach((faction) => {
+      const position = playerPositions.get(faction) ?? 0;
+      const distance = (position - newSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+      const isOnStorm = distance === 0;
+      const marker = isOnStorm ? ' ⚠️  (ON STORM - goes last)' : '';
+      console.log(`    ${FACTION_NAMES[faction]}: Sector ${position} (distance: ${distance}${marker})`);
+    });
+    console.log('\n  Storm Order (First → Last):');
+    newOrder.forEach((faction, index) => {
+      const position = playerPositions.get(faction) ?? 0;
+      const distance = (position - newSector + GAME_CONSTANTS.TOTAL_SECTORS) % GAME_CONSTANTS.TOTAL_SECTORS;
+      console.log(`    ${index + 1}. ${FACTION_NAMES[faction]} (Sector ${position}, distance: ${distance})`);
+    });
+    console.log(`\n  ✅ First Player: ${FACTION_NAMES[newOrder[0]]}`);
+    console.log('='.repeat(80) + '\n');
 
     // Log the action
     newState = logAction(newState, 'STORM_MOVED', null, {

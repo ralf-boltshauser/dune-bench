@@ -135,8 +135,9 @@ export function validateBattlePlan(
           suggestion: `Choose from: ${availableLeaders.map((l) => l.definitionId).join(', ')}`,
         })
       );
-    } else if (leader.location !== LeaderLocation.LEADER_POOL) {
-      if (leader.usedThisTurn) {
+    } else if (leader.location === LeaderLocation.ON_BOARD) {
+      // DEDICATED LEADER: Leaders ON_BOARD can fight multiple times in SAME territory
+      if (leader.usedThisTurn && leader.usedInTerritoryId !== territoryId) {
         errors.push(
           createError(
             'LEADER_ALREADY_USED',
@@ -147,19 +148,21 @@ export function validateBattlePlan(
             }
           )
         );
-      } else {
-        errors.push(
-          createError(
-            'LEADER_NOT_IN_POOL',
-            `${plan.leaderId} is not available (in tanks or captured)`,
-            {
-              field: 'leaderId',
-              actual: leader.location,
-              expected: LeaderLocation.LEADER_POOL,
-            }
-          )
-        );
       }
+      // If usedInTerritoryId === territoryId, allow it (fighting again in same territory)
+    } else {
+      // Leader is in TANKS, CAPTURED, or other unavailable location
+      errors.push(
+        createError(
+          'LEADER_NOT_IN_POOL',
+          `${plan.leaderId} is not available (in tanks or captured)`,
+          {
+            field: 'leaderId',
+            actual: leader.location,
+            expected: LeaderLocation.LEADER_POOL,
+          }
+        )
+      );
     }
   }
 
@@ -226,6 +229,62 @@ export function validateBattlePlan(
         { field: 'defenseCardId' }
       )
     );
+  }
+
+  // Check: Kwisatz Haderach usage (Atreides only)
+  if (plan.kwisatzHaderachUsed) {
+    if (faction !== Faction.ATREIDES) {
+      errors.push(
+        createError(
+          'ABILITY_NOT_AVAILABLE',
+          'Only Atreides can use the Kwisatz Haderach',
+          { field: 'kwisatzHaderachUsed' }
+        )
+      );
+    } else {
+      const kh = factionState.kwisatzHaderach;
+      if (!kh) {
+        errors.push(
+          createError(
+            'ABILITY_NOT_AVAILABLE',
+            'Kwisatz Haderach not initialized',
+            { field: 'kwisatzHaderachUsed' }
+          )
+        );
+      } else if (!kh.isActive) {
+        errors.push(
+          createError(
+            'KH_NOT_ACTIVE',
+            'Kwisatz Haderach is not active yet (need 7+ forces lost)',
+            {
+              field: 'kwisatzHaderachUsed',
+              actual: kh.forcesLostCount,
+              expected: '7+',
+            }
+          )
+        );
+      } else if (kh.isDead) {
+        errors.push(
+          createError(
+            'KH_NOT_ACTIVE',
+            'Kwisatz Haderach is dead',
+            { field: 'kwisatzHaderachUsed' }
+          )
+        );
+      } else if (kh.usedInTerritoryThisTurn && kh.usedInTerritoryThisTurn !== territoryId) {
+        errors.push(
+          createError(
+            'KH_ALREADY_USED',
+            `Kwisatz Haderach already used in ${kh.usedInTerritoryThisTurn} this turn`,
+            {
+              field: 'kwisatzHaderachUsed',
+              suggestion: 'Can only use Kwisatz Haderach once per turn',
+            }
+          )
+        );
+      }
+      // If usedInTerritoryThisTurn === territoryId, allow it (re-battle in same territory)
+    }
   }
 
   if (errors.length === 0) {
@@ -421,9 +480,25 @@ export function resolveBattle(
     ? 0
     : getLeaderStrength(defenderPlan);
 
-  const aggressorTotal = aggressorPlan.forcesDialed + aggressorLeaderStrength +
+  // Calculate effective force strength (accounts for elite forces worth 2x)
+  const aggressorForceStrength = calculateForcesDialedStrength(
+    state,
+    aggressor,
+    territoryId,
+    aggressorPlan.forcesDialed,
+    defender
+  );
+  const defenderForceStrength = calculateForcesDialedStrength(
+    state,
+    defender,
+    territoryId,
+    defenderPlan.forcesDialed,
+    aggressor
+  );
+
+  const aggressorTotal = aggressorForceStrength + aggressorLeaderStrength +
     (aggressorPlan.kwisatzHaderachUsed && !aggressorWeaponResult.leaderKilled ? 2 : 0);
-  const defenderTotal = defenderPlan.forcesDialed + defenderLeaderStrength;
+  const defenderTotal = defenderForceStrength + defenderLeaderStrength;
 
   // Determine winner (aggressor wins ties)
   const aggressorWins = aggressorTotal >= defenderTotal;
@@ -480,6 +555,42 @@ function getLeaderStrength(plan: BattlePlan): number {
 }
 
 /**
+ * Calculate effective battle strength for forces dialed.
+ * Elite forces (Sardaukar/Fedaykin) count as 2x in battle, except Sardaukar vs Fremen.
+ *
+ * Assumes elite forces are dialed first (they're more valuable), then regular forces.
+ */
+function calculateForcesDialedStrength(
+  state: GameState,
+  faction: Faction,
+  territoryId: TerritoryId,
+  forcesDialed: number,
+  opponentFaction: Faction
+): number {
+  // Get the force stack in this territory
+  const forceStack = state.factions.get(faction)?.forces.onBoard.find(
+    (f) => f.territoryId === territoryId
+  );
+
+  if (!forceStack || forcesDialed === 0) return forcesDialed;
+
+  const { elite } = forceStack.forces;
+
+  // If no elite forces, all dialed forces are regular (1x each)
+  if (elite === 0) return forcesDialed;
+
+  // Assume elite forces are dialed first
+  const eliteDialed = Math.min(forcesDialed, elite);
+  const regularDialed = forcesDialed - eliteDialed;
+
+  // Check for special case: Emperor Sardaukar vs Fremen (only worth 1x)
+  const isSardaukarVsFremen = faction === Faction.EMPEROR && opponentFaction === Faction.FREMEN;
+  const eliteMultiplier = isSardaukarVsFremen ? 1 : 2;
+
+  return regularDialed + (eliteDialed * eliteMultiplier);
+}
+
+/**
  * Resolve weapon vs defense interaction.
  */
 interface WeaponDefenseResult {
@@ -510,8 +621,10 @@ function resolveWeaponDefense(
   }
 
   // Check if defense matches weapon type
-  const isProjectileWeapon = weapon.type === TreacheryCardType.WEAPON_PROJECTILE;
-  const isPoisonWeapon = weapon.type === TreacheryCardType.WEAPON_POISON;
+  // Special case: Ellaca Drug is a poison weapon but defended by projectile defense
+  const isEllacaDrug = weaponCardId === 'ellaca_drug';
+  const isProjectileWeapon = weapon.type === TreacheryCardType.WEAPON_PROJECTILE || isEllacaDrug;
+  const isPoisonWeapon = weapon.type === TreacheryCardType.WEAPON_POISON && !isEllacaDrug;
 
   let defenseEffective = false;
   if (defense && !isWorthless(defense)) {
@@ -697,6 +810,81 @@ function resolveTraitorBattle(
 }
 
 /**
+ * Resolve a battle where BOTH leaders are traitors (TWO TRAITORS rule).
+ * Both players lose everything, neither receives spice.
+ *
+ * Rule from battle.md line 29:
+ * "When both leaders are traitors (each a traitor for the opponent), both players'
+ * Forces in the Territory, their cards played, and their leaders, are lost.
+ * Neither player receives any spice."
+ */
+export function resolveTwoTraitorsBattle(
+  state: GameState,
+  territoryId: TerritoryId,
+  aggressor: Faction,
+  defender: Faction,
+  aggressorPlan: BattlePlan,
+  defenderPlan: BattlePlan
+): BattleResult {
+  const aggressorForces = getForceCountInTerritory(state, aggressor, territoryId);
+  const defenderForces = getForceCountInTerritory(state, defender, territoryId);
+
+  // Both sides lose ALL forces
+  const aggressorResult: BattleSideResult = {
+    faction: aggressor,
+    forcesDialed: aggressorPlan.forcesDialed,
+    forcesLost: aggressorForces, // ALL forces lost
+    leaderUsed: aggressorPlan.leaderId,
+    leaderKilled: !!aggressorPlan.leaderId, // Both leaders are killed
+    leaderStrength: 0,
+    kwisatzHaderachUsed: aggressorPlan.kwisatzHaderachUsed,
+    weaponPlayed: aggressorPlan.weaponCardId,
+    weaponEffective: false,
+    defensePlayed: aggressorPlan.defenseCardId,
+    defenseEffective: false,
+    cardsToDiscard: [aggressorPlan.weaponCardId, aggressorPlan.defenseCardId].filter(
+      (c): c is string => !!c
+    ),
+    cardsToKeep: [],
+    total: 0,
+  };
+
+  const defenderResult: BattleSideResult = {
+    faction: defender,
+    forcesDialed: defenderPlan.forcesDialed,
+    forcesLost: defenderForces, // ALL forces lost
+    leaderUsed: defenderPlan.leaderId,
+    leaderKilled: !!defenderPlan.leaderId, // Both leaders are killed
+    leaderStrength: 0,
+    kwisatzHaderachUsed: false,
+    weaponPlayed: defenderPlan.weaponCardId,
+    weaponEffective: false,
+    defensePlayed: defenderPlan.defenseCardId,
+    defenseEffective: false,
+    cardsToDiscard: [defenderPlan.weaponCardId, defenderPlan.defenseCardId].filter(
+      (c): c is string => !!c
+    ),
+    cardsToKeep: [],
+    total: 0,
+  };
+
+  return {
+    winner: null, // Special case - no winner
+    loser: null, // Special case - no loser
+    winnerTotal: 0,
+    loserTotal: 0,
+    traitorRevealed: true,
+    traitorRevealedBy: null, // Both revealed, so null
+    lasgunjShieldExplosion: false,
+    twoTraitors: true, // New flag to indicate TWO TRAITORS scenario
+    aggressorResult,
+    defenderResult,
+    spicePayouts: [], // NO spice for anyone
+    summary: 'TWO TRAITORS! Both leaders are traitors. Both sides lose all forces and leaders. No spice paid.',
+  };
+}
+
+/**
  * Build the result for one side of the battle.
  */
 function buildSideResult(
@@ -827,4 +1015,157 @@ export function canCallTraitor(
   }
 
   return validResult({ canCallTraitor: true, targetLeaderId });
+}
+
+// =============================================================================
+// VOICE COMMAND VALIDATION (Bene Gesserit)
+// =============================================================================
+
+/**
+ * Check if a faction has a card of a specific type in their hand.
+ */
+function checkHasCardOfType(
+  state: GameState,
+  faction: Faction,
+  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero'
+): boolean {
+  const factionState = getFactionState(state, faction);
+
+  for (const card of factionState.hand) {
+    const def = getTreacheryCardDefinition(card.definitionId);
+    if (!def) continue;
+
+    switch (cardType) {
+      case 'poison_weapon':
+        if (def.type === TreacheryCardType.WEAPON_POISON) return true;
+        break;
+      case 'projectile_weapon':
+        // Lasgun counts as projectile weapon for Voice purposes
+        if (def.type === TreacheryCardType.WEAPON_PROJECTILE || def.type === TreacheryCardType.WEAPON_SPECIAL) return true;
+        break;
+      case 'poison_defense':
+        if (def.type === TreacheryCardType.DEFENSE_POISON) return true;
+        break;
+      case 'projectile_defense':
+        if (def.type === TreacheryCardType.DEFENSE_PROJECTILE) return true;
+        break;
+      case 'worthless':
+        if (isWorthless(def)) return true;
+        break;
+      case 'cheap_hero':
+        if (isCheapHero(def)) return true;
+        break;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Check if a battle plan uses a card of a specific type.
+ */
+function planUsesCardType(
+  plan: BattlePlan,
+  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero'
+): boolean {
+  // Check weapon card
+  if (plan.weaponCardId) {
+    const weaponDef = getTreacheryCardDefinition(plan.weaponCardId);
+    if (weaponDef) {
+      switch (cardType) {
+        case 'poison_weapon':
+          if (weaponDef.type === TreacheryCardType.WEAPON_POISON) return true;
+          break;
+        case 'projectile_weapon':
+          if (weaponDef.type === TreacheryCardType.WEAPON_PROJECTILE || weaponDef.type === TreacheryCardType.WEAPON_SPECIAL) return true;
+          break;
+        case 'worthless':
+          if (isWorthless(weaponDef)) return true;
+          break;
+      }
+    }
+  }
+
+  // Check defense card
+  if (plan.defenseCardId) {
+    const defenseDef = getTreacheryCardDefinition(plan.defenseCardId);
+    if (defenseDef) {
+      switch (cardType) {
+        case 'poison_defense':
+          if (defenseDef.type === TreacheryCardType.DEFENSE_POISON) return true;
+          break;
+        case 'projectile_defense':
+          if (defenseDef.type === TreacheryCardType.DEFENSE_PROJECTILE) return true;
+          break;
+        case 'worthless':
+          if (isWorthless(defenseDef)) return true;
+          break;
+      }
+    }
+  }
+
+  // Check cheap hero
+  if (cardType === 'cheap_hero' && plan.cheapHeroUsed) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Validate that a battle plan complies with a Voice command.
+ * Returns errors if the plan violates the Voice command when compliance is possible.
+ *
+ * Rule from battle.md line 72: "VOICE: ...Your opponent must comply with your command
+ * as well as they are able to."
+ */
+export function validateVoiceCompliance(
+  state: GameState,
+  plan: BattlePlan,
+  voiceCommand: { type: 'play' | 'not_play'; cardType: string } | null
+): ValidationError[] {
+  if (!voiceCommand) return [];
+
+  const errors: ValidationError[] = [];
+
+  // Parse the cardType from voice command
+  const cardType = voiceCommand.cardType as
+    'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero';
+
+  if (voiceCommand.type === 'play') {
+    // Must play this type if able
+    const hasCardOfType = checkHasCardOfType(state, plan.factionId, cardType);
+    if (hasCardOfType && !planUsesCardType(plan, cardType)) {
+      errors.push(
+        createError(
+          'VOICE_VIOLATION',
+          `Voice commands you to play ${cardType.replace('_', ' ')}`,
+          {
+            field: cardType.includes('weapon') ? 'weaponCardId' :
+                   cardType.includes('defense') ? 'defenseCardId' :
+                   'cheapHeroUsed',
+            suggestion: `You must play a ${cardType.replace('_', ' ')} card if you have one`,
+          }
+        )
+      );
+    }
+  } else if (voiceCommand.type === 'not_play') {
+    // Must NOT play this type
+    if (planUsesCardType(plan, cardType)) {
+      errors.push(
+        createError(
+          'VOICE_VIOLATION',
+          `Voice commands you to NOT play ${cardType.replace('_', ' ')}`,
+          {
+            field: cardType.includes('weapon') ? 'weaponCardId' :
+                   cardType.includes('defense') ? 'defenseCardId' :
+                   'cheapHeroUsed',
+            suggestion: `You must NOT play a ${cardType.replace('_', ' ')} card`,
+          }
+        )
+      );
+    }
+  }
+
+  return errors;
 }

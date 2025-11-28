@@ -108,7 +108,7 @@ export type {
 // REGISTRY & FACTORY EXPORTS
 // =============================================================================
 
-export type { ToolSet, ToolConfig } from './registry';
+export type { ToolSet, ToolConfig, AgentToolProviderOptions } from './registry';
 
 export {
   // Phase mapping
@@ -124,6 +124,13 @@ export {
   createAgentToolProvider,
   getAvailableToolNames,
 } from './registry';
+
+// =============================================================================
+// STREAMING EXPORTS
+// =============================================================================
+
+export type { StreamingConfig, StreamingToolMeta } from './streaming-wrapper';
+export { wrapToolsForStreaming, createStreamingToolWrapper } from './streaming-wrapper';
 
 // =============================================================================
 // SCHEMA EXPORTS

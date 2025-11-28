@@ -44,10 +44,15 @@ Ornithopters are key - controlling Arrakeen or Carthag gives mobility advantage.
         const faction = ctx.faction;
 
         // Check ornithopter access and movement range
-        const hasOrnithopters = checkOrnithopterAccess(state, faction);
-        const movementRange = getMovementRange(state, faction);
+        // CRITICAL: Use override from context if set (phase-start ornithopter access during shipment-movement)
+        // This prevents factions from gaining ornithopter access by shipping into Arrakeen/Carthag first
+        const hasOrnithoptersOverride = ctx.ornithopterAccessOverride;
+        const hasOrnithopters = hasOrnithoptersOverride !== undefined
+          ? hasOrnithoptersOverride
+          : checkOrnithopterAccess(state, faction);
+        const movementRange = getMovementRange(state, faction, hasOrnithoptersOverride);
 
-        // Validate the movement
+        // Validate the movement with ornithopter override
         const validation = validateMovement(
           state,
           faction,
@@ -55,7 +60,8 @@ Ornithopters are key - controlling Arrakeen or Carthag gives mobility advantage.
           fromSector,
           toTerritoryId as TerritoryId,
           toSector,
-          count
+          count,
+          hasOrnithoptersOverride
         );
 
         if (!validation.valid) {

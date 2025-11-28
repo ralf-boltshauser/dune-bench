@@ -327,6 +327,29 @@ export function reviveForces(
   });
 }
 
+/**
+ * Send forces from board back to reserves (Guild off-planet shipment).
+ */
+export function sendForcesToReserves(
+  state: GameState,
+  faction: Faction,
+  territoryId: TerritoryId,
+  sector: number,
+  count: number,
+  isElite: boolean = false
+): GameState {
+  const factionState = getFactionState(state, faction);
+  const forces = factionState.forces;
+
+  // Remove from board, add to reserves
+  const onBoard = removeFromStack(forces.onBoard, territoryId, sector, count, isElite);
+  const reserves = addToForceCount(forces.reserves, count, isElite);
+
+  return updateFactionState(state, faction, {
+    forces: { ...forces, onBoard, reserves },
+  });
+}
+
 // =============================================================================
 // LEADER MUTATIONS
 // =============================================================================
@@ -421,9 +444,48 @@ export function resetLeaderTurnState(state: GameState, faction: Faction): GameSt
   return updateFactionState(state, faction, { leaders });
 }
 
+/**
+ * Return a leader to the pool immediately (used when traitor is revealed).
+ * Per rules: when a traitor is revealed, the winner's leader returns to pool immediately.
+ */
+export function returnLeaderToPool(
+  state: GameState,
+  faction: Faction,
+  leaderId: string
+): GameState {
+  const factionState = getFactionState(state, faction);
+  const leaders = factionState.leaders.map((l) => {
+    if (l.definitionId === leaderId) {
+      return {
+        ...l,
+        location: LeaderLocation.LEADER_POOL,
+        usedThisTurn: false,
+        usedInTerritoryId: null,
+      };
+    }
+    return l;
+  });
+
+  return updateFactionState(state, faction, { leaders });
+}
+
 // =============================================================================
 // CARD MUTATIONS
 // =============================================================================
+
+/**
+ * Remove a traitor card after it has been revealed.
+ * Traitor cards are one-time use.
+ */
+export function removeTraitorCard(
+  state: GameState,
+  faction: Faction,
+  leaderId: string
+): GameState {
+  const factionState = getFactionState(state, faction);
+  const traitors = factionState.traitors.filter((t) => t.leaderId !== leaderId);
+  return updateFactionState(state, faction, { traitors });
+}
 
 /**
  * Draw a treachery card from the deck.
@@ -587,6 +649,66 @@ export function removeDeal(state: GameState, dealId: string): GameState {
     pendingDeals: state.pendingDeals.filter((d) => d.id !== dealId),
     dealHistory: [...state.dealHistory, deal],
   };
+}
+
+// =============================================================================
+// KWISATZ HADERACH MUTATIONS (Atreides)
+// =============================================================================
+
+/**
+ * Update Kwisatz Haderach state after Atreides loses forces in battle.
+ * Activates KH if total losses reach 7+.
+ */
+export function updateKwisatzHaderach(
+  state: GameState,
+  forcesLost: number
+): GameState {
+  const atreides = getFactionState(state, Faction.ATREIDES);
+  if (!atreides.kwisatzHaderach) return state;
+
+  const newCount = atreides.kwisatzHaderach.forcesLostCount + forcesLost;
+  const shouldActivate = newCount >= 7 && !atreides.kwisatzHaderach.isActive;
+
+  return updateFactionState(state, Faction.ATREIDES, {
+    kwisatzHaderach: {
+      ...atreides.kwisatzHaderach,
+      forcesLostCount: newCount,
+      isActive: shouldActivate ? true : atreides.kwisatzHaderach.isActive,
+    },
+  });
+}
+
+/**
+ * Mark Kwisatz Haderach as used in a territory this turn.
+ */
+export function markKwisatzHaderachUsed(
+  state: GameState,
+  territoryId: TerritoryId
+): GameState {
+  const atreides = getFactionState(state, Faction.ATREIDES);
+  if (!atreides.kwisatzHaderach) return state;
+
+  return updateFactionState(state, Faction.ATREIDES, {
+    kwisatzHaderach: {
+      ...atreides.kwisatzHaderach,
+      usedInTerritoryThisTurn: territoryId,
+    },
+  });
+}
+
+/**
+ * Reset Kwisatz Haderach turn state (called at end of battle phase).
+ */
+export function resetKwisatzHaderachTurnState(state: GameState): GameState {
+  const atreides = getFactionState(state, Faction.ATREIDES);
+  if (!atreides.kwisatzHaderach) return state;
+
+  return updateFactionState(state, Faction.ATREIDES, {
+    kwisatzHaderach: {
+      ...atreides.kwisatzHaderach,
+      usedInTerritoryThisTurn: null,
+    },
+  });
 }
 
 // =============================================================================

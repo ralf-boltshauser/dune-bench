@@ -64,8 +64,8 @@ export function validateShipment(
     errors.push(
       createError(
         'CANNOT_SHIP_FROM_BOARD',
-        'Fremen cannot use normal shipment. Use your special Send ability to the Great Flat area.',
-        { suggestion: 'Use Fremen Send ability instead of Ship' }
+        'Fremen cannot use normal shipment. Use your special fremen_send_forces ability to send forces to the Great Flat area for free.',
+        { suggestion: 'Use fremen_send_forces tool instead of ship_forces' }
       )
     );
   }
@@ -292,6 +292,8 @@ function generateShipmentSuggestions(
 
 /**
  * Validate moving forces between territories.
+ *
+ * @param hasOrnithoptersOverride - Optional override for ornithopter access (used when checking from phase start)
  */
 export function validateMovement(
   state: GameState,
@@ -300,15 +302,19 @@ export function validateMovement(
   fromSector: number,
   toTerritory: TerritoryId,
   toSector: number,
-  forceCount: number
+  forceCount: number,
+  hasOrnithoptersOverride?: boolean
 ): ValidationResult<MovementSuggestion> {
   const errors: ReturnType<typeof createError>[] = [];
   const fromDef = TERRITORY_DEFINITIONS[fromTerritory];
   const toDef = TERRITORY_DEFINITIONS[toTerritory];
 
   const forcesAvailable = getForceCountInTerritory(state, faction, fromTerritory);
-  const hasOrnithopters = checkOrnithopterAccess(state, faction);
-  const movementRange = hasOrnithopters ? 3 : 1;
+  // Use override if provided (for phase-start ornithopter access), otherwise check current state
+  const hasOrnithopters = hasOrnithoptersOverride !== undefined
+    ? hasOrnithoptersOverride
+    : checkOrnithopterAccess(state, faction);
+  const movementRange = getMovementRangeForFaction(faction, hasOrnithopters);
 
   const context = {
     fromTerritory,
@@ -327,6 +333,76 @@ export function validateMovement(
   }
   if (!toDef) {
     errors.push(createError('INVALID_TERRITORY', `To territory ${toTerritory} does not exist`));
+    return invalidResult(errors, context);
+  }
+
+  // Handle same-territory repositioning (Rule 1.06.03.09)
+  if (fromTerritory === toTerritory) {
+    // Repositioning within same territory - no path needed
+    // Only validate: different sectors, to-sector not in storm, sufficient forces
+
+    if (fromSector === toSector) {
+      errors.push(createError('INVALID_DESTINATION', 'Must specify different sector for repositioning'));
+      return invalidResult(errors, context);
+    }
+
+    // Check: Sector is valid for territory
+    if (!toDef.sectors.includes(toSector)) {
+      errors.push(
+        createError(
+          'INVALID_TERRITORY',
+          `Sector ${toSector} is not part of ${toDef.name}`,
+          {
+            field: 'toSector',
+            actual: toSector,
+            expected: toDef.sectors,
+            suggestion: `Use one of these sectors: ${toDef.sectors.join(', ')}`,
+          }
+        )
+      );
+    }
+
+    // Check storm for destination sector (unless protected)
+    if (!toDef.protectedFromStorm && isSectorInStorm(state, toSector)) {
+      const safeSector = toDef.sectors.find((s) => !isSectorInStorm(state, s));
+      errors.push(
+        createError(
+          'DESTINATION_IN_STORM',
+          'Cannot reposition to sector in storm',
+          {
+            field: 'toSector',
+            suggestion: safeSector !== undefined ? `Use sector ${safeSector} instead` : 'All sectors in storm',
+          }
+        )
+      );
+    }
+
+    // Check: Forces available
+    if (forceCount > forcesAvailable) {
+      errors.push(
+        createError(
+          'NO_FORCES_TO_MOVE',
+          `Cannot reposition ${forceCount} forces, only ${forcesAvailable} available in ${fromDef.name}`,
+          {
+            field: 'forceCount',
+            actual: forceCount,
+            expected: `1-${forcesAvailable}`,
+            suggestion: `Reposition ${forcesAvailable} forces instead`,
+          }
+        )
+      );
+    }
+
+    // Skip pathfinding - allow the move
+    if (errors.length === 0) {
+      return validResult({
+        ...context,
+        pathLength: 0,
+        pathTerritories: [fromTerritory],
+        isRepositioning: true,
+      });
+    }
+
     return invalidResult(errors, context);
   }
 
@@ -358,7 +434,7 @@ export function validateMovement(
   }
 
   // Check: Path exists and is within range
-  const path = findPath(fromTerritory, toTerritory, state.stormSector);
+  const path = findPath(fromTerritory, toTerritory, state, faction);
   if (!path) {
     errors.push(
       createError(
@@ -437,24 +513,45 @@ export function checkOrnithopterAccess(state: GameState, faction: Faction): bool
 
 /**
  * Get the movement range for a faction based on ornithopter access.
+ *
+ * @param hasOrnithoptersOverride - Optional override for ornithopter access (used when checking from phase start)
  */
-export function getMovementRange(state: GameState, faction: Faction): number {
-  // Fremen always move 2 territories
-  if (faction === Faction.FREMEN) return 2;
+export function getMovementRange(state: GameState, faction: Faction, hasOrnithoptersOverride?: boolean): number {
+  // Use override if provided (for phase-start ornithopter access), otherwise check current state
+  const hasOrnithopters = hasOrnithoptersOverride !== undefined
+    ? hasOrnithoptersOverride
+    : checkOrnithopterAccess(state, faction);
 
-  return checkOrnithopterAccess(state, faction) ? 3 : 1;
+  return getMovementRangeForFaction(faction, hasOrnithopters);
 }
 
 /**
- * Find a path between territories avoiding storm.
+ * Calculate movement range for a faction based on ornithopter access.
+ * Fremen get 2 territories base, all others get 1. Ornithopters grant 3 territories total.
+ */
+export function getMovementRangeForFaction(faction: Faction, hasOrnithopters: boolean): number {
+  // Ornithopters grant 3 territories to ANY faction (including Fremen)
+  if (hasOrnithopters) return 3;
+
+  // Fremen base movement is 2 territories (without ornithopters)
+  if (faction === Faction.FREMEN) return 2;
+
+  // All other factions: 1 territory without ornithopters
+  return 1;
+}
+
+/**
+ * Find a path between territories avoiding storm and respecting occupancy limits.
  * Uses BFS to find shortest path.
  */
 export function findPath(
   from: TerritoryId,
   to: TerritoryId,
-  stormSector: number
+  state: GameState,
+  movingFaction: Faction
 ): TerritoryId[] | null {
-  if (from === to) return [];
+  // Same territory repositioning - valid path is just the territory itself
+  if (from === to) return [from];
 
   const visited = new Set<TerritoryId>();
   const queue: { territory: TerritoryId; path: TerritoryId[] }[] = [
@@ -477,9 +574,20 @@ export function findPath(
       // Can pass through if at least one sector is not in storm
       const canPass = adjDef.protectedFromStorm ||
         adjDef.sectors.length === 0 ||
-        adjDef.sectors.some((s) => s !== stormSector);
+        adjDef.sectors.some((s) => s !== state.stormSector);
 
       if (!canPass) continue;
+
+      // Check occupancy limit for strongholds (can't move THROUGH if 2+ other factions)
+      // This prevents finding paths that go through full strongholds
+      if (adjDef.type === TerritoryType.STRONGHOLD && adjId !== to) {
+        const factionsInTerritory = getFactionsInTerritory(state, adjId);
+        const otherFactions = factionsInTerritory.filter(f => f !== movingFaction);
+        if (otherFactions.length >= 2) {
+          // Can't pass through - stronghold is full with 2 other factions
+          continue;
+        }
+      }
 
       const newPath = [...current.path, adjId];
 
@@ -501,7 +609,8 @@ export function findPath(
 export function getReachableTerritories(
   state: GameState,
   from: TerritoryId,
-  range: number
+  range: number,
+  movingFaction: Faction
 ): Map<TerritoryId, number> {
   const reachable = new Map<TerritoryId, number>();
   const visited = new Set<TerritoryId>();
@@ -532,7 +641,27 @@ export function getReachableTerritories(
         adjDef.sectors.length === 0 ||
         adjDef.sectors.some((s) => !isSectorInStorm(state, s));
 
-      if (canPass && !visited.has(adjId)) {
+      if (!canPass) continue;
+
+      // Check occupancy limit for strongholds (can't move THROUGH if 2+ other factions)
+      if (adjDef.type === TerritoryType.STRONGHOLD) {
+        const factionsInTerritory = getFactionsInTerritory(state, adjId);
+        const otherFactions = factionsInTerritory.filter(f => f !== movingFaction);
+        if (otherFactions.length >= 2) {
+          // Can't pass through - stronghold is full with 2 other factions
+          // BUT we can still add it as reachable at this distance if we're adjacent to it
+          // (we just can't use it as a transit point to reach further territories)
+          if (current.territory === from && current.distance === 0) {
+            // We're directly adjacent to this full stronghold, mark it as unreachable
+            continue;
+          } else {
+            // We might have reached it via a different path, but can't go further through it
+            continue;
+          }
+        }
+      }
+
+      if (!visited.has(adjId)) {
         queue.push({ territory: adjId, distance: current.distance + 1 });
       }
     }
@@ -556,7 +685,7 @@ function generateMovementSuggestions(
 
   if (forcesAvailable === 0) return [];
 
-  const reachable = getReachableTerritories(state, fromTerritory, range);
+  const reachable = getReachableTerritories(state, fromTerritory, range, faction);
 
   for (const [territoryId, distance] of reachable) {
     const territory = TERRITORY_DEFINITIONS[territoryId];
@@ -591,4 +720,313 @@ function generateMovementSuggestions(
   });
 
   return suggestions.slice(0, 5);
+}
+
+
+/**
+ * Get all territories within N distance of a starting territory (ignoring storm).
+ * Used for Fremen special shipment validation.
+ */
+export function getTerritoriesWithinDistance(
+  from: TerritoryId,
+  distance: number
+): Set<TerritoryId> {
+  const reachable = new Set<TerritoryId>();
+  const visited = new Set<TerritoryId>();
+  const queue: { territory: TerritoryId; distance: number }[] = [
+    { territory: from, distance: 0 },
+  ];
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+
+    if (current.distance > distance) continue;
+    if (visited.has(current.territory)) continue;
+
+    visited.add(current.territory);
+    if (current.territory !== from) {
+      reachable.add(current.territory);
+    }
+
+    const currentDef = TERRITORY_DEFINITIONS[current.territory];
+    if (!currentDef) continue;
+
+    for (const adjId of currentDef.adjacentTerritories) {
+      if (!visited.has(adjId)) {
+        queue.push({ territory: adjId, distance: current.distance + 1 });
+      }
+    }
+  }
+
+  return reachable;
+}
+
+// =============================================================================
+// GUILD SPECIAL SHIPMENT VALIDATION
+// =============================================================================
+
+/**
+ * Validate Guild cross-ship (territory to territory).
+ * Rules: Ship from any territory to any other territory, half price based on destination.
+ */
+export function validateCrossShip(
+  state: GameState,
+  faction: Faction,
+  fromTerritoryId: TerritoryId,
+  fromSector: number,
+  toTerritoryId: TerritoryId,
+  toSector: number,
+  forceCount: number
+): ValidationResult<ShipmentSuggestion> {
+  const errors: ReturnType<typeof createError>[] = [];
+  const factionState = getFactionState(state, faction);
+  const fromTerritory = TERRITORY_DEFINITIONS[fromTerritoryId];
+  const toTerritory = TERRITORY_DEFINITIONS[toTerritoryId];
+
+  // Context for agent decision-making
+  const context = {
+    fromTerritory: fromTerritoryId,
+    toTerritory: toTerritoryId,
+    fromSector,
+    toSector,
+    requestedForces: forceCount,
+    spiceAvailable: factionState.spice,
+  };
+
+  // Check: Only Guild or Guild's ally can cross-ship
+  const ally = factionState.allyId;
+  const isGuild = faction === Faction.SPACING_GUILD;
+  const isGuildAlly = ally === Faction.SPACING_GUILD;
+
+  if (!isGuild && !isGuildAlly) {
+    errors.push(
+      createError(
+        'INVALID_FACTION',
+        'Only Spacing Guild and their ally can use cross-ship',
+        { suggestion: 'Use normal shipment instead' }
+      )
+    );
+  }
+
+  // Check: Valid territories
+  if (!fromTerritory) {
+    errors.push(
+      createError('INVALID_TERRITORY', `From territory ${fromTerritoryId} does not exist`, {
+        field: 'fromTerritoryId',
+      })
+    );
+    return invalidResult(errors, context);
+  }
+
+  if (!toTerritory) {
+    errors.push(
+      createError('INVALID_TERRITORY', `To territory ${toTerritoryId} does not exist`, {
+        field: 'toTerritoryId',
+      })
+    );
+    return invalidResult(errors, context);
+  }
+
+  // Check: Valid sectors
+  if (!fromTerritory.sectors.includes(fromSector) && fromTerritory.sectors.length > 0) {
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `Sector ${fromSector} is not part of ${fromTerritory.name}`,
+        { field: 'fromSector', expected: fromTerritory.sectors }
+      )
+    );
+  }
+
+  if (!toTerritory.sectors.includes(toSector) && toTerritory.sectors.length > 0) {
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `Sector ${toSector} is not part of ${toTerritory.name}`,
+        { field: 'toSector', expected: toTerritory.sectors }
+      )
+    );
+  }
+
+  // Check: Destination sector not in storm
+  if (isSectorInStorm(state, toSector)) {
+    errors.push(
+      createError(
+        'SECTOR_IN_STORM',
+        `Cannot cross-ship to sector ${toSector} - it is currently in the storm`,
+        { field: 'toSector', actual: toSector }
+      )
+    );
+  }
+
+  // Check: Sufficient forces in source territory
+  const forcesAvailable = getForceCountInTerritory(state, faction, fromTerritoryId);
+  if (forceCount > forcesAvailable) {
+    errors.push(
+      createError(
+        'INSUFFICIENT_FORCES',
+        `Cannot cross-ship ${forceCount} forces, only ${forcesAvailable} available in ${fromTerritory.name}`,
+        {
+          field: 'forceCount',
+          actual: forceCount,
+          expected: `1-${forcesAvailable}`,
+        }
+      )
+    );
+  }
+
+  // Check: Occupancy limit for destination stronghold
+  if (STRONGHOLD_TERRITORIES.includes(toTerritoryId)) {
+    const occupants = getFactionsInTerritory(state, toTerritoryId);
+    if (occupants.length >= 2 && !occupants.includes(faction)) {
+      errors.push(
+        createError(
+          'OCCUPANCY_LIMIT_EXCEEDED',
+          `${toTerritory.name} already has 2 factions occupying it`,
+          {
+            field: 'toTerritoryId',
+            actual: occupants,
+            expected: 'Maximum 2 factions per stronghold',
+          }
+        )
+      );
+    }
+  }
+
+  // Check: Sufficient spice
+  // Cross-ship costs based on destination (same as normal shipment)
+  // Guild pays half price, Guild's ally also pays half price (ability 2.06.09)
+  const paysHalfPrice = isGuild || isGuildAlly;
+  const cost = paysHalfPrice
+    ? calculateShipmentCost(toTerritoryId, forceCount, Faction.SPACING_GUILD)
+    : calculateShipmentCost(toTerritoryId, forceCount, faction);
+
+  if (factionState.spice < cost) {
+    errors.push(
+      createError(
+        'INSUFFICIENT_SPICE',
+        `Cross-ship costs ${cost} spice but you only have ${factionState.spice}`,
+        {
+          field: 'forceCount',
+          actual: cost,
+          expected: `<= ${factionState.spice}`,
+        }
+      )
+    );
+  }
+
+  // If valid, return success with context
+  if (errors.length === 0) {
+    return validResult({
+      ...context,
+      cost,
+      isStronghold: STRONGHOLD_TERRITORIES.includes(toTerritoryId),
+    });
+  }
+
+  return invalidResult(errors, context);
+}
+
+/**
+ * Validate Guild off-planet shipment (territory to reserves).
+ * Rules: Ship from any territory back to reserves at retreat cost (1 spice per 2 forces).
+ */
+export function validateOffPlanetShipment(
+  state: GameState,
+  faction: Faction,
+  fromTerritoryId: TerritoryId,
+  fromSector: number,
+  forceCount: number
+): ValidationResult<{ cost: number; forcesAvailable: number }> {
+  const errors: ReturnType<typeof createError>[] = [];
+  const factionState = getFactionState(state, faction);
+  const fromTerritory = TERRITORY_DEFINITIONS[fromTerritoryId];
+
+  // Context for agent decision-making
+  const context = {
+    fromTerritory: fromTerritoryId,
+    fromSector,
+    requestedForces: forceCount,
+    spiceAvailable: factionState.spice,
+  };
+
+  // Check: Only Guild or Guild's ally can ship off-planet
+  const ally = factionState.allyId;
+  const isGuild = faction === Faction.SPACING_GUILD;
+  const isGuildAlly = ally === Faction.SPACING_GUILD;
+
+  if (!isGuild && !isGuildAlly) {
+    errors.push(
+      createError(
+        'INVALID_FACTION',
+        'Only Spacing Guild and their ally can ship forces off-planet',
+        { suggestion: 'This ability is not available to your faction' }
+      )
+    );
+  }
+
+  // Check: Valid territory
+  if (!fromTerritory) {
+    errors.push(
+      createError('INVALID_TERRITORY', `From territory ${fromTerritoryId} does not exist`, {
+        field: 'fromTerritoryId',
+      })
+    );
+    return invalidResult(errors, context);
+  }
+
+  // Check: Valid sector
+  if (!fromTerritory.sectors.includes(fromSector) && fromTerritory.sectors.length > 0) {
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `Sector ${fromSector} is not part of ${fromTerritory.name}`,
+        { field: 'fromSector', expected: fromTerritory.sectors }
+      )
+    );
+  }
+
+  // Check: Sufficient forces in source territory
+  const forcesAvailable = getForceCountInTerritory(state, faction, fromTerritoryId);
+  if (forceCount > forcesAvailable) {
+    errors.push(
+      createError(
+        'INSUFFICIENT_FORCES',
+        `Cannot ship ${forceCount} forces off-planet, only ${forcesAvailable} available in ${fromTerritory.name}`,
+        {
+          field: 'forceCount',
+          actual: forceCount,
+          expected: `1-${forcesAvailable}`,
+        }
+      )
+    );
+  }
+
+  // Check: Sufficient spice
+  // Retreat cost: 1 spice per 2 forces (rule 2.06.06.01 - "RETREAT CALCULATIONS")
+  const cost = Math.ceil(forceCount / 2);
+
+  if (factionState.spice < cost) {
+    errors.push(
+      createError(
+        'INSUFFICIENT_SPICE',
+        `Off-planet shipment costs ${cost} spice but you only have ${factionState.spice}`,
+        {
+          field: 'forceCount',
+          actual: cost,
+          expected: `<= ${factionState.spice}`,
+        }
+      )
+    );
+  }
+
+  // If valid, return success with context
+  if (errors.length === 0) {
+    return validResult({
+      cost,
+      forcesAvailable,
+    });
+  }
+
+  return invalidResult(errors, context);
 }

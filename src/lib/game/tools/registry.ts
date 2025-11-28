@@ -9,6 +9,7 @@ import type { Tool } from 'ai';
 import { Phase, Faction, GameState } from '../types';
 import { ToolContextManager } from './context';
 import { createInformationTools, INFORMATION_TOOL_NAMES, isInformationTool } from './information/tools';
+import { wrapToolsForStreaming, type StreamingConfig } from './streaming-wrapper';
 import {
   createSetupTools,
   createStormTools,
@@ -165,16 +166,52 @@ export function createToolSetForPhase(
 // =============================================================================
 
 /**
+ * Configuration options for AgentToolProvider.
+ */
+export interface AgentToolProviderOptions {
+  /** Enable streaming - tools will emit events when they execute */
+  streaming?: {
+    /** Game ID for event association */
+    gameId: string;
+    /** Whether streaming is enabled (default: true) */
+    enabled?: boolean;
+  };
+}
+
+/**
  * Tool provider for AI agents.
  * Manages tool context and provides phase-appropriate tools.
+ *
+ * When streaming is enabled, all tools automatically emit events:
+ * - AGENT_TOOL_CALL: Before tool executes
+ * - AGENT_TOOL_RESULT: After tool completes
+ *
+ * This eliminates the need for manual event emission in the agent provider.
  */
 export class AgentToolProvider {
   private ctx: ToolContextManager;
   private allTools: ToolSet;
+  private streamingConfig: StreamingConfig | null;
 
-  constructor(state: GameState, faction: Faction) {
+  constructor(state: GameState, faction: Faction, options?: AgentToolProviderOptions) {
     this.ctx = new ToolContextManager(state, faction);
-    this.allTools = createFlatToolSet(this.ctx);
+
+    // Configure streaming
+    if (options?.streaming) {
+      this.streamingConfig = {
+        gameId: options.streaming.gameId,
+        faction,
+        enabled: options.streaming.enabled ?? true,
+      };
+    } else {
+      this.streamingConfig = null;
+    }
+
+    // Create all tools (wrapped for streaming if configured)
+    const baseTools = createFlatToolSet(this.ctx);
+    this.allTools = this.streamingConfig
+      ? wrapToolsForStreaming(baseTools, this.streamingConfig)
+      : baseTools;
   }
 
   /**
@@ -214,6 +251,14 @@ export class AgentToolProvider {
   }
 
   /**
+   * Set ornithopter access override for this faction.
+   * Used during shipment-movement phase to lock ornithopter access at phase start.
+   */
+  setOrnithopterAccessOverride(hasAccess: boolean | undefined): void {
+    this.ctx.setOrnithopterAccessOverride(hasAccess);
+  }
+
+  /**
    * Get all tools (for use with prepareStep for dynamic filtering).
    */
   getAllTools(): ToolSet {
@@ -222,16 +267,38 @@ export class AgentToolProvider {
 
   /**
    * Get tools available for the current phase.
+   * If streaming is enabled, tools are wrapped to emit events.
    */
   getToolsForCurrentPhase(): ToolSet {
-    return createToolSetForPhase(this.ctx, this.ctx.state.phase);
+    const baseTools = createToolSetForPhase(this.ctx, this.ctx.state.phase);
+    return this.streamingConfig
+      ? wrapToolsForStreaming(baseTools, this.streamingConfig)
+      : baseTools;
   }
 
   /**
    * Get tools for a specific phase.
+   * If streaming is enabled, tools are wrapped to emit events.
    */
   getToolsForPhase(phase: Phase): ToolSet {
-    return createToolSetForPhase(this.ctx, phase);
+    const baseTools = createToolSetForPhase(this.ctx, phase);
+    return this.streamingConfig
+      ? wrapToolsForStreaming(baseTools, this.streamingConfig)
+      : baseTools;
+  }
+
+  /**
+   * Check if streaming is enabled for this provider.
+   */
+  get isStreaming(): boolean {
+    return this.streamingConfig?.enabled ?? false;
+  }
+
+  /**
+   * Get the game ID for streaming (if enabled).
+   */
+  get streamingGameId(): string | null {
+    return this.streamingConfig?.gameId ?? null;
   }
 
   /**
@@ -272,12 +339,28 @@ export class AgentToolProvider {
 
 /**
  * Create a tool provider for an agent.
+ *
+ * @param state - Initial game state
+ * @param faction - The faction this agent plays
+ * @param options - Optional configuration including streaming
+ *
+ * @example
+ * ```typescript
+ * // Without streaming (for testing)
+ * const provider = createAgentToolProvider(state, Faction.ATREIDES);
+ *
+ * // With streaming (for production)
+ * const provider = createAgentToolProvider(state, Faction.ATREIDES, {
+ *   streaming: { gameId: 'game_123' }
+ * });
+ * ```
  */
 export function createAgentToolProvider(
   state: GameState,
-  faction: Faction
+  faction: Faction,
+  options?: AgentToolProviderOptions
 ): AgentToolProvider {
-  return new AgentToolProvider(state, faction);
+  return new AgentToolProvider(state, faction, options);
 }
 
 /**
