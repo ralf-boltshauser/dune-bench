@@ -45,7 +45,7 @@ export async function testHajrExtraMovement() {
   });
 
   // Add HAJR card to Atreides hand
-  let stateWithCard = addCardToHand(state, Faction.ATREIDES, 'hajr');
+  const stateWithCard = addCardToHand(state, Faction.ATREIDES, 'hajr');
 
   // Queue responses
   const responses = new AgentResponseBuilder();
@@ -54,7 +54,7 @@ export async function testHajrExtraMovement() {
   responses.queueShipment(Faction.ATREIDES, {
     territoryId: TerritoryId.BASIN,
     sector: 9,
-    count: 5,
+    regularCount: 5,
   });
 
   // Atreides: First movement (normal)

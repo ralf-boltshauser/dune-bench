@@ -38,7 +38,7 @@ Strategic considerations:
 - Some factions have natural synergies (Guild+Emperor for economy)
 - Allied victory requires both factions to meet the shared condition`,
       inputSchema: ProposeAllianceSchema,
-      execute: async (params: z.infer<typeof ProposeAllianceSchema>, options) => {
+      execute: async (params: z.infer<typeof ProposeAllianceSchema>, _options) => {
         const { targetFaction } = params;
         const faction = ctx.faction;
         const factionState = getFactionState(ctx.state, faction);
@@ -108,7 +108,7 @@ Rejecting an alliance:
 - You can propose different alliances later
 - The proposing faction may become hostile`,
       inputSchema: RespondAllianceSchema,
-      execute: async (params: z.infer<typeof RespondAllianceSchema>, options) => {
+      execute: async (params: z.infer<typeof RespondAllianceSchema>, _options) => {
         const { proposingFaction, accept } = params;
         const faction = ctx.faction;
         const factionState = getFactionState(ctx.state, faction);
@@ -167,7 +167,7 @@ You might break an alliance if:
 - Your ally is helping opponents more than you
 - Strategic situation has changed dramatically`,
       inputSchema: BreakAllianceSchema,
-      execute: async (params: z.infer<typeof BreakAllianceSchema>, options) => {
+      execute: async (params: z.infer<typeof BreakAllianceSchema>, _options) => {
         const { allyFaction } = params;
         const faction = ctx.faction;
         const factionState = getFactionState(ctx.state, faction);
@@ -207,7 +207,7 @@ You might pass if:
 - No faction wants to ally with you
 - You prefer to win independently`,
       inputSchema: PassActionSchema,
-      execute: async (params, options) => {
+      execute: async (_params, _options) => {
         return successResult(
           'Passed on alliance actions',
           { faction: ctx.faction, action: 'pass' },

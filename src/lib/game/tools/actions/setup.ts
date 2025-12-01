@@ -36,13 +36,14 @@ const BGPredictionSchema = z.object({
 });
 
 const FremenForceDistributionSchema = z.object({
-  sietch_tabr: z.number().min(0).max(10).describe('Number of forces to place in Sietch Tabr'),
-  false_wall_south: z.number().min(0).max(10).describe('Number of forces to place in False Wall South'),
-  false_wall_west: z.number().min(0).max(10).describe('Number of forces to place in False Wall West'),
-}).refine(
-  (data) => data.sietch_tabr + data.false_wall_south + data.false_wall_west === 10,
-  { message: 'Total forces must equal exactly 10' }
-);
+  sietch_tabr: z.number().min(0).max(10).describe('Number of forces to place in Sietch Tabr (0-10). Total of all three territories must equal exactly 10.'),
+  sietch_tabr_sector: z.number().optional().describe('Sector in Sietch Tabr (must be 13). If not provided, defaults to 13.'),
+  false_wall_south: z.number().min(0).max(10).describe('Number of forces to place in False Wall South (0-10). Total of all three territories must equal exactly 10.'),
+  false_wall_south_sector: z.number().optional().describe('Sector in False Wall South (must be 3 or 4). If not provided, defaults to 3.'),
+  false_wall_west: z.number().min(0).max(10).describe('Number of forces to place in False Wall West (0-10). Total of all three territories must equal exactly 10.'),
+  false_wall_west_sector: z.number().optional().describe('Sector in False Wall West (must be 15, 16, or 17). If not provided, defaults to 15.'),
+});
+// Note: Total validation is done in execute function - .refine() creates transforms that can't be serialized to JSON Schema
 
 // =============================================================================
 // SETUP TOOLS
@@ -120,23 +121,34 @@ This is a powerful ability - think about which faction is likely to achieve vict
      * Distribute 10 starting forces across Sietch Tabr, False Wall South, and False Wall West.
      */
     distribute_fremen_forces: tool({
-      description: `Distribute your 10 starting forces across three territories.
+      description: `Distribute your 10 starting forces across three territories, choosing both territory and sector.
 
 IMPORTANT: Use these EXACT territory IDs as parameter names:
-- sietch_tabr (number 0-10)
-- false_wall_south (number 0-10)
-- false_wall_west (number 0-10)
+- sietch_tabr (number 0-10) - forces to place in Sietch Tabr
+- sietch_tabr_sector (number, optional) - sector in Sietch Tabr (must be 13, defaults to 13)
+- false_wall_south (number 0-10) - forces to place in False Wall South
+- false_wall_south_sector (number, optional) - sector in False Wall South (must be 3 or 4, defaults to 3)
+- false_wall_west (number 0-10) - forces to place in False Wall West
+- false_wall_west_sector (number, optional) - sector in False Wall West (must be 15, 16, or 17, defaults to 15)
 
-The three numbers MUST add up to exactly 10.
+The three territory counts MUST add up to exactly 10.
 
-Example: { "sietch_tabr": 5, "false_wall_south": 3, "false_wall_west": 2 }
+Example: { "sietch_tabr": 5, "sietch_tabr_sector": 13, "false_wall_south": 3, "false_wall_south_sector": 4, "false_wall_west": 2, "false_wall_west_sector": 16 }
 
 Strategic considerations:
 - sietch_tabr is your stronghold (needed for victory)
-- false_wall_south and false_wall_west provide defensive positions`,
+- false_wall_south and false_wall_west provide defensive positions
+- Choose sectors strategically based on storm movement and adjacency`,
       inputSchema: FremenForceDistributionSchema,
       execute: async (params: z.infer<typeof FremenForceDistributionSchema>) => {
-        const { sietch_tabr, false_wall_south, false_wall_west } = params;
+        const { 
+          sietch_tabr, 
+          sietch_tabr_sector,
+          false_wall_south, 
+          false_wall_south_sector,
+          false_wall_west,
+          false_wall_west_sector,
+        } = params;
 
         // Validate total = 10
         const total = sietch_tabr + false_wall_south + false_wall_west;
@@ -148,14 +160,42 @@ Strategic considerations:
           );
         }
 
-        const distribution: Record<string, number> = {
-          sietch_tabr,
-          false_wall_south,
-          false_wall_west,
+        // Validate and set default sectors
+        const sietchTabrSector = sietch_tabr_sector ?? 13;
+        const falseWallSouthSector = false_wall_south_sector ?? 3;
+        const falseWallWestSector = false_wall_west_sector ?? 15;
+
+        // Validate sectors
+        if (sietchTabrSector !== 13) {
+          return failureResult(
+            `Invalid sector for Sietch Tabr: must be 13 (got ${sietchTabrSector})`,
+            { code: 'INVALID_SECTOR', message: `Sietch Tabr sector must be 13` },
+            false
+          );
+        }
+        if (![3, 4].includes(falseWallSouthSector)) {
+          return failureResult(
+            `Invalid sector for False Wall South: must be 3 or 4 (got ${falseWallSouthSector})`,
+            { code: 'INVALID_SECTOR', message: `False Wall South sector must be 3 or 4` },
+            false
+          );
+        }
+        if (![15, 16, 17].includes(falseWallWestSector)) {
+          return failureResult(
+            `Invalid sector for False Wall West: must be 15, 16, or 17 (got ${falseWallWestSector})`,
+            { code: 'INVALID_SECTOR', message: `False Wall West sector must be 15, 16, or 17` },
+            false
+          );
+        }
+
+        const distribution: Record<string, number | { count: number; sector: number }> = {
+          sietch_tabr: { count: sietch_tabr, sector: sietchTabrSector },
+          false_wall_south: { count: false_wall_south, sector: falseWallSouthSector },
+          false_wall_west: { count: false_wall_west, sector: falseWallWestSector },
         };
 
         return successResult(
-          `Fremen forces distributed: ${sietch_tabr} in Sietch Tabr, ${false_wall_south} in False Wall South, ${false_wall_west} in False Wall West`,
+          `Fremen forces distributed: ${sietch_tabr} in Sietch Tabr (sector ${sietchTabrSector}), ${false_wall_south} in False Wall South (sector ${falseWallSouthSector}), ${false_wall_west} in False Wall West (sector ${falseWallWestSector})`,
           { distribution },
           false
         );

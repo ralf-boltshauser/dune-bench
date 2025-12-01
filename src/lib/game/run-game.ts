@@ -10,8 +10,8 @@
  *   npx tsx src/lib/game/run-game.ts --verbose
  */
 
-// Load environment variables from .env file
-import 'dotenv/config';
+// Load environment variables from .env file (with proper precedence)
+import '../agent/env-loader';
 
 import { Faction, Phase, FACTION_NAMES } from './types';
 import { runDuneGame, runQuickGame, runFromState, type GameRunnerConfig } from './agent';
@@ -198,7 +198,7 @@ Examples:
   npx tsx src/lib/game/run-game.ts --skip-setup --only storm,spice
 
 Environment:
-  ANTHROPIC_API_KEY      Required. Your Anthropic API key.
+  OPENAI_API_KEY         Required. Your OpenAI API key.
 `);
 }
 
@@ -229,9 +229,9 @@ async function main() {
   }
 
   // Check for API key (not needed for list-snapshots)
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('Error: ANTHROPIC_API_KEY environment variable is required.');
-    console.error('Set it with: export ANTHROPIC_API_KEY=your-key-here');
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('Error: OPENAI_API_KEY environment variable is required.');
+    console.error('Set it with: export OPENAI_API_KEY=your-key-here');
     process.exit(1);
   }
 

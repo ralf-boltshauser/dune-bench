@@ -4,8 +4,11 @@
  * Common utilities for bidding phase test scenarios.
  */
 
+// Ensure environment variables are loaded
+import '../../../agent/env-loader';
+
 import { BiddingPhaseHandler } from '../../../phases/handlers/bidding';
-import { createClaudeAgentProvider } from '../../../agent/claude-provider';
+import { createAgentProvider } from '../../../agent/azure-provider';
 import { TestLogger } from '../../helpers/test-logger';
 import type { GameState } from '../../../types';
 import type { AgentResponse } from '../../../phases/types';
@@ -21,7 +24,7 @@ export interface ScenarioResult {
 /**
  * Run a bidding phase scenario with REAL LLM agents
  * 
- * This uses ClaudeAgentProvider to make real API calls to LLM agents.
+ * This uses AzureAgentProvider to make real API calls to LLM agents.
  * Agents will analyze the game state and make decisions using their tools.
  */
 export async function runBiddingScenario(
@@ -37,9 +40,9 @@ export async function runBiddingScenario(
 ): Promise<ScenarioResult> {
   const handler = new BiddingPhaseHandler();
   
-  // Use REAL Claude agents (not mocked)
-  const provider = createClaudeAgentProvider(state, {
-    model: agentConfig?.model ?? process.env.ANTHROPIC_DEFAULT_HAIKU_MODEL ?? 'claude-haiku-4-5',
+  // Use REAL Azure OpenAI agents (not mocked)
+  const provider = createAgentProvider(state, {
+    model: agentConfig?.model ?? process.env.OPENAI_MODEL ?? 'gpt-5-mini',
     temperature: agentConfig?.temperature ?? 0.7,
     maxTokens: agentConfig?.maxTokens ?? 1024,
     verbose: agentConfig?.verbose ?? false,

@@ -5,7 +5,13 @@
  * These are the building blocks for all force-related mutations.
  */
 
-import { Faction, TerritoryId, type ForceStack, type ForceCount } from '../types';
+import {
+  Faction,
+  TerritoryId,
+  type ForceStack,
+  type ForceCount,
+  type FactionForces,
+} from "../types";
 
 // =============================================================================
 // FORCE COUNT UTILITIES
@@ -40,9 +46,11 @@ export function addToForceCount(
   amount: number,
   isElite: boolean
 ): ForceCount {
+  const safeRegular = Number.isFinite(count.regular) ? count.regular : 0;
+  const safeElite = Number.isFinite(count.elite) ? count.elite : 0;
   return {
-    regular: count.regular + (isElite ? 0 : amount),
-    elite: count.elite + (isElite ? amount : 0),
+    regular: safeRegular + (isElite ? 0 : amount),
+    elite: safeElite + (isElite ? amount : 0),
   };
 }
 
@@ -54,9 +62,11 @@ export function subtractFromForceCount(
   amount: number,
   isElite: boolean
 ): ForceCount {
+  const safeRegular = Number.isFinite(count.regular) ? count.regular : 0;
+  const safeElite = Number.isFinite(count.elite) ? count.elite : 0;
   return {
-    regular: isElite ? count.regular : Math.max(0, count.regular - amount),
-    elite: isElite ? Math.max(0, count.elite - amount) : count.elite,
+    regular: isElite ? safeRegular : Math.max(0, safeRegular - amount),
+    elite: isElite ? Math.max(0, safeElite - amount) : safeElite,
   };
 }
 
@@ -64,9 +74,13 @@ export function subtractFromForceCount(
  * Merge two force counts.
  */
 export function mergeForceCount(a: ForceCount, b: ForceCount): ForceCount {
+  const aRegular = Number.isFinite(a.regular) ? a.regular : 0;
+  const aElite = Number.isFinite(a.elite) ? a.elite : 0;
+  const bRegular = Number.isFinite(b.regular) ? b.regular : 0;
+  const bElite = Number.isFinite(b.elite) ? b.elite : 0;
   return {
-    regular: a.regular + b.regular,
-    elite: a.elite + b.elite,
+    regular: aRegular + bRegular,
+    elite: aElite + bElite,
   };
 }
 
@@ -84,11 +98,16 @@ export function createForceStack(
   forces: ForceCount = emptyForceCount(),
   advisors?: number
 ): ForceStack {
+  const safeForces: ForceCount = {
+    regular: Number.isFinite(forces.regular) ? forces.regular : 0,
+    elite: Number.isFinite(forces.elite) ? forces.elite : 0,
+  };
+
   const stack: ForceStack = {
     factionId,
     territoryId,
     sector,
-    forces: { ...forces },
+    forces: { ...safeForces },
   };
 
   // BG-specific: track advisors if provided
@@ -108,6 +127,7 @@ export function isStackEmpty(stack: ForceStack): boolean {
 
 /**
  * Find a stack at a specific location.
+ * NOTE: This does NOT check faction - use findStackForFaction for faction-specific lookups
  */
 export function findStack(
   stacks: ForceStack[],
@@ -116,6 +136,21 @@ export function findStack(
 ): ForceStack | undefined {
   return stacks.find(
     (s) => s.territoryId === territoryId && s.sector === sector
+  );
+}
+
+/**
+ * Find a stack at a specific location for a specific faction.
+ * This is safer when you want to ensure you're getting the right faction's stack.
+ */
+export function findStackForFaction(
+  stacks: ForceStack[],
+  factionId: Faction,
+  territoryId: TerritoryId,
+  sector: number
+): ForceStack | undefined {
+  return stacks.find(
+    (s) => s.factionId === factionId && s.territoryId === territoryId && s.sector === sector
   );
 }
 
@@ -139,6 +174,7 @@ export function removeEmptyStacks(stacks: ForceStack[]): ForceStack[] {
 /**
  * Update the forces in a stack at a specific location.
  * Returns new array with updated stack.
+ * NOTE: This does NOT check faction - use updateStackForcesForFaction for faction-specific updates
  */
 export function updateStackForces(
   stacks: ForceStack[],
@@ -158,11 +194,39 @@ export function updateStackForces(
 }
 
 /**
+ * Update the forces in a stack at a specific location for a specific faction.
+ * This is safer when you want to ensure you're updating the right faction's stack.
+ */
+export function updateStackForcesForFaction(
+  stacks: ForceStack[],
+  factionId: Faction,
+  territoryId: TerritoryId,
+  sector: number,
+  updater: (forces: ForceCount) => ForceCount
+): ForceStack[] {
+  return stacks.map((s) => {
+    if (s.factionId === factionId && s.territoryId === territoryId && s.sector === sector) {
+      return {
+        ...s,
+        forces: updater(s.forces),
+      };
+    }
+    return s;
+  });
+}
+
+/**
  * Add forces to a stack at a location, creating if it doesn't exist.
  * Returns new array.
  *
- * For BG forces: When creating a new stack, all forces start as advisors (spiritual side).
- * When adding to existing stack, preserves existing advisor/fighter ratio.
+ * For BG forces:
+ * - Normal shipment (isAdvisor=false): Forces are shipped as fighters (advisors = 0)
+ * - Spiritual Advisor ability (isAdvisor=true): Forces are shipped as advisors
+ * - When adding to existing stack, new forces match the specified type
+ *
+ * @param advisorCount - For BG: number of forces to add as advisors. If undefined, uses default behavior:
+ *                       - If isAdvisor=true: all forces are advisors
+ *                       - If isAdvisor=false: all forces are fighters (advisors = 0)
  */
 export function addToStack(
   stacks: ForceStack[],
@@ -170,23 +234,45 @@ export function addToStack(
   territoryId: TerritoryId,
   sector: number,
   amount: number,
-  isElite: boolean
+  isElite: boolean,
+  advisorCount?: number
 ): ForceStack[] {
-  const existing = findStack(stacks, territoryId, sector);
+  // Find existing stack for this faction at this location
+  // Note: We check faction to prevent accidentally updating wrong faction's stack
+  const existing = stacks.find(
+    (s) => s.territoryId === territoryId && s.sector === sector && s.factionId === factionId
+  );
 
   if (existing) {
     // Update existing stack
-    const updated = updateStackForces(stacks, territoryId, sector, (forces) =>
-      addToForceCount(forces, amount, isElite)
-    );
+    const updated = stacks.map((s) => {
+      if (s.territoryId === territoryId && s.sector === sector && s.factionId === factionId) {
+        return {
+          ...s,
+          forces: addToForceCount(s.forces, amount, isElite),
+        };
+      }
+      return s;
+    });
 
-    // BG-specific: When adding forces to existing stack, they start as advisors
-    if (factionId === Faction.BENE_GESSERIT && existing.advisors !== undefined) {
+    // BG-specific: Handle advisor count
+    if (factionId === Faction.BENE_GESSERIT) {
+      // If advisorCount is explicitly provided, use it
+      // Otherwise, preserve the existing ratio:
+      // - If existing stack has advisors > 0, add as advisors (preserve ratio)
+      // - If existing stack has advisors = 0 (all fighters), add as fighters (advisorsToAdd = 0)
+      // - If existing stack has advisors = undefined (old game state), default to advisors for backward compatibility
+      const advisorsToAdd = advisorCount !== undefined 
+        ? advisorCount 
+        : (existing.advisors !== undefined 
+          ? (existing.advisors > 0 ? amount : 0)  // If all fighters, add as fighters; otherwise preserve ratio
+          : amount);  // Old game state: default to advisors
+      
       return updated.map((s) => {
-        if (s.territoryId === territoryId && s.sector === sector) {
+        if (s.territoryId === territoryId && s.sector === sector && s.factionId === factionId) {
           return {
             ...s,
-            advisors: (s.advisors ?? 0) + amount,
+            advisors: (s.advisors ?? 0) + advisorsToAdd,
           };
         }
         return s;
@@ -198,13 +284,20 @@ export function addToStack(
 
   // Create new stack
   const forcesToAdd = addToForceCount(emptyForceCount(), amount, isElite);
+  
+  // BG-specific: Determine advisor count
+  // If advisorCount is explicitly provided, use it
+  // Otherwise, default to 0 (fighters) for normal shipment
+  const bgAdvisorCount = factionId === Faction.BENE_GESSERIT
+    ? (advisorCount !== undefined ? advisorCount : 0)
+    : undefined;
+  
   const newStack = createForceStack(
     factionId,
     territoryId,
     sector,
     forcesToAdd,
-    // BG-specific: All forces start as advisors when first placed
-    factionId === Faction.BENE_GESSERIT ? amount : undefined
+    bgAdvisorCount
   );
   return [...stacks, newStack];
 }
@@ -223,6 +316,9 @@ export function removeFromStack(
   amount: number,
   isElite: boolean
 ): ForceStack[] {
+  // NOTE: This function doesn't check faction, but it's typically called with stacks from a single faction
+  // For safety, we should add a faction parameter, but that would be a breaking change
+  // For now, we'll use findStack which doesn't check faction (legacy behavior)
   const stack = findStack(stacks, territoryId, sector);
 
   // BG-specific: When removing forces, remove advisors first, then fighters
@@ -262,6 +358,57 @@ export function removeFromStack(
   return removeEmptyStacks(updated);
 }
 
+/**
+ * Remove forces from a stack at a specific location for a specific faction.
+ * This is safer when you want to ensure you're removing from the right faction's stack.
+ */
+export function removeFromStackForFaction(
+  stacks: ForceStack[],
+  factionId: Faction,
+  territoryId: TerritoryId,
+  sector: number,
+  amount: number,
+  isElite: boolean
+): ForceStack[] {
+  const stack = findStackForFaction(stacks, factionId, territoryId, sector);
+
+  // BG-specific: When removing forces, remove advisors first, then fighters
+  if (stack && stack.advisors !== undefined) {
+    const currentAdvisors = stack.advisors;
+    const advisorsToRemove = Math.min(amount, currentAdvisors);
+    const fightersToRemove = amount - advisorsToRemove;
+
+    const updated = stacks.map((s) => {
+      if (s.factionId === factionId && s.territoryId === territoryId && s.sector === sector) {
+        return {
+          ...s,
+          advisors: currentAdvisors - advisorsToRemove,
+        };
+      }
+      return s;
+    });
+
+    // Remove the remaining as fighters (from total force count)
+    if (fightersToRemove > 0) {
+      const withForcesRemoved = updateStackForcesForFaction(updated, factionId, territoryId, sector, (forces) =>
+        subtractFromForceCount(forces, fightersToRemove, isElite)
+      );
+      return removeEmptyStacks(withForcesRemoved);
+    }
+
+    const withForcesRemoved = updateStackForcesForFaction(updated, factionId, territoryId, sector, (forces) =>
+      subtractFromForceCount(forces, advisorsToRemove, isElite)
+    );
+    return removeEmptyStacks(withForcesRemoved);
+  }
+
+  // Standard removal for non-BG factions
+  const updated = updateStackForcesForFaction(stacks, factionId, territoryId, sector, (forces) =>
+    subtractFromForceCount(forces, amount, isElite)
+  );
+  return removeEmptyStacks(updated);
+}
+
 // =============================================================================
 // HIGHER-LEVEL OPERATIONS
 // =============================================================================
@@ -269,6 +416,12 @@ export function removeFromStack(
 /**
  * Move forces between two locations on the board.
  * Returns new array.
+ *
+ * ADAPTIVE FORCE Rule (2.02.21): When you Move advisors or fighters into a Territory
+ * where you have the opposite type they flip to match the type already in the Territory.
+ * - Move advisors to territory with your fighters → Flip to fighters
+ * - Move fighters to territory with your advisors → Flip to advisors
+ * - Automatic (not optional)
  */
 export function moveStackForces(
   stacks: ForceStack[],
@@ -278,9 +431,114 @@ export function moveStackForces(
   amount: number,
   isElite: boolean
 ): ForceStack[] {
-  // Remove from source
-  let result = removeFromStack(
+  // For Bene Gesserit: Check ADAPTIVE FORCE rule before moving
+  if (factionId === Faction.BENE_GESSERIT) {
+    const sourceStack = findStackForFaction(stacks, factionId, from.territoryId, from.sector);
+    const destStack = findStackForFaction(stacks, factionId, to.territoryId, to.sector);
+
+    if (sourceStack && sourceStack.advisors !== undefined) {
+      // Determine what type is being moved
+      // removeFromStackForFaction removes advisors first, then fighters
+      const sourceAdvisors = sourceStack.advisors;
+      const advisorsToMove = Math.min(amount, sourceAdvisors);
+      const fightersToMove = amount - advisorsToMove;
+
+      // Check destination type (if it exists)
+      if (destStack && destStack.advisors !== undefined) {
+        const destTotalForces = getTotalForces(destStack.forces);
+        const destAdvisors = destStack.advisors;
+        const destFighters = destTotalForces - destAdvisors;
+
+        // ADAPTIVE FORCE: Flip to match destination type
+        // Rule: "When you Move advisors or fighters into a Territory where you have
+        // the opposite type they flip to match the type already in the Territory."
+        if (destFighters > 0 && advisorsToMove > 0) {
+          // Moving advisors (or mix with advisors) to fighters destination → flip all to fighters
+          // Remove from source (will remove advisors first, then fighters if any)
+          let result = removeFromStackForFaction(
+            stacks,
+            factionId,
+            from.territoryId,
+            from.sector,
+            amount,
+            isElite
+          );
+
+          // Add to destination (addToStack will add all as advisors by default for BG)
+          result = addToStack(
+            result,
+            factionId,
+            to.territoryId,
+            to.sector,
+            amount,
+            isElite
+          );
+
+          // ADAPTIVE FORCE: Convert all moved forces to fighters to match destination
+          // Note: addToStack adds all forces as advisors, so we convert all moved forces to fighters
+          // This handles both pure advisor moves and mixed moves (advisors + fighters)
+          result = convertAdvisorsToFighters(
+            result,
+            to.territoryId,
+            to.sector,
+            amount // Convert all moved forces (advisorsToMove + any fighters that were added as advisors)
+          );
+
+          return result;
+        } else if (destAdvisors > 0 && fightersToMove > 0) {
+          // Moving fighters (or mix with fighters) to advisors destination → flip all to advisors
+          // Remove from source (will remove advisors first, then fighters)
+          let result = removeFromStackForFaction(
+            stacks,
+            factionId,
+            from.territoryId,
+            from.sector,
+            amount,
+            isElite
+          );
+
+          // Add to destination (addToStack will add all as advisors by default for BG)
+          result = addToStack(
+            result,
+            factionId,
+            to.territoryId,
+            to.sector,
+            amount,
+            isElite
+          );
+
+          // ADAPTIVE FORCE: addToStack already adds all forces as advisors, so we're good.
+          // The moved fighters are now advisors, matching the destination type.
+          // This handles both pure fighter moves and mixed moves (advisors + fighters).
+          return result;
+        }
+      }
+    }
+  }
+
+  // Standard movement (non-BG or no ADAPTIVE FORCE trigger)
+  // For BG: Determine advisor count BEFORE removing forces (to preserve type when moving to empty destination)
+  let advisorCount: number | undefined = undefined;
+  if (factionId === Faction.BENE_GESSERIT) {
+    const sourceStack = findStackForFaction(stacks, factionId, from.territoryId, from.sector);
+    const destStack = findStackForFaction(stacks, factionId, to.territoryId, to.sector);
+    
+    // If destination is empty (new stack), preserve the type being moved
+    // removeFromStackForFaction removes advisors first, then fighters
+    if (!destStack && sourceStack && sourceStack.advisors !== undefined) {
+      const sourceAdvisors = sourceStack.advisors;
+      const advisorsToMove = Math.min(amount, sourceAdvisors);
+      // Preserve advisor count when moving to empty destination
+      // This ensures advisors stay advisors and fighters stay fighters when moving to empty territory
+      advisorCount = advisorsToMove;
+    }
+    // If destination exists, addToStack will handle preserving the ratio automatically
+  }
+
+  // Remove from source - use faction-specific version to prevent accidentally removing wrong faction's forces
+  let result = removeFromStackForFaction(
     stacks,
+    factionId,
     from.territoryId,
     from.sector,
     amount,
@@ -294,7 +552,8 @@ export function moveStackForces(
     to.territoryId,
     to.sector,
     amount,
-    isElite
+    isElite,
+    advisorCount
   );
 
   return result;
@@ -308,6 +567,16 @@ export function totalForcesOnBoard(stacks: ForceStack[]): ForceCount {
     (acc, stack) => mergeForceCount(acc, stack.forces),
     emptyForceCount()
   );
+}
+
+/**
+ * Calculate total forces from all sources in FactionForces (reserves + onBoard + tanks).
+ */
+export function getTotalForcesFromFactionForces(forces: FactionForces): number {
+  const reservesTotal = getTotalForces(forces.reserves);
+  const onBoardTotal = getTotalForces(totalForcesOnBoard(forces.onBoard));
+  const tanksTotal = getTotalForces(forces.tanks);
+  return reservesTotal + onBoardTotal + tanksTotal;
 }
 
 /**
@@ -373,7 +642,7 @@ export function calculateLossDistribution(
 
   // Strategy: Lose regular forces first (each absorbs 1 loss)
   const regularLost = Math.min(regular, lossesRequired);
-  let remainingLosses = lossesRequired - regularLost;
+  const remainingLosses = lossesRequired - regularLost;
 
   // Then lose elite forces (each absorbs eliteValue losses)
   // We need ceil(remainingLosses / eliteValue) elite forces to cover remaining losses

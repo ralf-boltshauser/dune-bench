@@ -43,7 +43,7 @@ export async function testOrnithopterAccess() {
   responses.queueShipment(Faction.ATREIDES, {
     territoryId: TerritoryId.BASIN,
     sector: 9,
-    count: 3,
+    regularCount: 3,
   });
 
   // Atreides: Move with ornithopters (3 territories)
@@ -60,7 +60,7 @@ export async function testOrnithopterAccess() {
   responses.queueShipment(Faction.HARKONNEN, {
     territoryId: TerritoryId.ARRAKEEN,
     sector: 9,
-    count: 5,
+    regularCount: 5,
   });
 
   // Harkonnen: Move without ornithopters (1 territory only)

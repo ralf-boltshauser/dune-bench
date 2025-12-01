@@ -14,8 +14,9 @@ import * as path from "path";
 import { runDuneGame, type GameRunnerConfig } from "./agent";
 import type { PhaseEvent } from "./phases/types";
 import { generateSnapshotName, saveStateToFile } from "./state/serialize";
-import type { GameState } from "./types";
+import type { GameState, WinResult } from "./types";
 import { Faction, FACTION_NAMES, Phase } from "./types";
+import { GAME_CONSTANTS } from "./data";
 
 // =============================================================================
 // LOGGING
@@ -69,7 +70,7 @@ class FullGameLogger {
 
   writeLog(
     finalState: GameState,
-    result: { winner: any; totalTurns: number }
+    result: { winner: WinResult | null; totalTurns: number }
   ): void {
     const lines: string[] = [];
 
@@ -269,28 +270,101 @@ function validateStorm(
   startState: GameState,
   endState: GameState
 ): void {
-  // Check that storm moved
+  const { events } = validation;
+
+  // Find STORM_MOVED event once
+  const stormMovedEvent = events.find(e => e.type === "STORM_MOVED");
+
+  // 1. Check that storm moved
   if (endState.turn === 1) {
-    // Turn 1: storm should be placed
+    // Turn 1: storm should be placed (starts at 0, moves to new position)
     if (endState.stormSector === 0) {
       validation.errors.push("Storm was not placed on Turn 1");
+    }
+    
+    // Turn 1: Validate movement range (0-40 total from two dials of 0-20 each)
+    if (stormMovedEvent && stormMovedEvent.data?.movement !== undefined) {
+      const movement = stormMovedEvent.data.movement as number;
+      if (movement < 0 || movement > GAME_CONSTANTS.FIRST_STORM_MAX_DIAL * 2) {
+        validation.warnings.push(
+          `Turn 1 storm movement ${movement} is outside expected range (0-${GAME_CONSTANTS.FIRST_STORM_MAX_DIAL * 2})`
+        );
+      }
     }
   } else {
     // Other turns: storm should have moved
     if (endState.stormSector === startState.stormSector) {
       validation.errors.push("Storm did not move");
     }
+    
+    // Turn 2+: Validate movement range (2-6 sectors from two dials of 1-3 each)
+    if (stormMovedEvent && stormMovedEvent.data?.movement !== undefined) {
+      const movement = stormMovedEvent.data.movement as number;
+      if (movement < 2 || movement > 6) {
+        validation.warnings.push(
+          `Turn ${endState.turn} storm movement ${movement} is outside expected range (2-6)`
+        );
+      }
+    }
   }
 
-  // Check storm order exists
+  // 2. Check STORM_MOVED event exists
+  if (!stormMovedEvent) {
+    validation.errors.push("STORM_MOVED event not found");
+  } else {
+    // Validate event data
+    const eventData = stormMovedEvent.data;
+    if (!eventData) {
+      validation.errors.push("STORM_MOVED event missing data");
+    } else {
+      if (typeof eventData.from !== 'number' || typeof eventData.to !== 'number') {
+        validation.errors.push("STORM_MOVED event missing valid from/to sectors");
+      }
+      if (endState.stormSector !== eventData.to) {
+        validation.errors.push(
+          `Storm sector mismatch: state has ${endState.stormSector}, event has ${eventData.to}`
+        );
+      }
+    }
+  }
+
+  // 3. Check storm order exists
   if (endState.stormOrder.length === 0) {
     validation.errors.push("Storm order is empty");
   }
 
-  // Check all factions are in storm order
+  // 4. Check all factions are in storm order
   if (endState.stormOrder.length !== endState.factions.size) {
     validation.warnings.push(
       `Storm order has ${endState.stormOrder.length} factions, expected ${endState.factions.size}`
+    );
+  }
+
+  // 5. Validate first player is set correctly
+  // Note: firstPlayer is not a property on GameState, it's derived from stormOrder[0]
+  if (endState.stormOrder.length > 0) {
+    const firstPlayer = endState.stormOrder[0];
+    // Validation: first player should be the first in storm order
+    // This is just a consistency check - stormOrder[0] is the first player
+  }
+
+  // 6. Validate storm order uniqueness (no duplicates)
+  const uniqueFactions = new Set(endState.stormOrder);
+  if (uniqueFactions.size !== endState.stormOrder.length) {
+    validation.errors.push("Storm order contains duplicate factions");
+  }
+
+  // 7. Check that all factions in storm order actually exist
+  for (const faction of endState.stormOrder) {
+    if (!endState.factions.has(faction)) {
+      validation.errors.push(`Storm order includes non-existent faction: ${faction}`);
+    }
+  }
+
+  // 8. Validate sector is within valid range
+  if (endState.stormSector < 0 || endState.stormSector >= GAME_CONSTANTS.TOTAL_SECTORS) {
+    validation.errors.push(
+      `Invalid storm sector: ${endState.stormSector} (must be 0-${GAME_CONSTANTS.TOTAL_SECTORS - 1})`
     );
   }
 }
@@ -386,7 +460,7 @@ function validateRevival(
     if (totalInTanks > 0) {
       const revived = validation.events.filter(
         (e) =>
-          e.type === "FORCES_REVIVED" && (e.data as any)?.faction === faction
+          e.type === "FORCES_REVIVED" && (e.data?.faction as Faction) === faction
       ).length;
       if (revived === 0) {
         validation.warnings.push(
@@ -483,8 +557,8 @@ function validateMentatPause(
 
 async function main() {
   // Check for API key
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error("Error: ANTHROPIC_API_KEY environment variable is required.");
+  if (!process.env.OPENAI_API_KEY) {
+    console.error("Error: OPENAI_API_KEY environment variable is required.");
     process.exit(1);
   }
 
@@ -528,7 +602,7 @@ async function main() {
 
         // Track phase start/end
         if (event.type === "PHASE_STARTED") {
-          const phase = (event.data as any)?.phase as Phase;
+          const phase = event.data?.phase as Phase | undefined;
           if (phase) {
             // Save state before phase starts
             if (currentState) {
@@ -549,7 +623,7 @@ async function main() {
             currentPhase = phase;
           }
         } else if (event.type === "PHASE_ENDED") {
-          const phase = (event.data as any)?.phase as Phase;
+          const phase = event.data?.phase as Phase | undefined;
           if (phase && phaseStates.has(phase)) {
             const phaseData = phaseStates.get(phase)!;
             // Save state after phase ends

@@ -137,14 +137,10 @@ export class RevivalPhaseHandler implements PhaseHandler {
 
       this.processedFactions.add(response.factionId);
 
-      if (response.passed) {
-        continue; // Faction passed on revival
-      }
-
       const faction = response.factionId;
       const limits = getRevivalLimits(newState, faction);
 
-      // Handle force revival
+      // Handle explicit force revival request
       if (response.actionType === 'REVIVE_FORCES') {
         // Response should be ADDITIONAL forces beyond free revival
         const additionalCount = Number(response.data.count ?? 0);
@@ -153,21 +149,39 @@ export class RevivalPhaseHandler implements PhaseHandler {
         const result = this.processForceRevival(newState, faction, totalCount, limits, events);
         newState = result.state;
         events.push(...result.events);
+      } else if (!response.passed) {
+        // If faction didn't pass and didn't request force revival, check for other revival types
+        // Handle leader revival
+        if (response.actionType === 'REVIVE_LEADER') {
+          const leaderId = response.data.leaderId as string;
+          const result = this.processLeaderRevival(newState, faction, leaderId, events);
+          newState = result.state;
+          events.push(...result.events);
+        }
+
+        // Handle Kwisatz Haderach revival
+        if (response.actionType === 'REVIVE_KWISATZ_HADERACH') {
+          const result = this.processKwisatzHaderachRevival(newState, faction, events);
+          newState = result.state;
+          events.push(...result.events);
+        }
       }
 
-      // Handle leader revival
-      if (response.actionType === 'REVIVE_LEADER') {
-        const leaderId = response.data.leaderId as string;
-        const result = this.processLeaderRevival(newState, faction, leaderId, events);
-        newState = result.state;
-        events.push(...result.events);
-      }
-
-      // Handle Kwisatz Haderach revival
-      if (response.actionType === 'REVIVE_KWISATZ_HADERACH') {
-        const result = this.processKwisatzHaderachRevival(newState, faction, events);
-        newState = result.state;
-        events.push(...result.events);
+      // FREE REVIVAL: Automatically apply free revival if available and not already applied
+      // Rule: "FREE REVIVAL: A certain number of Forces are revived for free as stated on the player sheet."
+      // Free revival should happen automatically, even if faction passed or didn't explicitly request it
+      // Only apply if:
+      // 1. Faction has free revival available
+      // 2. Faction has forces in tanks
+      // 3. Faction didn't already request REVIVE_FORCES (which would have included free revival)
+      if (limits.freeForces > 0 && limits.forcesInTanks > 0 && response.actionType !== 'REVIVE_FORCES') {
+        // Apply free revival automatically
+        const freeCount = Math.min(limits.freeForces, limits.forcesInTanks);
+        if (freeCount > 0) {
+          const result = this.processForceRevival(newState, faction, freeCount, limits, events);
+          newState = result.state;
+          events.push(...result.events);
+        }
       }
     }
 
@@ -402,6 +416,23 @@ export class RevivalPhaseHandler implements PhaseHandler {
     const cost = paidCount * GAME_CONSTANTS.PAID_REVIVAL_COST;
 
     const factionState = getFactionState(state, faction);
+    const currentSpice = factionState.spice;
+    const currentForcesInTanks = factionState.forces.tanks.regular + factionState.forces.tanks.elite;
+    const currentReserves = factionState.forces.reserves.regular + factionState.forces.reserves.elite;
+
+    // Check if the tool already applied the revival
+    // The phase manager syncs state from agent provider BEFORE calling processStep,
+    // so the state passed here may already have the tool's changes applied.
+    // We detect this by checking if spice has been deducted or if forces in tanks are insufficient
+    const spiceAlreadyDeducted = cost > 0 && currentSpice < cost;
+    const forcesInTanksInsufficient = currentForcesInTanks < actualCount;
+    
+    // If spice was already deducted OR forces in tanks are insufficient, tool likely already applied it
+    if (spiceAlreadyDeducted || forcesInTanksInsufficient) {
+      // State has already been updated by tool - don't apply again
+      console.log(`   ℹ️  Revival already applied by tool (spice: ${currentSpice}, cost: ${cost}, tanks: ${currentForcesInTanks}, needed: ${actualCount}), skipping duplicate application\n`);
+      return { state, events: newEvents };
+    }
 
     // Check if faction can afford paid revival
     if (cost > factionState.spice) {
@@ -432,7 +463,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
       return { state: newState, events: newEvents };
     }
 
-    // Full revival
+    // Full revival (only if tool hasn't already applied it - checked above)
     newState = reviveForces(newState, faction, actualCount);
     if (cost > 0) {
       newState = removeSpice(newState, faction, cost);

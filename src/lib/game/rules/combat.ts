@@ -4,42 +4,41 @@
  */
 
 import {
-  Faction,
-  TerritoryId,
-  TreacheryCardType,
-  LeaderLocation,
-  type GameState,
-  type BattlePlan,
-  type Leader,
-  type TreacheryCard,
-} from '../types';
+  getLeaderDefinition,
+  getTreacheryCardDefinition,
+  isCheapHero,
+  isDefenseCard,
+  isWeaponCard,
+  isWorthless,
+} from "../data";
 import {
+  getAvailableLeaders,
+  getDefenseCards,
   getFactionState,
   getForceCountInTerritory,
-  getAvailableLeaders,
-  hasAvailableLeaders,
-  hasCheapHero,
   getWeaponCards,
-  getDefenseCards,
-} from '../state';
+  hasCheapHero,
+} from "../state";
+import { getBGFightersInSector } from "../state/queries";
 import {
-  getTreacheryCardDefinition,
-  getLeaderDefinition,
-  isWeaponCard,
-  isDefenseCard,
-  isCheapHero,
-  isWorthless,
-  GAME_CONSTANTS,
-} from '../data';
+  Faction,
+  LeaderLocation,
+  TerritoryId,
+  TreacheryCardType,
+  type BattlePlan,
+  type GameState,
+  type Leader,
+  type TreacheryCard,
+} from "../types";
 import {
-  type ValidationResult,
-  type ValidationError,
+  createError,
+  invalidResult,
+  validResult,
   type BattleResult,
   type BattleSideResult,
-  validResult,
-  invalidResult,
-  createError,
-} from './types';
+  type ValidationError,
+  type ValidationResult,
+} from "./types";
 
 // =============================================================================
 // BATTLE PLAN VALIDATION
@@ -57,16 +56,34 @@ export interface BattlePlanSuggestion {
 /**
  * Validate a battle plan before submission.
  * Ensures all components are legal and available.
+ *
+ * @param sector Optional sector number. When provided, uses sector-specific force counting.
+ *               This is important for Bene Gesserit to exclude advisors, and for territories
+ *               where a faction may have forces in multiple sectors.
  */
 export function validateBattlePlan(
   state: GameState,
   faction: Faction,
   territoryId: TerritoryId,
-  plan: BattlePlan
+  plan: BattlePlan,
+  sector?: number
 ): ValidationResult<BattlePlanSuggestion> {
   const errors: ValidationError[] = [];
   const factionState = getFactionState(state, faction);
-  const forcesInTerritory = getForceCountInTerritory(state, faction, territoryId);
+
+  // IMPORTANT: For Bene Gesserit, use getBGFightersInSector to exclude advisors when sector is provided
+  // Advisors are non-combatants and shouldn't be counted as available forces
+  const forcesInTerritory =
+    sector !== undefined && faction === Faction.BENE_GESSERIT
+      ? getBGFightersInSector(state, territoryId, sector)
+      : sector !== undefined
+      ? (() => {
+          const forces = factionState.forces.onBoard.find(
+            (f) => f.territoryId === territoryId && f.sector === sector
+          );
+          return forces ? forces.forces.regular + forces.forces.elite : 0;
+        })()
+      : getForceCountInTerritory(state, faction, territoryId);
   const availableLeaders = getAvailableLeaders(state, faction);
   const hasLeaders = availableLeaders.length > 0;
   const hasCheapHeroCard = hasCheapHero(state, faction);
@@ -86,19 +103,23 @@ export function validateBattlePlan(
   // Check: Forces dialed
   if (plan.forcesDialed < 0) {
     errors.push(
-      createError('FORCES_DIALED_EXCEEDS_AVAILABLE', 'Forces dialed cannot be negative', {
-        field: 'forcesDialed',
-        actual: plan.forcesDialed,
-        expected: '>= 0',
-      })
+      createError(
+        "FORCES_DIALED_EXCEEDS_AVAILABLE",
+        "Forces dialed cannot be negative",
+        {
+          field: "forcesDialed",
+          actual: plan.forcesDialed,
+          expected: ">= 0",
+        }
+      )
     );
   } else if (plan.forcesDialed > forcesInTerritory) {
     errors.push(
       createError(
-        'FORCES_DIALED_EXCEEDS_AVAILABLE',
+        "FORCES_DIALED_EXCEEDS_AVAILABLE",
         `Cannot dial ${plan.forcesDialed} forces, only ${forcesInTerritory} in territory`,
         {
-          field: 'forcesDialed',
+          field: "forcesDialed",
           actual: plan.forcesDialed,
           expected: `0-${forcesInTerritory}`,
           suggestion: `Dial ${forcesInTerritory} forces (maximum available)`,
@@ -106,6 +127,7 @@ export function validateBattlePlan(
       )
     );
   }
+  // Note: 0 forces is a valid play - players can choose to dial 0 forces if they want
 
   // Check: Leader or Cheap Hero requirement
   // Rule from battle.md line 12: "A Cheap Hero Card may be played in lieu of a Leader Disc."
@@ -116,10 +138,10 @@ export function validateBattlePlan(
       if (hasLeaders && hasCheapHeroCard) {
         errors.push(
           createError(
-            'MUST_PLAY_LEADER_OR_CHEAP_HERO',
-            'You must play either a leader or Cheap Hero (your choice)',
+            "MUST_PLAY_LEADER_OR_CHEAP_HERO",
+            "You must play either a leader or Cheap Hero (your choice)",
             {
-              field: 'leaderId',
+              field: "leaderId",
               suggestion: `Play ${availableLeaders[0].definitionId} or set cheapHeroUsed to true`,
             }
           )
@@ -128,10 +150,10 @@ export function validateBattlePlan(
         // Only leaders available - must play a leader
         errors.push(
           createError(
-            'MUST_PLAY_LEADER',
-            'You must play a leader when you have available leaders',
+            "MUST_PLAY_LEADER",
+            "You must play a leader when you have available leaders",
             {
-              field: 'leaderId',
+              field: "leaderId",
               suggestion: `Play ${availableLeaders[0].definitionId}`,
             }
           )
@@ -140,11 +162,11 @@ export function validateBattlePlan(
         // Only Cheap Hero available - MUST play it (forced rule)
         errors.push(
           createError(
-            'MUST_PLAY_CHEAP_HERO',
-            'You must play Cheap Hero when you have no available leaders',
+            "MUST_PLAY_CHEAP_HERO",
+            "You must play Cheap Hero when you have no available leaders",
             {
-              field: 'cheapHeroUsed',
-              suggestion: 'Set cheapHeroUsed to true',
+              field: "cheapHeroUsed",
+              suggestion: "Set cheapHeroUsed to true",
             }
           )
         );
@@ -156,11 +178,11 @@ export function validateBattlePlan(
       if (!plan.announcedNoLeader) {
         errors.push(
           createError(
-            'MUST_ANNOUNCE_NO_LEADER',
-            'You must announce that you cannot play a leader or Cheap Hero',
+            "MUST_ANNOUNCE_NO_LEADER",
+            "You must announce that you cannot play a leader or Cheap Hero",
             {
-              field: 'announcedNoLeader',
-              suggestion: 'Set announcedNoLeader to true',
+              field: "announcedNoLeader",
+              suggestion: "Set announcedNoLeader to true",
             }
           )
         );
@@ -170,12 +192,16 @@ export function validateBattlePlan(
 
   // Check: Leader validity
   if (plan.leaderId) {
-    const leader = factionState.leaders.find((l) => l.definitionId === plan.leaderId);
+    const leader = factionState.leaders.find(
+      (l) => l.definitionId === plan.leaderId
+    );
     if (!leader) {
       errors.push(
-        createError('LEADER_NOT_IN_POOL', `Leader ${plan.leaderId} not found`, {
-          field: 'leaderId',
-          suggestion: `Choose from: ${availableLeaders.map((l) => l.definitionId).join(', ')}`,
+        createError("LEADER_NOT_IN_POOL", `Leader ${plan.leaderId} not found`, {
+          field: "leaderId",
+          suggestion: `Choose from: ${availableLeaders
+            .map((l) => l.definitionId)
+            .join(", ")}`,
         })
       );
     } else if (leader.location === LeaderLocation.LEADER_POOL) {
@@ -186,11 +212,13 @@ export function validateBattlePlan(
       if (leader.usedThisTurn && leader.usedInTerritoryId !== territoryId) {
         errors.push(
           createError(
-            'LEADER_ALREADY_USED',
+            "LEADER_ALREADY_USED",
             `${plan.leaderId} already fought in another territory this turn`,
             {
-              field: 'leaderId',
-              suggestion: `Choose from: ${availableLeaders.map((l) => l.definitionId).join(', ')}`,
+              field: "leaderId",
+              suggestion: `Choose from: ${availableLeaders
+                .map((l) => l.definitionId)
+                .join(", ")}`,
             }
           )
         );
@@ -200,10 +228,10 @@ export function validateBattlePlan(
       // Leader is in TANKS, CAPTURED, or other unavailable location
       errors.push(
         createError(
-          'LEADER_NOT_IN_POOL',
+          "LEADER_NOT_IN_POOL",
           `${plan.leaderId} is not available (in tanks or captured)`,
           {
-            field: 'leaderId',
+            field: "leaderId",
             actual: leader.location,
             expected: LeaderLocation.LEADER_POOL,
           }
@@ -215,8 +243,8 @@ export function validateBattlePlan(
   // Check: Cheap Hero card
   if (plan.cheapHeroUsed && !hasCheapHeroCard) {
     errors.push(
-      createError('CARD_NOT_IN_HAND', 'You do not have a Cheap Hero card', {
-        field: 'cheapHeroUsed',
+      createError("CARD_NOT_IN_HAND", "You do not have a Cheap Hero card", {
+        field: "cheapHeroUsed",
       })
     );
   }
@@ -225,9 +253,9 @@ export function validateBattlePlan(
   if (plan.leaderId && plan.cheapHeroUsed) {
     errors.push(
       createError(
-        'MUST_PLAY_LEADER_OR_CHEAP_HERO',
-        'Cannot play both a leader and Cheap Hero - choose one',
-        { suggestion: 'Remove either leaderId or set cheapHeroUsed to false' }
+        "MUST_PLAY_LEADER_OR_CHEAP_HERO",
+        "Cannot play both a leader and Cheap Hero - choose one",
+        { suggestion: "Remove either leaderId or set cheapHeroUsed to false" }
       )
     );
   }
@@ -237,9 +265,9 @@ export function validateBattlePlan(
   if (!hasLeaderOrHero && (plan.weaponCardId || plan.defenseCardId)) {
     errors.push(
       createError(
-        'CANNOT_PLAY_TREACHERY_WITHOUT_LEADER',
-        'Cannot play weapon or defense cards without a leader or Cheap Hero',
-        { suggestion: 'Add a leader or Cheap Hero to your battle plan' }
+        "CANNOT_PLAY_TREACHERY_WITHOUT_LEADER",
+        "Cannot play weapon or defense cards without a leader or Cheap Hero",
+        { suggestion: "Add a leader or Cheap Hero to your battle plan" }
       )
     );
   }
@@ -249,8 +277,8 @@ export function validateBattlePlan(
     const weaponError = validateTreacheryCard(
       factionState.hand,
       plan.weaponCardId,
-      'weapon',
-      'weaponCardId'
+      "weapon",
+      "weaponCardId"
     );
     if (weaponError) errors.push(weaponError);
   }
@@ -260,8 +288,8 @@ export function validateBattlePlan(
     const defenseError = validateTreacheryCard(
       factionState.hand,
       plan.defenseCardId,
-      'defense',
-      'defenseCardId'
+      "defense",
+      "defenseCardId"
     );
     if (defenseError) errors.push(defenseError);
   }
@@ -270,9 +298,9 @@ export function validateBattlePlan(
   if (plan.weaponCardId && plan.weaponCardId === plan.defenseCardId) {
     errors.push(
       createError(
-        'CARD_NOT_IN_HAND',
-        'Cannot use the same card as both weapon and defense',
-        { field: 'defenseCardId' }
+        "CARD_NOT_IN_HAND",
+        "Cannot use the same card as both weapon and defense",
+        { field: "defenseCardId" }
       )
     );
   }
@@ -282,9 +310,9 @@ export function validateBattlePlan(
     if (faction !== Faction.ATREIDES) {
       errors.push(
         createError(
-          'ABILITY_NOT_AVAILABLE',
-          'Only Atreides can use the Kwisatz Haderach',
-          { field: 'kwisatzHaderachUsed' }
+          "ABILITY_NOT_AVAILABLE",
+          "Only Atreides can use the Kwisatz Haderach",
+          { field: "kwisatzHaderachUsed" }
         )
       );
     } else {
@@ -292,39 +320,40 @@ export function validateBattlePlan(
       if (!kh) {
         errors.push(
           createError(
-            'ABILITY_NOT_AVAILABLE',
-            'Kwisatz Haderach not initialized',
-            { field: 'kwisatzHaderachUsed' }
+            "ABILITY_NOT_AVAILABLE",
+            "Kwisatz Haderach not initialized",
+            { field: "kwisatzHaderachUsed" }
           )
         );
       } else if (!kh.isActive) {
         errors.push(
           createError(
-            'KH_NOT_ACTIVE',
-            'Kwisatz Haderach is not active yet (need 7+ forces lost)',
+            "KH_NOT_ACTIVE",
+            "Kwisatz Haderach is not active yet (need 7+ forces lost)",
             {
-              field: 'kwisatzHaderachUsed',
+              field: "kwisatzHaderachUsed",
               actual: kh.forcesLostCount,
-              expected: '7+',
+              expected: "7+",
             }
           )
         );
       } else if (kh.isDead) {
         errors.push(
-          createError(
-            'KH_NOT_ACTIVE',
-            'Kwisatz Haderach is dead',
-            { field: 'kwisatzHaderachUsed' }
-          )
+          createError("KH_NOT_ACTIVE", "Kwisatz Haderach is dead", {
+            field: "kwisatzHaderachUsed",
+          })
         );
-      } else if (kh.usedInTerritoryThisTurn && kh.usedInTerritoryThisTurn !== territoryId) {
+      } else if (
+        kh.usedInTerritoryThisTurn &&
+        kh.usedInTerritoryThisTurn !== territoryId
+      ) {
         errors.push(
           createError(
-            'KH_ALREADY_USED',
+            "KH_ALREADY_USED",
             `Kwisatz Haderach already used in ${kh.usedInTerritoryThisTurn} this turn`,
             {
-              field: 'kwisatzHaderachUsed',
-              suggestion: 'Can only use Kwisatz Haderach once per turn',
+              field: "kwisatzHaderachUsed",
+              suggestion: "Can only use Kwisatz Haderach once per turn",
             }
           )
         );
@@ -338,18 +367,18 @@ export function validateBattlePlan(
     if (!state.config.advancedRules) {
       errors.push(
         createError(
-          'ABILITY_NOT_AVAILABLE',
-          'Spice dialing is only available in advanced rules',
-          { field: 'spiceDialed' }
+          "ABILITY_NOT_AVAILABLE",
+          "Spice dialing is only available in advanced rules",
+          { field: "spiceDialed" }
         )
       );
     } else if (plan.spiceDialed > plan.forcesDialed) {
       errors.push(
         createError(
-          'INVALID_SPICE_DIALING',
+          "INVALID_SPICE_DIALING",
           `Cannot dial ${plan.spiceDialed} spice for ${plan.forcesDialed} forces`,
           {
-            field: 'spiceDialed',
+            field: "spiceDialed",
             actual: plan.spiceDialed,
             expected: `0-${plan.forcesDialed}`,
             suggestion: `Dial at most ${plan.forcesDialed} spice (1 spice per force)`,
@@ -359,10 +388,10 @@ export function validateBattlePlan(
     } else if (plan.spiceDialed > factionState.spice) {
       errors.push(
         createError(
-          'INSUFFICIENT_SPICE',
+          "INSUFFICIENT_SPICE",
           `Cannot dial ${plan.spiceDialed} spice, only have ${factionState.spice}`,
           {
-            field: 'spiceDialed',
+            field: "spiceDialed",
             actual: plan.spiceDialed,
             expected: `0-${factionState.spice}`,
             suggestion: `Dial at most ${factionState.spice} spice`,
@@ -375,7 +404,7 @@ export function validateBattlePlan(
 
   if (errors.length === 0) {
     const leaderStrength = plan.leaderId
-      ? (getLeaderDefinition(plan.leaderId)?.strength ?? 0)
+      ? getLeaderDefinition(plan.leaderId)?.strength ?? 0
       : 0;
     return validResult({
       ...context,
@@ -400,44 +429,48 @@ export function validateBattlePlan(
 function validateTreacheryCard(
   hand: TreacheryCard[],
   cardId: string,
-  expectedType: 'weapon' | 'defense',
+  expectedType: "weapon" | "defense",
   field: string
 ): ValidationError | null {
   const card = hand.find((c) => c.definitionId === cardId);
 
   if (!card) {
-    return createError('CARD_NOT_IN_HAND', `Card ${cardId} is not in your hand`, {
-      field,
-    });
+    return createError(
+      "CARD_NOT_IN_HAND",
+      `Card ${cardId} is not in your hand`,
+      {
+        field,
+      }
+    );
   }
 
   const def = getTreacheryCardDefinition(cardId);
   if (!def) {
-    return createError('CARD_NOT_IN_HAND', `Unknown card ${cardId}`, { field });
+    return createError("CARD_NOT_IN_HAND", `Unknown card ${cardId}`, { field });
   }
 
   // Check card type matches expected
-  if (expectedType === 'weapon') {
+  if (expectedType === "weapon") {
     if (!isWeaponCard(def) && !isWorthless(def)) {
       return createError(
-        'INVALID_WEAPON_CARD',
+        "INVALID_WEAPON_CARD",
         `${def.name} cannot be played as a weapon`,
         {
           field,
           actual: def.type,
-          expected: 'Weapon or Worthless card',
+          expected: "Weapon or Worthless card",
         }
       );
     }
   } else {
     if (!isDefenseCard(def) && !isWorthless(def)) {
       return createError(
-        'INVALID_DEFENSE_CARD',
+        "INVALID_DEFENSE_CARD",
         `${def.name} cannot be played as a defense`,
         {
           field,
           actual: def.type,
-          expected: 'Defense or Worthless card',
+          expected: "Defense or Worthless card",
         }
       );
     }
@@ -462,7 +495,9 @@ function generateBattlePlanSuggestions(
 
   // Best leader + max forces
   if (leaders.length > 0) {
-    const bestLeader = leaders.reduce((a, b) => (a.strength > b.strength ? a : b));
+    const bestLeader = leaders.reduce((a, b) =>
+      a.strength > b.strength ? a : b
+    );
     suggestions.push({
       forcesDialed: forcesAvailable,
       leaderId: bestLeader.definitionId,
@@ -496,7 +531,11 @@ function generateBattlePlanSuggestions(
       weaponCardId: weapons[0]?.definitionId ?? null,
       defenseCardId: defenses[0]?.definitionId ?? null,
       estimatedStrength: forcesAvailable,
-      description: `Cheap Hero with ${forcesAvailable} forces${isMandatory ? ' (MANDATORY - no leaders available)' : ' (optional - can be played in lieu of leader)'}`,
+      description: `Cheap Hero with ${forcesAvailable} forces${
+        isMandatory
+          ? " (MANDATORY - no leaders available)"
+          : " (optional - can be played in lieu of leader)"
+      }`,
     });
   }
 
@@ -514,6 +553,8 @@ function generateBattlePlanSuggestions(
 export function resolveBattle(
   state: GameState,
   territoryId: TerritoryId,
+  // NEW: sector is required for correct elite-force lookup in multi-sector territories
+  sector: number,
   aggressor: Faction,
   defender: Faction,
   aggressorPlan: BattlePlan,
@@ -573,6 +614,7 @@ export function resolveBattle(
     state,
     aggressor,
     territoryId,
+    sector,
     aggressorPlan.forcesDialed,
     defender
   );
@@ -580,6 +622,7 @@ export function resolveBattle(
     state,
     defender,
     territoryId,
+    sector,
     defenderPlan.forcesDialed,
     aggressor
   );
@@ -600,9 +643,27 @@ export function resolveBattle(
     state.config.advancedRules
   );
 
-  const aggressorTotal = aggressorForceStrength + aggressorLeaderStrength +
-    (aggressorPlan.kwisatzHaderachUsed && !aggressorWeaponResult.leaderKilled ? 2 : 0);
-  const defenderTotal = defenderForceStrength + defenderLeaderStrength;
+  // Normalize totals defensively so downstream logic never sees NaN
+  let aggressorTotal =
+    aggressorForceStrength +
+    aggressorLeaderStrength +
+    (aggressorPlan.kwisatzHaderachUsed && !aggressorWeaponResult.leaderKilled
+      ? 2
+      : 0);
+  let defenderTotal = defenderForceStrength + defenderLeaderStrength;
+
+  if (!Number.isFinite(aggressorTotal)) {
+    console.error(
+      "[Battle] Non-finite aggressor total detected, normalizing to 0"
+    );
+    aggressorTotal = 0;
+  }
+  if (!Number.isFinite(defenderTotal)) {
+    console.error(
+      "[Battle] Non-finite defender total detected, normalizing to 0"
+    );
+    defenderTotal = 0;
+  }
 
   // Determine winner (aggressor wins ties)
   const aggressorWins = aggressorTotal >= defenderTotal;
@@ -634,18 +695,21 @@ export function resolveBattle(
     winner
   );
 
+  const winnerTotal = aggressorWins ? aggressorTotal : defenderTotal;
+  const loserTotal = aggressorWins ? defenderTotal : aggressorTotal;
+
   return {
     winner,
     loser,
-    winnerTotal: aggressorWins ? aggressorTotal : defenderTotal,
-    loserTotal: aggressorWins ? defenderTotal : aggressorTotal,
+    winnerTotal,
+    loserTotal,
     traitorRevealed: false,
     traitorRevealedBy: null,
     lasgunjShieldExplosion: false,
     aggressorResult,
     defenderResult,
     spicePayouts,
-    summary: `${winner} defeats ${loser} (${aggressorWins ? aggressorTotal : defenderTotal} vs ${aggressorWins ? defenderTotal : aggressorTotal})`,
+    summary: `${winner} defeats ${loser} (${winnerTotal} vs ${loserTotal})`,
   };
 }
 
@@ -663,35 +727,54 @@ function getLeaderStrength(plan: BattlePlan): number {
  * Elite forces (Sardaukar/Fedaykin) count as 2x in battle, except Sardaukar vs Fremen.
  *
  * Assumes elite forces are dialed first (they're more valuable), then regular forces.
+ *
+ * This function is intentionally defensive: malformed force data (e.g. missing
+ * elite counts) must never propagate NaN into battle resolution.
  */
 function calculateForcesDialedStrength(
   state: GameState,
   faction: Faction,
   territoryId: TerritoryId,
+  sector: number,
   forcesDialed: number,
   opponentFaction: Faction
 ): number {
-  // Get the force stack in this territory
-  const forceStack = state.factions.get(faction)?.forces.onBoard.find(
-    (f) => f.territoryId === territoryId
-  );
+  // Normalize dialed forces to a safe, non-negative finite number
+  const safeForcesDialed = Number.isFinite(forcesDialed)
+    ? Math.max(0, forcesDialed)
+    : 0;
 
-  if (!forceStack || forcesDialed === 0) return forcesDialed;
+  // Get the force stack in this specific territory AND sector.
+  // This is important for multi-sector territories so elite counts
+  // are taken from the exact stack that is actually in the battle.
+  const forceStack = state.factions
+    .get(faction)
+    ?.forces.onBoard.find(
+      (f) => f.territoryId === territoryId && f.sector === sector
+    );
 
-  const { elite } = forceStack.forces;
+  if (!forceStack || safeForcesDialed === 0) return safeForcesDialed;
+
+  // Normalize elite count; malformed force data must not produce NaN
+  const eliteRaw = forceStack.forces?.elite;
+  const elite =
+    Number.isFinite(eliteRaw) && (eliteRaw as number) > 0
+      ? (eliteRaw as number)
+      : 0;
 
   // If no elite forces, all dialed forces are regular (1x each)
-  if (elite === 0) return forcesDialed;
+  if (elite === 0) return safeForcesDialed;
 
   // Assume elite forces are dialed first
-  const eliteDialed = Math.min(forcesDialed, elite);
-  const regularDialed = forcesDialed - eliteDialed;
+  const eliteDialed = Math.min(safeForcesDialed, elite);
+  const regularDialed = safeForcesDialed - eliteDialed;
 
   // Check for special case: Emperor Sardaukar vs Fremen (only worth 1x)
-  const isSardaukarVsFremen = faction === Faction.EMPEROR && opponentFaction === Faction.FREMEN;
+  const isSardaukarVsFremen =
+    faction === Faction.EMPEROR && opponentFaction === Faction.FREMEN;
   const eliteMultiplier = isSardaukarVsFremen ? 1 : 2;
 
-  return regularDialed + (eliteDialed * eliteMultiplier);
+  return regularDialed + eliteDialed * eliteMultiplier;
 }
 
 /**
@@ -719,29 +802,45 @@ export function calculateSpicedForceStrength(
   spiceDialed: number,
   advancedRules: boolean
 ): number {
+  // Normalize inputs to avoid propagating NaN from any upstream bug
+  const safeBaseStrength = Number.isFinite(baseForceStrength)
+    ? baseForceStrength
+    : 0;
+  const safeForcesDialed = Number.isFinite(forcesDialed)
+    ? Math.max(0, forcesDialed)
+    : 0;
+  const safeSpiceDialed = Number.isFinite(spiceDialed)
+    ? Math.max(0, spiceDialed)
+    : 0;
+
   // If advanced rules are not enabled, spice dialing doesn't apply
-  if (!advancedRules) return baseForceStrength;
+  if (!advancedRules) return safeBaseStrength;
 
   // BATTLE HARDENED (2.05.09): Fremen don't need spice for full strength
   // Their forces always count at full value
   if (faction === Faction.FREMEN) {
-    return baseForceStrength; // Full strength always, no spice needed
+    return safeBaseStrength; // Full strength always, no spice needed
   }
 
   // Other factions: Calculate spiced vs unspiced forces
   // Each force can be supported by 1 spice to count at full strength
-  const spicedForces = Math.min(spiceDialed, forcesDialed);
-  const unspicedForces = forcesDialed - spicedForces;
+  const spicedForces = Math.min(safeSpiceDialed, safeForcesDialed);
+  const unspicedForces = safeForcesDialed - spicedForces;
 
   // Unspiced forces count at half strength (0.5x)
   // This is a simplified calculation that assumes regular forces
   // Note: Elite force multipliers are already applied in baseForceStrength
   // So we need to work backwards to separate regular and elite contributions
   // For simplicity, we'll apply the half-strength penalty proportionally
-  const spicedProportion = forcesDialed > 0 ? spicedForces / forcesDialed : 0;
-  const unspicedProportion = forcesDialed > 0 ? unspicedForces / forcesDialed : 0;
+  const spicedProportion =
+    safeForcesDialed > 0 ? spicedForces / safeForcesDialed : 0;
+  const unspicedProportion =
+    safeForcesDialed > 0 ? unspicedForces / safeForcesDialed : 0;
 
-  return (baseForceStrength * spicedProportion) + (baseForceStrength * unspicedProportion * 0.5);
+  return (
+    safeBaseStrength * spicedProportion +
+    safeBaseStrength * unspicedProportion * 0.5
+  );
 }
 
 /**
@@ -759,30 +858,49 @@ function resolveWeaponDefense(
   targetLeaderId: string | null
 ): WeaponDefenseResult {
   if (!weaponCardId || !targetLeaderId) {
-    return { leaderKilled: false, weaponEffective: false, defenseEffective: false };
+    return {
+      leaderKilled: false,
+      weaponEffective: false,
+      defenseEffective: false,
+    };
   }
 
   const weapon = getTreacheryCardDefinition(weaponCardId);
-  const defense = defenseCardId ? getTreacheryCardDefinition(defenseCardId) : null;
+  const defense = defenseCardId
+    ? getTreacheryCardDefinition(defenseCardId)
+    : null;
 
   if (!weapon || isWorthless(weapon)) {
-    return { leaderKilled: false, weaponEffective: false, defenseEffective: false };
+    return {
+      leaderKilled: false,
+      weaponEffective: false,
+      defenseEffective: false,
+    };
   }
 
   // Lasgun has no defense (except causes explosion with shield)
   if (weapon.type === TreacheryCardType.WEAPON_SPECIAL) {
-    return { leaderKilled: true, weaponEffective: true, defenseEffective: false };
+    return {
+      leaderKilled: true,
+      weaponEffective: true,
+      defenseEffective: false,
+    };
   }
 
   // Check if defense matches weapon type
   // Special case: Ellaca Drug is a poison weapon but defended by projectile defense
-  const isEllacaDrug = weaponCardId === 'ellaca_drug';
-  const isProjectileWeapon = weapon.type === TreacheryCardType.WEAPON_PROJECTILE || isEllacaDrug;
-  const isPoisonWeapon = weapon.type === TreacheryCardType.WEAPON_POISON && !isEllacaDrug;
+  const isEllacaDrug = weaponCardId === "ellaca_drug";
+  const isProjectileWeapon =
+    weapon.type === TreacheryCardType.WEAPON_PROJECTILE || isEllacaDrug;
+  const isPoisonWeapon =
+    weapon.type === TreacheryCardType.WEAPON_POISON && !isEllacaDrug;
 
   let defenseEffective = false;
   if (defense && !isWorthless(defense)) {
-    if (isProjectileWeapon && defense.type === TreacheryCardType.DEFENSE_PROJECTILE) {
+    if (
+      isProjectileWeapon &&
+      defense.type === TreacheryCardType.DEFENSE_PROJECTILE
+    ) {
       defenseEffective = true;
     }
     if (isPoisonWeapon && defense.type === TreacheryCardType.DEFENSE_POISON) {
@@ -800,17 +918,23 @@ function resolveWeaponDefense(
 /**
  * Check for lasgun/shield explosion.
  */
-function checkLasgunShieldExplosion(plan1: BattlePlan, plan2: BattlePlan): boolean {
+function checkLasgunShieldExplosion(
+  plan1: BattlePlan,
+  plan2: BattlePlan
+): boolean {
   const hasLasgun = (id: string | null): boolean =>
-    !!id && getTreacheryCardDefinition(id)?.type === TreacheryCardType.WEAPON_SPECIAL;
+    !!id &&
+    getTreacheryCardDefinition(id)?.type === TreacheryCardType.WEAPON_SPECIAL;
   const hasShield = (id: string | null): boolean =>
-    !!id && getTreacheryCardDefinition(id)?.type === TreacheryCardType.DEFENSE_PROJECTILE;
+    !!id &&
+    getTreacheryCardDefinition(id)?.type ===
+      TreacheryCardType.DEFENSE_PROJECTILE;
 
   // Lasgun + any shield in the battle = explosion
-  const lasgunPresent = hasLasgun(plan1.weaponCardId) || hasLasgun(plan2.weaponCardId);
+  const lasgunPresent =
+    hasLasgun(plan1.weaponCardId) || hasLasgun(plan2.weaponCardId);
   const shieldPresent =
-    hasShield(plan1.defenseCardId) ||
-    hasShield(plan2.defenseCardId);
+    hasShield(plan1.defenseCardId) || hasShield(plan2.defenseCardId);
 
   return lasgunPresent && shieldPresent;
 }
@@ -826,7 +950,11 @@ function resolveLasgunShieldExplosion(
   aggressorPlan: BattlePlan,
   defenderPlan: BattlePlan
 ): BattleResult {
-  const aggressorForces = getForceCountInTerritory(state, aggressor, territoryId);
+  const aggressorForces = getForceCountInTerritory(
+    state,
+    aggressor,
+    territoryId
+  );
   const defenderForces = getForceCountInTerritory(state, defender, territoryId);
 
   const aggressorResult: BattleSideResult = {
@@ -841,9 +969,10 @@ function resolveLasgunShieldExplosion(
     weaponEffective: false,
     defensePlayed: aggressorPlan.defenseCardId,
     defenseEffective: false,
-    cardsToDiscard: [aggressorPlan.weaponCardId, aggressorPlan.defenseCardId].filter(
-      (c): c is string => !!c
-    ),
+    cardsToDiscard: [
+      aggressorPlan.weaponCardId,
+      aggressorPlan.defenseCardId,
+    ].filter((c): c is string => !!c),
     cardsToKeep: [],
     total: 0,
   };
@@ -860,9 +989,10 @@ function resolveLasgunShieldExplosion(
     weaponEffective: false,
     defensePlayed: defenderPlan.defenseCardId,
     defenseEffective: false,
-    cardsToDiscard: [defenderPlan.weaponCardId, defenderPlan.defenseCardId].filter(
-      (c): c is string => !!c
-    ),
+    cardsToDiscard: [
+      defenderPlan.weaponCardId,
+      defenderPlan.defenseCardId,
+    ].filter((c): c is string => !!c),
     cardsToKeep: [],
     total: 0,
   };
@@ -878,7 +1008,8 @@ function resolveLasgunShieldExplosion(
     aggressorResult,
     defenderResult,
     spicePayouts: [], // No spice paid for leaders in explosion
-    summary: 'LASGUN/SHIELD EXPLOSION! Both sides lose all forces and leaders. No spice paid.',
+    summary:
+      "LASGUN/SHIELD EXPLOSION! Both sides lose all forces and leaders. No spice paid.",
   };
 }
 
@@ -897,8 +1028,10 @@ function resolveTraitorBattle(
 ): BattleResult {
   const winner = traitorCalledBy;
   const loser = traitorCalledBy === aggressor ? defender : aggressor;
-  const loserPlan = traitorCalledBy === aggressor ? defenderPlan : aggressorPlan;
-  const winnerPlan = traitorCalledBy === aggressor ? aggressorPlan : defenderPlan;
+  const loserPlan =
+    traitorCalledBy === aggressor ? defenderPlan : aggressorPlan;
+  const winnerPlan =
+    traitorCalledBy === aggressor ? aggressorPlan : defenderPlan;
 
   const loserForces = getForceCountInTerritory(state, loser, territoryId);
   const traitorLeader = getLeaderDefinition(traitorLeaderId);
@@ -980,7 +1113,11 @@ export function resolveTwoTraitorsBattle(
   aggressorPlan: BattlePlan,
   defenderPlan: BattlePlan
 ): BattleResult {
-  const aggressorForces = getForceCountInTerritory(state, aggressor, territoryId);
+  const aggressorForces = getForceCountInTerritory(
+    state,
+    aggressor,
+    territoryId
+  );
   const defenderForces = getForceCountInTerritory(state, defender, territoryId);
 
   // Both sides lose ALL forces
@@ -996,9 +1133,10 @@ export function resolveTwoTraitorsBattle(
     weaponEffective: false,
     defensePlayed: aggressorPlan.defenseCardId,
     defenseEffective: false,
-    cardsToDiscard: [aggressorPlan.weaponCardId, aggressorPlan.defenseCardId].filter(
-      (c): c is string => !!c
-    ),
+    cardsToDiscard: [
+      aggressorPlan.weaponCardId,
+      aggressorPlan.defenseCardId,
+    ].filter((c): c is string => !!c),
     cardsToKeep: [],
     total: 0,
   };
@@ -1015,9 +1153,10 @@ export function resolveTwoTraitorsBattle(
     weaponEffective: false,
     defensePlayed: defenderPlan.defenseCardId,
     defenseEffective: false,
-    cardsToDiscard: [defenderPlan.weaponCardId, defenderPlan.defenseCardId].filter(
-      (c): c is string => !!c
-    ),
+    cardsToDiscard: [
+      defenderPlan.weaponCardId,
+      defenderPlan.defenseCardId,
+    ].filter((c): c is string => !!c),
     cardsToKeep: [],
     total: 0,
   };
@@ -1034,7 +1173,8 @@ export function resolveTwoTraitorsBattle(
     aggressorResult,
     defenderResult,
     spicePayouts: [], // NO spice for anyone
-    summary: 'TWO TRAITORS! Both leaders are traitors. Both sides lose all forces and leaders. No spice paid.',
+    summary:
+      "TWO TRAITORS! Both leaders are traitors. Both sides lose all forces and leaders. No spice paid.",
   };
 }
 
@@ -1159,9 +1299,9 @@ export function canCallTraitor(
     return invalidResult(
       [
         createError(
-          'ABILITY_NOT_AVAILABLE',
+          "ABILITY_NOT_AVAILABLE",
           `You do not have a traitor card for ${targetLeaderId}`,
-          { field: 'targetLeaderId' }
+          { field: "targetLeaderId" }
         ),
       ],
       { traitorCardsHeld: factionState.traitors.length }
@@ -1181,7 +1321,15 @@ export function canCallTraitor(
 function checkHasCardOfType(
   state: GameState,
   faction: Faction,
-  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero' | 'specific_weapon' | 'specific_defense',
+  cardType:
+    | "poison_weapon"
+    | "projectile_weapon"
+    | "poison_defense"
+    | "projectile_defense"
+    | "worthless"
+    | "cheap_hero"
+    | "specific_weapon"
+    | "specific_defense",
   specificCardName?: string
 ): boolean {
   const factionState = getFactionState(state, faction);
@@ -1191,34 +1339,44 @@ function checkHasCardOfType(
     if (!def) continue;
 
     switch (cardType) {
-      case 'poison_weapon':
+      case "poison_weapon":
         if (def.type === TreacheryCardType.WEAPON_POISON) return true;
         break;
-      case 'projectile_weapon':
+      case "projectile_weapon":
         // Lasgun counts as projectile weapon for Voice purposes
-        if (def.type === TreacheryCardType.WEAPON_PROJECTILE || def.type === TreacheryCardType.WEAPON_SPECIAL) return true;
+        if (
+          def.type === TreacheryCardType.WEAPON_PROJECTILE ||
+          def.type === TreacheryCardType.WEAPON_SPECIAL
+        )
+          return true;
         break;
-      case 'poison_defense':
+      case "poison_defense":
         if (def.type === TreacheryCardType.DEFENSE_POISON) return true;
         break;
-      case 'projectile_defense':
+      case "projectile_defense":
         if (def.type === TreacheryCardType.DEFENSE_PROJECTILE) return true;
         break;
-      case 'worthless':
+      case "worthless":
         if (isWorthless(def)) return true;
         break;
-      case 'cheap_hero':
+      case "cheap_hero":
         if (isCheapHero(def)) return true;
         break;
-      case 'specific_weapon':
+      case "specific_weapon":
         // Check for specific weapon by name (e.g., 'lasgun')
-        if (specificCardName && def.name.toLowerCase() === specificCardName.toLowerCase()) {
+        if (
+          specificCardName &&
+          def.name.toLowerCase() === specificCardName.toLowerCase()
+        ) {
           return true;
         }
         break;
-      case 'specific_defense':
+      case "specific_defense":
         // Check for specific defense by name (e.g., 'shield', 'snooper')
-        if (specificCardName && def.name.toLowerCase() === specificCardName.toLowerCase()) {
+        if (
+          specificCardName &&
+          def.name.toLowerCase() === specificCardName.toLowerCase()
+        ) {
           return true;
         }
         break;
@@ -1233,7 +1391,15 @@ function checkHasCardOfType(
  */
 function planUsesCardType(
   plan: BattlePlan,
-  cardType: 'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero' | 'specific_weapon' | 'specific_defense',
+  cardType:
+    | "poison_weapon"
+    | "projectile_weapon"
+    | "poison_defense"
+    | "projectile_defense"
+    | "worthless"
+    | "cheap_hero"
+    | "specific_weapon"
+    | "specific_defense",
   specificCardName?: string
 ): boolean {
   // Check weapon card
@@ -1241,17 +1407,24 @@ function planUsesCardType(
     const weaponDef = getTreacheryCardDefinition(plan.weaponCardId);
     if (weaponDef) {
       switch (cardType) {
-        case 'poison_weapon':
+        case "poison_weapon":
           if (weaponDef.type === TreacheryCardType.WEAPON_POISON) return true;
           break;
-        case 'projectile_weapon':
-          if (weaponDef.type === TreacheryCardType.WEAPON_PROJECTILE || weaponDef.type === TreacheryCardType.WEAPON_SPECIAL) return true;
+        case "projectile_weapon":
+          if (
+            weaponDef.type === TreacheryCardType.WEAPON_PROJECTILE ||
+            weaponDef.type === TreacheryCardType.WEAPON_SPECIAL
+          )
+            return true;
           break;
-        case 'worthless':
+        case "worthless":
           if (isWorthless(weaponDef)) return true;
           break;
-        case 'specific_weapon':
-          if (specificCardName && weaponDef.name.toLowerCase() === specificCardName.toLowerCase()) {
+        case "specific_weapon":
+          if (
+            specificCardName &&
+            weaponDef.name.toLowerCase() === specificCardName.toLowerCase()
+          ) {
             return true;
           }
           break;
@@ -1264,17 +1437,21 @@ function planUsesCardType(
     const defenseDef = getTreacheryCardDefinition(plan.defenseCardId);
     if (defenseDef) {
       switch (cardType) {
-        case 'poison_defense':
+        case "poison_defense":
           if (defenseDef.type === TreacheryCardType.DEFENSE_POISON) return true;
           break;
-        case 'projectile_defense':
-          if (defenseDef.type === TreacheryCardType.DEFENSE_PROJECTILE) return true;
+        case "projectile_defense":
+          if (defenseDef.type === TreacheryCardType.DEFENSE_PROJECTILE)
+            return true;
           break;
-        case 'worthless':
+        case "worthless":
           if (isWorthless(defenseDef)) return true;
           break;
-        case 'specific_defense':
-          if (specificCardName && defenseDef.name.toLowerCase() === specificCardName.toLowerCase()) {
+        case "specific_defense":
+          if (
+            specificCardName &&
+            defenseDef.name.toLowerCase() === specificCardName.toLowerCase()
+          ) {
             return true;
           }
           break;
@@ -1283,7 +1460,7 @@ function planUsesCardType(
   }
 
   // Check cheap hero
-  if (cardType === 'cheap_hero' && plan.cheapHeroUsed) {
+  if (cardType === "cheap_hero" && plan.cheapHeroUsed) {
     return true;
   }
 
@@ -1300,7 +1477,11 @@ function planUsesCardType(
 export function validateVoiceCompliance(
   state: GameState,
   plan: BattlePlan,
-  voiceCommand: { type: 'play' | 'not_play'; cardType: string; specificCardName?: string } | null
+  voiceCommand: {
+    type: "play" | "not_play";
+    cardType: string;
+    specificCardName?: string;
+  } | null
 ): ValidationError[] {
   if (!voiceCommand) return [];
 
@@ -1308,43 +1489,63 @@ export function validateVoiceCompliance(
 
   // Parse the cardType from voice command
   const cardType = voiceCommand.cardType as
-    'poison_weapon' | 'projectile_weapon' | 'poison_defense' | 'projectile_defense' | 'worthless' | 'cheap_hero' | 'specific_weapon' | 'specific_defense';
+    | "poison_weapon"
+    | "projectile_weapon"
+    | "poison_defense"
+    | "projectile_defense"
+    | "worthless"
+    | "cheap_hero"
+    | "specific_weapon"
+    | "specific_defense";
   const specificCardName = voiceCommand.specificCardName;
 
-  if (voiceCommand.type === 'play') {
+  if (voiceCommand.type === "play") {
     // Must play this type if able
-    const hasCardOfType = checkHasCardOfType(state, plan.factionId, cardType, specificCardName);
+    const hasCardOfType = checkHasCardOfType(
+      state,
+      plan.factionId,
+      cardType,
+      specificCardName
+    );
     if (hasCardOfType && !planUsesCardType(plan, cardType, specificCardName)) {
       const cardDescription = specificCardName
         ? `${specificCardName}`
-        : cardType.replace(/_/g, ' ');
+        : cardType.replace(/_/g, " ");
       errors.push(
         createError(
-          'VOICE_VIOLATION',
+          "VOICE_VIOLATION",
           `Voice commands you to play ${cardDescription}`,
           {
-            field: cardType.includes('weapon') || cardType === 'specific_weapon' ? 'weaponCardId' :
-                   cardType.includes('defense') || cardType === 'specific_defense' ? 'defenseCardId' :
-                   'cheapHeroUsed',
+            field:
+              cardType.includes("weapon") || cardType === "specific_weapon"
+                ? "weaponCardId"
+                : cardType.includes("defense") ||
+                  cardType === "specific_defense"
+                ? "defenseCardId"
+                : "cheapHeroUsed",
             suggestion: `You must play ${cardDescription} if you have it`,
           }
         )
       );
     }
-  } else if (voiceCommand.type === 'not_play') {
+  } else if (voiceCommand.type === "not_play") {
     // Must NOT play this type
     if (planUsesCardType(plan, cardType, specificCardName)) {
       const cardDescription = specificCardName
         ? `${specificCardName}`
-        : cardType.replace(/_/g, ' ');
+        : cardType.replace(/_/g, " ");
       errors.push(
         createError(
-          'VOICE_VIOLATION',
+          "VOICE_VIOLATION",
           `Voice commands you to NOT play ${cardDescription}`,
           {
-            field: cardType.includes('weapon') || cardType === 'specific_weapon' ? 'weaponCardId' :
-                   cardType.includes('defense') || cardType === 'specific_defense' ? 'defenseCardId' :
-                   'cheapHeroUsed',
+            field:
+              cardType.includes("weapon") || cardType === "specific_weapon"
+                ? "weaponCardId"
+                : cardType.includes("defense") ||
+                  cardType === "specific_defense"
+                ? "defenseCardId"
+                : "cheapHeroUsed",
             suggestion: `You must NOT play ${cardDescription}`,
           }
         )

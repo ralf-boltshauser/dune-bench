@@ -2,77 +2,48 @@
  * Colorful Console Logger for Dune Game
  *
  * Provides colored output for game events and agent actions.
- * Uses faction-specific colors based on Dune aesthetics.
+ * Uses faction-specific colors from centralized constants.
  */
 
 import { Faction, FACTION_NAMES } from '../types';
+import {
+  FACTION_COLORS_TERMINAL,
+  FACTION_BG_COLORS_TERMINAL,
+  ANSI_RESET,
+  ANSI_BOLD,
+  ANSI_DIM,
+  ANSI_WHITE,
+  ANSI_BLACK,
+  ANSI_YELLOW,
+  ANSI_CYAN,
+  ANSI_GREEN,
+  ANSI_RED,
+  ANSI_BRIGHT_BLACK,
+} from '../constants/faction-colors';
 
 // =============================================================================
-// ANSI COLOR CODES
+// ANSI COLOR CODES (for local use in logger)
 // =============================================================================
 
 const COLORS = {
-  // Reset
-  reset: '\x1b[0m',
-
-  // Styles
-  bold: '\x1b[1m',
-  dim: '\x1b[2m',
-  italic: '\x1b[3m',
-  underline: '\x1b[4m',
-
-  // Foreground colors
-  black: '\x1b[30m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  magenta: '\x1b[35m',
-  cyan: '\x1b[36m',
-  white: '\x1b[37m',
-
-  // Bright foreground colors
-  brightBlack: '\x1b[90m',
-  brightRed: '\x1b[91m',
-  brightGreen: '\x1b[92m',
-  brightYellow: '\x1b[93m',
-  brightBlue: '\x1b[94m',
-  brightMagenta: '\x1b[95m',
-  brightCyan: '\x1b[96m',
-  brightWhite: '\x1b[97m',
-
-  // Background colors
-  bgBlack: '\x1b[40m',
-  bgRed: '\x1b[41m',
-  bgGreen: '\x1b[42m',
-  bgYellow: '\x1b[43m',
-  bgBlue: '\x1b[44m',
-  bgMagenta: '\x1b[45m',
-  bgCyan: '\x1b[46m',
-  bgWhite: '\x1b[47m',
+  reset: ANSI_RESET,
+  bold: ANSI_BOLD,
+  dim: ANSI_DIM,
+  white: ANSI_WHITE,
+  black: ANSI_BLACK,
+  yellow: ANSI_YELLOW,
+  cyan: ANSI_CYAN,
+  green: ANSI_GREEN,
+  red: ANSI_RED,
+  brightBlack: ANSI_BRIGHT_BLACK,
 } as const;
 
 // =============================================================================
-// FACTION COLORS (Based on Dune aesthetics)
+// FACTION COLORS (from centralized constants)
 // =============================================================================
 
-const FACTION_COLORS: Record<Faction, string> = {
-  [Faction.ATREIDES]: COLORS.brightGreen,      // House Atreides - Green hawk
-  [Faction.HARKONNEN]: COLORS.brightRed,       // House Harkonnen - Red/Black
-  [Faction.EMPEROR]: COLORS.brightYellow,       // Emperor - Gold/Yellow
-  [Faction.FREMEN]: COLORS.brightBlue,          // Fremen - Blue (eyes of Ibad)
-  [Faction.BENE_GESSERIT]: COLORS.brightMagenta, // BG - Purple/Mystic
-  [Faction.SPACING_GUILD]: COLORS.brightCyan,    // Guild - Orange/Cyan
-};
-
-const FACTION_BG_COLORS: Record<Faction, string> = {
-  [Faction.ATREIDES]: COLORS.bgGreen,
-  [Faction.HARKONNEN]: COLORS.bgRed,
-  [Faction.EMPEROR]: COLORS.bgYellow,
-  [Faction.FREMEN]: COLORS.bgBlue,
-  [Faction.BENE_GESSERIT]: COLORS.bgMagenta,
-  [Faction.SPACING_GUILD]: COLORS.bgCyan,
-};
+const FACTION_COLORS = FACTION_COLORS_TERMINAL;
+const FACTION_BG_COLORS = FACTION_BG_COLORS_TERMINAL;
 
 // =============================================================================
 // HELPER FUNCTIONS
@@ -199,6 +170,11 @@ export class GameLogger {
   }
 
   agentError(faction: Faction, error: string): void {
+    // Filter out non-fatal AI SDK schema serialization warnings
+    // These are warnings that don't prevent tools from working
+    if (error.includes('Transforms cannot be represented in JSON Schema')) {
+      return; // Suppress this specific non-fatal warning
+    }
     console.log(factionColor(faction, `    ❌ Error: ${error}`));
   }
 

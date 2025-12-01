@@ -8,6 +8,8 @@ import {
   Faction,
   Phase,
   TerritoryId,
+  TERRITORY_DEFINITIONS,
+  STRONGHOLD_TERRITORIES,
   LeaderLocation,
   CardLocation,
   AllianceStatus,
@@ -23,17 +25,20 @@ import {
   type GameAction,
   type GameActionType,
 } from '../types';
-import { getFactionState, getForceCountInTerritory } from './queries';
+import { getFactionState, getForceCountInTerritory, getFactionMaxHandSize, validateHandSize, getFactionsInTerritory, isSectorInStorm, getBGAdvisorsInTerritory, getBGFightersInSector, validateStrongholdOccupancy } from './queries';
 import { GAME_CONSTANTS } from '../data';
+import { shuffle } from './factory';
 import {
   addToForceCount,
   subtractFromForceCount,
   addToStack,
   removeFromStack,
+  removeFromStackForFaction,
   moveStackForces,
   convertAdvisorsToFighters,
   convertFightersToAdvisors,
 } from './force-utils';
+import { validateAdvisorFlipToFighters } from '../rules';
 
 // =============================================================================
 // UTILITY FUNCTIONS
@@ -96,12 +101,27 @@ export function logAction(
 // =============================================================================
 
 /**
+ * Set the list of currently active factions.
+ * Central helper so phase handlers don't need to mutate GameState shape directly.
+ */
+export function setActiveFactions(
+  state: GameState,
+  factions: Faction[]
+): GameState {
+  return {
+    ...state,
+    activeFactions: factions,
+  };
+}
+
+/**
  * Advance to the next phase.
  */
 export function advancePhase(state: GameState, nextPhase: Phase): GameState {
   return {
     ...state,
     phase: nextPhase,
+    activeFactions: [],
     // Clear phase-specific state
     stormPhase: null,
     biddingPhase: null,
@@ -213,17 +233,34 @@ export function removeSpiceFromTerritory(
 
 /**
  * Destroy all spice in a territory (sandworm or storm).
+ * 
+ * If sector is provided, destroys all spice in that specific sector of the territory.
+ * If sector is undefined, destroys all spice in the entire territory.
  */
 export function destroySpiceInTerritory(
   state: GameState,
   territoryId: TerritoryId,
   sector?: number
 ): GameState {
+  // Filter logic: Keep spice if it's in a different territory OR
+  // (if sector is specified, keep if it's in a different sector of the same territory)
+  // This removes all spice matching the territory and (if specified) sector
   return {
     ...state,
     spiceOnBoard: state.spiceOnBoard.filter(
-      (s) =>
-        s.territoryId !== territoryId || (sector !== undefined && s.sector !== sector)
+      (s) => {
+        // Different territory: keep it
+        if (s.territoryId !== territoryId) {
+          return true;
+        }
+        // Same territory: check sector
+        if (sector === undefined) {
+          // No sector specified: remove all spice in this territory
+          return false;
+        }
+        // Sector specified: keep only if different sector
+        return s.sector !== sector;
+      }
     ),
   };
 }
@@ -234,6 +271,13 @@ export function destroySpiceInTerritory(
 
 /**
  * Move forces from reserves to a territory.
+ * 
+ * For Bene Gesserit:
+ * - Normal shipment: Forces are shipped as fighters (advisors = 0) - Rule 2.02.14
+ * - Spiritual Advisor ability: Forces are shipped as advisors (use isAdvisor=true)
+ * 
+ * @param isAdvisor - For BG: if true, forces are shipped as advisors (for Spiritual Advisor ability).
+ *                    If false or undefined, forces are shipped as fighters (normal shipment).
  */
 export function shipForces(
   state: GameState,
@@ -241,18 +285,40 @@ export function shipForces(
   territoryId: TerritoryId,
   sector: number,
   count: number,
-  isElite: boolean = false
+  isElite: boolean = false,
+  isAdvisor: boolean = false
 ): GameState {
   const factionState = getFactionState(state, faction);
   const forces = factionState.forces;
 
   // Remove from reserves, add to board
   const reserves = subtractFromForceCount(forces.reserves, count, isElite);
-  const onBoard = addToStack(forces.onBoard, faction, territoryId, sector, count, isElite);
+  
+  // For BG: determine advisor count based on isAdvisor flag
+  // Rule 2.02.14: Normal shipment must be fighters (advisors = 0)
+  // Spiritual Advisor ability ships as advisors
+  const advisorCount = (faction === Faction.BENE_GESSERIT && isAdvisor) ? count : 0;
+  const onBoard = addToStack(forces.onBoard, faction, territoryId, sector, count, isElite, advisorCount);
 
-  return updateFactionState(state, faction, {
+  const newState = updateFactionState(state, faction, {
     forces: { ...forces, reserves, onBoard },
   });
+
+  // Defensive validation: Check stronghold occupancy limits after mutation
+  // This catches violations even if pre-validation is bypassed or buggy
+  if (STRONGHOLD_TERRITORIES.includes(territoryId)) {
+    const violations = validateStrongholdOccupancy(newState);
+    if (violations.some(v => v.territoryId === territoryId)) {
+      const violation = violations.find(v => v.territoryId === territoryId)!;
+      throw new Error(
+        `CRITICAL: Stronghold occupancy violation after shipment. ` +
+        `${territoryId} has ${violation.count} factions: ${violation.factions.join(', ')}. ` +
+        `Maximum 2 factions allowed per stronghold.`
+      );
+    }
+  }
+
+  return newState;
 }
 
 /**
@@ -271,6 +337,74 @@ export function moveForces(
   const factionState = getFactionState(state, faction);
   const forces = factionState.forces;
 
+  // Check if ENLISTMENT rule should trigger (before moving)
+  // Rule 2.02.15: "When you Move advisors to an unoccupied Territory, you must flip them to fighters."
+  let advisorsToFlip = 0;
+  let adaptiveForceWouldFlip = false;
+  let advisorsMoved = 0;
+  
+  if (faction === Faction.BENE_GESSERIT) {
+    // Find source stack to check if advisors are being moved
+    const sourceStack = forces.onBoard.find(
+      (s) => s.territoryId === fromTerritory && s.sector === fromSector
+    );
+    
+    if (sourceStack && sourceStack.advisors !== undefined && sourceStack.advisors > 0) {
+      const sourceAdvisors = sourceStack.advisors;
+      // removeFromStackForFaction removes advisors first, then fighters
+      advisorsMoved = Math.min(count, sourceAdvisors);
+      
+      // Only proceed if advisors are being moved
+      if (advisorsMoved > 0) {
+        // Check if destination already has BG fighters (ADAPTIVE FORCE would apply instead)
+        const destStack = forces.onBoard.find(
+          (s) => s.territoryId === toTerritory && s.sector === toSector
+        );
+        if (destStack) {
+          const destTotalForces = destStack.forces.regular + destStack.forces.elite;
+          const destAdvisors = destStack.advisors ?? 0;
+          const destFighters = destTotalForces - destAdvisors;
+          // If destination has fighters, ADAPTIVE FORCE applies (handled in moveStackForces)
+          // ENLISTMENT only applies when destination is unoccupied (no fighters)
+          if (destFighters > 0) {
+            // ADAPTIVE FORCE would flip advisors to fighters
+            adaptiveForceWouldFlip = true;
+          }
+        }
+        
+        // Check ENLISTMENT only if ADAPTIVE FORCE doesn't apply
+        if (!adaptiveForceWouldFlip) {
+          // Check if destination is unoccupied (no other faction forces)
+          // getFactionsInTerritory already excludes BG advisors-only
+          const occupants = getFactionsInTerritory(state, toTerritory);
+          // Territory is unoccupied if no other factions have forces there
+          // (BG advisors don't count as "occupying" for this purpose)
+          const isUnoccupied = occupants.length === 0 || (occupants.length === 1 && occupants[0] === Faction.BENE_GESSERIT);
+          
+          if (isUnoccupied) {
+            advisorsToFlip = advisorsMoved;
+            // Validate restrictions using centralized validation function
+            const validation = validateAdvisorFlipToFighters(
+              state,
+              faction,
+              toTerritory,
+              toSector
+            );
+            
+            // ENLISTMENT triggers if unoccupied AND no restrictions block it
+            if (!validation.canFlip) {
+              // Restrictions block ENLISTMENT (PEACETIME or STORMED_IN)
+              advisorsToFlip = 0;
+            }
+          } else {
+            // Territory is occupied by other factions - ENLISTMENT doesn't trigger
+            advisorsToFlip = 0;
+          }
+        }
+      }
+    }
+  }
+
   const onBoard = moveStackForces(
     forces.onBoard,
     faction,
@@ -280,9 +414,69 @@ export function moveForces(
     isElite
   );
 
-  return updateFactionState(state, faction, {
+  // Apply state update first (movement)
+  let newState = updateFactionState(state, faction, {
     forces: { ...forces, onBoard },
   });
+
+  // Apply ENLISTMENT: Flip advisors to fighters if rule triggered
+  // Use convertBGAdvisorsToFighters to enforce PEACETIME and STORMED_IN restrictions
+  if (advisorsToFlip > 0) {
+    try {
+      newState = convertBGAdvisorsToFighters(
+        newState,
+        toTerritory,
+        toSector,
+        advisorsToFlip
+      );
+    } catch (error) {
+      // Restrictions prevent flipping (PEACETIME or STORMED_IN)
+      // Advisors remain as advisors - ENLISTMENT cannot be enforced
+      // This is correct per rules: restrictions override ENLISTMENT requirement
+    }
+  }
+
+  // Defensive validation: Check stronghold occupancy limits after mutation
+  // This catches violations even if pre-validation is bypassed or buggy
+  if (STRONGHOLD_TERRITORIES.includes(toTerritory)) {
+    const violations = validateStrongholdOccupancy(newState);
+    if (violations.some(v => v.territoryId === toTerritory)) {
+      const violation = violations.find(v => v.territoryId === toTerritory)!;
+      throw new Error(
+        `CRITICAL: Stronghold occupancy violation after movement. ` +
+        `${toTerritory} has ${violation.count} factions: ${violation.factions.join(', ')}. ` +
+        `Maximum 2 factions allowed per stronghold.`
+      );
+    }
+  }
+
+  // Handle ADAPTIVE FORCE restriction validation
+  // Rule 2.02.21: "When you Move advisors or fighters into a Territory where you have
+  // the opposite type they flip to match the type already in the Territory."
+  // ADAPTIVE FORCE must respect PEACETIME and STORMED_IN restrictions (Rules 2.02.19, 2.02.20)
+  if (faction === Faction.BENE_GESSERIT && adaptiveForceWouldFlip && advisorsMoved > 0) {
+    // ADAPTIVE FORCE automatically flipped advisors to fighters in moveStackForces()
+    // Check if restrictions block this flip
+    const validation = validateAdvisorFlipToFighters(
+      newState,
+      faction,
+      toTerritory,
+      toSector
+    );
+    
+    if (!validation.canFlip) {
+      // Restrictions block ADAPTIVE FORCE flip - convert fighters back to advisors
+      // This enforces PEACETIME and STORMED_IN restrictions on ADAPTIVE FORCE
+      newState = convertBGFightersToAdvisors(
+        newState,
+        toTerritory,
+        toSector,
+        advisorsMoved
+      );
+    }
+  }
+
+  return newState;
 }
 
 /**
@@ -317,7 +511,8 @@ export function sendForcesToTanks(
     const count = countOrRegular;
     const isElite = isEliteOrEliteCount ?? false;
 
-    onBoard = removeFromStack(onBoard, territoryId, sector, count, isElite);
+    // Use faction-specific version to prevent accidentally removing wrong faction's forces
+    onBoard = removeFromStackForFaction(onBoard, faction, territoryId, sector, count, isElite);
     tanks = addToForceCount(tanks, count, isElite);
   } else {
     // New mode: separate regular and elite counts
@@ -326,13 +521,15 @@ export function sendForcesToTanks(
 
     // Remove regular forces
     if (regularCount > 0) {
-      onBoard = removeFromStack(onBoard, territoryId, sector, regularCount, false);
+      // Use faction-specific version to prevent accidentally removing wrong faction's forces
+      onBoard = removeFromStackForFaction(onBoard, faction, territoryId, sector, regularCount, false);
       tanks = addToForceCount(tanks, regularCount, false);
     }
 
     // Remove elite forces
     if (eliteCount > 0) {
-      onBoard = removeFromStack(onBoard, territoryId, sector, eliteCount, true);
+      // Use faction-specific version to prevent accidentally removing wrong faction's forces
+      onBoard = removeFromStackForFaction(onBoard, faction, territoryId, sector, eliteCount, true);
       tanks = addToForceCount(tanks, eliteCount, true);
     }
   }
@@ -386,7 +583,8 @@ export function sendForcesToReserves(
   const forces = factionState.forces;
 
   // Remove from board, add to reserves
-  const onBoard = removeFromStack(forces.onBoard, territoryId, sector, count, isElite);
+  // Use faction-specific version to prevent accidentally removing wrong faction's forces
+  const onBoard = removeFromStackForFaction(forces.onBoard, faction, territoryId, sector, count, isElite);
   const reserves = addToForceCount(forces.reserves, count, isElite);
 
   return updateFactionState(state, faction, {
@@ -401,6 +599,16 @@ export function sendForcesToReserves(
 /**
  * Convert BG advisors to fighters (flip tokens to battle side).
  * Only applicable to Bene Gesserit faction.
+ * 
+ * Validates PEACETIME and STORMED_IN restrictions (Rules 2.02.19, 2.02.20).
+ * Throws error if restrictions prevent flipping.
+ * 
+ * @param state Game state
+ * @param territoryId Territory where advisors are located
+ * @param sector Sector where advisors are located
+ * @param count Number of advisors to flip
+ * @returns New game state with advisors converted to fighters
+ * @throws Error if PEACETIME or STORMED_IN restrictions prevent flipping
  */
 export function convertBGAdvisorsToFighters(
   state: GameState,
@@ -408,6 +616,20 @@ export function convertBGAdvisorsToFighters(
   sector: number,
   count: number
 ): GameState {
+  // Validate restrictions before flipping
+  const validation = validateAdvisorFlipToFighters(
+    state,
+    Faction.BENE_GESSERIT,
+    territoryId,
+    sector
+  );
+  
+  if (!validation.canFlip) {
+    throw new Error(
+      `Cannot flip advisors to fighters: ${validation.reason} (Rules 2.02.19, 2.02.20)`
+    );
+  }
+
   const factionState = getFactionState(state, Faction.BENE_GESSERIT);
   const forces = factionState.forces;
 
@@ -772,23 +994,34 @@ export function drawTreacheryCard(state: GameState, faction: Faction): GameState
       location: CardLocation.DECK,
       ownerId: null,
     }));
-    // Shuffle
-    for (let i = newDeck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
-    }
-    state = { ...state, treacheryDeck: newDeck, treacheryDiscard: [] };
+    // Shuffle using improved shuffle function
+    const shuffledDeck = shuffle(newDeck);
+    state = { ...state, treacheryDeck: shuffledDeck, treacheryDiscard: [] };
   }
 
   const [card, ...remainingDeck] = state.treacheryDeck;
   if (!card) return state;
 
   const factionState = getFactionState(state, faction);
+  
+  // Check if adding this card would exceed the maximum hand size
+  const maxHandSize = getFactionMaxHandSize(faction);
+  const currentHandSize = factionState.hand.length;
+  
+  if (currentHandSize >= maxHandSize) {
+    // Cannot draw more cards - hand is full
+    console.warn(`Cannot draw card for ${faction}: hand is full (${currentHandSize}/${maxHandSize})`);
+    return state; // Return state unchanged
+  }
+
   const updatedCard = { ...card, location: CardLocation.HAND, ownerId: faction };
 
-  let newState = updateFactionState(state, faction, {
+  const newState = updateFactionState(state, faction, {
     hand: [...factionState.hand, updatedCard],
   });
+
+  // Defensive assertion: validate hand size after adding card
+  validateHandSize(newState, faction);
 
   return { ...newState, treacheryDeck: remainingDeck };
 }
@@ -808,7 +1041,7 @@ export function discardTreacheryCard(
   const discardedCard = { ...card, location: CardLocation.DISCARD, ownerId: null };
   const newHand = factionState.hand.filter((c) => c.definitionId !== cardId);
 
-  let newState = updateFactionState(state, faction, { hand: newHand });
+  const newState = updateFactionState(state, faction, { hand: newHand });
   return { ...newState, treacheryDiscard: [...newState.treacheryDiscard, discardedCard] };
 }
 

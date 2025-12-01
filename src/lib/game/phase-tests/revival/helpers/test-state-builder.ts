@@ -16,6 +16,8 @@ import {
   Phase,
   LeaderLocation,
   CardLocation,
+  TerritoryId,
+  TreacheryCardType,
   type GameState,
 } from '../../../types';
 import { getLeaderDefinition } from '../../../data';
@@ -76,7 +78,7 @@ export function buildTestState(config: TestStateConfig): GameState {
         }
         
         // Ship forces to a territory (so they're on board)
-        const territoryId = 'ARRAKEEN' as any;
+        const territoryId = TerritoryId.ARRAKEEN;
         const sector = 9;
         
         // Add forces to onBoard
@@ -185,7 +187,7 @@ export function buildTestState(config: TestStateConfig): GameState {
       for (const cardId of cardIds) {
         factionState.hand.push({
           definitionId: cardId,
-          type: 'special' as any, // Type doesn't matter for testing
+          type: TreacheryCardType.SPECIAL, // Type doesn't matter for testing
           location: CardLocation.HAND,
           ownerId: faction,
         });

@@ -2,7 +2,7 @@
  * Test script for Bene Gesserit Advisor/Fighter tracking
  */
 
-import { Faction, TerritoryId } from './types';
+import { Faction, TerritoryId, type GameState } from './types';
 import { createGameState } from './state/factory';
 import {
   getBGAdvisorsInTerritory,
@@ -19,7 +19,7 @@ function log(message: string) {
   console.log('='.repeat(message.length));
 }
 
-function logState(state: any, territoryId: TerritoryId) {
+function logState(state: GameState, territoryId: TerritoryId) {
   const bgState = getFactionState(state, Faction.BENE_GESSERIT);
   const stack = bgState.forces.onBoard.find(s => s.territoryId === territoryId);
 
@@ -63,18 +63,34 @@ async function testBGAdvisors() {
     }
   }
 
-  log('TEST 2: Ship BG forces - should start as advisors');
+  log('TEST 2: Ship BG forces - normal shipment should be fighters (Rule 2.02.14)');
 
+  // Normal shipment: should ship as fighters (not advisors)
   state = shipForces(state, Faction.BENE_GESSERIT, TerritoryId.ARRAKEEN, 9, 10);
   logState(state, TerritoryId.ARRAKEEN);
 
   const advisors = getBGAdvisorsInTerritory(state, TerritoryId.ARRAKEEN);
   const fighters = getBGFightersInTerritory(state, TerritoryId.ARRAKEEN);
 
-  if (advisors === 10 && fighters === 0) {
-    console.log('✓ PASS: Shipped forces are all advisors');
+  if (fighters === 10 && advisors === 0) {
+    console.log('✓ PASS: Normal shipment ships forces as fighters (Rule 2.02.14)');
   } else {
-    console.log(`✗ FAIL: Expected 10 advisors, 0 fighters. Got ${advisors} advisors, ${fighters} fighters`);
+    console.log(`✗ FAIL: Expected 10 fighters, 0 advisors. Got ${fighters} fighters, ${advisors} advisors`);
+  }
+
+  log('TEST 2b: Ship BG advisor via Spiritual Advisor ability');
+
+  // Spiritual Advisor ability: should ship as advisor
+  state = shipForces(state, Faction.BENE_GESSERIT, TerritoryId.CARTHAG, 9, 1, false, true);
+  logState(state, TerritoryId.CARTHAG);
+
+  const advisorsInCarthag = getBGAdvisorsInTerritory(state, TerritoryId.CARTHAG);
+  const fightersInCarthag = getBGFightersInTerritory(state, TerritoryId.CARTHAG);
+
+  if (advisorsInCarthag === 1 && fightersInCarthag === 0) {
+    console.log('✓ PASS: Spiritual Advisor ability ships as advisor');
+  } else {
+    console.log(`✗ FAIL: Expected 1 advisor, 0 fighters. Got ${advisorsInCarthag} advisors, ${fightersInCarthag} fighters`);
   }
 
   log('TEST 3: Convert advisors to fighters');

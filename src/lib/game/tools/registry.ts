@@ -20,6 +20,7 @@ import {
   createBattleTools,
   createNexusTools,
   createKaramaTools,
+  createChoamTools,
   SETUP_TOOL_NAMES,
   STORM_TOOL_NAMES,
   BIDDING_TOOL_NAMES,
@@ -29,6 +30,7 @@ import {
   BATTLE_TOOL_NAMES,
   NEXUS_TOOL_NAMES,
   KARAMA_TOOL_NAMES,
+  CHOAM_TOOL_NAMES,
 } from './actions';
 
 // =============================================================================
@@ -37,7 +39,12 @@ import {
 
 /**
  * A record of tools keyed by tool name.
+ * Uses `any` for input/output types to allow tools with specific types
+ * to be included in the set. The AI SDK accepts tools with any types.
+ * 
+ * @eslint-disable @typescript-eslint/no-explicit-any - Tool types must be flexible
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ToolSet = Record<string, Tool<any, any>>;
 
 /**
@@ -63,7 +70,7 @@ export const PHASE_TOOLS: Record<Phase, readonly string[]> = {
   [Phase.SETUP]: [...SETUP_TOOL_NAMES, ...KARAMA_TOOL_NAMES], // Traitor selection, BG prediction
   [Phase.STORM]: [...STORM_TOOL_NAMES, ...KARAMA_TOOL_NAMES],
   [Phase.SPICE_BLOW]: [...KARAMA_TOOL_NAMES], // Automatic phase but Karama can interrupt
-  [Phase.CHOAM_CHARITY]: [...KARAMA_TOOL_NAMES], // Simple yes/no but Karama can interrupt
+  [Phase.CHOAM_CHARITY]: [...CHOAM_TOOL_NAMES, ...KARAMA_TOOL_NAMES], // Claim charity or pass, Karama can interrupt
   [Phase.BIDDING]: [...BIDDING_TOOL_NAMES, ...KARAMA_TOOL_NAMES],
   [Phase.REVIVAL]: [...REVIVAL_TOOL_NAMES, ...KARAMA_TOOL_NAMES],
   [Phase.SHIPMENT_MOVEMENT]: [...SHIPMENT_TOOL_NAMES, ...MOVEMENT_TOOL_NAMES, 'use_tleilaxu_ghola', ...KARAMA_TOOL_NAMES], // Tleilaxu Ghola and Karama can be used "at any time"
@@ -110,6 +117,7 @@ export function createAllTools(ctx: ToolContextManager) {
     battle: createBattleTools(ctx),
     nexus: createNexusTools(ctx),
     karama: createKaramaTools(ctx),
+    choam: createChoamTools(ctx),
   };
 }
 
@@ -129,6 +137,7 @@ export function createFlatToolSet(ctx: ToolContextManager): ToolSet {
     ...allTools.battle,
     ...allTools.nexus,
     ...allTools.karama,
+    ...allTools.choam,
   };
 }
 

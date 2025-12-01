@@ -1,6 +1,6 @@
 You can spawn a new sub agent in non-interactive mode in this command
 ```bash
-cursor-agent -p "fix build issues"                
+spawn-cursor-agent "Research and find one bug in this codebase"
 ```
 
 Also ensure you tell them clearly how to document their findings / actions, in .notes/agent-communication/... so that you can review later!
@@ -9,4 +9,4 @@ You need to give them full context in the prompt, since they start from scratch.
 
 Ensure that all files you create for communications between agents are in the .agents-communication directory. 
 
-Always open the urls in the browser, so the user can directly start agents. 
+To start subagents run the command listed above yourself, the user can't do this! 

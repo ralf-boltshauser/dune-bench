@@ -7,12 +7,12 @@
 
 import { Faction, Phase, TerritoryId } from '../../../types';
 import { buildTestState, getDefaultSpice, addCardToHand } from '../helpers/test-state-builder';
-import { DecisionAgentProvider } from '../helpers/decision-agent-provider';
+import '../../../agent/env-loader';
+import { createAgentProvider } from '../../../agent/azure-provider';
 import { PhaseManager } from '../../../phases/phase-manager';
 import { createAllPhaseHandlers } from '../../../phases/handlers';
 import { TestLogger } from '../../helpers/test-logger';
 import { getFactionState } from '../../../state';
-import type { AgentProvider } from '../../../phases/phase-manager';
 
 export async function testE2EStrongholdBattle(): Promise<void> {
   console.log('\n🏰 E2E Stronghold Battle Test: Atreides vs Bene Gesserit');
@@ -60,21 +60,11 @@ export async function testE2EStrongholdBattle(): Promise<void> {
   state = addCardToHand(state, Faction.BENE_GESSERIT, 'snooper_1');
 
   // Choose agent provider type
-  // Set USE_REAL_AGENTS=true to use Claude, otherwise uses rule-based DecisionAgentProvider
-  const useRealAgents = process.env.USE_REAL_AGENTS === 'true';
-  
-  let agentProvider: AgentProvider;
-  if (useRealAgents) {
-    // Lazy import to avoid loading Claude provider (and its dependencies) unless needed
-    const { ClaudeAgentProvider } = await import('../../../agent/claude-provider');
-    agentProvider = new ClaudeAgentProvider(state, {
-      verbose: false, // Set to true for detailed Claude logs
-    });
-    console.log('Using REAL AI AGENTS (Claude)');
-  } else {
-    agentProvider = new DecisionAgentProvider(state);
-    console.log('Using RULE-BASED DECISIONS');
-  }
+  // Always use Azure OpenAI agent provider
+  const agentProvider = createAgentProvider(state, {
+    verbose: false, // Set to true for detailed Azure OpenAI logs
+  });
+  console.log('Using Azure OpenAI agents');
 
   // Create phase manager
   const phaseManager = new PhaseManager(agentProvider);

@@ -19,8 +19,8 @@ export class AgentResponseBuilder {
     data: {
       territoryId: TerritoryId;
       sector: number;
-      count: number;
-      useElite?: boolean;
+      regularCount: number;
+      eliteCount?: number;
     }
   ): this {
     this.queueResponse('SHIP_FORCES', {
@@ -29,8 +29,9 @@ export class AgentResponseBuilder {
       data: {
         territoryId: data.territoryId,
         sector: data.sector,
-        count: data.count,
-        useElite: data.useElite ?? false,
+        regularCount: data.regularCount,
+        eliteCount: data.eliteCount ?? 0,
+        count: (data.regularCount ?? 0) + (data.eliteCount ?? 0),
       },
       passed: false,
     });
@@ -45,8 +46,8 @@ export class AgentResponseBuilder {
     data: {
       territoryId: TerritoryId;
       sector: number;
-      count: number;
-      useElite?: boolean;
+      regularCount: number;
+      eliteCount?: number;
     }
   ): this {
     this.queueResponse('SHIP_FORCES', { // Request type is SHIP_FORCES
@@ -55,8 +56,9 @@ export class AgentResponseBuilder {
       data: {
         territoryId: data.territoryId,
         sector: data.sector,
-        count: data.count,
-        useElite: data.useElite ?? false,
+        regularCount: data.regularCount,
+        eliteCount: data.eliteCount ?? 0,
+        count: (data.regularCount ?? 0) + (data.eliteCount ?? 0),
       },
       passed: false,
     });

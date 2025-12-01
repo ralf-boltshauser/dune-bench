@@ -72,6 +72,30 @@ export function canFactionBid(state: GameState, faction: Faction): boolean {
 }
 
 /**
+ * Validate that a faction's hand size does not exceed the maximum limit.
+ * Throws an error if the hand size exceeds the limit.
+ * 
+ * This is a defensive check to catch hand size violations early.
+ * Only active in development mode (or when explicitly enabled).
+ */
+export function validateHandSize(state: GameState, faction: Faction): void {
+  // Only validate in development mode to avoid performance impact in production
+  if (process.env.NODE_ENV === 'production' && !process.env.ENABLE_HAND_SIZE_VALIDATION) {
+    return;
+  }
+
+  const factionState = getFactionState(state, faction);
+  const maxHandSize = getFactionMaxHandSize(faction);
+  const currentHandSize = factionState.hand.length;
+
+  if (currentHandSize > maxHandSize) {
+    throw new Error(
+      `Hand size violation: ${faction} has ${currentHandSize} cards but max is ${maxHandSize}`
+    );
+  }
+}
+
+/**
  * Get faction's available leaders (in leader pool).
  */
 export function getAvailableLeaders(
@@ -165,6 +189,14 @@ export function getForceCountInTerritory(
  *
  * IMPORTANT: For Bene Gesserit, only includes them if they have fighters (battle-capable forces).
  * BG advisors (spiritual side) are non-combatants and don't count for battle purposes.
+ * 
+ * Use this function for:
+ * - Battle identification (who can battle)
+ * 
+ * Use getFactionsOccupyingTerritory() for:
+ * - Occupancy validation (stronghold limits)
+ * - Pathfinding (blocking movement)
+ * - Suggestion generation (available destinations)
  */
 export function getFactionsInTerritory(
   state: GameState,
@@ -186,6 +218,49 @@ export function getFactionsInTerritory(
         }
       }
 
+      factions.push(faction);
+    }
+  }
+  return factions;
+}
+
+/**
+ * Get all factions occupying a territory (for occupancy limits).
+ * 
+ * IMPORTANT: For Bene Gesserit, only includes them if they have fighters (battle-capable forces).
+ * BG advisors (spiritual side) are non-combatants and DON'T count toward occupancy limits.
+ * Rule 2.02.12: "Advisors... prevent another faction from challenging a Stronghold (Occupancy Limit)"
+ * 
+ * This is the SAME logic as getFactionsInTerritory() - both exclude BG if they only have advisors.
+ * 
+ * Use this function for:
+ * - Occupancy validation (stronghold limits)
+ * - Pathfinding (blocking movement through full strongholds)
+ * - Suggestion generation (available destinations)
+ * 
+ * Use getFactionsInTerritory() for:
+ * - Battle identification (who can battle)
+ */
+export function getFactionsOccupyingTerritory(
+  state: GameState,
+  territoryId: TerritoryId
+): Faction[] {
+  const factions: Faction[] = [];
+  for (const [faction, factionState] of state.factions) {
+    const hasForces = factionState.forces.onBoard.some(
+      (f) => f.territoryId === territoryId
+    );
+    if (hasForces) {
+      // BG special case: advisors don't count toward occupancy limit (Rule 2.02.12)
+      // "Advisors... prevent another faction from challenging a Stronghold (Occupancy Limit)"
+      if (faction === Faction.BENE_GESSERIT) {
+        const fighters = getBGFightersInTerritory(state, territoryId);
+        if (fighters === 0) {
+          // Only advisors present - don't count toward occupancy limit
+          continue;
+        }
+      }
+      // Include faction (has fighters, or is not BG)
       factions.push(faction);
     }
   }
@@ -382,16 +457,22 @@ export function getSpiceInTerritory(
 
 /**
  * Check how many factions occupy a stronghold (for occupancy limit).
+ * 
+ * Uses getFactionsOccupyingTerritory() which excludes BG advisors-only
+ * (Rule 2.02.12: advisors don't count toward occupancy limit).
  */
 export function getStrongholdOccupancy(
   state: GameState,
   territoryId: TerritoryId
 ): number {
-  return getFactionsInTerritory(state, territoryId).length;
+  return getFactionsOccupyingTerritory(state, territoryId).length;
 }
 
 /**
  * Check if a faction can ship to a territory (occupancy limit check).
+ * 
+ * Uses getFactionsOccupyingTerritory() which excludes BG advisors-only
+ * (Rule 2.02.12: advisors don't count toward occupancy limit).
  */
 export function canShipToTerritory(
   state: GameState,
@@ -405,9 +486,40 @@ export function canShipToTerritory(
   if (!STRONGHOLD_TERRITORIES.includes(territoryId)) return true;
 
   // Strongholds: max 2 factions
-  const occupants = getFactionsInTerritory(state, territoryId);
+  // Use getFactionsOccupyingTerritory() which excludes BG advisors-only
+  const occupants = getFactionsOccupyingTerritory(state, territoryId);
   if (occupants.includes(faction)) return true; // Already there
   return occupants.length < 2;
+}
+
+/**
+ * Validate stronghold occupancy limits across all strongholds.
+ * Returns an array of violations found.
+ * 
+ * Uses getFactionsOccupyingTerritory() which excludes BG advisors-only
+ * (Rule 2.02.12: advisors don't count toward occupancy limit).
+ */
+export function validateStrongholdOccupancy(
+  state: GameState
+): Array<{ territoryId: TerritoryId; factions: Faction[]; count: number }> {
+  const violations: Array<{
+    territoryId: TerritoryId;
+    factions: Faction[];
+    count: number;
+  }> = [];
+
+  for (const territoryId of STRONGHOLD_TERRITORIES) {
+    const factions = getFactionsOccupyingTerritory(state, territoryId);
+    if (factions.length > 2) {
+      violations.push({
+        territoryId,
+        factions,
+        count: factions.length,
+      });
+    }
+  }
+
+  return violations;
 }
 
 // =============================================================================

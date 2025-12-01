@@ -13,6 +13,25 @@ import { Faction, Phase, LeaderLocation, CardLocation, TerritoryId, TreacheryCar
 import { createAgentToolProvider } from './tools/registry';
 import { killLeader, sendForcesToTanks } from './state/mutations';
 import type { TreacheryCard } from './types';
+import type { ToolResult } from './tools/types';
+
+// Helper to unwrap tool result (handles both ToolResult and AsyncIterable)
+async function unwrapToolResult<T>(
+  result: ToolResult<T> | AsyncIterable<ToolResult<T>> | undefined
+): Promise<ToolResult<T> | null> {
+  if (!result) {
+    return null;
+  }
+  // Check if it's an async iterable
+  if (typeof result === 'object' && Symbol.asyncIterator in result) {
+    // It's an async iterable, get the first (and usually only) value
+    const iterator = (result as AsyncIterable<ToolResult<T>>)[Symbol.asyncIterator]();
+    const { value } = await iterator.next();
+    return value;
+  }
+  // It's already a ToolResult
+  return result as ToolResult<T>;
+}
 
 async function testTleilaxuGhola() {
   console.log('=== Testing Tleilaxu Ghola Card ===\n');
@@ -60,7 +79,7 @@ async function testTleilaxuGhola() {
     return;
   }
 
-  const leaderRevivalResult = await gholaTool.execute?.({
+  const rawLeaderRevivalResult = await gholaTool.execute?.({
     reviveType: 'leader',
     leaderId: 'paul_atreides',
   }, {
@@ -68,7 +87,9 @@ async function testTleilaxuGhola() {
     messages: [],
   });
 
-  if (!leaderRevivalResult || typeof leaderRevivalResult === 'object' && Symbol.asyncIterator in leaderRevivalResult) {
+  const leaderRevivalResult = await unwrapToolResult(rawLeaderRevivalResult);
+
+  if (!leaderRevivalResult) {
     console.error('ERROR: Unexpected result type');
     return;
   }
@@ -114,7 +135,7 @@ async function testTleilaxuGhola() {
   const tools2 = provider2.getToolsForPhase(Phase.REVIVAL);
   const gholaTool2 = tools2['use_tleilaxu_ghola'];
 
-  const forceRevivalResult = await gholaTool2.execute?.({
+  const rawForceRevivalResult = await gholaTool2.execute?.({
     reviveType: 'forces',
     forceCount: 5,
   }, {
@@ -122,7 +143,9 @@ async function testTleilaxuGhola() {
     messages: [],
   });
 
-  if (!forceRevivalResult || typeof forceRevivalResult === 'object' && Symbol.asyncIterator in forceRevivalResult) {
+  const forceRevivalResult = await unwrapToolResult(rawForceRevivalResult);
+
+  if (!forceRevivalResult) {
     console.error('ERROR: Unexpected result type');
     return;
   }
@@ -166,7 +189,7 @@ async function testTleilaxuGhola() {
   const tools3 = provider3.getToolsForPhase(Phase.REVIVAL);
   const gholaTool3 = tools3['use_tleilaxu_ghola'];
 
-  const noCardResult = await gholaTool3.execute?.({
+  const rawNoCardResult = await gholaTool3.execute?.({
     reviveType: 'forces',
     forceCount: 5,
   }, {
@@ -174,7 +197,9 @@ async function testTleilaxuGhola() {
     messages: [],
   });
 
-  if (!noCardResult || typeof noCardResult === 'object' && Symbol.asyncIterator in noCardResult) {
+  const noCardResult = await unwrapToolResult(rawNoCardResult);
+
+  if (!noCardResult) {
     console.error('ERROR: Unexpected result type');
     return;
   }

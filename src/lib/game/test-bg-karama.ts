@@ -17,7 +17,7 @@ function testBGKarama() {
   console.log();
 
   // Create game with BG and another faction
-  let state = createGameState({
+  const state = createGameState({
     maxTurns: 10,
     factions: [Faction.BENE_GESSERIT, Faction.ATREIDES],
     advancedRules: true,

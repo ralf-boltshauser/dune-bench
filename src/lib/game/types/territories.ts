@@ -147,6 +147,13 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.PASTY_MESA,
     ],
     protectedFromStorm: true,
+    forceSlots: [
+      {
+        sector: 13,
+        slotGroupId: "force-slot-sietch-tabr-sector-13",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.HABBANYA_SIETCH]: {
     id: TerritoryId.HABBANYA_SIETCH,
@@ -159,6 +166,13 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.CIELAGO_WEST,
     ],
     protectedFromStorm: true,
+    forceSlots: [
+      {
+        sector: 16,
+        slotGroupId: "force-slot-habbanya-sietch-sector-16",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.TUEKS_SIETCH]: {
     id: TerritoryId.TUEKS_SIETCH,
@@ -203,6 +217,13 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.BIGHT_OF_THE_CLIFF,
     ],
     protectedFromStorm: true,
+    forceSlots: [
+      {
+        sector: 0,
+        slotGroupId: "force-slot-polar-sink",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.IMPERIAL_BASIN]: {
     id: TerritoryId.IMPERIAL_BASIN,
@@ -216,7 +237,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.HOLE_IN_THE_ROCK,
       TerritoryId.HAGGA_BASIN,
     ],
-    spiceBlowLocation: true,
     protectedFromStorm: true, // Special: protected from storm
     forceSlots: [
       {
@@ -297,7 +317,7 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
   [TerritoryId.MERIDIAN]: {
     id: TerritoryId.MERIDIAN,
     name: "Meridian",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [0, 1],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -306,7 +326,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.CIELAGO_DEPRESSION,
       TerritoryId.POLAR_SINK,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       { sector: 0, slotGroupId: "force-slot-meridian-sector-0", slotCount: 4 },
       { sector: 1, slotGroupId: "force-slot-meridian-sector-1", slotCount: 4 },
@@ -323,7 +342,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.FALSE_WALL_WEST,
       TerritoryId.POLAR_SINK,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 2,
@@ -347,7 +365,18 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.HABBANYA_SIETCH,
       TerritoryId.FALSE_WALL_WEST,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      {
+        sector: 0,
+        slotGroupId: "force-slot-cielago-west-sector-0",
+        slotCount: 2,
+      },
+      {
+        sector: 17,
+        slotGroupId: "force-slot-cielago-west-sector-17",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.CIELAGO_DEPRESSION]: {
     id: TerritoryId.CIELAGO_DEPRESSION,
@@ -360,11 +389,20 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.MERIDIAN,
       TerritoryId.POLAR_SINK,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 0,
         slotGroupId: "force-slot-cielago-depression-sector-0",
+        slotCount: 4,
+      },
+      {
+        sector: 1,
+        slotGroupId: "force-slot-cielago-depression-sector-1",
+        slotCount: 4,
+      },
+      {
+        sector: 2,
+        slotGroupId: "force-slot-cielago-depression-sector-2",
         slotCount: 4,
       },
     ],
@@ -372,7 +410,7 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
   [TerritoryId.SOUTH_MESA]: {
     id: TerritoryId.SOUTH_MESA,
     name: "South Mesa",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [3, 4, 5],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -413,6 +451,13 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     ],
     spiceBlowLocation: true,
     spiceSlotId: "spice-funeral-plain",
+    forceSlots: [
+      {
+        sector: 14,
+        slotGroupId: "force-slot-funeral-plain-sector-14",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.THE_GREAT_FLAT]: {
     id: TerritoryId.THE_GREAT_FLAT,
@@ -427,6 +472,13 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     ],
     spiceBlowLocation: true,
     spiceSlotId: "spice-the-great-flat",
+    forceSlots: [
+      {
+        sector: 14,
+        slotGroupId: "force-slot-great-flat-sector-14",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.THE_GREATER_FLAT]: {
     id: TerritoryId.THE_GREATER_FLAT,
@@ -438,7 +490,13 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.HABBANYA_ERG,
       TerritoryId.WIND_PASS,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      {
+        sector: 15,
+        slotGroupId: "force-slot-greater-flat-sector-15",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.HABBANYA_ERG]: {
     id: TerritoryId.HABBANYA_ERG,
@@ -454,6 +512,18 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     ],
     spiceBlowLocation: true,
     spiceSlotId: "spice-habbanya-erg",
+    forceSlots: [
+      {
+        sector: 15,
+        slotGroupId: "force-slot-habbanya-erg-sector-15",
+        slotCount: 4,
+      },
+      {
+        sector: 16,
+        slotGroupId: "force-slot-habbanya-erg-sector-16",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.HABBANYA_RIDGE_FLAT]: {
     id: TerritoryId.HABBANYA_RIDGE_FLAT,
@@ -495,12 +565,28 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.THE_GREAT_FLAT,
       TerritoryId.WIND_PASS_NORTH,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      {
+        sector: 15,
+        slotGroupId: "force-slot-false-wall-west-sector-15",
+        slotCount: 4,
+      },
+      {
+        sector: 16,
+        slotGroupId: "force-slot-false-wall-west-sector-16",
+        slotCount: 4,
+      },
+      {
+        sector: 17,
+        slotGroupId: "force-slot-false-wall-west-sector-17",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.WIND_PASS_NORTH]: {
     id: TerritoryId.WIND_PASS_NORTH,
     name: "Wind Pass North",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [16, 17],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -511,6 +597,18 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     ],
     spiceBlowLocation: true,
     spiceSlotId: "spice-wind-pass-north",
+    forceSlots: [
+      {
+        sector: 16,
+        slotGroupId: "force-slot-wind-pass-north-sector-16",
+        slotCount: 1,
+      },
+      {
+        sector: 17,
+        slotGroupId: "force-slot-wind-pass-north-sector-17",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.THE_MINOR_ERG]: {
     id: TerritoryId.THE_MINOR_ERG,
@@ -634,7 +732,7 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
   [TerritoryId.HOLE_IN_THE_ROCK]: {
     id: TerritoryId.HOLE_IN_THE_ROCK,
     name: "Hole In The Rock",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [8],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -644,7 +742,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.RIM_WALL_WEST,
       TerritoryId.IMPERIAL_BASIN,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 8,
@@ -663,7 +760,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.RIM_WALL_WEST,
       TerritoryId.OLD_GAP,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       { sector: 7, slotGroupId: "force-slot-basin-sector-7", slotCount: 4 },
     ],
@@ -680,7 +776,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.BASIN,
       TerritoryId.GARA_KULON,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 8,
@@ -692,7 +787,7 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
   [TerritoryId.GARA_KULON]: {
     id: TerritoryId.GARA_KULON,
     name: "Gara Kulon",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [7],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -701,7 +796,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.OLD_GAP,
       TerritoryId.POLAR_SINK,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 7,
@@ -747,6 +841,11 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotGroupId: "force-slot-broken-land-sector-10",
         slotCount: 4,
       },
+      {
+        sector: 11,
+        slotGroupId: "force-slot-broken-land-sector-11",
+        slotCount: 4,
+      },
     ],
     spiceSlotId: "spice-broken-land",
   },
@@ -761,7 +860,11 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.ARSUNT,
       TerritoryId.PLASTIC_BASIN,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      { sector: 10, slotGroupId: "force-slot-tsimpo-sector-10", slotCount: 4 },
+      { sector: 11, slotGroupId: "force-slot-tsimpo-sector-11", slotCount: 4 },
+      { sector: 12, slotGroupId: "force-slot-tsimpo-sector-12", slotCount: 1 },
+    ],
   },
   [TerritoryId.ARSUNT]: {
     id: TerritoryId.ARSUNT,
@@ -773,12 +876,15 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.TSIMPO,
       TerritoryId.HAGGA_BASIN,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      { sector: 10, slotGroupId: "force-slot-arsunt-sector-10", slotCount: 4 },
+      { sector: 11, slotGroupId: "force-slot-arsunt-sector-11", slotCount: 4 },
+    ],
   },
   [TerritoryId.PLASTIC_BASIN]: {
     id: TerritoryId.PLASTIC_BASIN,
     name: "Plastic Basin",
-    type: TerritoryType.SAND,
+    type: TerritoryType.ROCK,
     sectors: [11, 12, 13],
     adjacentTerritories: [
       TerritoryId.BROKEN_LAND,
@@ -786,7 +892,23 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.ROCK_OUTCROPPINGS,
       TerritoryId.POLAR_SINK,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      {
+        sector: 11,
+        slotGroupId: "force-slot-plastic-basin-sector-11",
+        slotCount: 4,
+      },
+      {
+        sector: 12,
+        slotGroupId: "force-slot-plastic-basin-sector-12",
+        slotCount: 4,
+      },
+      {
+        sector: 13,
+        slotGroupId: "force-slot-plastic-basin-sector-13",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.HAGGA_BASIN]: {
     id: TerritoryId.HAGGA_BASIN,
@@ -800,11 +922,24 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.ROCK_OUTCROPPINGS,
     ],
     spiceBlowLocation: true,
+    spiceSlotId: "spice-hagga-basin",
+    forceSlots: [
+      {
+        sector: 11,
+        slotGroupId: "force-slot-hagga-basin-sector-11",
+        slotCount: 4,
+      },
+      {
+        sector: 12,
+        slotGroupId: "force-slot-hagga-basin-sector-12",
+        slotCount: 4,
+      },
+    ],
   },
   [TerritoryId.ROCK_OUTCROPPINGS]: {
     id: TerritoryId.ROCK_OUTCROPPINGS,
     name: "Rock Outcroppings",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [12, 13],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -815,11 +950,23 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     ],
     spiceBlowLocation: true,
     spiceSlotId: "spice-rock-outcroppings",
+    forceSlots: [
+      {
+        sector: 12,
+        slotGroupId: "force-slot-rock-outcroppings-sector-12",
+        slotCount: 4,
+      },
+      {
+        sector: 13,
+        slotGroupId: "force-slot-rock-outcroppings-sector-13",
+        slotCount: 3,
+      },
+    ],
   },
   [TerritoryId.WIND_PASS]: {
     id: TerritoryId.WIND_PASS,
     name: "Wind Pass",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [13, 14, 15, 16],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -827,12 +974,33 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.THE_GREATER_FLAT,
       TerritoryId.BIGHT_OF_THE_CLIFF,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      {
+        sector: 13,
+        slotGroupId: "force-slot-wind-pass-sector-13",
+        slotCount: 2,
+      },
+      {
+        sector: 14,
+        slotGroupId: "force-slot-wind-pass-sector-14",
+        slotCount: 2,
+      },
+      {
+        sector: 15,
+        slotGroupId: "force-slot-wind-pass-sector-15",
+        slotCount: 2,
+      },
+      {
+        sector: 16,
+        slotGroupId: "force-slot-wind-pass-sector-16",
+        slotCount: 2,
+      },
+    ],
   },
   [TerritoryId.BIGHT_OF_THE_CLIFF]: {
     id: TerritoryId.BIGHT_OF_THE_CLIFF,
     name: "Bight of the Cliff",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [13, 14],
     protectedFromStorm: true,
     adjacentTerritories: [
@@ -841,7 +1009,18 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.ROCK_OUTCROPPINGS,
       TerritoryId.POLAR_SINK,
     ],
-    spiceBlowLocation: true,
+    forceSlots: [
+      {
+        sector: 13,
+        slotGroupId: "force-slot-bight-of-the-cliff-sector-13",
+        slotCount: 3,
+      },
+      {
+        sector: 14,
+        slotGroupId: "force-slot-bight-of-the-cliff-sector-14",
+        slotCount: 3,
+      },
+    ],
   },
   [TerritoryId.FALSE_WALL_SOUTH]: {
     id: TerritoryId.FALSE_WALL_SOUTH,
@@ -854,7 +1033,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.FALSE_WALL_EAST,
       TerritoryId.HARG_PASS,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 3,
@@ -879,7 +1057,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.FALSE_WALL_SOUTH,
       TerritoryId.PASTY_MESA,
     ],
-    spiceBlowLocation: true,
     forceSlots: [
       {
         sector: 4,
@@ -911,7 +1088,7 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
   [TerritoryId.HARG_PASS]: {
     id: TerritoryId.HARG_PASS,
     name: "Harg Pass",
-    type: TerritoryType.ROCK,
+    type: TerritoryType.SAND,
     sectors: [3, 4],
     protectedFromStorm: true,
     forceSlots: [
@@ -922,7 +1099,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       TerritoryId.FALSE_WALL_SOUTH,
       TerritoryId.SIHAYA_RIDGE,
     ],
-    spiceBlowLocation: true,
   },
 };
 

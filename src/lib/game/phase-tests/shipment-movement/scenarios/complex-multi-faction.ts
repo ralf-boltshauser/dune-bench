@@ -65,7 +65,7 @@ export async function testComplexMultiFaction() {
   responses.queueShipment(Faction.SPACING_GUILD, {
     territoryId: TerritoryId.IMPERIAL_BASIN,
     sector: 9,
-    count: 5,
+    regularCount: 5,
   });
 
   // Guild: Move forces
@@ -81,7 +81,7 @@ export async function testComplexMultiFaction() {
   responses.queueShipment(Faction.ATREIDES, {
     territoryId: TerritoryId.BASIN,
     sector: 9,
-    count: 3,
+    regularCount: 3,
   });
 
   // BG: Send advisor to same territory as Atreides shipment
@@ -104,7 +104,7 @@ export async function testComplexMultiFaction() {
   responses.queueFremenShipment(Faction.FREMEN, {
     territoryId: TerritoryId.THE_GREAT_FLAT,
     sector: 9,
-    count: 10,
+    regularCount: 10,
   });
 
   // Fremen: 2-territory movement

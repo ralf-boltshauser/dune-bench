@@ -182,3 +182,6 @@ The implementation partially handles:
 The current implementation is functionally correct for the mandatory aspects of the rule. The optional discarding choice is not implemented, but this may be acceptable depending on game design philosophy (automatic optimal play vs. player choice).
 
 
+
+
+

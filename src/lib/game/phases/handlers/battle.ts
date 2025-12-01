@@ -11,6 +11,7 @@ import { getLeaderDefinition, getTreacheryCardDefinition } from "../../data";
 import {
   resolveBattle,
   resolveTwoTraitorsBattle,
+  validateAdvisorFlipToFighters,
   validateBattlePlan,
   validateVoiceCompliance,
   type BattleResult,
@@ -18,15 +19,14 @@ import {
 import { createError } from "../../rules/types";
 import {
   addSpice,
-  areSectorsSeparatedByStorm,
   calculateLossDistribution,
   captureLeader,
+  convertBGAdvisorsToFighters,
   discardTreacheryCard,
   getAlly,
   getAvailableLeadersForCapture,
-  getBGFightersInSector,
-  getFactionsInTerritoryAndSector,
   getFactionState,
+  getFactionsInTerritory,
   getTargetFactionForLeaderKill,
   killCapturedLeader,
   killKwisatzHaderach,
@@ -41,9 +41,14 @@ import {
   returnCapturedLeader,
   returnLeaderToPool,
   sendForcesToTanks,
+  setActiveFactions,
   shouldTriggerPrisonBreak,
   updateKwisatzHaderach,
 } from "../../state";
+import {
+  getBGFightersInSector,
+  validateStrongholdOccupancy,
+} from "../../state/queries";
 import {
   BattleSubPhase,
   Faction,
@@ -58,11 +63,18 @@ import {
   type AgentResponse,
   type BattlePhaseContext,
   type CurrentBattle,
-  type PendingBattle,
   type PhaseEvent,
   type PhaseHandler,
   type PhaseStepResult,
 } from "../types";
+import {
+  createDefaultBattlePlan,
+  identifyBattles,
+  processChooseBattle,
+  requestBattleChoice,
+  sanitizePlanForLog,
+  updatePendingBattlesAfterBattle,
+} from "./battle/index";
 
 // =============================================================================
 // BATTLE PHASE HANDLER
@@ -94,8 +106,35 @@ export class BattlePhaseHandler implements PhaseHandler {
     const events: PhaseEvent[] = [];
     // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
+    // Rule 2.02.22 - UNIVERSAL STEWARDS: Before Battle Phase, advisors alone in a territory
+    // automatically flip to fighters (subject to PEACETIME and STORMED IN restrictions)
+    const newState = this.applyUniversalStewards(state, events);
+
+    // VALIDATION: Check for stronghold occupancy violations before identifying battles
+    const violations = validateStrongholdOccupancy(newState);
+    if (violations.length > 0) {
+      for (const violation of violations) {
+        events.push({
+          type: "STRONGHOLD_OCCUPANCY_VIOLATION",
+          data: {
+            territoryId: violation.territoryId,
+            factions: violation.factions,
+            count: violation.count,
+          },
+          message: `⚠️ ILLEGAL STATE: ${violation.territoryId} has ${
+            violation.count
+          } factions (max 2 allowed): ${violation.factions.join(", ")}`,
+        });
+        console.error(
+          `⚠️ STRONGHOLD OCCUPANCY VIOLATION at battle phase start: ${
+            violation.territoryId
+          } has ${violation.count} factions: ${violation.factions.join(", ")}`
+        );
+      }
+    }
+
     // Identify all territories with multiple factions
-    this.context.pendingBattles = this.identifyBattles(state);
+    this.context.pendingBattles = identifyBattles(newState);
 
     if (this.context.pendingBattles.length === 0) {
       events.push({
@@ -121,7 +160,105 @@ export class BattlePhaseHandler implements PhaseHandler {
     });
 
     // Start first battle selection
-    return this.requestBattleChoice(state, events);
+    return requestBattleChoice(
+      this.context,
+      newState,
+      events,
+      (s, e) => this.endBattlePhase(s, e),
+      (s, e) => this.processReveal(s, e),
+      (s, e) => this.processResolution(s, e),
+      (s, e) => this.transitionToBattleSubPhases(s, e)
+    );
+  }
+
+  /**
+   * Apply UNIVERSAL STEWARDS rule (Rule 2.02.22).
+   * "When advisors are ever alone in a Territory before Battle Phase [1.07],
+   * they automatically flip to fighters."
+   *
+   * Subject to PEACETIME and STORMED IN restrictions.
+   */
+  private applyUniversalStewards(
+    state: GameState,
+    events: PhaseEvent[]
+  ): GameState {
+    // Only applies if BG is in game and advanced rules are enabled
+    if (
+      !state.factions.has(Faction.BENE_GESSERIT) ||
+      !state.config.advancedRules
+    ) {
+      return state;
+    }
+
+    const bgState = getFactionState(state, Faction.BENE_GESSERIT);
+    let newState = state;
+    const newEvents: PhaseEvent[] = [];
+
+    // Find all territories where BG has advisors
+    for (const stack of bgState.forces.onBoard) {
+      if (stack.advisors === undefined || stack.advisors === 0) {
+        continue; // No advisors in this stack
+      }
+
+      const { territoryId, sector } = stack;
+
+      // Check if advisors are alone (no other faction forces in territory)
+      // getFactionsInTerritory excludes BG advisors-only, so if it's empty or only BG, advisors are alone
+      const occupants = getFactionsInTerritory(newState, territoryId);
+      const isAlone =
+        occupants.length === 0 ||
+        (occupants.length === 1 && occupants[0] === Faction.BENE_GESSERIT);
+
+      if (isAlone) {
+        // Validate restrictions
+        const validation = validateAdvisorFlipToFighters(
+          newState,
+          Faction.BENE_GESSERIT,
+          territoryId,
+          sector
+        );
+
+        if (validation.canFlip) {
+          // Auto-flip advisors to fighters
+          try {
+            newState = convertBGAdvisorsToFighters(
+              newState,
+              territoryId,
+              sector,
+              stack.advisors
+            );
+
+            console.log(
+              `   ✅ UNIVERSAL STEWARDS: Auto-flipped ${stack.advisors} advisors to fighters in ${territoryId} (sector ${sector})\n`
+            );
+
+            newEvents.push({
+              type: "ADVISORS_FLIPPED",
+              data: {
+                faction: Faction.BENE_GESSERIT,
+                territoryId,
+                sector,
+                count: stack.advisors,
+                reason: "universal_stewards",
+              },
+              message: `Bene Gesserit auto-flips ${stack.advisors} advisors to fighters in ${territoryId} (UNIVERSAL STEWARDS, Rule 2.02.22)`,
+            });
+          } catch (error) {
+            console.error(
+              `   ❌ Error in UNIVERSAL STEWARDS for ${territoryId}: ${error}\n`
+            );
+          }
+        } else {
+          // Restrictions prevent flipping
+          console.log(
+            `   ⚠️  UNIVERSAL STEWARDS blocked in ${territoryId} (sector ${sector}): ${validation.reason}\n`
+          );
+        }
+      }
+    }
+
+    events.push(...newEvents);
+    return newState;
   }
 
   processStep(state: GameState, responses: AgentResponse[]): PhaseStepResult {
@@ -130,7 +267,24 @@ export class BattlePhaseHandler implements PhaseHandler {
 
     switch (this.context.subPhase) {
       case BattleSubPhase.AGGRESSOR_CHOOSING:
-        return this.processChooseBattle(newState, responses, events);
+        return processChooseBattle(
+          this.context,
+          newState,
+          responses,
+          events,
+          () =>
+            requestBattleChoice(
+              this.context,
+              newState,
+              events,
+              (s, e) => this.endBattlePhase(s, e),
+              (s, e) => this.processReveal(s, e),
+              (s, e) => this.processResolution(s, e),
+              (s, e) => this.transitionToBattleSubPhases(s, e)
+            ),
+          (s, e) => this.processReveal(s, e),
+          (s, e) => this.transitionToBattleSubPhases(s, e)
+        );
 
       case BattleSubPhase.PRESCIENCE_OPPORTUNITY:
         return this.processPrescience(newState, responses, events);
@@ -211,274 +365,42 @@ export class BattlePhaseHandler implements PhaseHandler {
   // ===========================================================================
   // BATTLE IDENTIFICATION
   // ===========================================================================
+  // Battle identification logic has been moved to battle/identification.ts
+  // Use the exported identifyBattles() function from that module.
 
-  /**
-   * Identify all battles on the board.
-   * Battles occur when multiple factions occupy the same territory.
-   *
-   * Rules:
-   * - Forces in the SAME sector always battle (even in storm - "Battling Blind")
-   * - Forces in DIFFERENT sectors battle if NOT separated by storm
-   * - Forces separated by storm cannot battle but can remain in same territory
-   * - Polar Sink is a neutral zone - no battles occur there
-   */
-  private identifyBattles(state: GameState): PendingBattle[] {
-    const battles: PendingBattle[] = [];
-    const checkedTerritories = new Set<TerritoryId>();
-
-    // Group all force stacks by territory
-    const territoryForces = new Map<TerritoryId, Map<number, Set<Faction>>>();
-
-    for (const [faction, factionState] of state.factions) {
-      for (const forceStack of factionState.forces.onBoard) {
-        // NEUTRAL ZONE: Players cannot battle in the Polar Sink
-        if (forceStack.territoryId === TerritoryId.POLAR_SINK) continue;
-
-        // Check if this faction has battle-capable forces at this location
-        let hasBattleForces = false;
-        if (faction === Faction.BENE_GESSERIT) {
-          // BG: Only fighters (not advisors) can battle
-          hasBattleForces =
-            getBGFightersInSector(
-              state,
-              forceStack.territoryId,
-              forceStack.sector
-            ) > 0;
-        } else {
-          // Other factions: Any forces can battle
-          const totalForces =
-            forceStack.forces.regular + forceStack.forces.elite;
-          hasBattleForces = totalForces > 0;
-        }
-
-        if (hasBattleForces) {
-          if (!territoryForces.has(forceStack.territoryId)) {
-            territoryForces.set(
-              forceStack.territoryId,
-              new Map<number, Set<Faction>>()
-            );
-          }
-          const sectorMap = territoryForces.get(forceStack.territoryId)!;
-          if (!sectorMap.has(forceStack.sector)) {
-            sectorMap.set(forceStack.sector, new Set<Faction>());
-          }
-          sectorMap.get(forceStack.sector)!.add(faction);
-        }
-      }
-    }
-
-    // For each territory, find connected sector groups that can battle
-    for (const [territoryId, sectorMap] of territoryForces) {
-      if (checkedTerritories.has(territoryId)) continue;
-      checkedTerritories.add(territoryId);
-
-      const sectors = Array.from(sectorMap.keys()).sort((a, b) => a - b);
-
-      // Find connected components: sectors that can all battle with each other
-      // Use union-find approach to group sectors that can reach each other
-      const sectorGroups: Set<number>[] = [];
-
-      for (let i = 0; i < sectors.length; i++) {
-        const sector1 = sectors[i];
-        let foundGroup = false;
-
-        // Check if this sector can connect to any existing group
-        for (const group of sectorGroups) {
-          // Check if sector1 can battle with any sector in this group
-          for (const sector2 of group) {
-            let canBattle: boolean;
-            if (sector1 === sector2) {
-              canBattle = true; // Same sector always battles
-            } else {
-              canBattle = !areSectorsSeparatedByStorm(state, sector1, sector2);
-            }
-
-            if (canBattle) {
-              // This sector can connect to this group
-              group.add(sector1);
-              foundGroup = true;
-              break;
-            }
-          }
-
-          if (foundGroup) break;
-        }
-
-        // If no group found, create a new group
-        if (!foundGroup) {
-          sectorGroups.push(new Set([sector1]));
-        }
-      }
-
-      // Merge groups that can connect to each other
-      // (This handles transitive connections: if A connects to B and B connects to C, all connect)
-      let merged = true;
-      while (merged) {
-        merged = false;
-        for (let i = 0; i < sectorGroups.length; i++) {
-          for (let j = i + 1; j < sectorGroups.length; j++) {
-            const group1 = sectorGroups[i];
-            const group2 = sectorGroups[j];
-
-            // Check if any sector in group1 can battle with any sector in group2
-            let canConnect = false;
-            for (const sector1 of group1) {
-              for (const sector2 of group2) {
-                let canBattle: boolean;
-                if (sector1 === sector2) {
-                  canBattle = true;
-                } else {
-                  canBattle = !areSectorsSeparatedByStorm(
-                    state,
-                    sector1,
-                    sector2
-                  );
-                }
-
-                if (canBattle) {
-                  canConnect = true;
-                  break;
-                }
-              }
-              if (canConnect) break;
-            }
-
-            if (canConnect) {
-              // Merge group2 into group1
-              for (const sector of group2) {
-                group1.add(sector);
-              }
-              sectorGroups.splice(j, 1);
-              merged = true;
-              break;
-            }
-          }
-          if (merged) break;
-        }
-      }
-
-      // Create one battle per connected sector group
-      for (const sectorGroup of sectorGroups) {
-        // Collect all factions from all sectors in this group
-        const allFactions = new Set<Faction>();
-        for (const sector of sectorGroup) {
-          const factionsInSector = sectorMap.get(sector) || new Set<Faction>();
-          for (const faction of factionsInSector) {
-            allFactions.add(faction);
-          }
-        }
-
-        // Only create battle if 2+ factions
-        if (allFactions.size >= 2) {
-          // Use the first sector as the battle location
-          const primarySector = Math.min(...Array.from(sectorGroup));
-          battles.push({
-            territoryId,
-            sector: primarySector,
-            factions: Array.from(allFactions),
-          });
-        }
-      }
-    }
-
-    return battles;
-  }
-
-  /**
-   * Update pending battles after a battle is resolved.
-   * Removes factions that no longer have forces in the territory/sector,
-   * and removes the battle entirely if fewer than 2 factions remain.
-   *
-   * This handles the MULTIPLE BATTLES rule: when 3+ players are in the same
-   * territory, the aggressor can continue fighting as long as they have forces.
-   */
+  // Pending battles management moved to battle/pending-battles.ts
   private updatePendingBattlesAfterBattle(
     state: GameState,
     territoryId: TerritoryId,
     sector: number
   ): void {
-    // Find the pending battle for this location
-    const battleIndex = this.context.pendingBattles.findIndex(
-      (b) => b.territoryId === territoryId && b.sector === sector
-    );
-
-    if (battleIndex === -1) {
-      // Battle not found, nothing to update
-      return;
-    }
-
-    const pendingBattle = this.context.pendingBattles[battleIndex];
-
-    // Get which factions still have forces in this territory/sector
-    const remainingFactions = getFactionsInTerritoryAndSector(
+    this.context.pendingBattles = updatePendingBattlesAfterBattle(
+      this.context.pendingBattles,
       state,
       territoryId,
       sector
     );
-
-    // Update the pending battle to only include factions that still have forces
-    if (remainingFactions.length < 2) {
-      // Fewer than 2 factions remain - remove the battle entirely
-      this.context.pendingBattles.splice(battleIndex, 1);
-    } else {
-      // Update the factions list to reflect remaining factions
-      this.context.pendingBattles[battleIndex] = {
-        ...pendingBattle,
-        factions: remainingFactions,
-      };
-    }
   }
 
   // ===========================================================================
   // BATTLE CHOICE
   // ===========================================================================
 
+  // Battle choice methods moved to battle/aggressor-selection.ts
+  // These are now thin wrappers that call the module functions
   private requestBattleChoice(
     state: GameState,
     events: PhaseEvent[]
   ): PhaseStepResult {
-    // Find next aggressor in storm order who has pending battles
-    while (
-      this.context.currentAggressorIndex < this.context.aggressorOrder.length
-    ) {
-      const aggressor =
-        this.context.aggressorOrder[this.context.currentAggressorIndex];
-
-      const availableBattles = this.context.pendingBattles.filter((b) =>
-        b.factions.includes(aggressor)
-      );
-
-      if (availableBattles.length > 0) {
-        const pendingRequests: AgentRequest[] = [
-          {
-            factionId: aggressor,
-            requestType: "CHOOSE_BATTLE",
-            prompt: `You are the aggressor. You must fight all your battles. Choose which battle to fight first.`,
-            context: {
-              availableBattles: availableBattles.map((b) => ({
-                territory: b.territoryId,
-                sector: b.sector,
-                enemies: b.factions.filter((f) => f !== aggressor),
-              })),
-            },
-            availableActions: ["CHOOSE_BATTLE"],
-          },
-        ];
-
-        return {
-          state,
-          phaseComplete: false,
-          pendingRequests,
-          actions: [],
-          events,
-        };
-      }
-
-      this.context.currentAggressorIndex++;
-    }
-
-    // No more battles
-    return this.endBattlePhase(state, events);
+    return requestBattleChoice(
+      this.context,
+      state,
+      events,
+      (s, e) => this.endBattlePhase(s, e),
+      (s, e) => this.processReveal(s, e),
+      (s, e) => this.processResolution(s, e),
+      (s, e) => this.transitionToBattleSubPhases(s, e)
+    );
   }
 
   private processChooseBattle(
@@ -486,79 +408,41 @@ export class BattlePhaseHandler implements PhaseHandler {
     responses: AgentResponse[],
     events: PhaseEvent[]
   ): PhaseStepResult {
-    const response = responses[0];
-    if (!response) {
-      // No response - move to next aggressor
-      this.context.currentAggressorIndex++;
-      return this.requestBattleChoice(state, events);
-    }
-
-    // Aggressor cannot pass - they must fight all their battles
-    // If they somehow passed, treat it as invalid and move to next aggressor
-    if (response.passed) {
-      // Log error but don't emit invalid event type - just move to next aggressor
-      console.warn(`${response.factionId} attempted to pass, but aggressors must fight all their battles. Moving to next aggressor.`);
-      this.context.currentAggressorIndex++;
-      return this.requestBattleChoice(state, events);
-    }
-
-    // Set up the battle
-    const territoryId = response.data.territoryId as TerritoryId;
-    const sector = response.data.sector as number;
-    const defender = response.data.defender as Faction;
-    const aggressor = response.factionId;
-
-    // Find this battle in pending
-    const battleIndex = this.context.pendingBattles.findIndex(
-      (b) =>
-        b.territoryId === territoryId &&
-        b.sector === sector &&
-        b.factions.includes(aggressor) &&
-        b.factions.includes(defender)
+    const result = processChooseBattle(
+      this.context,
+      state,
+      responses,
+      events,
+      () => this.requestBattleChoice(state, events),
+      (s, e) => this.processReveal(s, e),
+      (s, e) => this.transitionToBattleSubPhases(s, e)
     );
 
-    if (battleIndex === -1) {
-      // Invalid battle choice
-      this.context.currentAggressorIndex++;
-      return this.requestBattleChoice(state, events);
+    // After battle is set up, transition to Voice/Prescience/Battle Plans sequence
+    if (this.context.currentBattle && result.pendingRequests.length === 0) {
+      return this.transitionToBattleSubPhases(state, events);
     }
 
-    // Set up current battle
-    this.context.currentBattle = {
-      territoryId,
-      sector,
-      aggressor,
-      defender,
-      aggressorPlan: null,
-      defenderPlan: null,
-      prescienceUsed: false,
-      prescienceTarget: null,
-      prescienceOpponent: null,
-      prescienceResult: null,
-      prescienceBlocked: false,
-      voiceUsed: false,
-      voiceCommand: null,
-      traitorCalled: false,
-      traitorCalledBy: null,
-      traitorCallsByBothSides: false,
-    };
+    return result;
+  }
 
-    events.push({
-      type: "BATTLE_STARTED",
-      data: {
-        territory: territoryId,
-        sector,
-        aggressor,
-        defender,
-      },
-      message: `Battle: ${aggressor} attacks ${defender} in ${territoryId}`,
-    });
+  /**
+   * Transition to the appropriate battle sub-phase after a battle is set up.
+   * Sequence: Voice -> Prescience -> Battle Plans -> Reveal
+   */
+  private transitionToBattleSubPhases(
+    state: GameState,
+    events: PhaseEvent[]
+  ): PhaseStepResult {
+    const battle = this.context.currentBattle!;
+    const aggressor = battle.aggressor;
+    const defender = battle.defender;
 
-    // Correct sequence: Voice -> Prescience -> Battle Plans -> Reveal
     // Step 1: Check for BG Voice (BEFORE battle plans)
     if (state.factions.has(Faction.BENE_GESSERIT)) {
       const bgInBattle =
-        aggressor === Faction.BENE_GESSERIT || defender === Faction.BENE_GESSERIT;
+        aggressor === Faction.BENE_GESSERIT ||
+        defender === Faction.BENE_GESSERIT;
       const bgAlly = getAlly(state, Faction.BENE_GESSERIT);
       const allyInBattle =
         bgAlly && (aggressor === bgAlly || defender === bgAlly);
@@ -759,13 +643,19 @@ export class BattlePhaseHandler implements PhaseHandler {
       });
       context.availableCards = availableCards;
     } else if (target === "number") {
-      const forces = factionState.forces.onBoard.find(
-        (f) =>
-          f.territoryId === battle.territoryId && f.sector === battle.sector
-      );
-      const totalForces = forces
-        ? forces.forces.regular + forces.forces.elite
-        : 0;
+      // IMPORTANT: For Bene Gesserit, use getBGFightersInSector to exclude advisors
+      // Advisors are non-combatants and shouldn't be counted as available forces
+      const totalForces =
+        opponent === Faction.BENE_GESSERIT
+          ? getBGFightersInSector(state, battle.territoryId, battle.sector)
+          : (() => {
+              const forces = factionState.forces.onBoard.find(
+                (f) =>
+                  f.territoryId === battle.territoryId &&
+                  f.sector === battle.sector
+              );
+              return forces ? forces.forces.regular + forces.forces.elite : 0;
+            })();
       context.totalForces = totalForces;
       context.spiceAvailable = factionState.spice;
     }
@@ -911,13 +801,19 @@ export class BattlePhaseHandler implements PhaseHandler {
       });
 
       // Get forces in battle
-      const forces = factionState.forces.onBoard.find(
-        (f) =>
-          f.territoryId === battle.territoryId && f.sector === battle.sector
-      );
-      const totalForces = forces
-        ? forces.forces.regular + forces.forces.elite
-        : 0;
+      // IMPORTANT: For Bene Gesserit, use getBGFightersInSector to exclude advisors
+      // Advisors are non-combatants and shouldn't be counted as available forces
+      const totalForces =
+        faction === Faction.BENE_GESSERIT
+          ? getBGFightersInSector(state, battle.territoryId, battle.sector)
+          : (() => {
+              const forces = factionState.forces.onBoard.find(
+                (f) =>
+                  f.territoryId === battle.territoryId &&
+                  f.sector === battle.sector
+              );
+              return forces ? forces.forces.regular + forces.forces.elite : 0;
+            })();
 
       // Prescience info for Atreides
       let prescienceInfo = null;
@@ -1012,13 +908,14 @@ export class BattlePhaseHandler implements PhaseHandler {
           forcesDialed: (response.data.forcesDialed as number) ?? 0,
           weaponCardId: (response.data.weaponCardId as string | null) ?? null,
           defenseCardId: (response.data.defenseCardId as string | null) ?? null,
-          kwisatzHaderachUsed: (response.data.useKwisatzHaderach as boolean) ?? false,
+          kwisatzHaderachUsed:
+            (response.data.useKwisatzHaderach as boolean) ?? false,
           cheapHeroUsed: (response.data.useCheapHero as boolean) ?? false,
           spiceDialed: (response.data.spiceDialed as number) ?? 0,
           announcedNoLeader: false,
         };
       }
-      
+
       if (!plan) continue;
 
       // Validate prescience commitment if applicable
@@ -1127,18 +1024,13 @@ export class BattlePhaseHandler implements PhaseHandler {
             },
             message: `${response.factionId} battle plan violates prescience commitment: ${violationMessage}`,
           });
-          // Use default plan
-          const defaultPlan: BattlePlan = {
-            factionId: response.factionId,
-            leaderId: null,
-            forcesDialed: 0,
-            spiceDialed: 0,
-            weaponCardId: null,
-            defenseCardId: null,
-            kwisatzHaderachUsed: false,
-            cheapHeroUsed: false,
-            announcedNoLeader: false,
-          };
+          // Use default plan (with smart force calculation)
+          const defaultPlan = createDefaultBattlePlan(
+            response.factionId,
+            state,
+            battle.territoryId,
+            battle.sector
+          );
           if (response.factionId === battle.aggressor) {
             battle.aggressorPlan = defaultPlan;
           } else {
@@ -1148,12 +1040,13 @@ export class BattlePhaseHandler implements PhaseHandler {
         }
       }
 
-      // Validate plan
+      // Validate plan (pass sector for accurate force counting, especially for Bene Gesserit)
       const validation = validateBattlePlan(
         state,
         response.factionId,
         battle.territoryId,
-        plan
+        plan,
+        battle.sector
       );
       if (!validation.valid) {
         events.push({
@@ -1165,18 +1058,13 @@ export class BattlePhaseHandler implements PhaseHandler {
           },
           message: `${response.factionId} battle plan invalid: ${validation.errors[0]?.message}`,
         });
-        // Use default plan
-        const defaultPlan: BattlePlan = {
-          factionId: response.factionId,
-          leaderId: null,
-          forcesDialed: 0,
-          spiceDialed: 0,
-          weaponCardId: null,
-          defenseCardId: null,
-          kwisatzHaderachUsed: false,
-          cheapHeroUsed: false,
-          announcedNoLeader: false,
-        };
+        // Use default plan (with smart force calculation)
+        const defaultPlan = createDefaultBattlePlan(
+          response.factionId,
+          state,
+          battle.territoryId,
+          battle.sector
+        );
         if (response.factionId === battle.aggressor) {
           battle.aggressorPlan = defaultPlan;
         } else {
@@ -1206,6 +1094,51 @@ export class BattlePhaseHandler implements PhaseHandler {
           message: `${response.factionId} announces they cannot play a leader or Cheap Hero`,
         });
       }
+    }
+
+    // Handle factions that didn't respond - use default plans
+    const respondedFactions = new Set(responses.map((r) => r.factionId));
+    for (const faction of [battle.aggressor, battle.defender]) {
+      if (!respondedFactions.has(faction)) {
+        // Agent didn't respond - use default plan
+        const defaultPlan = createDefaultBattlePlan(
+          faction,
+          state,
+          battle.territoryId,
+          battle.sector
+        );
+        if (faction === battle.aggressor) {
+          battle.aggressorPlan = defaultPlan;
+        } else {
+          battle.defenderPlan = defaultPlan;
+        }
+        events.push({
+          type: "BATTLE_PLAN_SUBMITTED",
+          data: {
+            faction,
+            default: true,
+          },
+          message: `${faction} did not respond, using default battle plan`,
+        });
+      }
+    }
+
+    // Ensure both plans are set (fallback if somehow still null)
+    if (!battle.aggressorPlan) {
+      battle.aggressorPlan = createDefaultBattlePlan(
+        battle.aggressor,
+        state,
+        battle.territoryId,
+        battle.sector
+      );
+    }
+    if (!battle.defenderPlan) {
+      battle.defenderPlan = createDefaultBattlePlan(
+        battle.defender,
+        state,
+        battle.territoryId,
+        battle.sector
+      );
     }
 
     // Battle plans are submitted - move directly to reveal
@@ -1281,13 +1214,13 @@ export class BattlePhaseHandler implements PhaseHandler {
     if (response && !response.passed && response.actionType === "USE_VOICE") {
       this.context.currentBattle!.voiceUsed = true;
       this.context.currentBattle!.voiceCommand = response.data.command as {
-        type: 'play' | 'not_play';
+        type: "play" | "not_play";
         cardType: string;
         specificCardName?: string;
       } | null;
 
       const voiceCommand = response.data.command as {
-        type: 'play' | 'not_play';
+        type: "play" | "not_play";
         cardType: string;
         specificCardName?: string;
       };
@@ -1708,9 +1641,21 @@ export class BattlePhaseHandler implements PhaseHandler {
 
     // Ensure we have valid plans
     const aggressorPlan =
-      battle.aggressorPlan ?? this.createDefaultPlan(battle.aggressor);
+      battle.aggressorPlan ??
+      createDefaultBattlePlan(
+        battle.aggressor,
+        state,
+        battle.territoryId,
+        battle.sector
+      );
     const defenderPlan =
-      battle.defenderPlan ?? this.createDefaultPlan(battle.defender);
+      battle.defenderPlan ??
+      createDefaultBattlePlan(
+        battle.defender,
+        state,
+        battle.territoryId,
+        battle.sector
+      );
 
     // Check for TWO TRAITORS scenario first
     let result: BattleResult;
@@ -1735,6 +1680,7 @@ export class BattlePhaseHandler implements PhaseHandler {
       result = resolveBattle(
         state,
         battle.territoryId,
+        battle.sector,
         battle.aggressor,
         battle.defender,
         aggressorPlan,
@@ -1761,7 +1707,12 @@ export class BattlePhaseHandler implements PhaseHandler {
       // If winner has cards in cardsToKeep, they get to choose which to discard
       if (winnerResult.cardsToKeep.length > 0) {
         this.context.subPhase = BattleSubPhase.WINNER_CARD_DISCARD_CHOICE;
-        return this.requestWinnerCardDiscard(newState, events, winner, winnerResult.cardsToKeep);
+        return this.requestWinnerCardDiscard(
+          newState,
+          events,
+          winner,
+          winnerResult.cardsToKeep
+        );
       }
     }
 
@@ -1816,6 +1767,41 @@ export class BattlePhaseHandler implements PhaseHandler {
       battle.territoryId,
       battle.sector
     );
+
+    // VALIDATION: After battle resolution, ensure stronghold occupancy limits are respected
+    // If a stronghold has more than 2 factions, this is a critical error
+    const violations = validateStrongholdOccupancy(newState);
+    if (violations.length > 0) {
+      for (const violation of violations) {
+        // Check if this violation is in the territory where the battle just occurred
+        if (violation.territoryId === battle.territoryId) {
+          events.push({
+            type: "STRONGHOLD_OCCUPANCY_VIOLATION",
+            data: {
+              territoryId: violation.territoryId,
+              factions: violation.factions,
+              count: violation.count,
+            },
+            message: `⚠️ CRITICAL ERROR: After battle in ${
+              violation.territoryId
+            }, ${
+              violation.count
+            } factions remain (max 2 allowed): ${violation.factions.join(
+              ", "
+            )}. This should never happen!`,
+          });
+          console.error(
+            `⚠️ CRITICAL: After battle in ${violation.territoryId}, ${
+              violation.count
+            } factions remain: ${violation.factions.join(", ")}`
+          );
+
+          // This is a critical error - the game state is invalid
+          // In a production system, we might want to throw an error or auto-fix
+          // For now, we log it and continue, but this indicates a bug
+        }
+      }
+    }
 
     // Check for more battles
     this.context.currentBattle = null;
@@ -2304,8 +2290,10 @@ export class BattlePhaseHandler implements PhaseHandler {
       message: "All battles resolved",
     });
 
+    const finalState = setActiveFactions(state, []);
+
     return {
-      state,
+      state: finalState,
       phaseComplete: true,
       nextPhase: Phase.SPICE_COLLECTION,
       pendingRequests: [],
@@ -2377,7 +2365,9 @@ export class BattlePhaseHandler implements PhaseHandler {
       {
         factionId: winner,
         requestType: "CHOOSE_CARDS_TO_DISCARD",
-        prompt: `You won the battle! You played: ${cardNames.join(", ")}. Which cards would you like to discard? (You may keep any that don't say "Discard after use". You can discard all, some, or none.)`,
+        prompt: `You won the battle! You played: ${cardNames.join(
+          ", "
+        )}. Which cards would you like to discard? (You may keep any that don't say "Discard after use". You can discard all, some, or none.)`,
         context: {
           cardsToKeep,
           cardNames,
@@ -2643,35 +2633,17 @@ export class BattlePhaseHandler implements PhaseHandler {
 
   /**
    * Create a default battle plan (used when a player fails to submit a valid plan).
+   * @deprecated Use createDefaultBattlePlan from battle/plans.ts directly with state/territory info
    */
+  // Battle plan utilities moved to battle/plans.ts
   private createDefaultPlan(faction: Faction): BattlePlan {
-    return {
-      factionId: faction,
-      leaderId: null,
-      forcesDialed: 0,
-      spiceDialed: 0,
-      weaponCardId: null,
-      defenseCardId: null,
-      kwisatzHaderachUsed: false,
-      cheapHeroUsed: false,
-      announcedNoLeader: false,
-    };
+    // Legacy method - returns plan with 0 forces (should be updated to pass state/territory)
+    return createDefaultBattlePlan(faction);
   }
 
-  /**
-   * Sanitize a battle plan for logging (remove sensitive details for opponent).
-   */
   private sanitizePlanForLog(
     plan: BattlePlan | null
   ): Record<string, unknown> | null {
-    if (!plan) return null;
-    return {
-      factionId: plan.factionId,
-      leaderId: plan.leaderId ? "[redacted]" : null,
-      forcesDialed: "[redacted]",
-      weaponCardId: plan.weaponCardId ? "[redacted]" : null,
-      defenseCardId: plan.defenseCardId ? "[redacted]" : null,
-      announcedNoLeader: plan.announcedNoLeader,
-    };
+    return sanitizePlanForLog(plan);
   }
 }

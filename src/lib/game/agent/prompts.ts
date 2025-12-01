@@ -2,10 +2,10 @@
  * Faction-Specific Agent Prompts
  *
  * Each faction has unique abilities, victory conditions, and strategic considerations.
- * These prompts help Claude understand how to play each faction effectively.
+ * These prompts help the AI agent understand how to play each faction effectively.
  */
 
-import { Faction, FACTION_NAMES } from '../types';
+import { Faction } from '../types';
 
 // =============================================================================
 // FACTION PROMPTS

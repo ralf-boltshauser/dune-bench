@@ -10,7 +10,9 @@ import type {
   PhaseHandler,
   PhaseStepResult,
   AgentRequest,
+  AgentResponse,
   PhaseEvent,
+  PhaseEventType,
 } from './types';
 import {
   createCompleteResult,
@@ -40,7 +42,7 @@ export abstract class BasePhaseHandler implements PhaseHandler {
    */
   abstract processStep(
     state: GameState,
-    responses: any[]
+    responses: AgentResponse[]
   ): PhaseStepResult;
 
   /**
@@ -98,7 +100,7 @@ export abstract class BasePhaseHandler implements PhaseHandler {
     message: string,
     data: Record<string, unknown> = {}
   ): PhaseEvent {
-    return createPhaseEvent(type as any, message, data);
+    return createPhaseEvent(type as PhaseEventType, message, data);
   }
 
   /**

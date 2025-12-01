@@ -5,11 +5,11 @@
  * This allows for true E2E testing where agents actually make decisions.
  */
 
-import { Faction, LeaderLocation } from '../../../types';
-import { getFactionState, getAvailableLeaders } from '../../../state';
+import { Faction } from '../../../types';
 import type { AgentRequest, AgentResponse } from '../../../phases/types';
 import type { AgentProvider } from '../../../phases/phase-manager';
-import type { GameState } from '../../../types';
+import type { GameState, TraitorCard } from '../../../types';
+import { getFactionState } from '../../../state';
 
 export class DecisionAgentProvider implements AgentProvider {
   private gameState: GameState;
@@ -28,7 +28,7 @@ export class DecisionAgentProvider implements AgentProvider {
 
   async getResponses(
     requests: AgentRequest[],
-    simultaneous: boolean
+    _simultaneous: boolean
   ): Promise<AgentResponse[]> {
     return Promise.all(
       requests.map((request) => this.makeDecision(request))
@@ -36,8 +36,6 @@ export class DecisionAgentProvider implements AgentProvider {
   }
 
   private async makeDecision(request: AgentRequest): Promise<AgentResponse> {
-    const factionState = getFactionState(this.gameState, request.factionId);
-
     switch (request.requestType) {
       case 'CHOOSE_BATTLE': {
         const availableBattles = request.context?.availableBattles as Array<{
@@ -218,7 +216,7 @@ export class DecisionAgentProvider implements AgentProvider {
         // Check if we have the traitor card
         const opponentLeader = request.context?.opponentLeader as string | undefined;
         const hasTraitor = opponentLeader
-          ? factionState.traitors.some((t) => t.leaderId === opponentLeader)
+          ? factionState.traitors.some((t: TraitorCard) => t.leaderId === opponentLeader)
           : false;
 
         if (hasTraitor) {

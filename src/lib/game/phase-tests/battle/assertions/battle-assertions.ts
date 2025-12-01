@@ -6,7 +6,6 @@
 
 import { getFactionState } from '../../../state';
 import { Faction, TerritoryId } from '../../../types';
-import type { GameState } from '../../../types';
 import type { ScenarioResult } from '../scenarios/base-scenario';
 
 export interface BattleAssertion {

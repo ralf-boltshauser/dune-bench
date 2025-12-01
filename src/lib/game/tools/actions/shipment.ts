@@ -9,7 +9,7 @@ import { z } from 'zod';
 import type { TerritoryId } from '../../types';
 import type { ToolContextManager } from '../context';
 import { successResult, failureResult, validationToToolError } from '../types';
-import { ShipForcesSchema, PassActionSchema, FremenSendForcesSchema, GuildCrossShipSchema, GuildOffPlanetSchema, BGSpiritualAdvisorSchema } from '../schemas';
+import { ShipForcesSchema, PassActionSchema, FremenSendForcesSchema, GuildCrossShipSchema, GuildOffPlanetSchema, BGSpiritualAdvisorSchema, BGIntrusionSchema, BGTakeUpArmsSchema } from '../schemas';
 import {
   getFactionState,
   shipForces,
@@ -21,9 +21,13 @@ import {
   getReserveForceCount,
   isSectorInStorm,
   getFactionsInTerritory,
+  getFactionsOccupyingTerritory,
+  convertBGFightersToAdvisors,
+  getBGFightersInSector,
 } from '../../state';
 import { validateShipment, validateCrossShip, validateOffPlanetShipment, getTerritoriesWithinDistance } from '../../rules';
 import { Faction, TERRITORY_DEFINITIONS, STRONGHOLD_TERRITORIES, TerritoryId as TerritoryIdEnum } from '../../types';
+import { normalizeTerritoryId } from '../../utils/territory-normalize';
 
 // =============================================================================
 // SHIPMENT TOOLS
@@ -55,17 +59,40 @@ Restrictions:
 Choose your landing zone carefully - it affects both cost and strategic position.`,
       inputSchema: ShipForcesSchema,
       execute: async (params: z.infer<typeof ShipForcesSchema>, options) => {
-        const { territoryId, sector, count, useElite } = params;
+        const { territoryId: rawTerritoryId, sector, regularCount, eliteCount } = params;
+        
+        // Normalize territory ID (schema no longer has transform)
+        const territoryId = normalizeTerritoryId(rawTerritoryId);
+        if (!territoryId) {
+          return failureResult(
+            `Invalid territory ID: "${rawTerritoryId}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTerritoryId}" does not exist` },
+            false
+          );
+        }
+        
         const state = ctx.state;
         const faction = ctx.faction;
 
-        // Validate the shipment
+        const totalCount = (regularCount ?? 0) + (eliteCount ?? 0);
+        if (totalCount <= 0) {
+          return failureResult(
+            'You must ship at least 1 force (regular or elite)',
+            {
+              code: 'INVALID_COUNT',
+              message: 'Shipment must include at least 1 regular or elite force',
+            },
+            false
+          );
+        }
+
+        // Validate the shipment (territory ID now normalized)
         const validation = validateShipment(
           state,
           faction,
-          territoryId as TerritoryId,
+          territoryId,
           sector,
-          count
+          totalCount
         );
 
         if (!validation.valid) {
@@ -80,8 +107,29 @@ Choose your landing zone carefully - it affects both cost and strategic position
         // Get the calculated cost from validation context
         const cost = validation.context.cost as number;
 
-        // Execute shipment
-        let newState = shipForces(state, faction, territoryId as TerritoryId, sector, count);
+        // Extra validation: ensure we have enough regular and elite reserves separately
+        const factionState = getFactionState(state, faction);
+        const reservesRegular = factionState.forces.reserves.regular;
+        const reservesElite = factionState.forces.reserves.elite;
+        if (regularCount > reservesRegular || eliteCount > reservesElite) {
+          return failureResult(
+            `Cannot ship ${regularCount} regular and ${eliteCount} elite forces, only ${reservesRegular} regular and ${reservesElite} elite available in reserves`,
+            {
+              code: 'INSUFFICIENT_RESERVES',
+              message: `Only ${reservesRegular} regular and ${reservesElite} elite forces in reserves`,
+            },
+            false
+          );
+        }
+
+        // Execute shipment (ID already normalized)
+        let newState = state;
+        if (regularCount > 0) {
+          newState = shipForces(newState, faction, territoryId, sector, regularCount, false, false);
+        }
+        if (eliteCount > 0) {
+          newState = shipForces(newState, faction, territoryId, sector, eliteCount, true, false);
+        }
         newState = removeSpice(newState, faction, cost);
 
         // Pay Guild if in game
@@ -92,14 +140,17 @@ Choose your landing zone carefully - it affects both cost and strategic position
         ctx.updateState(newState);
 
         return successResult(
-          `Shipped ${count} forces to ${territoryId} (sector ${sector}) for ${cost} spice`,
+          `Shipped ${totalCount} forces to ${territoryId} (sector ${sector}) for ${cost} spice`,
           {
             faction,
             territoryId,
             sector,
-            count,
+            regularCount,
+            eliteCount,
+            totalCount,
             cost,
             guildPayment: faction !== Faction.SPACING_GUILD ? cost : 0,
+            appliedByTool: true,
           },
           true
         );
@@ -205,9 +256,32 @@ Special abilities:
 This is your only shipment method as Fremen - you cannot use normal off-planet shipment.`,
       inputSchema: FremenSendForcesSchema,
       execute: async (params: z.infer<typeof FremenSendForcesSchema>, options) => {
-        const { territoryId, sector, count, useElite, allowStormMigration } = params;
+        const { territoryId: rawTerritoryId, sector, regularCount, eliteCount, allowStormMigration } = params;
+        
+        // Normalize territory ID (schema no longer has transform)
+        const territoryId = normalizeTerritoryId(rawTerritoryId);
+        if (!territoryId) {
+          return failureResult(
+            `Invalid territory ID: "${rawTerritoryId}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTerritoryId}" does not exist` },
+            false
+          );
+        }
+        
         const state = ctx.state;
         const faction = ctx.faction;
+
+        const totalCount = (regularCount ?? 0) + (eliteCount ?? 0);
+        if (totalCount <= 0) {
+          return failureResult(
+            'You must send at least 1 force (regular or elite)',
+            {
+              code: 'INVALID_COUNT',
+              message: 'Shipment must include at least 1 regular or elite force',
+            },
+            false
+          );
+        }
 
         // Check: Must be Fremen
         if (faction !== Faction.FREMEN) {
@@ -218,25 +292,22 @@ This is your only shipment method as Fremen - you cannot use normal off-planet s
           );
         }
 
-        // Check: Sufficient forces in reserves
-        const reserves = getReserveForceCount(state, faction);
-        if (count > reserves) {
+        // Check: Sufficient forces in reserves (per bucket)
+        const reserves = getFactionState(state, faction).forces.reserves;
+        const totalReserves = reserves.regular + reserves.elite;
+        if (totalCount > totalReserves || regularCount > reserves.regular || eliteCount > reserves.elite) {
           return failureResult(
-            `Cannot send ${count} forces, only ${reserves} available in reserves`,
-            { code: 'INSUFFICIENT_RESERVES', message: `Only ${reserves} forces in reserves` },
+            `Cannot send ${regularCount} regular and ${eliteCount} elite forces, only ${reserves.regular} regular and ${reserves.elite} elite available in reserves`,
+            {
+              code: 'INSUFFICIENT_RESERVES',
+              message: `Only ${reserves.regular} regular and ${reserves.elite} elite forces in reserves`,
+            },
             false
           );
         }
 
         // Check: Valid territory
-        const territory = TERRITORY_DEFINITIONS[territoryId as TerritoryId];
-        if (!territory) {
-          return failureResult(
-            `Territory ${territoryId} does not exist`,
-            { code: 'INVALID_TERRITORY', message: 'Territory does not exist' },
-            false
-          );
-        }
+        const territory = TERRITORY_DEFINITIONS[territoryId];
 
         // Check: Valid sector
         if (!territory.sectors.includes(sector) && territory.sectors.length > 0) {
@@ -252,7 +323,7 @@ This is your only shipment method as Fremen - you cannot use normal off-planet s
         const validDestinations = getTerritoriesWithinDistance(greatFlat, 2);
         validDestinations.add(greatFlat); // Include Great Flat itself
 
-        if (!validDestinations.has(territoryId as TerritoryId)) {
+        if (!validDestinations.has(territoryId)) {
           return failureResult(
             `${territory.name} is not The Great Flat or within 2 territories of it`,
             {
@@ -277,8 +348,9 @@ This is your only shipment method as Fremen - you cannot use normal off-planet s
         }
 
         // Check: Occupancy limit for strongholds
-        if (STRONGHOLD_TERRITORIES.includes(territoryId as TerritoryId)) {
-          const occupants = getFactionsInTerritory(state, territoryId as TerritoryId);
+        // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
+        if (STRONGHOLD_TERRITORIES.includes(territoryId)) {
+          const occupants = getFactionsOccupyingTerritory(state, territoryId);
           if (occupants.length >= 2 && !occupants.includes(faction)) {
             return failureResult(
               `${territory.name} already has 2 factions occupying it`,
@@ -291,48 +363,82 @@ This is your only shipment method as Fremen - you cannot use normal off-planet s
           }
         }
 
-        // Execute send
-        let newState = shipForces(
-          state,
-          faction,
-          territoryId as TerritoryId,
-          sector,
-          count,
-          useElite
-        );
+        // Territory ID already normalized by schema
+        let newState = state;
+        if (regularCount > 0) {
+          newState = shipForces(
+            newState,
+            faction,
+            territoryId,
+            sector,
+            regularCount,
+            false,
+            false
+          );
+        }
+        if (eliteCount > 0) {
+          newState = shipForces(
+            newState,
+            faction,
+            territoryId,
+            sector,
+            eliteCount,
+            true,
+            false
+          );
+        }
 
         // Apply storm migration losses if sending into storm
         let lostToStorm = 0;
         if (inStorm && allowStormMigration) {
-          lostToStorm = Math.ceil(count / 2);
-          const survivors = count - lostToStorm;
+          lostToStorm = Math.ceil(totalCount / 2);
+          const survivors = totalCount - lostToStorm;
 
-          // Remove the forces we just shipped, then add back only survivors
-          newState = sendForcesToTanks(
-            newState,
-            faction,
-            territoryId as TerritoryId,
-            sector,
-            lostToStorm,
-            useElite
-          );
+          // Remove the forces we just shipped, then add back only survivors.
+          // We treat storm losses as coming from regular forces first, then elite.
+          let remainingToLose = lostToStorm;
+          if (remainingToLose > 0 && regularCount > 0) {
+            const regularLost = Math.min(regularCount, remainingToLose);
+            newState = sendForcesToTanks(
+              newState,
+              faction,
+              territoryId,
+              sector,
+              regularLost,
+              false
+            );
+            remainingToLose -= regularLost;
+          }
+          if (remainingToLose > 0 && eliteCount > 0) {
+            const eliteLost = Math.min(eliteCount, remainingToLose);
+            newState = sendForcesToTanks(
+              newState,
+              faction,
+              territoryId,
+              sector,
+              eliteLost,
+              true
+            );
+          }
         }
 
         ctx.updateState(newState);
 
         const message = allowStormMigration && inStorm
-          ? `Sent ${count} forces to ${territoryId} (sector ${sector}) for FREE. Storm migration: ${lostToStorm} lost, ${count - lostToStorm} survived.`
-          : `Sent ${count} forces to ${territoryId} (sector ${sector}) for FREE`;
+          ? `Sent ${totalCount} forces to ${territoryId} (sector ${sector}) for FREE. Storm migration: ${lostToStorm} lost, ${totalCount - lostToStorm} survived.`
+          : `Sent ${totalCount} forces to ${territoryId} (sector ${sector}) for FREE`;
 
         return successResult(message, {
           faction,
           territoryId,
           sector,
-          count,
+          regularCount,
+          eliteCount,
+          totalCount,
           cost: 0,
           stormMigration: allowStormMigration && inStorm,
           forcesLost: lostToStorm,
-          forcesSurvived: count - lostToStorm,
+          forcesSurvived: totalCount - lostToStorm,
         }, true);
       },
     }),
@@ -364,7 +470,27 @@ Restrictions:
 Use this when you need to reposition forces on the board without bringing new forces from reserves.`,
       inputSchema: GuildCrossShipSchema,
       execute: async (params: z.infer<typeof GuildCrossShipSchema>, options) => {
-        const { fromTerritoryId, fromSector, toTerritoryId, toSector, count, useElite } = params;
+        const { fromTerritoryId: rawFrom, fromSector, toTerritoryId: rawTo, toSector, count, useElite } = params;
+        
+        // Normalize territory IDs (schema no longer has transform)
+        const fromTerritoryId = normalizeTerritoryId(rawFrom);
+        const toTerritoryId = normalizeTerritoryId(rawTo);
+        
+        if (!fromTerritoryId) {
+          return failureResult(
+            `Invalid from territory ID: "${rawFrom}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawFrom}" does not exist` },
+            false
+          );
+        }
+        if (!toTerritoryId) {
+          return failureResult(
+            `Invalid to territory ID: "${rawTo}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTo}" does not exist` },
+            false
+          );
+        }
+        
         const state = ctx.state;
         const faction = ctx.faction;
 
@@ -372,9 +498,9 @@ Use this when you need to reposition forces on the board without bringing new fo
         const validation = validateCrossShip(
           state,
           faction,
-          fromTerritoryId as TerritoryId,
+          fromTerritoryId,
           fromSector,
-          toTerritoryId as TerritoryId,
+          toTerritoryId,
           toSector,
           count
         );
@@ -391,13 +517,13 @@ Use this when you need to reposition forces on the board without bringing new fo
         // Get the calculated cost from validation context
         const cost = validation.context.cost as number;
 
-        // Execute cross-ship (move forces between territories)
+        // Execute cross-ship (move forces between territories) - IDs already normalized
         let newState = moveForces(
           state,
           faction,
-          fromTerritoryId as TerritoryId,
+          fromTerritoryId,
           fromSector,
-          toTerritoryId as TerritoryId,
+          toTerritoryId,
           toSector,
           count,
           useElite
@@ -440,7 +566,18 @@ Key points:
 - Advanced option only available if you have NO fighters in the target territory`,
       inputSchema: BGSpiritualAdvisorSchema,
       execute: async (params: z.infer<typeof BGSpiritualAdvisorSchema>, options) => {
-        const { choice, territoryId, sector } = params;
+        const { choice, territoryId: rawTerritoryId, sector } = params;
+        
+        // Normalize territory ID if provided (schema no longer has transform)
+        const territoryId = rawTerritoryId ? normalizeTerritoryId(rawTerritoryId) : undefined;
+        if (rawTerritoryId && !territoryId) {
+          return failureResult(
+            `Invalid territory ID: "${rawTerritoryId}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTerritoryId}" does not exist` },
+            false
+          );
+        }
+        
         const state = ctx.state;
         const faction = ctx.faction;
 
@@ -479,7 +616,7 @@ Key points:
           const polarSinkSector = polarSinkTerritory.sectors[0] || 0;
 
           // Ship 1 fighter to Polar Sink for free
-          let newState = shipForces(
+          const newState = shipForces(
             state,
             faction,
             polarSink,
@@ -515,15 +652,46 @@ Key points:
             );
           }
 
-          // Check: Valid territory
-          const territory = TERRITORY_DEFINITIONS[territoryId as TerritoryId];
-          if (!territory) {
+          // Rule 2.02.11: Must match the triggering shipment's territory AND sector
+          const trigger = state.bgSpiritualAdvisorTrigger;
+          if (!trigger) {
             return failureResult(
-              `Territory ${territoryId} does not exist`,
-              { code: 'INVALID_TERRITORY', message: 'Territory does not exist' },
+              'No triggering shipment found. Cannot use same_territory option.',
+              { code: 'NO_TRIGGER', message: 'Spiritual advisor must be triggered by another faction\'s shipment' },
               false
             );
           }
+
+          // Validate territory matches triggering shipment
+          if (territoryId !== trigger.territory) {
+            return failureResult(
+              `Rule 2.02.11: Territory must match the triggering shipment. Expected ${trigger.territory}, got ${territoryId}`,
+              {
+                code: 'TERRITORY_MISMATCH',
+                message: `Must send to same territory as triggering shipment (${trigger.territory})`,
+                field: 'territoryId',
+                providedValue: territoryId,
+              },
+              false
+            );
+          }
+
+          // Validate sector matches triggering shipment
+          if (sector !== trigger.sector) {
+            return failureResult(
+              `Rule 2.02.11: Sector must match the triggering shipment. Expected sector ${trigger.sector}, got ${sector}`,
+              {
+                code: 'SECTOR_MISMATCH',
+                message: `Must send to same sector as triggering shipment (sector ${trigger.sector})`,
+                field: 'sector',
+                providedValue: sector,
+              },
+              false
+            );
+          }
+
+          // Check: Valid territory (already normalized above)
+          const territory = TERRITORY_DEFINITIONS[territoryId!];
 
           // Check: Valid sector
           if (!territory.sectors.includes(sector) && territory.sectors.length > 0) {
@@ -552,7 +720,7 @@ Key points:
           );
 
           // For now, treat all forces as fighters (we don't have advisor tracking yet)
-          // TODO: When advisor/fighter distinction is implemented, only check for fighters
+          // TODO(#advisor-fighter): When advisor/fighter distinction is implemented, only check for fighters
           const hasForcesInTerritory = forcesInTerritory.length > 0;
           if (hasForcesInTerritory) {
             return failureResult(
@@ -566,15 +734,15 @@ Key points:
           }
 
           // Ship 1 advisor to the same territory as triggering shipment
-          // Note: Using regular force for now, but this should be an advisor
-          // TODO: When advisor/fighter distinction is implemented, send as advisor
-          let newState = shipForces(
+          // Rule 2.02.11: Spiritual Advisor ability ships as advisor (not fighter)
+          const newState = shipForces(
             state,
             faction,
-            territoryId as TerritoryId,
+            territoryId,
             sector,
             1,
-            false // Regular force (advisor in this case)
+            false, // Regular force
+            true   // isAdvisor=true: Ship as advisor (for Spiritual Advisor ability)
           );
 
           ctx.updateState(newState);
@@ -653,11 +821,21 @@ Note: This is more expensive than movement but allows you to pull forces complet
         // Get the calculated cost from validation context
         const cost = validation.context.cost as number;
 
-        // Execute off-planet shipment (send forces back to reserves)
+        // Normalize territory ID
+        const normalizedFrom = normalizeTerritoryId(fromTerritoryId);
+        if (!normalizedFrom) {
+          return failureResult(
+            `Invalid territory ID: ${fromTerritoryId}`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${fromTerritoryId}" does not exist` },
+            false
+          );
+        }
+
+        // Execute off-planet shipment (send forces back to reserves) with normalized ID
         let newState = sendForcesToReserves(
           state,
           faction,
-          fromTerritoryId as TerritoryId,
+          normalizedFrom,
           fromSector,
           count,
           useElite
@@ -667,15 +845,200 @@ Note: This is more expensive than movement but allows you to pull forces complet
         ctx.updateState(newState);
 
         return successResult(
-          `Shipped ${count} forces from ${fromTerritoryId} back to reserves for ${cost} spice`,
+          `Shipped ${count} forces from ${normalizedFrom} back to reserves for ${cost} spice`,
           {
             faction,
-            fromTerritory: fromTerritoryId,
+            fromTerritory: normalizedFrom,
             fromSector,
             count,
             cost,
           },
           true
+        );
+      },
+    }),
+
+    /**
+     * Bene Gesserit INTRUSION ability (Rule 2.02.16).
+     * When a non-ally enters a territory where BG has fighters, BG may flip them to advisors.
+     */
+    bg_intrusion: tool({
+      description: `Bene Gesserit INTRUSION ability (Rule 2.02.16): When a Force of another faction that you are not allied to enters a Territory where you have fighters, you may flip them to advisors.
+
+This is an OPTIONAL ability that triggers when:
+- A non-ally faction ships or moves forces into a territory
+- You have fighters (not advisors) in that territory
+- You choose to flip those fighters to advisors
+
+Key points:
+- OPTIONAL (you can pass)
+- Can be cancelled by Karama (✷)
+- "Enters" includes: ship, move, send, worm ride, etc.
+- Only applies to fighters (not advisors)
+- Only applies when non-ally enters (allies don't trigger this)
+
+Use this to:
+- Avoid battles by converting fighters to non-combatant advisors
+- Coexist peacefully with other factions
+- Maintain presence without engaging in combat`,
+      inputSchema: BGIntrusionSchema,
+      execute: async (params: z.infer<typeof BGIntrusionSchema>, options) => {
+        const { choice, territoryId: rawTerritoryId, sector, count } = params;
+        
+        // Normalize territory ID
+        const territoryId = normalizeTerritoryId(rawTerritoryId);
+        if (!territoryId) {
+          return failureResult(
+            `Invalid territory ID: "${rawTerritoryId}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTerritoryId}" does not exist` },
+            false
+          );
+        }
+        
+        const state = ctx.state;
+        const faction = ctx.faction;
+
+        // Check: Must be Bene Gesserit
+        if (faction !== Faction.BENE_GESSERIT) {
+          return failureResult(
+            'Only Bene Gesserit can use this ability',
+            { code: 'INVALID_FACTION', message: 'Only Bene Gesserit can use this ability' },
+            false
+          );
+        }
+
+        // Check if passing
+        if (choice === 'pass') {
+          return successResult(
+            'Bene Gesserit passes on INTRUSION ability',
+            { faction, choice: 'pass' },
+            false
+          );
+        }
+
+        // Check: Must have fighters in the territory/sector
+        const fightersInSector = getBGFightersInSector(state, territoryId, sector);
+        if (fightersInSector === 0) {
+          return failureResult(
+            `No fighters in ${territoryId} sector ${sector} to flip to advisors`,
+            { code: 'NO_FIGHTERS', message: 'No fighters present in this location' },
+            false
+          );
+        }
+
+        // Determine how many to flip (default to all if not specified)
+        const flipCount = count !== undefined ? count : fightersInSector;
+        if (flipCount > fightersInSector) {
+          return failureResult(
+            `Cannot flip ${flipCount} fighters: only ${fightersInSector} fighters available`,
+            { code: 'INSUFFICIENT_FIGHTERS', message: 'Not enough fighters to flip' },
+            false
+          );
+        }
+
+        if (flipCount <= 0) {
+          return failureResult(
+            'Must flip at least 1 fighter',
+            { code: 'INVALID_COUNT', message: 'Count must be positive' },
+            false
+          );
+        }
+
+        // Check: Valid territory
+        const territory = TERRITORY_DEFINITIONS[territoryId];
+        if (!territory) {
+          return failureResult(
+            `Invalid territory: ${territoryId}`,
+            { code: 'INVALID_TERRITORY', message: 'Territory does not exist' },
+            false
+          );
+        }
+
+        // Check: Valid sector
+        if (!territory.sectors.includes(sector) && territory.sectors.length > 0) {
+          return failureResult(
+            `Sector ${sector} is not part of ${territory.name}`,
+            { code: 'INVALID_TERRITORY', message: `Invalid sector for ${territory.name}` },
+            false
+          );
+        }
+
+        // Execute the flip
+        const newState = convertBGFightersToAdvisors(
+          state,
+          territoryId,
+          sector,
+          flipCount
+        );
+
+        ctx.updateState(newState);
+
+        return successResult(
+          `Bene Gesserit flips ${flipCount} fighter${flipCount !== 1 ? 's' : ''} to advisor${flipCount !== 1 ? 's' : ''} in ${territory.name} (sector ${sector})`,
+          {
+            faction,
+            choice: 'flip',
+            territoryId,
+            sector,
+            count: flipCount,
+          },
+          true
+        );
+      },
+    }),
+
+    /**
+     * Bene Gesserit TAKE UP ARMS ability (Rule 2.02.17).
+     * When moving advisors to occupied territory, BG may flip them to fighters.
+     */
+    bg_take_up_arms: tool({
+      description: `Bene Gesserit TAKE UP ARMS ability (Rule 2.02.17): When you Move advisors into an occupied Territory, you may flip them to fighters following occupancy limit if you do not already have advisors present.
+
+Rule 2.02.17: "When you Move advisors into an occupied Territory, you may flip them to fighters following occupancy limit if you do not already have advisors present.✷"
+
+Key points:
+- OPTIONAL (you choose whether to flip)
+- Only applies when moving advisors to occupied territory (other factions present)
+- Only if you DON'T already have advisors in that territory
+- Subject to PEACETIME restriction (can't flip with ally present)
+- Subject to STORMED IN restriction (can't flip under storm)
+- Must follow occupancy limit (for strongholds)
+- Can be cancelled by Karama (✷)`,
+      inputSchema: BGTakeUpArmsSchema,
+      execute: async (params: z.infer<typeof BGTakeUpArmsSchema>, options) => {
+        const { choice } = params;
+        
+        const state = ctx.state;
+        const faction = ctx.faction;
+
+        // Check: Must be Bene Gesserit
+        if (faction !== Faction.BENE_GESSERIT) {
+          return failureResult(
+            'Only Bene Gesserit can use this ability',
+            { code: 'INVALID_FACTION', message: 'Only Bene Gesserit can use this ability' },
+            false
+          );
+        }
+
+        // Check if passing
+        if (choice === 'pass') {
+          return successResult(
+            'Bene Gesserit passes on TAKE UP ARMS (keeps advisors as advisors)',
+            { faction, choice: 'pass' },
+            false
+          );
+        }
+
+        // The actual flip is handled by the phase handler after movement
+        // This tool just indicates the choice
+        // The phase handler will validate restrictions and perform the flip
+        return successResult(
+          'Bene Gesserit chooses to flip advisors to fighters (TAKE UP ARMS)',
+          {
+            faction,
+            choice: 'flip',
+          },
+          false // State update handled by phase handler
         );
       },
     }),
@@ -686,5 +1049,5 @@ Note: This is more expensive than movement but allows you to pull forces complet
 // TOOL LIST
 // =============================================================================
 
-export const SHIPMENT_TOOL_NAMES = ['ship_forces', 'fremen_send_forces', 'guild_cross_ship', 'guild_ship_off_planet', 'bg_send_spiritual_advisor', 'pass_shipment', 'guild_act_now', 'guild_wait'] as const;
+export const SHIPMENT_TOOL_NAMES = ['ship_forces', 'fremen_send_forces', 'guild_cross_ship', 'guild_ship_off_planet', 'bg_send_spiritual_advisor', 'bg_intrusion', 'bg_take_up_arms', 'pass_shipment', 'guild_act_now', 'guild_wait'] as const;
 export type ShipmentToolName = (typeof SHIPMENT_TOOL_NAMES)[number];

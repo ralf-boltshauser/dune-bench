@@ -5,7 +5,7 @@
  */
 
 import { Faction } from '../../../types';
-import { buildBiddingTestState, getKaramaCardId } from '../helpers/test-state-builder';
+import { buildBiddingTestState } from '../helpers/test-state-builder';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
 import { runBiddingScenario, logScenarioResults } from './base-scenario';
 
@@ -41,8 +41,6 @@ export async function testComplexMultiCard() {
       [Faction.SPACING_GUILD, []],
     ]),
   });
-
-  const karamaCardId = getKaramaCardId(state, Faction.ATREIDES) ?? 'karama_1';
 
   // Queue responses: Complex bidding with all abilities
   const responses = new AgentResponseBuilder();

@@ -15,6 +15,15 @@ import { testSpiceDestructionRules } from './scenarios/spice-destruction-rules';
 import { testStormWrapsAround } from './scenarios/storm-wraps-around';
 import { testMinimalMaximumMovement } from './scenarios/minimal-maximum-movement';
 import { testMultiSectorTerritory } from './scenarios/multi-sector-territory';
+// Edge case tests
+import { testEdgeCaseOnlyTwoFactions } from './scenarios/edge-case-only-two-factions';
+import { testEdgeCaseDuplicateDialers } from './scenarios/edge-case-duplicate-dialers';
+import { testEdgeCaseSingleDial } from './scenarios/edge-case-single-dial';
+import { testEdgeCaseEmptyResponses } from './scenarios/edge-case-empty-responses';
+import { testEdgeCaseTurn1SingleFaction } from './scenarios/edge-case-turn1-single-faction';
+import { testEdgeCaseAllClustered } from './scenarios/edge-case-all-clustered';
+import { testEdgeCaseSameSide } from './scenarios/edge-case-same-side';
+import { testEdgeCaseInvalidMovement } from './scenarios/edge-case-invalid-movement';
 
 async function runAllTests() {
   console.log('='.repeat(80));
@@ -79,6 +88,58 @@ async function runAllTests() {
     await testMultiSectorTerritory();
   } catch (error) {
     console.error('Multi-Sector Territory failed:', error);
+  }
+  
+  console.log('\n' + '='.repeat(80));
+  console.log('EDGE CASE TESTS');
+  console.log('='.repeat(80));
+  
+  try {
+    await testEdgeCaseOnlyTwoFactions();
+  } catch (error) {
+    console.error('Edge Case: Only 2 Factions failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseDuplicateDialers();
+  } catch (error) {
+    console.error('Edge Case: Duplicate Dialers failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseSingleDial();
+  } catch (error) {
+    console.error('Edge Case: Single Dial failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseEmptyResponses();
+  } catch (error) {
+    console.error('Edge Case: Empty Responses failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseTurn1SingleFaction();
+  } catch (error) {
+    console.error('Edge Case: Turn 1 Single Faction failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseAllClustered();
+  } catch (error) {
+    console.error('Edge Case: All Clustered failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseSameSide();
+  } catch (error) {
+    console.error('Edge Case: Same Side failed:', error);
+  }
+  
+  try {
+    await testEdgeCaseInvalidMovement();
+  } catch (error) {
+    console.error('Edge Case: Invalid Movement failed:', error);
   }
   
   console.log('\n✅ All tests completed. Check test-logs/storm/ for log files.');

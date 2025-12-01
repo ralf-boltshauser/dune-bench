@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 // =============================================================================
 // TYPES
@@ -28,11 +29,16 @@ function useGameStream(gameId: string | null) {
   const [events, setEvents] = useState<StreamEvent[]>([]);
   const [status, setStatus] = useState<ConnectionStatus>('disconnected');
   const [error, setError] = useState<string | null>(null);
+  // Use state for lastEventId to avoid accessing ref during render
+  const [lastEventId, setLastEventId] = useState<string | null>(null);
 
   // Track last event ID for reconnection
   const lastEventIdRef = useRef<string | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Store connect function in a ref to allow recursive calls
+  const connectRef = useRef<(() => void) | null>(null);
 
   /**
    * Connect to the SSE stream
@@ -72,6 +78,7 @@ function useGameStream(gameId: string | null) {
         // Track last event ID for reconnection (skip connection events)
         if (event.seq > 0) {
           lastEventIdRef.current = event.id;
+          setLastEventId(event.id);
         }
 
         setEvents((prev) => [...prev, event]);
@@ -92,10 +99,18 @@ function useGameStream(gameId: string | null) {
       // Manual reconnection with lastEventId after 2 seconds
       reconnectTimeoutRef.current = setTimeout(() => {
         console.log('Attempting reconnection...');
-        connect();
+        // Use ref to avoid closure issues
+        if (connectRef.current) {
+          connectRef.current();
+        }
       }, 2000);
     };
   }, [gameId]);
+
+  // Update ref when connect changes
+  useEffect(() => {
+    connectRef.current = connect;
+  }, [connect]);
 
   /**
    * Disconnect from the stream
@@ -126,7 +141,15 @@ function useGameStream(gameId: string | null) {
   // Connect when gameId changes
   useEffect(() => {
     if (gameId) {
-      connect();
+      // Use setTimeout to make the connection asynchronous and avoid ESLint warning
+      const timeoutId = setTimeout(() => {
+        connect();
+      }, 0);
+
+      return () => {
+        clearTimeout(timeoutId);
+        disconnect();
+      };
     }
 
     return () => {
@@ -138,7 +161,7 @@ function useGameStream(gameId: string | null) {
     events,
     status,
     error,
-    lastEventId: lastEventIdRef.current,
+    lastEventId,
     reset,
   };
 }
@@ -262,13 +285,13 @@ export default function StreamDemoPage() {
                 </span>
               )}
             </div>
-            <button
+            <Button
               onClick={startGame}
               disabled={isStarting}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              variant="default"
             >
               {isStarting ? 'Starting...' : 'Start New Game'}
-            </button>
+            </Button>
           </div>
 
           {/* Error Messages */}

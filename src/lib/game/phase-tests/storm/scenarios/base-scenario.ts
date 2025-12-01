@@ -5,7 +5,8 @@
  */
 
 import { StormPhaseHandler } from '../../../phases/handlers/storm';
-import { MockAgentProvider } from '../../../phases/phase-manager';
+import '../../../agent/env-loader';
+import { createAgentProvider } from '../../../agent/azure-provider';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
 import { TestLogger } from '../../helpers/test-logger';
 import type { GameState } from '../../../types';
@@ -29,7 +30,7 @@ export async function runStormScenario(
   maxSteps: number = 100
 ): Promise<ScenarioResult> {
   const handler = new StormPhaseHandler();
-  const provider = new MockAgentProvider('pass');
+  const provider = createAgentProvider(state, { verbose: false });
   const logger = new TestLogger(scenarioName, 'storm');
   
   // Log initial state with detailed context
@@ -59,18 +60,10 @@ export async function runStormScenario(
     logger.logInfo(0, `  - ${spice.amount} spice in ${spice.territoryId} sector ${spice.sector}`);
   });
   
-  // Load responses into provider
+  // Note: Using Azure OpenAI agent - responses are generated dynamically
   const responses = responseBuilder.getResponses();
   const allResponses = Array.from(responses.values()).flat();
-  logger.logInfo(0, `Queued ${allResponses.length} agent responses`);
-  allResponses.forEach(response => {
-    logger.logInfo(0, `  - ${response.factionId}: ${response.actionType} with data:`, response.data);
-  });
-  for (const [requestType, responseList] of responses.entries()) {
-    for (const response of responseList) {
-      provider.queueResponse(requestType, response);
-    }
-  }
+  logger.logInfo(0, `Note: ${allResponses.length} expected responses (using Azure OpenAI)`);
 
   // Initialize phase
   const initResult = handler.initialize(state);
@@ -89,7 +82,7 @@ export async function runStormScenario(
   let responsesQueue: AgentResponse[] = [];
   let stepCount = 0;
   let phaseComplete = initResult.phaseComplete;
-  let pendingRequests = initResult.pendingRequests;
+  const pendingRequests = initResult.pendingRequests;
 
   // Get initial responses if there are pending requests
   if (pendingRequests.length > 0) {

@@ -5,7 +5,8 @@
  */
 
 import { SpiceBlowPhaseHandler } from '../../../phases/handlers/spice-blow';
-import { MockAgentProvider } from '../../../phases/phase-manager';
+import '../../../agent/env-loader';
+import { createAgentProvider } from '../../../agent/azure-provider';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
 import { TestLogger } from '../../helpers/test-logger';
 import type { GameState } from '../../../types';
@@ -29,7 +30,7 @@ export async function runSpiceBlowScenario(
   maxSteps: number = 100
 ): Promise<ScenarioResult> {
   const handler = new SpiceBlowPhaseHandler();
-  const provider = new MockAgentProvider('pass');
+  const provider = createAgentProvider(state, { verbose: false });
   const logger = new TestLogger(scenarioName, 'spice-blow');
   
   // Log initial state
@@ -39,15 +40,10 @@ export async function runSpiceBlowScenario(
   logger.logInfo(0, `Spice Deck A: ${state.spiceDeckA.length} cards`);
   logger.logInfo(0, `Spice Deck B: ${state.spiceDeckB.length} cards`);
   
-  // Load responses into provider
+  // Note: Using Azure OpenAI agent - responses are generated dynamically
   const responses = responseBuilder.getResponses();
   const totalResponses = Array.from(responses.values()).flat().length;
-  logger.logInfo(0, `Queued ${totalResponses} agent responses`);
-  for (const [requestType, responseList] of responses.entries()) {
-    for (const response of responseList) {
-      provider.queueResponse(requestType, response);
-    }
-  }
+  logger.logInfo(0, `Note: ${totalResponses} expected responses (using Azure OpenAI)`);
 
   // Initialize phase
   const initResult = handler.initialize(state);

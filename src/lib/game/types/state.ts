@@ -193,6 +193,14 @@ export interface GameState {
   factions: Map<Faction, FactionState>;
   stormOrder: Faction[]; // Order for current turn, determined by storm
   playerPositions: Map<Faction, number>; // Player token positions (sector 0-17) around board edge
+  /**
+   * Factions that are currently "active" for UI/agent decisions.
+   * - Bidding: the faction whose turn it is to bid.
+   * - Shipment/Movement: the faction currently shipping/moving.
+   * - Battle: all factions involved in the current battle.
+   * Empty when no one is actively acting.
+   */
+  activeFactions: Faction[];
 
   // Board state
   stormSector: number;
@@ -207,6 +215,7 @@ export interface GameState {
   spiceDeckB: SpiceCard[]; // Pile B deck (only used in advanced rules)
   spiceDiscardA: SpiceCard[];
   spiceDiscardB: SpiceCard[]; // Only used in advanced rules
+  stormDeck: number[]; // Storm deck cards (values 1-6, one of each)
 
   // Alliances
   alliances: Alliance[];
@@ -230,6 +239,9 @@ export interface GameState {
 
   // Karama interrupt tracking
   karamaState: KaramaInterruptState | null;
+
+  // BG Spiritual Advisor tracking (Rule 2.02.11)
+  bgSpiritualAdvisorTrigger: { territory: TerritoryId; sector: number } | null;
 
   // Game log
   actionLog: GameAction[];

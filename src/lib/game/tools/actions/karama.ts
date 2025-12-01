@@ -15,7 +15,21 @@ import { successResult, failureResult } from '../types';
 import { FactionSchema } from '../schemas';
 import { getFactionState } from '../../state';
 import { getTreacheryCardDefinition, isKaramaCard, isWorthless } from '../../data/treachery-cards';
-import { Faction, CardLocation } from '../../types';
+import { Faction, CardLocation, Phase, type FactionState } from '../../types';
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
+/**
+ * Extended FactionState with optional Karama-related runtime properties.
+ * These properties are added temporarily during tool execution.
+ */
+type FactionStateWithKarama = FactionState & {
+  karamaGuildShipmentActive?: boolean;
+  karamaBiddingActive?: boolean;
+  karamaFreeCardActive?: boolean;
+};
 
 // =============================================================================
 // SCHEMAS
@@ -75,6 +89,13 @@ export const KaramaGuildShipmentSchema = z.object({
 export const KaramaBidOverSpiceSchema = z.object({
   bidAmount: z.number().int().min(1).describe('The amount to bid (can exceed your spice)'),
   karamaCardId: z.string().describe('The ID of the Karama card to use'),
+});
+
+/**
+ * Schema for trading Karama card for free treachery card in bidding.
+ */
+export const KaramaTradeForFreeCardSchema = z.object({
+  karamaCardId: z.string().describe('The ID of the Karama card to trade'),
 });
 
 // =============================================================================
@@ -205,7 +226,7 @@ Bene Gesserit special: You may use any worthless card as if it were a Karama car
         const targetFaction = state.karamaState.targetFaction;
         const abilityName = state.karamaState.abilityName;
 
-        let newState = { ...state };
+        const newState = { ...state };
 
         // Update karama state with response
         if (newState.karamaState) {
@@ -322,9 +343,9 @@ This is paid to the Spice Bank, not to the Guild player.`,
 
         // Mark Karama as being used for Guild shipment this turn
         // This will be checked by the shipment tool
-        let newState = { ...state };
-        const updatedFactionState = { ...factionState };
-        (updatedFactionState as any).karamaGuildShipmentActive = true;
+        const newState = { ...state };
+        const updatedFactionState = { ...factionState } as FactionStateWithKarama;
+        updatedFactionState.karamaGuildShipmentActive = true;
 
         // Discard the card
         const cardIndex = factionState.hand.findIndex((c) => c.definitionId === karamaCardId);
@@ -418,9 +439,9 @@ This can also be used to buy a card without paying spice for it (if your hand is
         }
 
         // Mark Karama as being used for bidding
-        let newState = { ...state };
-        const updatedFactionState = { ...factionState };
-        (updatedFactionState as any).karamaBiddingActive = true;
+        const newState = { ...state };
+        const updatedFactionState = { ...factionState } as FactionStateWithKarama;
+        updatedFactionState.karamaBiddingActive = true;
 
         // Discard the card
         const cardIndex = factionState.hand.findIndex((c) => c.definitionId === karamaCardId);
@@ -453,6 +474,124 @@ This can also be used to buy a card without paying spice for it (if your hand is
         });
       },
     }),
+
+    /**
+     * Trade Karama card for the current treachery card for free.
+     * This is used during bidding phase when you have Karama but insufficient spice.
+     * Different from use_karama_bid_over_spice - this allows getting the card for free,
+     * not bidding over your spice limit.
+     *
+     * NOTE: Game rules now enforce that all bids must be at least 1 spice and
+     * strictly higher than the current bid. Karama no longer creates a "0 bid".
+     * Instead, when karamaFreeCardActive is set, if you win the auction with a
+     * legal bid, payment will be waived in resolveAuction().
+     */
+    trade_karama_for_treachery_card: tool({
+      description: `Trade a Karama card to get the current treachery card for free during bidding phase.
+
+Use this when you have a Karama card but insufficient spice to bid on the current card.
+This allows you to discard your Karama card and mark that you will take the current treachery card
+for free as soon as it becomes your turn to act in this auction.
+
+This is different from use_karama_bid_over_spice:
+- use_karama_bid_over_spice: Allows bidding more than you have, but you still pay if you win
+- trade_karama_for_treachery_card: Lets you take the current card for free (no spice paid) when it is your turn
+  to bid on this card; the auction for this card ends immediately at that point.
+
+After using this tool, you must still follow the normal bidding order. When it becomes your turn on this auction,
+you receive the current card for free (your spice is not reduced and the Emperor does not get paid).`,
+      inputSchema: KaramaTradeForFreeCardSchema,
+      execute: async (params) => {
+        const { karamaCardId } = params;
+        const state = ctx.state;
+        const faction = ctx.faction;
+        const factionState = getFactionState(state, faction);
+
+        // Check if we're in bidding phase
+        if (state.phase !== Phase.BIDDING) {
+          return failureResult('This tool can only be used during the bidding phase', {
+            code: 'WRONG_PHASE',
+            message: 'trade_karama_for_treachery_card can only be used during the bidding phase',
+          });
+        }
+
+        // Validate card
+        const card = factionState.hand.find((c) => c.definitionId === karamaCardId);
+        if (!card) {
+          return failureResult(`Card ${karamaCardId} not in your hand`, {
+            code: 'CARD_NOT_IN_HAND',
+            message: `Card ${karamaCardId} is not in your hand`,
+            field: 'karamaCardId',
+            providedValue: karamaCardId,
+          });
+        }
+
+        const cardDef = getTreacheryCardDefinition(karamaCardId);
+        if (!cardDef) {
+          return failureResult(`Unknown card: ${karamaCardId}`, {
+            code: 'UNKNOWN_CARD',
+            message: `Card definition not found: ${karamaCardId}`,
+            field: 'karamaCardId',
+            providedValue: karamaCardId,
+          });
+        }
+
+        const isValidKarama = isKaramaCard(cardDef);
+        const isBGWorthless = faction === Faction.BENE_GESSERIT && isWorthless(cardDef);
+
+        if (!isValidKarama && !isBGWorthless) {
+          return failureResult(
+            'Card is not a Karama card' +
+              (faction === Faction.BENE_GESSERIT ? ' or worthless card' : ''),
+            {
+              code: 'INVALID_CARD_TYPE',
+              message:
+                'Card must be a Karama card' +
+                (faction === Faction.BENE_GESSERIT ? ' or worthless card (BG ability)' : ''),
+              field: 'karamaCardId',
+              providedValue: karamaCardId,
+            }
+          );
+        }
+
+        // Mark Karama as being used for free card trade
+        const newState = { ...state };
+        const updatedFactionState = { ...factionState } as FactionStateWithKarama;
+        updatedFactionState.karamaFreeCardActive = true;
+
+        // Discard the card
+        const cardIndex = factionState.hand.findIndex((c) => c.definitionId === karamaCardId);
+        if (cardIndex !== -1) {
+          const removedCard = updatedFactionState.hand[cardIndex];
+          updatedFactionState.hand = [
+            ...updatedFactionState.hand.slice(0, cardIndex),
+            ...updatedFactionState.hand.slice(cardIndex + 1),
+          ];
+
+          newState.treacheryDiscard = [
+            ...newState.treacheryDiscard,
+            {
+              ...removedCard,
+              location: CardLocation.DISCARD,
+              ownerId: null,
+            },
+          ];
+        }
+
+        newState.factions = new Map(newState.factions);
+        newState.factions.set(faction, updatedFactionState);
+        ctx.updateState(newState);
+
+        return successResult(
+          'Karama card traded - you can now bid 0 spice to get the current treachery card for free',
+          {
+            faction,
+            karamaCardId,
+            freeCardEnabled: true,
+          }
+        );
+      },
+    }),
   };
 }
 
@@ -464,6 +603,7 @@ export const KARAMA_TOOL_NAMES = [
   'respond_to_karama_opportunity',
   'use_karama_guild_shipment',
   'use_karama_bid_over_spice',
+  'trade_karama_for_treachery_card',
 ] as const;
 
 export type KaramaToolName = (typeof KARAMA_TOOL_NAMES)[number];
@@ -516,12 +656,12 @@ export const KARAMA_CANCELLABLE_ABILITIES = {
  * Check if an ability can be cancelled with Karama (after use).
  */
 export function isKaramaCancellable(abilityName: string): boolean {
-  return KARAMA_CANCELLABLE_ABILITIES.CANCEL_ONLY.includes(abilityName as any);
+  return KARAMA_CANCELLABLE_ABILITIES.CANCEL_ONLY.includes(abilityName as (typeof KARAMA_CANCELLABLE_ABILITIES.CANCEL_ONLY)[number]);
 }
 
 /**
  * Check if an ability can be prevented with Karama (before use).
  */
 export function isKaramaPreventable(abilityName: string): boolean {
-  return KARAMA_CANCELLABLE_ABILITIES.PREVENT.includes(abilityName as any);
+  return KARAMA_CANCELLABLE_ABILITIES.PREVENT.includes(abilityName as (typeof KARAMA_CANCELLABLE_ABILITIES.PREVENT)[number]);
 }

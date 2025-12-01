@@ -14,7 +14,7 @@ export async function testKaramaBuyWithoutPaying() {
   console.log('='.repeat(80));
 
   // Build state: Atreides has Karama, low spice, other factions have more
-  let state = buildBiddingTestState({
+  const state = buildBiddingTestState({
     factions: [Faction.ATREIDES, Faction.HARKONNEN, Faction.EMPEROR],
     spice: new Map([
       [Faction.ATREIDES, 2], // Low spice - will use Karama to buy without paying
@@ -40,7 +40,7 @@ export async function testKaramaBuyWithoutPaying() {
     'karama-buy-without-paying',
     100,
     {
-      model: 'claude-haiku-4-5', // Use Haiku for speed/cost
+      model: 'gpt-5-mini', // Use gpt-5-mini
       temperature: 0.7,
       verbose: false,
     }

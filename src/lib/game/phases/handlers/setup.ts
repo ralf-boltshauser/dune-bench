@@ -223,9 +223,49 @@ export class SetupPhaseHandler implements PhaseHandler {
       for (const response of responses) {
         // Tool name 'distribute_fremen_forces' becomes 'DISTRIBUTE_FREMEN_FORCES' actionType
         if (response.factionId === Faction.FREMEN && response.actionType === 'DISTRIBUTE_FREMEN_FORCES') {
-          // The tool passes the distribution directly as top-level data (sietch_tabr, etc.)
-          // not nested under 'distribution'
-          const distribution = response.data as Record<string, number>;
+          // The tool returns { distribution: { sietch_tabr: { count, sector }, ... } }
+          // OR the agent might pass sector params directly: { sietch_tabr: 5, sietch_tabr_sector: 13, ... }
+          const toolData = response.data as Record<string, unknown>;
+          let distribution: Record<string, { count: number; sector: number } | number>;
+          
+          if (toolData.distribution && typeof toolData.distribution === 'object') {
+            // Tool format: { distribution: { sietch_tabr: { count, sector }, ... } }
+            // CRITICAL: Filter to only include valid territories to prevent invalid placements
+            const rawDistribution = toolData.distribution as Record<string, { count: number; sector: number } | number>;
+            distribution = {};
+            for (const territory of FREMEN_STARTING_TERRITORIES) {
+              if (rawDistribution[territory] !== undefined) {
+                distribution[territory] = rawDistribution[territory];
+              }
+            }
+            
+            // Log warning if invalid territories were provided
+            const invalidTerritories = Object.keys(rawDistribution).filter(
+              k => !FREMEN_STARTING_TERRITORIES.includes(k as TerritoryId)
+            );
+            if (invalidTerritories.length > 0) {
+              console.warn(
+                `[Fremen Force Distribution] Invalid territories in distribution object ignored: ${invalidTerritories.join(', ')}`
+              );
+            }
+          } else {
+            // Agent might pass sector params directly: { sietch_tabr: 5, sietch_tabr_sector: 13, ... }
+            distribution = {};
+            for (const territory of FREMEN_STARTING_TERRITORIES) {
+              const count = typeof toolData[territory] === 'number' ? toolData[territory] as number : undefined;
+              const sectorKey = `${territory}_sector`;
+              const sector = typeof toolData[sectorKey] === 'number' ? toolData[sectorKey] as number : undefined;
+              
+              if (count !== undefined && count > 0) {
+                if (sector !== undefined) {
+                  distribution[territory] = { count, sector };
+                } else {
+                  distribution[territory] = count; // Will use default sector
+                }
+              }
+            }
+          }
+          
           newState = this.distributeFremenForces(newState, distribution, events);
           this.context.fremenForcesDistributed = true;
         }
@@ -332,6 +372,34 @@ export class SetupPhaseHandler implements PhaseHandler {
         });
         console.log('='.repeat(80) + '\n');
         
+        // Emit event with Harkonnen's available traitor options (all 4 are kept)
+        const harkonnenTraitorOptions = dealt.map(t => {
+          const leaderDef = getLeaderDefinition(t.leaderId);
+          return {
+            id: t.leaderId,
+            name: leaderDef?.name ?? t.leaderName,
+            faction: t.leaderFaction,
+            factionName: FACTION_NAMES[t.leaderFaction],
+            strength: leaderDef?.strength ?? 0,
+          };
+        });
+        
+        events.push({
+          type: 'TRAITOR_OPTIONS_AVAILABLE',
+          data: {
+            faction: Faction.HARKONNEN,
+            traitorOptions: harkonnenTraitorOptions.map(o => ({
+              id: o.id,
+              name: o.name,
+              faction: o.faction,
+              factionName: o.factionName,
+              strength: o.strength,
+            })),
+            autoKept: true, // Harkonnen auto-keeps all
+          },
+          message: `${FACTION_NAMES[Faction.HARKONNEN]} automatically keeps all ${harkonnenTraitorOptions.length} traitors`,
+        });
+        
         newState = this.completeTraitorSelection(
           newState,
           Faction.HARKONNEN,
@@ -383,6 +451,22 @@ export class SetupPhaseHandler implements PhaseHandler {
       console.log('💡 Strategy: Choose a traitor from a faction you expect to fight.');
       console.log('   Higher strength leaders are more valuable as traitors.');
       console.log('='.repeat(80) + '\n');
+
+      // Emit event with available traitor options for visualization
+      events.push({
+        type: 'TRAITOR_OPTIONS_AVAILABLE',
+        data: {
+          faction,
+          traitorOptions: traitorOptions.map(o => ({
+            id: o.id,
+            name: o.name,
+            faction: o.faction,
+            factionName: o.factionName,
+            strength: o.strength,
+          })),
+        },
+        message: `${FACTION_NAMES[faction]} has ${traitorOptions.length} traitor options available`,
+      });
 
       pendingRequests.push({
         factionId: faction,
@@ -552,15 +636,22 @@ export class SetupPhaseHandler implements PhaseHandler {
       requestType: 'DISTRIBUTE_FORCES',
       prompt: `FREMEN STARTING FORCE DISTRIBUTION (Rule 2.04.02)
 
-You must distribute EXACTLY 10 forces total across these three territories:
-- sietch_tabr (Sietch Tabr - your stronghold)
-- false_wall_south (False Wall South)
-- false_wall_west (False Wall West)
+You must distribute EXACTLY 10 forces total across these three territories, choosing both territory and sector:
+- sietch_tabr (Sietch Tabr - your stronghold) - sector 13
+- false_wall_south (False Wall South) - sectors 3 or 4
+- false_wall_west (False Wall West) - sectors 15, 16, or 17
 
-Use the distribute_fremen_forces tool with these EXACT territory IDs.
+Use the distribute_fremen_forces tool with these EXACT territory IDs and optional sector parameters.
 The total of sietch_tabr + false_wall_south + false_wall_west MUST equal 10.
 
-Example: { sietch_tabr: 5, false_wall_south: 3, false_wall_west: 2 }`,
+Example: { 
+  sietch_tabr: 5, 
+  sietch_tabr_sector: 13,
+  false_wall_south: 3, 
+  false_wall_south_sector: 4,
+  false_wall_west: 2,
+  false_wall_west_sector: 16
+}`,
       context: {
         totalForcesToDistribute: 10,
         validTerritoryIds: ['sietch_tabr', 'false_wall_south', 'false_wall_west'],
@@ -587,7 +678,7 @@ Example: { sietch_tabr: 5, false_wall_south: 3, false_wall_west: 2 }`,
    */
   private distributeFremenForces(
     state: GameState,
-    distribution: Record<string, number>,
+    distribution: Record<string, { count: number; sector: number } | number>,
     events: PhaseEvent[]
   ): GameState {
     const newFactions = new Map(state.factions);
@@ -599,23 +690,38 @@ Example: { sietch_tabr: 5, false_wall_south: 3, false_wall_west: 2 }`,
 
     // Validate total forces = 10
     let totalDistributed = 0;
-    const validatedDistribution: Record<string, number> = {};
+    const validatedDistribution: Record<string, { count: number; sector: number }> = {};
 
     for (const territory of FREMEN_STARTING_TERRITORIES) {
-      const count = distribution[territory] || 0;
-      validatedDistribution[territory] = count;
+      const territoryData = distribution[territory];
+      
+      // Handle both old format (just number) and new format (object with count and sector)
+      let count: number;
+      let sector: number;
+      
+      if (typeof territoryData === 'object' && territoryData !== null && 'count' in territoryData) {
+        count = (territoryData as { count: number; sector: number }).count;
+        sector = (territoryData as { count: number; sector: number }).sector;
+      } else {
+        count = (territoryData as number) || 0;
+        // Default sectors if not provided
+        sector = territory === 'sietch_tabr' ? 13 :
+                 territory === 'false_wall_south' ? 3 : 15;
+      }
+      
+      validatedDistribution[territory] = { count, sector };
       totalDistributed += count;
     }
 
     console.log('  Validated totals by territory:');
-    console.log(`    sietch_tabr: ${validatedDistribution['sietch_tabr']}`);
-    console.log(`    false_wall_south: ${validatedDistribution['false_wall_south']}`);
-    console.log(`    false_wall_west: ${validatedDistribution['false_wall_west']}`);
+    for (const [territory, data] of Object.entries(validatedDistribution)) {
+      console.log(`    ${territory}: ${data.count} in sector ${data.sector}`);
+    }
     console.log(`  Total: ${totalDistributed} (required: 10)`);
 
     // Check for invalid keys
     const invalidKeys = Object.keys(distribution).filter(
-      k => !FREMEN_STARTING_TERRITORIES.includes(k as TerritoryId)
+      k => !FREMEN_STARTING_TERRITORIES.includes(k as TerritoryId) && !k.endsWith('_sector')
     );
     if (invalidKeys.length > 0) {
       console.log(`  WARNING: Invalid territory keys ignored: ${invalidKeys.join(', ')}`);
@@ -624,26 +730,38 @@ Example: { sietch_tabr: 5, false_wall_south: 3, false_wall_west: 2 }`,
     // If invalid distribution, use default even split
     if (totalDistributed !== 10) {
       console.log(`  INVALID: Total is ${totalDistributed}, not 10. Using default distribution.`);
-      distribution = {
-        'sietch_tabr': 4,
-        'false_wall_south': 3,
-        'false_wall_west': 3,
-      };
-      console.log('  Default applied: sietch_tabr=4, false_wall_south=3, false_wall_west=3');
-    } else {
-      console.log('  VALID: Distribution accepted.');
-      distribution = validatedDistribution;
+      validatedDistribution['sietch_tabr'] = { count: 4, sector: 13 };
+      validatedDistribution['false_wall_south'] = { count: 3, sector: 3 };
+      validatedDistribution['false_wall_west'] = { count: 3, sector: 15 };
+      console.log('  Default applied: sietch_tabr=4 (sector 13), false_wall_south=3 (sector 3), false_wall_west=3 (sector 15)');
     }
 
     // Update forces on board
     const forcesOnBoard = [...fremenState.forces.onBoard];
 
+    // Map of territory to valid sectors
+    const territorySectors: Record<string, number[]> = {
+      sietch_tabr: [13],
+      false_wall_south: [3, 4],
+      false_wall_west: [15, 16, 17],
+    };
+
     for (const territory of FREMEN_STARTING_TERRITORIES) {
-      const count = distribution[territory] || 0;
+      const territoryData = validatedDistribution[territory];
+      const count = territoryData.count;
+      let sector = territoryData.sector;
+
       if (count > 0) {
-        // Check if there's already a stack in this territory
+        // Validate sector
+        const validSectors = territorySectors[territory] || [];
+        if (!validSectors.includes(sector)) {
+          console.warn(`[Fremen Force Distribution] Invalid sector ${sector} for ${territory}, using default`);
+          sector = validSectors[0]; // Use first valid sector as default
+        }
+
+        // Check if there's already a stack in this territory and sector
         const existingIndex = forcesOnBoard.findIndex(
-          stack => stack.territoryId === territory
+          stack => stack.territoryId === territory && stack.sector === sector
         );
 
         if (existingIndex >= 0) {
@@ -656,11 +774,19 @@ Example: { sietch_tabr: 5, false_wall_south: 3, false_wall_west: 2 }`,
             },
           };
         } else {
-          // Create new stack (sector 0 for strongholds)
+          // Create new stack with specified sector
+          // CRITICAL: Double-check territory is valid before adding to board
+          if (!FREMEN_STARTING_TERRITORIES.includes(territory as TerritoryId)) {
+            console.error(
+              `[Fremen Force Distribution] CRITICAL: Attempted to place forces in invalid territory: ${territory}. This should never happen!`
+            );
+            continue; // Skip invalid territory
+          }
+          
           forcesOnBoard.push({
             factionId: Faction.FREMEN,
             territoryId: territory as TerritoryId,
-            sector: 0,
+            sector: sector,
             forces: { regular: count, elite: 0 },
           });
         }
@@ -683,11 +809,11 @@ Example: { sietch_tabr: 5, false_wall_south: 3, false_wall_west: 2 }`,
       type: 'FORCES_PLACED',
       data: {
         faction: Faction.FREMEN,
-        distribution,
+        distribution: validatedDistribution,
       },
-      message: `Fremen distributed 10 starting forces: ${Object.entries(distribution)
-        .filter(([_, count]) => count > 0)
-        .map(([territory, count]) => `${count} in ${territory.replace(/_/g, ' ')}`)
+      message: `Fremen distributed 10 starting forces: ${Object.entries(validatedDistribution)
+        .filter(([_, data]) => data.count > 0)
+        .map(([territory, data]) => `${data.count} in ${territory.replace(/_/g, ' ')} (sector ${data.sector})`)
         .join(', ')}`,
     });
 

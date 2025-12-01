@@ -4,7 +4,7 @@
  * Tests for the AI agent tool system.
  */
 
-import { Faction, Phase, type GameState } from '../types';
+import { Faction, Phase, TerritoryId, type GameState } from '../types';
 import { createGameState, type CreateGameOptions } from '../state';
 import {
   createAgentToolProvider,
@@ -13,6 +13,8 @@ import {
   PHASE_TOOLS,
   ALL_TOOL_NAMES,
 } from './index';
+import type { ModelMessage, ToolCallOptions } from 'ai';
+import type { ToolResult } from './types';
 
 // =============================================================================
 // TEST HELPERS
@@ -148,7 +150,7 @@ test('Context provides valid actions', () => {
 });
 
 test('Context provides territory info', () => {
-  const info = ctx.getTerritoryInfo('arrakeen' as any);
+  const info = ctx.getTerritoryInfo(TerritoryId.ARRAKEEN);
   return info !== null && info.isStronghold;
 });
 
@@ -199,9 +201,9 @@ test('Mentat Pause has nexus tools', () => {
 section('Tool Execution');
 
 // Create a mock ToolCallOptions for testing
-const mockToolOptions = {
+const mockToolOptions: ToolCallOptions = {
   toolCallId: 'test',
-  messages: [] as any[], // Empty messages array for testing
+  messages: [] as ModelMessage[], // Empty messages array for testing
   abortSignal: undefined,
 };
 
@@ -210,7 +212,7 @@ test('Information tool executes successfully', async () => {
   const viewState = tools['view_game_state'];
   if (!viewState || !viewState.execute) return false;
 
-  const result = await viewState.execute({}, mockToolOptions);
+  const result = (await viewState.execute({}, mockToolOptions)) as ToolResult;
   return result.success === true;
 });
 
@@ -220,7 +222,7 @@ test('Storm tool validates dial value', async () => {
   if (!dialStorm || !dialStorm.execute) return false;
 
   // Valid dial for turn 1
-  const result = await dialStorm.execute({ dial: 10 }, mockToolOptions);
+  const result = (await dialStorm.execute({ dial: 10 }, mockToolOptions)) as ToolResult;
   return result.success === true;
 });
 
@@ -230,7 +232,7 @@ test('Storm tool rejects invalid dial', async () => {
   if (!dialStorm || !dialStorm.execute) return false;
 
   // Invalid dial for turn 1 (max is 20)
-  const result = await dialStorm.execute({ dial: 25 }, mockToolOptions);
+  const result = (await dialStorm.execute({ dial: 25 }, mockToolOptions)) as ToolResult;
   return result.success === false && result.error?.code === 'INVALID_DIAL';
 });
 

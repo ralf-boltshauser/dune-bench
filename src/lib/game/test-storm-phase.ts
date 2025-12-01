@@ -38,7 +38,7 @@ class LogCapture {
     this.originalConsoleWarn = console.warn;
     this.originalConsoleInfo = console.info;
 
-    console.log = (...args: any[]) => {
+    console.log = (...args: unknown[]) => {
       const message = args.map(arg => 
         typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
       ).join(' ');
@@ -46,7 +46,7 @@ class LogCapture {
       this.originalConsoleLog(...args);
     };
 
-    console.error = (...args: any[]) => {
+    console.error = (...args: unknown[]) => {
       const message = args.map(arg => 
         typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
       ).join(' ');
@@ -54,7 +54,7 @@ class LogCapture {
       this.originalConsoleError(...args);
     };
 
-    console.warn = (...args: any[]) => {
+    console.warn = (...args: unknown[]) => {
       const message = args.map(arg => 
         typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
       ).join(' ');
@@ -62,7 +62,7 @@ class LogCapture {
       this.originalConsoleWarn(...args);
     };
 
-    console.info = (...args: any[]) => {
+    console.info = (...args: unknown[]) => {
       const message = args.map(arg => 
         typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
       ).join(' ');
@@ -92,8 +92,8 @@ class LogCapture {
 // =============================================================================
 
 async function main() {
-  if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_FOUNDRY_API_KEY) {
-    console.error('Error: ANTHROPIC_API_KEY or ANTHROPIC_FOUNDRY_API_KEY environment variable is required.');
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('Error: OPENAI_API_KEY environment variable is required.');
     process.exit(1);
   }
 

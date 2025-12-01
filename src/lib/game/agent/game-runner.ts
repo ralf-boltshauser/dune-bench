@@ -2,8 +2,11 @@
  * Game Runner
  *
  * High-level orchestrator that sets up and runs complete Dune games
- * with Claude agents playing each faction.
+ * with Azure OpenAI agents playing each faction.
  */
+
+// Ensure environment variables are loaded
+import './env-loader';
 
 import { createAllPhaseHandlers } from "../phases/handlers";
 import {
@@ -16,10 +19,13 @@ import type { PhaseEvent } from "../phases/types";
 import { createGameState, type CreateGameOptions } from "../state";
 import { Faction, Phase, type GameState, type WinResult } from "../types";
 import {
-  createClaudeAgentProvider,
-  type ClaudeAgentConfig,
-} from "./claude-provider";
+  createAgentProvider,
+  type AgentConfig,
+} from "./azure-provider";
 import { GameLogger, createLogger } from "./logger";
+import { MetricsCollector } from "../metrics/metrics-collector";
+import { metricsStore } from "../metrics/storage";
+import type { GameMetrics } from "../metrics/types";
 
 // =============================================================================
 // TYPES
@@ -33,7 +39,7 @@ export interface GameRunnerConfig {
   /** Whether to use advanced rules */
   advancedRules?: boolean;
   /** Agent configuration */
-  agentConfig?: ClaudeAgentConfig;
+  agentConfig?: AgentConfig;
   /** Event listener for game events */
   onEvent?: PhaseEventListener;
   /** Called when game state updates */
@@ -46,6 +52,12 @@ export interface GameRunnerConfig {
   skipSetup?: boolean;
   /** Game ID to use (overrides auto-generated ID) */
   gameId?: string;
+  /** Enable metrics collection (default: false) */
+  enableMetrics?: boolean;
+  /** Model name for metrics (required if enableMetrics is true) */
+  modelName?: string;
+  /** Save metrics to storage after game (default: false) */
+  saveMetrics?: boolean;
 }
 
 export interface GameSummary {
@@ -73,9 +85,12 @@ export class GameRunner {
       | "stopAfter"
       | "skipSetup"
       | "gameId"
+      | "enableMetrics"
+      | "modelName"
+      | "saveMetrics"
     >
   > &
-    Pick<GameRunnerConfig, "gameId">;
+    Pick<GameRunnerConfig, "gameId" | "enableMetrics" | "modelName" | "saveMetrics">;
   private onEvent?: PhaseEventListener;
   private onStateUpdate?: (state: GameState) => void;
   private events: PhaseEvent[] = [];
@@ -86,6 +101,10 @@ export class GameRunner {
   private skipSetup: boolean;
   private currentState: GameState | null = null;
   private phaseManager: PhaseManager | null = null;
+  /** Metrics collector (optional) */
+  private metricsCollector: MetricsCollector | null = null;
+  /** Whether to save metrics to storage */
+  private shouldSaveMetrics: boolean = false;
 
   constructor(config: GameRunnerConfig) {
     if (config.factions.length < 2) {
@@ -97,6 +116,9 @@ export class GameRunner {
       maxTurns: config.maxTurns ?? 10,
       advancedRules: config.advancedRules ?? true,
       agentConfig: config.agentConfig ?? {},
+      enableMetrics: config.enableMetrics,
+      modelName: config.modelName,
+      saveMetrics: config.saveMetrics,
     };
     this.onEvent = config.onEvent;
     this.onStateUpdate = config.onStateUpdate;
@@ -106,6 +128,16 @@ export class GameRunner {
     this.onlyPhases = config.onlyPhases;
     this.stopAfter = config.stopAfter;
     this.skipSetup = config.skipSetup ?? false;
+
+    // Store saveMetrics flag (collector will be created in runGame when we have gameId)
+    this.shouldSaveMetrics = config.saveMetrics ?? false;
+
+    // Warn if enableMetrics is true but modelName is missing
+    if (config.enableMetrics && !config.modelName) {
+      console.warn(
+        "[GameRunner] enableMetrics is true but modelName is not provided. Metrics collection will be disabled."
+      );
+    }
   }
 
   /**
@@ -125,23 +157,64 @@ export class GameRunner {
       initialState.gameId = this.config.gameId;
     }
 
+    return this.runGameFromState(initialState);
+  }
+
+  /**
+   * Run a game from an existing state (for resuming games).
+   */
+  async runGameFromState(initialState: GameState): Promise<GameResult> {
+    // Ensure gameId matches if provided
+    if (this.config.gameId) {
+      initialState.gameId = this.config.gameId;
+    }
+
+    // Initialize metrics collector if enabled
+    if (this.config.enableMetrics && this.config.modelName) {
+      try {
+        this.metricsCollector = new MetricsCollector(
+          initialState.gameId,
+          this.config.modelName
+        );
+        // startGame is now async - await it to ensure subscription is ready
+        // This ensures metrics collection starts before the game begins
+        await this.metricsCollector.startGame(initialState.config);
+      } catch (error) {
+        console.warn(
+          `[GameRunner] Failed to start metrics collection:`,
+          error
+        );
+        // Continue without metrics collection
+        this.metricsCollector = null;
+      }
+    }
+
     // Log game start with colored output
-    this.logger.gameStart(this.config.factions);
+    // Check if resuming from an existing state
+    const isResuming = initialState.setupComplete && initialState.turn > 0;
+    if (isResuming) {
+      this.logger.gameStart(Array.from(initialState.factions.keys()));
+      console.log(
+        `  📂 Resuming from Turn ${initialState.turn}, Phase: ${initialState.phase}\n`
+      );
+    } else {
+      this.logger.gameStart(this.config.factions);
+    }
 
     // Create agent provider
-    const agentProvider = createClaudeAgentProvider(initialState, {
+    const agentProvider = createAgentProvider(initialState, {
       ...this.config.agentConfig,
       verbose: this.config.agentConfig.verbose ?? true,
     });
 
-    // Create phase manager
-    const phaseManager = new PhaseManager(agentProvider);
+    // Create phase manager and store it so getState() can access it
+    this.phaseManager = new PhaseManager(agentProvider);
 
     // Register all phase handlers
-    phaseManager.registerHandlers(createAllPhaseHandlers());
+    this.phaseManager.registerHandlers(createAllPhaseHandlers());
 
     // Add event listener
-    phaseManager.addEventListener((event) => {
+    this.phaseManager.addEventListener((event) => {
       this.events.push(event);
       this.logEvent(event);
       if (this.onEvent) {
@@ -150,17 +223,43 @@ export class GameRunner {
     });
 
     // Build phase run options
+    // Skip setup if resuming from an existing state
     const runOptions: GameRunOptions = {
       onlyPhases: this.onlyPhases,
       stopAfter: this.stopAfter,
-      skipSetup: this.skipSetup,
+      skipSetup: this.skipSetup || (initialState.setupComplete && initialState.turn > 0),
     };
 
     // Run the game
-    const result = await phaseManager.runGame(initialState, runOptions);
+    const result = await this.phaseManager.runGame(initialState, runOptions);
 
     // Store final state
     this.currentState = result.finalState;
+
+    // Record game end and save metrics if collector is active
+    if (this.metricsCollector) {
+      try {
+        this.metricsCollector.recordGameEnd(result);
+        const metrics = this.metricsCollector.getMetrics();
+
+        if (this.shouldSaveMetrics) {
+          try {
+            await metricsStore.saveGameMetrics(metrics);
+          } catch (error) {
+            console.warn(
+              `[GameRunner] Failed to save metrics to storage:`,
+              error
+            );
+            // Continue - metrics are still available via getMetrics()
+          }
+        }
+      } catch (error) {
+        console.warn(
+          `[GameRunner] Error recording game end metrics:`,
+          error
+        );
+      }
+    }
 
     // Log summary
     this.logSummary(result);
@@ -170,9 +269,17 @@ export class GameRunner {
 
   /**
    * Get the current game state
+   * 
+   * CRITICAL: This method is used by the frontend to get the latest state.
+   * We prioritize the agent provider's state (which is synced from PhaseManager),
+   * but fall back to currentState if the phase manager isn't available.
+   * 
+   * Note: During game execution, the agent provider's state is kept in sync
+   * with the authoritative state from PhaseManager via SynchronizedStateManager.
    */
   getState(): GameState | null {
-    // Try to get from agent provider first (most up-to-date)
+    // Try to get from agent provider first (most up-to-date during game execution)
+    // The agent provider's state is synced from PhaseManager's authoritative state
     if (this.phaseManager) {
       // Access agentProvider through the phase manager's private property
       // This is a workaround since agentProvider is private
@@ -181,9 +288,13 @@ export class GameRunner {
         agentProvider?: { getState?: () => GameState };
       };
       if (phaseManagerInternal.agentProvider?.getState) {
-        return phaseManagerInternal.agentProvider.getState();
+        const agentState = phaseManagerInternal.agentProvider.getState();
+        if (agentState) {
+          return agentState;
+        }
       }
     }
+    // Fall back to stored state (set at game end)
     return this.currentState;
   }
 
@@ -191,7 +302,7 @@ export class GameRunner {
    * Run a single turn (for testing/debugging).
    */
   async runSingleTurn(state: GameState): Promise<GameState> {
-    const agentProvider = createClaudeAgentProvider(
+    const agentProvider = createAgentProvider(
       state,
       this.config.agentConfig
     );
@@ -303,6 +414,14 @@ export class GameRunner {
       events: this.events,
     };
   }
+
+  /**
+   * Get collected metrics (available after game completes).
+   * Returns null if metrics collection was not enabled.
+   */
+  getMetrics(): GameMetrics | null {
+    return this.metricsCollector?.getMetrics() ?? null;
+  }
 }
 
 // =============================================================================
@@ -323,7 +442,7 @@ export async function runDuneGame(
  * Quick start a 2-player game with Atreides vs Harkonnen.
  */
 export async function runQuickGame(
-  config?: Partial<ClaudeAgentConfig>
+  config?: Partial<AgentConfig>
 ): Promise<GameResult> {
   return runDuneGame({
     factions: [Faction.ATREIDES, Faction.HARKONNEN],
@@ -336,7 +455,7 @@ export async function runQuickGame(
  * Options for running from a loaded state.
  */
 export interface RunFromStateOptions {
-  agentConfig?: ClaudeAgentConfig;
+  agentConfig?: AgentConfig;
   onEvent?: PhaseEventListener;
   onlyPhases?: Phase[];
   stopAfter?: Phase;
@@ -360,7 +479,7 @@ export async function runFromState(
   );
 
   // Create agent provider with loaded state
-  const agentProvider = createClaudeAgentProvider(initialState, {
+  const agentProvider = createAgentProvider(initialState, {
     ...options.agentConfig,
     verbose: options.agentConfig?.verbose ?? true,
   });

@@ -11,6 +11,7 @@ import type { TerritoryId } from '../../types';
 import type { ToolContextManager } from '../context';
 import { successResult, failureResult } from '../types';
 import { ViewTerritorySchema, ViewFactionSchema, FactionSchema } from '../schemas';
+import { normalizeTerritoryId } from '../../utils/territory-normalize';
 
 // =============================================================================
 // TOOL FACTORIES
@@ -132,15 +133,25 @@ Note: You cannot see their spice, hand size, or reserves in detail.`,
 Use this to scout locations before shipping or moving.`,
       inputSchema: ViewTerritorySchema,
       execute: async (params: z.infer<typeof ViewTerritorySchema>, options) => {
-        const { territoryId } = params;
-        const info = ctx.getTerritoryInfo(territoryId as TerritoryId);
+        const { territoryId: rawTerritoryId } = params;
+        
+        // Normalize territory ID (schema no longer has transform)
+        const territoryId = normalizeTerritoryId(rawTerritoryId);
+        if (!territoryId) {
+          return failureResult(
+            `Invalid territory ID: "${rawTerritoryId}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTerritoryId}" does not exist` },
+            false
+          );
+        }
+        
+        const info = ctx.getTerritoryInfo(territoryId);
         if (!info) {
           return failureResult(
             `Unknown territory: ${territoryId}`,
             {
               code: 'INVALID_TERRITORY',
               message: `Territory ${territoryId} does not exist`,
-              suggestion: 'Valid territories include: ARRAKEEN, CARTHAG, SIETCH_TABR, TUEKS_SIETCH, HABBANYA_SIETCH, etc.',
             },
             false
           );

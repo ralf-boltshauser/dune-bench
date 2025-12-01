@@ -16,6 +16,10 @@ npx tsx src/lib/game/run-game.ts --factions atreides,harkonnen,emperor --turns 1
 npx tsx src/lib/game/run-game.ts --only bidding                     # Run specific phase(s)
 npx tsx src/lib/game/run-game.ts --skip-setup --stop-after battle   # Debug options
 
+# Debug game logs (see .notes/debugging/log-investigation-utility.md)
+pnpm tsx scripts/investigate-game-logs.ts <gameId>                  # Analyze game events
+pnpm tsx scripts/investigate-game-logs.ts <gameId> --forces         # Show force placements
+
 # Type checking
 npx tsc --noEmit
 ```

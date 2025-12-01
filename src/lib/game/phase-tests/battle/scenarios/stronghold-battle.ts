@@ -10,7 +10,6 @@
  */
 
 import { Faction, TerritoryId } from '../../../types';
-import { getFactionState } from '../../../state';
 import { buildTestState, getDefaultSpice, getLeaderFromPool, addCardToHand } from '../helpers/test-state-builder';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
 import { runBattleScenario, logScenarioResults } from './base-scenario';

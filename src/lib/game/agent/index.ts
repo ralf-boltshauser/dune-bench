@@ -2,15 +2,18 @@
  * Agent Module
  *
  * AI agent integration for the Dune game simulation.
- * Uses Claude via Vercel AI SDK to make decisions for each faction.
+ * Uses Azure OpenAI via Vercel AI SDK to make decisions for each faction.
  */
+
+// Environment loader (import this at the top of entry points)
+export { loadEnv } from './env-loader';
 
 // Provider
 export {
-  ClaudeAgentProvider,
-  createClaudeAgentProvider,
-  type ClaudeAgentConfig,
-} from './claude-provider';
+  AzureAgentProvider,
+  createAgentProvider,
+  type AgentConfig,
+} from './azure-provider';
 
 // Prompts
 export { getFactionPrompt, getAllFactionPrompts } from './prompts';

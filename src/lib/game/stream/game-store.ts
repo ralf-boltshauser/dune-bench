@@ -43,6 +43,13 @@ export class GameStore {
     return this.store.loadState(gameId);
   }
 
+  /**
+   * Check if game state exists
+   */
+  async hasState(gameId: string): Promise<boolean> {
+    return this.store.hasState(gameId);
+  }
+
   // ---------------------------------------------------------------------------
   // Event Operations
   // ---------------------------------------------------------------------------

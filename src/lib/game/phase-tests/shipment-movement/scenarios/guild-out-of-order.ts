@@ -53,7 +53,7 @@ export async function testGuildOutOfOrder() {
   responses.queueShipment(Faction.SPACING_GUILD, {
     territoryId: TerritoryId.IMPERIAL_BASIN,
     sector: 9,
-    count: 5,
+    regularCount: 5,
   });
 
   // Guild: Move forces
@@ -69,7 +69,7 @@ export async function testGuildOutOfOrder() {
   responses.queueShipment(Faction.ATREIDES, {
     territoryId: TerritoryId.BASIN,
     sector: 9,
-    count: 5,
+    regularCount: 5,
   });
 
   // Atreides: Move forces

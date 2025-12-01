@@ -43,7 +43,7 @@ export async function testBGSpiritualAdvisors() {
   responses.queueShipment(Faction.ATREIDES, {
     territoryId: TerritoryId.IMPERIAL_BASIN,
     sector: 9,
-    count: 5,
+    regularCount: 5,
   });
 
   // BG: Send advisor to same territory (not Polar Sink)

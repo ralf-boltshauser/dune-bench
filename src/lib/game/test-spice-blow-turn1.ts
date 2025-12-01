@@ -32,13 +32,13 @@ async function testSpiceBlowTurn1() {
   const originalError = console.error;
 
   // Capture all console output
-  console.log = (...args: any[]) => {
+  console.log = (...args: unknown[]) => {
     const message = args.map(a => typeof a === 'string' ? a : JSON.stringify(a, null, 2)).join(' ');
     logs.push(message);
     originalLog(...args);
   };
 
-  console.error = (...args: any[]) => {
+  console.error = (...args: unknown[]) => {
     const message = args.map(a => typeof a === 'string' ? a : JSON.stringify(a, null, 2)).join(' ');
     logs.push(`ERROR: ${message}`);
     originalError(...args);

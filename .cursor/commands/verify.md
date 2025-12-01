@@ -1,4 +1,4 @@
-Please verify based on the initial prompt if you are finished. If your goal is achieved, if you need to verify or validate anything. 
+Please verify based on the initial prompt if you are finished. If your goal is achieved, if you need to verify or validate anything. It's essential that you always have one single source of truth, because if you don't there will inevitably be painful bugs. 
 
 If you need to verify do so.
 

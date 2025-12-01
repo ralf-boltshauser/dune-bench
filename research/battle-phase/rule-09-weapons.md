@@ -216,3 +216,6 @@ However, since no such weapon exists in the current game, this is not a bug - it
 The implementation correctly handles weapon and defense interactions according to the rules. The only note about weapons making strength nonapplicable without killing is not applicable to the current game, as all weapons in the base game kill leaders when effective. If such a weapon were added in a variant or expansion, the code would need to be updated to distinguish between `weaponEffective` and `leaderKilled`.
 
 
+
+
+

@@ -17,9 +17,17 @@ import {
   getReserveForceCount,
   getForceCountInTerritory,
   getFactionsInTerritory,
+  getFactionsOccupyingTerritory,
   isSectorInStorm,
   getTotalForcesOnBoard,
+  getBGAdvisorsInTerritory,
 } from '../state';
+import {
+  validateSectorNotInStorm,
+  validateSourceSectorNotInStorm,
+  validateDestinationSectorNotInStorm,
+  findSafeSector,
+} from './storm-validation';
 import { GAME_CONSTANTS, getFactionConfig } from '../data';
 import {
   type ValidationResult,
@@ -29,6 +37,7 @@ import {
   invalidResult,
   createError,
 } from './types';
+import { normalizeTerritoryId, getTerritoryName, getAllTerritoryIds } from '../utils/territory-normalize';
 
 // =============================================================================
 // SHIPMENT VALIDATION
@@ -41,13 +50,37 @@ import {
 export function validateShipment(
   state: GameState,
   faction: Faction,
-  territoryId: TerritoryId,
+  territoryId: TerritoryId | string,
   sector: number,
   forceCount: number
 ): ValidationResult<ShipmentSuggestion> {
   const errors: ReturnType<typeof createError>[] = [];
   const factionState = getFactionState(state, faction);
-  const territory = TERRITORY_DEFINITIONS[territoryId];
+  
+  // Normalize territory ID (case-insensitive)
+  const normalizedTerritoryId = normalizeTerritoryId(territoryId);
+  if (!normalizedTerritoryId) {
+    const suggestions = getAllTerritoryIds()
+      .filter(id => id.toLowerCase().includes(String(territoryId).toLowerCase()))
+      .slice(0, 3)
+      .map(id => `"${id}"`)
+      .join(', ');
+    const suggestionText = suggestions ? ` Did you mean: ${suggestions}?` : '';
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `Territory "${territoryId}" does not exist.${suggestionText} Valid territory IDs are lowercase with underscores (e.g., "carthag", "arrakeen", "the_great_flat").`,
+        {
+          field: 'territoryId',
+          actual: territoryId,
+          suggestion: 'Use lowercase territory ID with underscores (e.g., "carthag" not "Carthag" or "CARTHAG")',
+        }
+      )
+    );
+    return invalidResult(errors, { targetTerritory: String(territoryId), targetSector: sector });
+  }
+  
+  const territory = TERRITORY_DEFINITIONS[normalizedTerritoryId];
   const reserves = getReserveForceCount(state, faction);
 
   // Context for agent decision-making
@@ -55,7 +88,7 @@ export function validateShipment(
     reserveForces: reserves,
     spiceAvailable: factionState.spice,
     requestedForces: forceCount,
-    targetTerritory: territoryId,
+    targetTerritory: normalizedTerritoryId,
     targetSector: sector,
   };
 
@@ -86,15 +119,7 @@ export function validateShipment(
     );
   }
 
-  // Check: Territory exists and is valid
-  if (!territory) {
-    errors.push(
-      createError('INVALID_TERRITORY', `Territory ${territoryId} does not exist`, {
-        field: 'territoryId',
-      })
-    );
-    return invalidResult(errors, context);
-  }
+  // Territory already validated above via normalization
 
   // Check: Sector is valid for territory
   if (!territory.sectors.includes(sector) && territory.sectors.length > 0) {
@@ -112,24 +137,21 @@ export function validateShipment(
     );
   }
 
-  // Check: Sector not in storm
-  if (isSectorInStorm(state, sector)) {
-    errors.push(
-      createError(
-        'SECTOR_IN_STORM',
-        `Cannot ship to sector ${sector} - it is currently in the storm`,
-        {
-          field: 'sector',
-          actual: sector,
-          suggestion: findNearestSafeTerritory(state, territoryId, faction),
-        }
-      )
-    );
+  // Check: Sector not in storm (unless territory is protected from storm, like Polar Sink)
+  const stormError = validateSectorNotInStorm(state, normalizedTerritoryId, sector);
+  if (stormError) {
+    // Enhance suggestion with nearest safe territory if available
+    const nearestSafe = findNearestSafeTerritory(state, normalizedTerritoryId, faction);
+    if (nearestSafe && nearestSafe !== stormError.suggestion) {
+      stormError.suggestion = nearestSafe;
+    }
+    errors.push(stormError);
   }
 
   // Check: Occupancy limit for strongholds
-  if (STRONGHOLD_TERRITORIES.includes(territoryId)) {
-    const occupants = getFactionsInTerritory(state, territoryId);
+  // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
+  if (STRONGHOLD_TERRITORIES.includes(normalizedTerritoryId)) {
+    const occupants = getFactionsOccupyingTerritory(state, normalizedTerritoryId);
     if (occupants.length >= 2 && !occupants.includes(faction)) {
       errors.push(
         createError(
@@ -146,10 +168,29 @@ export function validateShipment(
     }
   }
 
-  // Check: Sufficient spice
-  const cost = calculateShipmentCost(territoryId, forceCount, faction);
+  // Check: BG cannot ship fighters to territories with advisors (Rule 2.02.14)
+  if (faction === Faction.BENE_GESSERIT && state.config.advancedRules) {
+    const advisorsInTerritory = getBGAdvisorsInTerritory(state, normalizedTerritoryId);
+    if (advisorsInTerritory > 0) {
+      errors.push(
+        createError(
+          'CANNOT_SHIP_FIGHTERS_TO_ADVISORS',
+          `Cannot ship fighters to ${territory.name} - you already have ${advisorsInTerritory} advisor(s) there (Rule 2.02.14)`,
+          {
+            field: 'territoryId',
+            actual: advisorsInTerritory,
+            expected: 0,
+            suggestion: 'Choose a different territory or convert advisors to fighters first',
+          }
+        )
+      );
+    }
+  }
+
+  // Check: Sufficient spice (using normalized territory ID)
+  const cost = calculateShipmentCost(normalizedTerritoryId, forceCount, faction);
   if (factionState.spice < cost) {
-    const affordable = calculateAffordableForces(territoryId, factionState.spice, faction);
+    const affordable = calculateAffordableForces(normalizedTerritoryId, factionState.spice, faction);
     errors.push(
       createError(
         'INSUFFICIENT_SPICE',
@@ -158,7 +199,7 @@ export function validateShipment(
           field: 'forceCount',
           actual: cost,
           expected: `<= ${factionState.spice}`,
-          suggestion: affordable > 0 ? `Ship ${affordable} forces for ${calculateShipmentCost(territoryId, affordable, faction)} spice` : 'Not enough spice to ship',
+          suggestion: affordable > 0 ? `Ship ${affordable} forces for ${calculateShipmentCost(normalizedTerritoryId, affordable, faction)} spice` : 'Not enough spice to ship',
         }
       )
     );
@@ -169,7 +210,7 @@ export function validateShipment(
     return validResult({
       ...context,
       cost,
-      isStronghold: STRONGHOLD_TERRITORIES.includes(territoryId),
+      isStronghold: STRONGHOLD_TERRITORIES.includes(normalizedTerritoryId),
     });
   }
 
@@ -234,9 +275,11 @@ function findNearestSafeTerritory(
 
   for (const adjId of territory.adjacentTerritories) {
     const adj = TERRITORY_DEFINITIONS[adjId];
-    if (adj && adj.sectors.some((s) => !isSectorInStorm(state, s))) {
-      const safeSector = adj.sectors.find((s) => !isSectorInStorm(state, s));
-      return `Try ${adj.name} sector ${safeSector} instead`;
+    if (adj) {
+      const safeSector = findSafeSector(state, adjId);
+      if (safeSector !== undefined) {
+        return `Try ${adj.name} sector ${safeSector} instead`;
+      }
     }
   }
 
@@ -261,13 +304,14 @@ function generateShipmentSuggestions(
   // Check each stronghold first (cheaper)
   for (const territoryId of STRONGHOLD_TERRITORIES) {
     const territory = TERRITORY_DEFINITIONS[territoryId];
-    const occupants = getFactionsInTerritory(state, territoryId);
+    // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
+    const occupants = getFactionsOccupyingTerritory(state, territoryId);
 
     // Skip if full (and we're not there)
     if (occupants.length >= 2 && !occupants.includes(faction)) continue;
 
     // Find a safe sector
-    const safeSector = territory.sectors.find((s) => !isSectorInStorm(state, s));
+    const safeSector = findSafeSector(state, territoryId);
     if (safeSector === undefined) continue;
 
     const cost = calculateShipmentCost(territoryId, maxForces, faction);
@@ -298,18 +342,81 @@ function generateShipmentSuggestions(
 export function validateMovement(
   state: GameState,
   faction: Faction,
-  fromTerritory: TerritoryId,
+  fromTerritory: TerritoryId | string,
   fromSector: number,
-  toTerritory: TerritoryId,
+  toTerritory: TerritoryId | string,
   toSector: number,
   forceCount: number,
   hasOrnithoptersOverride?: boolean
 ): ValidationResult<MovementSuggestion> {
   const errors: ReturnType<typeof createError>[] = [];
-  const fromDef = TERRITORY_DEFINITIONS[fromTerritory];
-  const toDef = TERRITORY_DEFINITIONS[toTerritory];
+  
+  // Normalize territory IDs (case-insensitive)
+  const normalizedFrom = normalizeTerritoryId(fromTerritory);
+  const normalizedTo = normalizeTerritoryId(toTerritory);
+  
+  if (!normalizedFrom) {
+    const suggestions = getAllTerritoryIds()
+      .filter(id => id.toLowerCase().includes(String(fromTerritory).toLowerCase()))
+      .slice(0, 3)
+      .map(id => `"${id}"`)
+      .join(', ');
+    const suggestionText = suggestions ? ` Did you mean: ${suggestions}?` : '';
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `From territory "${fromTerritory}" does not exist.${suggestionText} Valid territory IDs are lowercase with underscores (e.g., "carthag", "arrakeen").`,
+        {
+          field: 'fromTerritory',
+          actual: fromTerritory,
+          suggestion: 'Use lowercase territory ID with underscores (e.g., "carthag" not "Carthag" or "CARTHAG")',
+        }
+      )
+    );
+    return invalidResult(errors, {
+      fromTerritory: String(fromTerritory),
+      toTerritory: String(toTerritory),
+      forcesAvailable: 0,
+      requestedForces: forceCount,
+      hasOrnithopters: false,
+      movementRange: 1,
+      stormSector: state.stormSector,
+    });
+  }
+  
+  if (!normalizedTo) {
+    const suggestions = getAllTerritoryIds()
+      .filter(id => id.toLowerCase().includes(String(toTerritory).toLowerCase()))
+      .slice(0, 3)
+      .map(id => `"${id}"`)
+      .join(', ');
+    const suggestionText = suggestions ? ` Did you mean: ${suggestions}?` : '';
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `To territory "${toTerritory}" does not exist.${suggestionText} Valid territory IDs are lowercase with underscores (e.g., "carthag", "arrakeen").`,
+        {
+          field: 'toTerritory',
+          actual: toTerritory,
+          suggestion: 'Use lowercase territory ID with underscores (e.g., "carthag" not "Carthag" or "CARTHAG")',
+        }
+      )
+    );
+    return invalidResult(errors, {
+      fromTerritory: normalizedFrom,
+      toTerritory: String(toTerritory),
+      forcesAvailable: 0,
+      requestedForces: forceCount,
+      hasOrnithopters: false,
+      movementRange: 1,
+      stormSector: state.stormSector,
+    });
+  }
+  
+  const fromDef = TERRITORY_DEFINITIONS[normalizedFrom];
+  const toDef = TERRITORY_DEFINITIONS[normalizedTo];
 
-  const forcesAvailable = getForceCountInTerritory(state, faction, fromTerritory);
+  const forcesAvailable = getForceCountInTerritory(state, faction, normalizedFrom);
   // Use override if provided (for phase-start ornithopter access), otherwise check current state
   const hasOrnithopters = hasOrnithoptersOverride !== undefined
     ? hasOrnithoptersOverride
@@ -317,8 +424,8 @@ export function validateMovement(
   const movementRange = getMovementRangeForFaction(faction, hasOrnithopters);
 
   const context = {
-    fromTerritory,
-    toTerritory,
+    fromTerritory: normalizedFrom,
+    toTerritory: normalizedTo,
     forcesAvailable,
     requestedForces: forceCount,
     hasOrnithopters,
@@ -326,15 +433,7 @@ export function validateMovement(
     stormSector: state.stormSector,
   };
 
-  // Check: Valid territories
-  if (!fromDef) {
-    errors.push(createError('INVALID_TERRITORY', `From territory ${fromTerritory} does not exist`));
-    return invalidResult(errors, context);
-  }
-  if (!toDef) {
-    errors.push(createError('INVALID_TERRITORY', `To territory ${toTerritory} does not exist`));
-    return invalidResult(errors, context);
-  }
+  // Territories already validated above via normalization
 
   // Handle same-territory repositioning (Rule 1.06.03.09)
   if (fromTerritory === toTerritory) {
@@ -362,19 +461,28 @@ export function validateMovement(
       );
     }
 
+    // Check storm for source sector (unless protected or Fremen)
+    // Rule 1.06.03.05: Cannot move OUT OF storm sector (Fremen exception: Rule 2.04.17)
+    const sourceStormError = validateSourceSectorNotInStorm(
+      state,
+      faction,
+      normalizedFrom,
+      fromSector
+    );
+    if (sourceStormError) {
+      errors.push(sourceStormError);
+    }
+
     // Check storm for destination sector (unless protected)
-    if (!toDef.protectedFromStorm && isSectorInStorm(state, toSector)) {
-      const safeSector = toDef.sectors.find((s) => !isSectorInStorm(state, s));
-      errors.push(
-        createError(
-          'DESTINATION_IN_STORM',
-          'Cannot reposition to sector in storm',
-          {
-            field: 'toSector',
-            suggestion: safeSector !== undefined ? `Use sector ${safeSector} instead` : 'All sectors in storm',
-          }
-        )
-      );
+    const destStormError = validateDestinationSectorNotInStorm(
+      state,
+      normalizedTo,
+      toSector,
+      'toSector',
+      'reposition to'
+    );
+    if (destStormError) {
+      errors.push(destStormError);
     }
 
     // Check: Forces available
@@ -433,8 +541,20 @@ export function validateMovement(
     );
   }
 
+  // Check: Source sector not in storm (unless protected or Fremen)
+  // Rule 1.06.03.05: Cannot move OUT OF storm sector (Fremen exception: Rule 2.04.17)
+  const sourceStormError = validateSourceSectorNotInStorm(
+    state,
+    faction,
+    normalizedFrom,
+    fromSector
+  );
+  if (sourceStormError) {
+    errors.push(sourceStormError);
+  }
+
   // Check: Path exists and is within range
-  const path = findPath(fromTerritory, toTerritory, state, faction);
+  const path = findPath(normalizedFrom, normalizedTo, state, faction);
   if (!path) {
     errors.push(
       createError(
@@ -459,24 +579,22 @@ export function validateMovement(
     );
   }
 
-  // Check: Destination sector not in storm
-  if (isSectorInStorm(state, toSector)) {
-    const safeSector = toDef.sectors.find((s) => !isSectorInStorm(state, s));
-    errors.push(
-      createError(
-        'SECTOR_IN_STORM',
-        `Sector ${toSector} is in the storm`,
-        {
-          field: 'toSector',
-          suggestion: safeSector !== undefined ? `Use sector ${safeSector} instead` : 'Destination fully blocked by storm',
-        }
-      )
-    );
+  // Check: Destination sector not in storm (unless territory is protected from storm, like Polar Sink)
+  const destStormError = validateDestinationSectorNotInStorm(
+    state,
+    normalizedTo,
+    toSector,
+    'toSector',
+    'move to'
+  );
+  if (destStormError) {
+    errors.push(destStormError);
   }
 
   // Check: Occupancy limit for strongholds
-  if (STRONGHOLD_TERRITORIES.includes(toTerritory)) {
-    const occupants = getFactionsInTerritory(state, toTerritory);
+  // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
+  if (STRONGHOLD_TERRITORIES.includes(normalizedTo)) {
+    const occupants = getFactionsOccupyingTerritory(state, normalizedTo);
     if (occupants.length >= 2 && !occupants.includes(faction)) {
       errors.push(
         createError(
@@ -497,18 +615,29 @@ export function validateMovement(
   }
 
   // Generate suggestions
-  const suggestions = generateMovementSuggestions(state, faction, fromTerritory, fromSector, movementRange);
+  const suggestions = generateMovementSuggestions(state, faction, normalizedFrom, fromSector, movementRange);
 
   return invalidResult(errors, context, suggestions);
 }
 
 /**
  * Check if faction has access to ornithopters (force in Arrakeen or Carthag).
+ * Rule 2.02.12 (COEXISTENCE): Advisors cannot grant ornithopters - only fighters count.
  */
 export function checkOrnithopterAccess(state: GameState, faction: Faction): boolean {
-  return ORNITHOPTER_TERRITORIES.some(
-    (t) => getForceCountInTerritory(state, faction, t) > 0
-  );
+  const factionState = getFactionState(state, faction);
+  
+  return ORNITHOPTER_TERRITORIES.some((territoryId) => {
+    // Check if faction has any fighters (not advisors) in this territory
+    const stack = factionState.forces.onBoard.find(
+      (s) => s.territoryId === territoryId
+    );
+    if (!stack) return false;
+    
+    const totalForces = stack.forces.regular + stack.forces.elite;
+    const advisors = stack.advisors ?? 0;
+    return (totalForces - advisors) > 0; // Only fighters count
+  });
 }
 
 /**
@@ -580,8 +709,9 @@ export function findPath(
 
       // Check occupancy limit for strongholds (can't move THROUGH if 2+ other factions)
       // This prevents finding paths that go through full strongholds
+      // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
       if (adjDef.type === TerritoryType.STRONGHOLD && adjId !== to) {
-        const factionsInTerritory = getFactionsInTerritory(state, adjId);
+        const factionsInTerritory = getFactionsOccupyingTerritory(state, adjId);
         const otherFactions = factionsInTerritory.filter(f => f !== movingFaction);
         if (otherFactions.length >= 2) {
           // Can't pass through - stronghold is full with 2 other factions
@@ -644,8 +774,9 @@ export function getReachableTerritories(
       if (!canPass) continue;
 
       // Check occupancy limit for strongholds (can't move THROUGH if 2+ other factions)
+      // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
       if (adjDef.type === TerritoryType.STRONGHOLD) {
-        const factionsInTerritory = getFactionsInTerritory(state, adjId);
+        const factionsInTerritory = getFactionsOccupyingTerritory(state, adjId);
         const otherFactions = factionsInTerritory.filter(f => f !== movingFaction);
         if (otherFactions.length >= 2) {
           // Can't pass through - stronghold is full with 2 other factions
@@ -691,13 +822,14 @@ function generateMovementSuggestions(
     const territory = TERRITORY_DEFINITIONS[territoryId];
     if (!territory) continue;
 
-    // Find a safe sector
-    const safeSector = territory.sectors.find((s) => !isSectorInStorm(state, s)) ?? territory.sectors[0];
+    // Find a safe sector (fallback to first sector if all are in storm - pathfinding handles this)
+    const safeSector = findSafeSector(state, territoryId) ?? territory.sectors[0];
     if (safeSector === undefined) continue;
 
     // Check occupancy for strongholds
+    // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
     if (STRONGHOLD_TERRITORIES.includes(territoryId)) {
-      const occupants = getFactionsInTerritory(state, territoryId);
+      const occupants = getFactionsOccupyingTerritory(state, territoryId);
       if (occupants.length >= 2 && !occupants.includes(faction)) continue;
     }
 
@@ -772,21 +904,74 @@ export function getTerritoriesWithinDistance(
 export function validateCrossShip(
   state: GameState,
   faction: Faction,
-  fromTerritoryId: TerritoryId,
+  fromTerritoryId: TerritoryId | string,
   fromSector: number,
-  toTerritoryId: TerritoryId,
+  toTerritoryId: TerritoryId | string,
   toSector: number,
   forceCount: number
 ): ValidationResult<ShipmentSuggestion> {
   const errors: ReturnType<typeof createError>[] = [];
   const factionState = getFactionState(state, faction);
-  const fromTerritory = TERRITORY_DEFINITIONS[fromTerritoryId];
-  const toTerritory = TERRITORY_DEFINITIONS[toTerritoryId];
+  
+  // Normalize territory IDs (case-insensitive)
+  const normalizedFrom = normalizeTerritoryId(fromTerritoryId);
+  const normalizedTo = normalizeTerritoryId(toTerritoryId);
+  
+  if (!normalizedFrom) {
+    const suggestions = getAllTerritoryIds()
+      .filter(id => id.toLowerCase().includes(String(fromTerritoryId).toLowerCase()))
+      .slice(0, 3)
+      .map(id => `"${id}"`)
+      .join(', ');
+    const suggestionText = suggestions ? ` Did you mean: ${suggestions}?` : '';
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `From territory "${fromTerritoryId}" does not exist.${suggestionText}`,
+        { field: 'fromTerritoryId', actual: fromTerritoryId }
+      )
+    );
+    return invalidResult(errors, {
+      fromTerritory: String(fromTerritoryId),
+      toTerritory: String(toTerritoryId),
+      fromSector,
+      toSector,
+      requestedForces: forceCount,
+      spiceAvailable: factionState.spice,
+    });
+  }
+  
+  if (!normalizedTo) {
+    const suggestions = getAllTerritoryIds()
+      .filter(id => id.toLowerCase().includes(String(toTerritoryId).toLowerCase()))
+      .slice(0, 3)
+      .map(id => `"${id}"`)
+      .join(', ');
+    const suggestionText = suggestions ? ` Did you mean: ${suggestions}?` : '';
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `To territory "${toTerritoryId}" does not exist.${suggestionText}`,
+        { field: 'toTerritoryId', actual: toTerritoryId }
+      )
+    );
+    return invalidResult(errors, {
+      fromTerritory: normalizedFrom,
+      toTerritory: String(toTerritoryId),
+      fromSector,
+      toSector,
+      requestedForces: forceCount,
+      spiceAvailable: factionState.spice,
+    });
+  }
+  
+  const fromTerritory = TERRITORY_DEFINITIONS[normalizedFrom];
+  const toTerritory = TERRITORY_DEFINITIONS[normalizedTo];
 
   // Context for agent decision-making
   const context = {
-    fromTerritory: fromTerritoryId,
-    toTerritory: toTerritoryId,
+    fromTerritory: normalizedFrom,
+    toTerritory: normalizedTo,
     fromSector,
     toSector,
     requestedForces: forceCount,
@@ -808,24 +993,7 @@ export function validateCrossShip(
     );
   }
 
-  // Check: Valid territories
-  if (!fromTerritory) {
-    errors.push(
-      createError('INVALID_TERRITORY', `From territory ${fromTerritoryId} does not exist`, {
-        field: 'fromTerritoryId',
-      })
-    );
-    return invalidResult(errors, context);
-  }
-
-  if (!toTerritory) {
-    errors.push(
-      createError('INVALID_TERRITORY', `To territory ${toTerritoryId} does not exist`, {
-        field: 'toTerritoryId',
-      })
-    );
-    return invalidResult(errors, context);
-  }
+  // Territories already validated above via normalization
 
   // Check: Valid sectors
   if (!fromTerritory.sectors.includes(fromSector) && fromTerritory.sectors.length > 0) {
@@ -848,19 +1016,32 @@ export function validateCrossShip(
     );
   }
 
+  // Check: Source sector not in storm (unless protected or Fremen)
+  // Rule 1.06.03.05: Cannot move OUT OF storm sector (Fremen exception: Rule 2.04.17)
+  const sourceStormError = validateSourceSectorNotInStorm(
+    state,
+    faction,
+    normalizedFrom,
+    fromSector
+  );
+  if (sourceStormError) {
+    errors.push(sourceStormError);
+  }
+
   // Check: Destination sector not in storm
-  if (isSectorInStorm(state, toSector)) {
-    errors.push(
-      createError(
-        'SECTOR_IN_STORM',
-        `Cannot cross-ship to sector ${toSector} - it is currently in the storm`,
-        { field: 'toSector', actual: toSector }
-      )
-    );
+  const destStormError = validateDestinationSectorNotInStorm(
+    state,
+    normalizedTo,
+    toSector,
+    'toSector',
+    'cross-ship to'
+  );
+  if (destStormError) {
+    errors.push(destStormError);
   }
 
   // Check: Sufficient forces in source territory
-  const forcesAvailable = getForceCountInTerritory(state, faction, fromTerritoryId);
+  const forcesAvailable = getForceCountInTerritory(state, faction, normalizedFrom);
   if (forceCount > forcesAvailable) {
     errors.push(
       createError(
@@ -876,8 +1057,9 @@ export function validateCrossShip(
   }
 
   // Check: Occupancy limit for destination stronghold
-  if (STRONGHOLD_TERRITORIES.includes(toTerritoryId)) {
-    const occupants = getFactionsInTerritory(state, toTerritoryId);
+  // Use getFactionsOccupyingTerritory() which excludes BG advisors-only (Rule 2.02.12)
+  if (STRONGHOLD_TERRITORIES.includes(normalizedTo)) {
+    const occupants = getFactionsOccupyingTerritory(state, normalizedTo);
     if (occupants.length >= 2 && !occupants.includes(faction)) {
       errors.push(
         createError(
@@ -898,8 +1080,8 @@ export function validateCrossShip(
   // Guild pays half price, Guild's ally also pays half price (ability 2.06.09)
   const paysHalfPrice = isGuild || isGuildAlly;
   const cost = paysHalfPrice
-    ? calculateShipmentCost(toTerritoryId, forceCount, Faction.SPACING_GUILD)
-    : calculateShipmentCost(toTerritoryId, forceCount, faction);
+    ? calculateShipmentCost(normalizedTo, forceCount, Faction.SPACING_GUILD)
+    : calculateShipmentCost(normalizedTo, forceCount, faction);
 
   if (factionState.spice < cost) {
     errors.push(
@@ -920,7 +1102,7 @@ export function validateCrossShip(
     return validResult({
       ...context,
       cost,
-      isStronghold: STRONGHOLD_TERRITORIES.includes(toTerritoryId),
+      isStronghold: STRONGHOLD_TERRITORIES.includes(normalizedTo),
     });
   }
 
@@ -934,17 +1116,42 @@ export function validateCrossShip(
 export function validateOffPlanetShipment(
   state: GameState,
   faction: Faction,
-  fromTerritoryId: TerritoryId,
+  fromTerritoryId: TerritoryId | string,
   fromSector: number,
   forceCount: number
 ): ValidationResult<{ cost: number; forcesAvailable: number }> {
   const errors: ReturnType<typeof createError>[] = [];
   const factionState = getFactionState(state, faction);
-  const fromTerritory = TERRITORY_DEFINITIONS[fromTerritoryId];
+  
+  // Normalize territory ID (case-insensitive)
+  const normalizedFrom = normalizeTerritoryId(fromTerritoryId);
+  if (!normalizedFrom) {
+    const suggestions = getAllTerritoryIds()
+      .filter(id => id.toLowerCase().includes(String(fromTerritoryId).toLowerCase()))
+      .slice(0, 3)
+      .map(id => `"${id}"`)
+      .join(', ');
+    const suggestionText = suggestions ? ` Did you mean: ${suggestions}?` : '';
+    errors.push(
+      createError(
+        'INVALID_TERRITORY',
+        `From territory "${fromTerritoryId}" does not exist.${suggestionText}`,
+        { field: 'fromTerritoryId', actual: fromTerritoryId }
+      )
+    );
+    return invalidResult(errors, {
+      fromTerritory: String(fromTerritoryId),
+      fromSector,
+      requestedForces: forceCount,
+      spiceAvailable: factionState.spice,
+    });
+  }
+  
+  const fromTerritory = TERRITORY_DEFINITIONS[normalizedFrom];
 
   // Context for agent decision-making
   const context = {
-    fromTerritory: fromTerritoryId,
+    fromTerritory: normalizedFrom,
     fromSector,
     requestedForces: forceCount,
     spiceAvailable: factionState.spice,
@@ -965,15 +1172,7 @@ export function validateOffPlanetShipment(
     );
   }
 
-  // Check: Valid territory
-  if (!fromTerritory) {
-    errors.push(
-      createError('INVALID_TERRITORY', `From territory ${fromTerritoryId} does not exist`, {
-        field: 'fromTerritoryId',
-      })
-    );
-    return invalidResult(errors, context);
-  }
+  // Territory already validated above via normalization
 
   // Check: Valid sector
   if (!fromTerritory.sectors.includes(fromSector) && fromTerritory.sectors.length > 0) {
@@ -987,7 +1186,7 @@ export function validateOffPlanetShipment(
   }
 
   // Check: Sufficient forces in source territory
-  const forcesAvailable = getForceCountInTerritory(state, faction, fromTerritoryId);
+  const forcesAvailable = getForceCountInTerritory(state, faction, normalizedFrom);
   if (forceCount > forcesAvailable) {
     errors.push(
       createError(

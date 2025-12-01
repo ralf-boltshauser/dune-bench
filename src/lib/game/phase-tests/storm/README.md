@@ -99,6 +99,66 @@ phase-tests/storm/
   - Spice in path destroyed
   - Spice in ending sector destroyed
 
+## Edge Case Test Scenarios
+
+### 8. Edge Case: Only 2 Factions Exist
+- **Goal**: Test dialer selection when only 2 factions are in the game
+- **What to check in logs**:
+  - Two different dialers selected
+  - Both dial requests created
+  - Both responses processed
+  - Correct movement calculated
+
+### 9. Edge Case: Duplicate Dialer Selection Prevention
+- **Goal**: Test validation prevents duplicate dialer selection
+- **What to check in logs**:
+  - Validation catches duplicates if they occur
+  - Duplicate selection automatically fixed
+  - Logging shows the fix was applied
+  - Two different dial requests created
+
+### 10. Edge Case: Only One Dial Received
+- **Goal**: Test validation when only one dial response is received
+- **What to check in logs**:
+  - Warning logged for missing dial
+  - Movement calculated from single dial (incorrect)
+  - Error message clear
+
+### 11. Edge Case: Empty Responses Array
+- **Goal**: Test error handling when no dial responses are received
+- **What to check in logs**:
+  - Error thrown with clear message
+  - Phase doesn't complete
+  - Error logged appropriately
+
+### 12. Edge Case: Turn 1 - Only 1 Faction Not at Sector 0
+- **Goal**: Test Turn 1 fallback logic when only one faction is not at sector 0
+- **What to check in logs**:
+  - Two different dialers selected
+  - Fallback logic works correctly
+  - Both dial requests created
+
+### 13. Edge Case: All Factions Clustered Together
+- **Goal**: Test dialer selection when all factions are in adjacent sectors
+- **What to check in logs**:
+  - Two different dialers selected
+  - Validation ensures no duplicates
+  - Both dials processed correctly
+
+### 14. Edge Case: Factions on Same Side of Storm
+- **Goal**: Test "nearest on either side" logic when factions are on same side
+- **What to check in logs**:
+  - One faction before storm and one after selected
+  - Not the same faction selected twice
+  - Correct dialers selected
+
+### 15. Edge Case: Invalid Movement Value
+- **Goal**: Test validation when movement value is outside expected range
+- **What to check in logs**:
+  - Errors logged for invalid movement
+  - Validation catches out-of-range values
+  - Clear error messages
+
 ## Running Tests
 
 ```bash

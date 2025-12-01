@@ -37,6 +37,7 @@ export {
   getFactionState,
   getFactionsInTerritory,
   getFactionsInTerritoryAndSector,
+  getFactionsOccupyingTerritory,
   getFirstPlayer,
   getForceCountInTerritory,
   getForcesInTanks,
@@ -62,6 +63,8 @@ export {
   isSectorInStorm,
   isTerritoryInStorm,
   shouldTriggerPrisonBreak,
+  validateHandSize,
+  validateStrongholdOccupancy,
 } from "./queries";
 
 // Mutations
@@ -103,6 +106,7 @@ export {
   sendForcesToReserves,
   sendForcesToTanks,
   shipForces,
+  setActiveFactions,
   transferSpice,
   updateKwisatzHaderach,
   updateStormOrder,

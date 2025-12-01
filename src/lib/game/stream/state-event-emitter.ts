@@ -217,9 +217,10 @@ export function shipForces(
   territoryId: TerritoryId,
   sector: number,
   count: number,
-  isElite: boolean = false
+  isElite: boolean = false,
+  isAdvisor: boolean = false
 ): GameState {
-  const newState = mutShipForces(state, faction, territoryId, sector, count, isElite);
+  const newState = mutShipForces(state, faction, territoryId, sector, count, isElite, isAdvisor);
 
   emitForceChange(
     state.gameId,

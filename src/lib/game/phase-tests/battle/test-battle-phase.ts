@@ -8,7 +8,7 @@
  * 2. Multi-Faction Battle: Fremen vs Harkonnen vs Emperor
  */
 
-import { Faction } from '../../types';
+import { Faction, type GameState } from '../../types';
 import { testStrongholdBattle } from './scenarios/stronghold-battle';
 import { testMultiFactionBattle } from './scenarios/multi-faction-battle';
 import {
@@ -58,7 +58,7 @@ async function runAllTests() {
     results.push({
       name: 'Stronghold Battle',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -94,7 +94,7 @@ async function runAllTests() {
     results.push({
       name: 'Multi-Faction Battle',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,

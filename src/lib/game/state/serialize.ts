@@ -54,7 +54,7 @@ export function deserializeGameState(json: string): GameState {
 // FILE OPERATIONS
 // =============================================================================
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { dirname, join } from 'path';
 
 const SNAPSHOTS_DIR = join(process.cwd(), 'snapshots');
@@ -102,7 +102,6 @@ export function listSnapshots(): string[] {
     return [];
   }
 
-  const { readdirSync } = require('fs');
   return readdirSync(SNAPSHOTS_DIR)
     .filter((f: string) => f.endsWith('.json'))
     .map((f: string) => f.replace('.json', ''));

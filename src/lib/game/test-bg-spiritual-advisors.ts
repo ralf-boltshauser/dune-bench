@@ -19,8 +19,8 @@ import { runDuneGame, type GameRunnerConfig } from './agent';
 
 async function main() {
   // Check for API key
-  if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_FOUNDRY_API_KEY) {
-    console.error('Error: ANTHROPIC_API_KEY or ANTHROPIC_FOUNDRY_API_KEY environment variable is required.');
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('Error: OPENAI_API_KEY environment variable is required.');
     process.exit(1);
   }
 

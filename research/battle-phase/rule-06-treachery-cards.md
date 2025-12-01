@@ -235,3 +235,6 @@ The implementation correctly enforces all aspects of the rule:
 The implementation fully complies with the rule from `handwritten-rules/battle.md` line 16. Players with a leader or Cheap Hero have complete discretion over whether to play Weapon, Defense, both, or neither Treachery Cards.
 
 
+
+
+

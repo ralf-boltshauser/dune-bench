@@ -17,6 +17,7 @@ import { NextRequest } from 'next/server';
 import { eventStreamer } from '@/lib/game/stream/event-streamer';
 import { ConnectionEvent, type StreamEvent } from '@/lib/game/stream/types';
 import { generateEventId } from '@/lib/game/stream/utils/id-generator';
+import { fileStore } from '@/lib/game/stream/persistence';
 
 // =============================================================================
 // CONFIGURATION
@@ -75,6 +76,19 @@ export async function GET(
       const encoder = new TextEncoder();
 
       /**
+       * Check if controller is still open
+       */
+      const isControllerOpen = (): boolean => {
+        try {
+          // Try to check controller state - if it's closed, accessing it will throw
+          // We can't directly check state, but we can catch errors when enqueueing
+          return isActive;
+        } catch {
+          return false;
+        }
+      };
+
+      /**
        * Send data to the client (with error handling)
        */
       const send = (data: string): boolean => {
@@ -83,7 +97,14 @@ export async function GET(
         try {
           controller.enqueue(encoder.encode(data));
           return true;
-        } catch (error) {
+        } catch (error: unknown) {
+          // Controller is closed or in invalid state
+          const err = error as { code?: string; message?: string };
+          if (err?.code === 'ERR_INVALID_STATE' || err?.message?.includes('closed')) {
+            // Silently ignore - controller was closed (client disconnected)
+            isActive = false;
+            return false;
+          }
           console.error(`[SSE:${gameId}] Error sending data:`, error);
           isActive = false;
           return false;
@@ -109,20 +130,57 @@ export async function GET(
       );
       sendEvent(connectedEvent);
 
-      // Subscribe to game events (with replay if lastEventId provided)
+      // CRITICAL: Subscribe FIRST to catch live events immediately
+      // This ensures we don't miss events emitted during replay
       try {
         const subscription = await eventStreamer.subscribeToGame(
           gameId,
           (event) => {
             if (isActive) {
-              sendEvent(event);
+              const sent = sendEvent(event);
+              if (!sent) {
+                // Failed to send, unsubscribe to prevent further attempts
+                if (unsubscribe) {
+                  unsubscribe();
+                  unsubscribe = null;
+                }
+              }
             }
           },
           lastEventId
         );
         unsubscribe = subscription.unsubscribe;
+        console.log(`[SSE:${gameId}] Subscribed to live events${lastEventId ? ` (resuming from ${lastEventId})` : ''}`);
       } catch (error) {
         console.error(`[SSE:${gameId}] Failed to subscribe:`, error);
+      }
+
+      // If no lastEventId, replay all events from the beginning
+      // This ensures setup phase events are visible even if the UI connects late
+      // NOTE: We do this AFTER subscribing so live events aren't missed during replay
+      if (!lastEventId) {
+        try {
+          const allEvents = await fileStore.getAllEvents(gameId);
+          console.log(`[SSE:${gameId}] Replaying ${allEvents.length} past events for new connection`);
+          
+          // Send all past events in order
+          // These are events that were persisted before we subscribed
+          // Check isActive before each send to avoid sending after disconnect
+          for (const event of allEvents) {
+            if (!isActive) {
+              // Client disconnected during replay, stop sending
+              break;
+            }
+            const sent = sendEvent(event);
+            if (!sent) {
+              // Failed to send (controller closed), stop replay
+              break;
+            }
+          }
+        } catch (error) {
+          console.error(`[SSE:${gameId}] Failed to replay events:`, error);
+          // Continue anyway - subscription will still work for new events
+        }
       }
 
       // Start heartbeat

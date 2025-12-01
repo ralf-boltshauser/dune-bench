@@ -49,10 +49,10 @@ async function runTests() {
     const rawResult = await tools.fremen_send_forces.execute!({
       territoryId: TerritoryId.THE_GREAT_FLAT,
       sector: 14,
-      count: 5,
-      useElite: false,
+      regularCount: 5,
+      eliteCount: 0,
       allowStormMigration: false,
-    }, {} as any);
+    }, { toolCallId: '', messages: [] });
     const result = await unwrapToolResult(rawResult);
     console.log('  Result:', result.success ? '✅ SUCCESS' : '❌ FAILED');
     console.log('  Message:', result.message);
@@ -71,10 +71,10 @@ async function runTests() {
     const rawResult = await tools.fremen_send_forces.execute!({
       territoryId: TerritoryId.FUNERAL_PLAIN,
       sector: 14,
-      count: 3,
-      useElite: false,
+      regularCount: 3,
+      eliteCount: 0,
       allowStormMigration: false,
-    }, {} as any);
+    }, { toolCallId: '', messages: [] });
     const result = await unwrapToolResult(rawResult);
     console.log('  Result:', result.success ? '✅ SUCCESS' : '❌ FAILED');
     console.log('  Message:', result.message);
@@ -93,10 +93,10 @@ async function runTests() {
     const rawResult = await tools.fremen_send_forces.execute!({
       territoryId: TerritoryId.HABBANYA_ERG,
       sector: 15,
-      count: 3,
-      useElite: false,
+      regularCount: 3,
+      eliteCount: 0,
       allowStormMigration: false,
-    }, {} as any);
+    }, { toolCallId: '', messages: [] });
     const result = await unwrapToolResult(rawResult);
     console.log('  Result:', result.success ? '✅ SUCCESS' : '❌ FAILED');
     console.log('  Message:', result.message);
@@ -112,10 +112,10 @@ async function runTests() {
     const rawResult = await tools.fremen_send_forces.execute!({
       territoryId: TerritoryId.SIETCH_TABR,
       sector: 13,
-      count: 3,
-      useElite: false,
+      regularCount: 3,
+      eliteCount: 0,
       allowStormMigration: false,
-    }, {} as any);
+    }, { toolCallId: '', messages: [] });
     const result = await unwrapToolResult(rawResult);
     console.log('  Result:', result.success ? '✅ SUCCESS' : '❌ FAILED');
     console.log('  Message:', result.message);

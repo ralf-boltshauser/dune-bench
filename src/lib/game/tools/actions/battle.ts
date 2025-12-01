@@ -41,7 +41,7 @@ you decide the order. Choose strategically based on:
 - Which opponents you want to face first
 - Whether you want to weaken an opponent before another battle`,
       inputSchema: ChooseBattleSchema,
-      execute: async (params: z.infer<typeof ChooseBattleSchema>, options) => {
+      execute: async (params: z.infer<typeof ChooseBattleSchema>, _options) => {
         const { territoryId, opponentFaction } = params;
         // This would be validated against actual pending battles
         // For now, just return the choice
@@ -80,7 +80,7 @@ Special:
 - Cheap Hero: Can be used instead of a leader (0 strength)
 - Kwisatz Haderach (Atreides): +2 to leader strength`,
       inputSchema: BattlePlanSchema,
-      execute: async (params: z.infer<typeof BattlePlanSchema>, options) => {
+      execute: async (params: z.infer<typeof BattlePlanSchema>, _options) => {
         const {
           leaderId,
           forcesDialed,
@@ -203,7 +203,7 @@ If you have a traitor card matching the opponent's leader:
 
 This is a powerful ability - use it at the right moment!`,
       inputSchema: CallTraitorSchema,
-      execute: async (params: z.infer<typeof CallTraitorSchema>, options) => {
+      execute: async (params: z.infer<typeof CallTraitorSchema>, _options) => {
         const { leaderId } = params;
         const factionState = getFactionState(ctx.state, ctx.faction);
 
@@ -250,7 +250,7 @@ You might pass if:
 - You want to save the traitor reveal for a more critical battle
 - Calling traitor would hurt an ally`,
       inputSchema: PassActionSchema,
-      execute: async (params, options) => {
+      execute: async (_params, _options) => {
         return successResult(
           'Passed on calling traitor',
           { faction: ctx.faction, action: 'pass' },
@@ -281,7 +281,7 @@ The element could be:
         forcesDialed: z.number().nullable().optional().describe('Number of forces you will dial (if prescience target is "number")'),
         spiceDialed: z.number().nullable().optional().describe('Amount of spice you will dial (if prescience target is "number")'),
       }),
-      execute: async (params, options) => {
+      execute: async (params, _options) => {
         // Just record the commitment - actual validation happens during battle plan submission
         return successResult(
           'Prescience element revealed to Atreides',
@@ -310,7 +310,7 @@ You can:
 
 Cards that say "Discard after use" (like Cheap Hero, Hajr) are automatically discarded and are NOT included in this choice.`,
       inputSchema: ChooseCardsToDiscardSchema,
-      execute: async (params: z.infer<typeof ChooseCardsToDiscardSchema>, options) => {
+      execute: async (params: z.infer<typeof ChooseCardsToDiscardSchema>, _options) => {
         const { cardsToDiscard } = params;
         const faction = ctx.faction;
 

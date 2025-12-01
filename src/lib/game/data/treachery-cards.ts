@@ -69,7 +69,7 @@ export const POISON_WEAPONS: TreacheryCardDefinition[] = [
     id: 'ellaca_drug',
     name: 'Ellaca Drug',
     type: TreacheryCardType.WEAPON_POISON,
-    description: 'Kills opponent\'s leader. Opponent may protect with Projectile Defense.',
+    description: 'Kills opponent\'s leader. Opponent may protect with Poison Defense.',
     isPoison: true,
     discardAfterUse: false,
   },
@@ -189,6 +189,13 @@ export const SPECIAL_CARDS: TreacheryCardDefinition[] = [
     discardAfterUse: true,
   },
   {
+    id: 'cheap_hero_3',
+    name: 'Cheap Hero',
+    type: TreacheryCardType.SPECIAL,
+    description: 'Play as a leader with zero strength. Can use weapon and defense. Must play when no leaders available.',
+    discardAfterUse: true,
+  },
+  {
     id: 'family_atomics',
     name: 'Family Atomics',
     type: TreacheryCardType.SPECIAL,
@@ -225,7 +232,14 @@ export const SPECIAL_CARDS: TreacheryCardDefinition[] = [
     discardAfterUse: true,
   },
   {
-    id: 'truthtrance',
+    id: 'truthtrance_1',
+    name: 'Truthtrance',
+    type: TreacheryCardType.SPECIAL,
+    description: 'Ask one other player a single yes/no question. They must answer truthfully.',
+    discardAfterUse: true,
+  },
+  {
+    id: 'truthtrance_2',
     name: 'Truthtrance',
     type: TreacheryCardType.SPECIAL,
     description: 'Ask one other player a single yes/no question. They must answer truthfully.',

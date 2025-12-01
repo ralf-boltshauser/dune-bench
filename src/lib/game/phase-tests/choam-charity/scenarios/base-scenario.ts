@@ -5,7 +5,8 @@
  */
 
 import { ChoamCharityPhaseHandler } from '../../../phases/handlers/choam-charity';
-import { MockAgentProvider } from '../../../phases/phase-manager';
+import '../../../agent/env-loader';
+import { createAgentProvider } from '../../../agent/azure-provider';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
 import { TestLogger } from '../../helpers/test-logger';
 import type { GameState } from '../../../types';
@@ -29,21 +30,16 @@ export async function runCharityScenario(
   maxSteps: number = 100
 ): Promise<ScenarioResult> {
   const handler = new ChoamCharityPhaseHandler();
-  const provider = new MockAgentProvider('pass');
+  const provider = createAgentProvider(state, { verbose: false });
   const logger = new TestLogger(scenarioName, 'choam-charity');
   
   // Log initial state
   logger.logState(0, 'Initial State', state);
   logger.logInfo(0, `Starting scenario: ${scenarioName}`);
   
-  // Load responses into provider
+  // Note: Using Azure OpenAI agent - responses are generated dynamically
   const responses = responseBuilder.getResponses();
-  logger.logInfo(0, `Queued ${Array.from(responses.values()).flat().length} agent responses`);
-  for (const [requestType, responseList] of responses.entries()) {
-    for (const response of responseList) {
-      provider.queueResponse(requestType, response);
-    }
-  }
+  logger.logInfo(0, `Note: ${Array.from(responses.values()).flat().length} expected responses (using Azure OpenAI)`);
 
   // Initialize phase
   const initResult = handler.initialize(state);

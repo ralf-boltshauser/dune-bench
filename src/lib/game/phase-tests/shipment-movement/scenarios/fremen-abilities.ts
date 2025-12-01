@@ -44,7 +44,7 @@ export async function testFremenAbilities() {
   responses.queueFremenShipment(Faction.FREMEN, {
     territoryId: TerritoryId.THE_GREAT_FLAT,
     sector: 9,
-    count: 10, // Ship all reserves
+    regularCount: 10, // Ship all reserves
   });
 
   // Fremen: 2-territory movement (not 1)

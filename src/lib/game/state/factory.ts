@@ -4,6 +4,7 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
+import { randomBytes } from 'crypto';
 import {
   Faction,
   Phase,
@@ -12,6 +13,7 @@ import {
   CardLocation,
   SpiceCardLocation,
   TerritoryId,
+  TERRITORY_DEFINITIONS,
   type GameState,
   type GameConfig,
   type FactionState,
@@ -38,12 +40,30 @@ import {
 // =============================================================================
 
 /**
- * Fisher-Yates shuffle for arrays
+ * Get a cryptographically secure random number between 0 and max (exclusive)
+ * Falls back to Math.random() if crypto is not available
+ */
+function secureRandom(max: number): number {
+  try {
+    // Use crypto.randomBytes for better entropy
+    const bytes = randomBytes(4);
+    const randomValue = bytes.readUInt32BE(0);
+    return randomValue % max;
+  } catch {
+    // Fallback to Math.random() if crypto is not available
+    return Math.floor(Math.random() * max);
+  }
+}
+
+/**
+ * Fisher-Yates shuffle for arrays with improved randomness
+ * Uses crypto.randomBytes for better entropy when available
  */
 export function shuffle<T>(array: T[]): T[] {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    // Use secure random for better entropy
+    const j = secureRandom(i + 1);
     [result[i], result[j]] = [result[j], result[i]];
   }
   return result;
@@ -72,6 +92,16 @@ function createTreacheryDeck(): TreacheryCard[] {
       ownerId: null,
     }))
   );
+}
+
+/**
+ * Create the Storm Deck.
+ * Simple deck with values 1-6, one of each.
+ */
+function createStormDeck(): number[] {
+  // Simple deck with values 1-6, one of each
+  const deck = [1, 2, 3, 4, 5, 6];
+  return shuffle(deck);
 }
 
 function createSpiceDeck(): SpiceCard[] {
@@ -163,14 +193,15 @@ function createForces(faction: Faction): FactionForces {
 }
 
 function getDefaultSector(territoryId: TerritoryId): number {
-  // Return the first sector a territory occupies
-  // This is a simplification - in real game, players choose
+  // Return the first sector a territory occupies from the territory definition
+  // This ensures we use the correct sector that matches force slot mappings
+  const territory = TERRITORY_DEFINITIONS[territoryId];
+  if (territory && territory.sectors.length > 0) {
+    return territory.sectors[0];
+  }
+  // Fallback for territories without sectors (like Polar Sink)
+  // Polar Sink is in the center and doesn't have sectors, but we use 0 as a placeholder
   const sectorMap: Partial<Record<TerritoryId, number>> = {
-    [TerritoryId.ARRAKEEN]: 9,
-    [TerritoryId.CARTHAG]: 11,
-    [TerritoryId.SIETCH_TABR]: 5,
-    [TerritoryId.HABBANYA_SIETCH]: 15,
-    [TerritoryId.TUEKS_SIETCH]: 3,
     [TerritoryId.POLAR_SINK]: 0, // Center, doesn't matter
   };
   return sectorMap[territoryId] ?? 0;
@@ -248,6 +279,7 @@ export function createGameState(options: CreateGameOptions): GameState {
   // Create two identical spice decks for the two-pile system
   const spiceDeckA = createSpiceDeck();
   const spiceDeckB = createSpiceDeck();
+  const stormDeck = createStormDeck();
   // Note: Traitor deck is created during setup phase from leaders in game
 
   // Create faction states (traitors will be dealt during setup phase)
@@ -280,6 +312,7 @@ export function createGameState(options: CreateGameOptions): GameState {
     setupComplete: false,
     factions: factionStates,
     stormOrder: [...factions], // Will be determined by first storm
+    activeFactions: [],
     playerPositions: calculatePlayerPositions(factions), // Initialize player token positions
     stormSector: 0, // Will be set during first storm phase
     shieldWallDestroyed: false,
@@ -291,6 +324,7 @@ export function createGameState(options: CreateGameOptions): GameState {
     spiceDeckB,
     spiceDiscardA: [],
     spiceDiscardB: [],
+    stormDeck,
     alliances: [],
     pendingDeals: [],
     dealHistory: [],
@@ -302,6 +336,7 @@ export function createGameState(options: CreateGameOptions): GameState {
     wormCount: 0,
     nexusOccurring: false,
     karamaState: null,
+    bgSpiritualAdvisorTrigger: null,
     actionLog: [],
   };
 
@@ -410,19 +445,21 @@ export function calculatePlayerPositions(factions: Faction[]): Map<Faction, numb
 
   if (numFactions === 2) {
     // Two players: across from each other (9 sectors apart)
-    positions.set(factions[0], 0);
-    positions.set(factions[1], 9);
+    // First faction starts at sector 1, not 0
+    positions.set(factions[0], 1);
+    positions.set(factions[1], 10);
   } else if (numFactions === 6) {
-    // Six players: every 3rd sector
+    // Six players: every 3rd sector, starting at sector 1
     factions.forEach((faction, index) => {
-      positions.set(faction, index * 3);
+      positions.set(faction, (1 + (index * 3)) % totalSectors);
     });
   } else {
-    // Other counts: evenly distributed
+    // Other counts: evenly distributed, starting at sector 1
     const spacing = totalSectors / numFactions;
-  factions.forEach((faction, index) => {
-      positions.set(faction, Math.floor(index * spacing));
-  });
+    factions.forEach((faction, index) => {
+      const position = (1 + Math.floor(index * spacing)) % totalSectors;
+      positions.set(faction, position);
+    });
   }
 
   return positions;

@@ -21,7 +21,7 @@ export async function testMultiFactionBattle(): Promise<ScenarioResult> {
   console.log('\n🏜️  Setting up Multi-Faction Battle: Fremen vs Harkonnen vs Emperor');
 
   // Build test state
-  let state = buildTestState({
+  const state = buildTestState({
     factions: [Faction.FREMEN, Faction.HARKONNEN, Faction.EMPEROR],
     phase: undefined,
     turn: 1,

@@ -42,7 +42,7 @@ export function isEligibleForCharity(
   if (currentSpice <= GAME_CONSTANTS.CHOAM_CHARITY_THRESHOLD) {
     return {
       isEligible: true,
-      reason: `${currentSpice} spice (eligible: 0-1 spice)`,
+      reason: `${currentSpice} spice (will receive up to 2 spice)`,
     };
   }
 
@@ -114,7 +114,8 @@ export function getCharityAmount(
 ): number {
   const baseAmount = calculateCharityAmount(state, faction, currentSpice);
 
-  // TODO: Homeworlds variant - Low Threshold bonus (+1 spice)
+  // TODO(#homeworlds-variant): Homeworlds variant - Low Threshold bonus (+1 spice)
+  // When Homeworlds variant is implemented, add +1 spice bonus for Low Threshold faction
   // if (state.config.variants?.homeworlds) {
   //   const factionState = getFactionState(state, faction);
   //   if (isAtLowThreshold(factionState)) {

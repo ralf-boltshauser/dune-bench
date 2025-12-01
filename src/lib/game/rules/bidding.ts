@@ -3,15 +3,20 @@
  * Handles treachery card auction bidding.
  */
 
-import { Faction, type GameState } from '../types';
-import { getFactionState, getFactionHandSize, canFactionBid, getFactionMaxHandSize } from '../state';
 import {
-  type ValidationResult,
+  canFactionBid,
+  getFactionHandSize,
+  getFactionMaxHandSize,
+  getFactionState,
+} from "../state";
+import { Faction, type GameState } from "../types";
+import {
   type BidSuggestion,
-  validResult,
-  invalidResult,
   createError,
-} from './types';
+  invalidResult,
+  type ValidationResult,
+  validResult,
+} from "./types";
 
 // =============================================================================
 // BIDDING ELIGIBILITY
@@ -37,12 +42,12 @@ export function validateBiddingEligibility(
     return invalidResult(
       [
         createError(
-          'HAND_FULL',
+          "HAND_FULL",
           `Your hand is full (${handSize}/${maxHandSize} cards)`,
           {
             actual: handSize,
             expected: `< ${maxHandSize}`,
-            suggestion: 'You must pass on all bids this phase',
+            suggestion: "You must pass on all bids this phase",
           }
         ),
       ],
@@ -58,19 +63,44 @@ export function validateBiddingEligibility(
 // =============================================================================
 
 /**
+ * Options for bid validation that handle Karama exceptions.
+ */
+export interface BidValidationOptions {
+  /** Karama free card active - allows bid 0 to get card for free */
+  karamaFreeCardActive?: boolean;
+  /** Karama bidding active - allows bidding over spice limit */
+  karamaBiddingActive?: boolean;
+  /** True if this faction is currently the high bidder for this auction */
+  isCurrentHighBidder?: boolean;
+}
+
+/**
  * Validate a bid on a treachery card.
+ *
+ * This is the SINGLE SOURCE OF TRUTH for bid validation.
+ * All bid validation logic should go through this function.
+ *
+ * @param state - Current game state
+ * @param faction - Faction making the bid
+ * @param bidAmount - Amount being bid
+ * @param currentHighBid - Current highest bid (0 if opening bid)
+ * @param isOpeningBid - Whether this is the opening bid
+ * @param options - Optional Karama exceptions
  */
 export function validateBid(
   state: GameState,
   faction: Faction,
   bidAmount: number,
   currentHighBid: number,
-  isOpeningBid: boolean = false
+  isOpeningBid: boolean = false,
+  options: BidValidationOptions = {}
 ): ValidationResult<BidSuggestion> {
   const errors: ReturnType<typeof createError>[] = [];
   const factionState = getFactionState(state, faction);
   const handSize = getFactionHandSize(state, faction);
   const maxHandSize = getFactionMaxHandSize(faction);
+  const { karamaFreeCardActive = false, karamaBiddingActive = false, isCurrentHighBidder = false } =
+    options;
 
   const context = {
     spiceAvailable: factionState.spice,
@@ -79,44 +109,61 @@ export function validateBid(
     handSize,
     maxHandSize,
     isOpeningBid,
+    karamaFreeCardActive,
+    karamaBiddingActive,
   };
 
   // Check: Hand not full
   if (handSize >= maxHandSize) {
     errors.push(
       createError(
-        'HAND_FULL',
+        "HAND_FULL",
         `Cannot bid - your hand is full (${handSize}/${maxHandSize})`,
-        { suggestion: 'You must pass' }
+        { suggestion: "You must pass" }
       )
     );
     return invalidResult(errors, context);
   }
 
   // Check: Bid is positive
+  // Rule 1.04.06.01: "The player who bids first must bid 1 spice or more otherwise they must pass."
+  // NOTE: We intentionally *do not* allow Karama to create a "0 bid". Karama can still
+  // waive payment (handled in resolveAuction) but the bid itself must be a legal Dune bid.
   if (bidAmount < 1) {
     errors.push(
+      createError("BID_TOO_LOW", "Bid must be at least 1 spice", {
+        field: "bidAmount",
+        actual: bidAmount,
+        expected: ">= 1",
+        suggestion: "Bid at least 1 spice or pass",
+      })
+    );
+  }
+
+  // Check: Prevent self-outbidding
+  // Once you are the current high bidder, you cannot raise your own bid;
+  // you must either keep your existing bid or pass.
+  if (!isOpeningBid && isCurrentHighBidder) {
+    errors.push(
       createError(
-        'BID_TOO_LOW',
-        'Bid must be at least 1 spice',
+        "SELF_OUTBID_NOT_ALLOWED",
+        "You are already the high bidder and cannot raise your own bid",
         {
-          field: 'bidAmount',
-          actual: bidAmount,
-          expected: '>= 1',
-          suggestion: 'Bid at least 1 spice or pass',
+          suggestion: "Either keep your current bid or pass",
         }
       )
     );
   }
 
   // Check: Bid is higher than current (unless opening bid)
+  // Rule 1.04.06.01: "The next bidder may raise the bid or pass"
   if (!isOpeningBid && bidAmount <= currentHighBid) {
     errors.push(
       createError(
-        'BID_TOO_LOW',
+        "BID_TOO_LOW",
         `Bid must be higher than current bid of ${currentHighBid}`,
         {
-          field: 'bidAmount',
+          field: "bidAmount",
           actual: bidAmount,
           expected: `> ${currentHighBid}`,
           suggestion: `Bid at least ${currentHighBid + 1} spice`,
@@ -126,19 +173,21 @@ export function validateBid(
   }
 
   // Check: Sufficient spice (without Karama)
-  // Note: With Karama, player can bid more than they have
-  if (bidAmount > factionState.spice) {
+  // Rule 1.04.06.03: "Players may not bid more spice than they have."
+  // Exception: Karama card allows bidding over spice limit (Rule 3.01.11)
+  if (bidAmount > factionState.spice && !karamaBiddingActive) {
     errors.push(
       createError(
-        'BID_EXCEEDS_SPICE',
+        "BID_EXCEEDS_SPICE",
         `Bid of ${bidAmount} exceeds your spice (${factionState.spice})`,
         {
-          field: 'bidAmount',
+          field: "bidAmount",
           actual: bidAmount,
           expected: `<= ${factionState.spice}`,
-          suggestion: factionState.spice > currentHighBid
-            ? `Bid ${factionState.spice} spice (your maximum)`
-            : 'Pass or use Karama to bid more than you have',
+          suggestion:
+            factionState.spice > currentHighBid
+              ? `Bid ${factionState.spice} spice (your maximum)`
+              : "Pass or use Karama to bid more than you have",
         }
       )
     );
@@ -234,9 +283,9 @@ export function validateAllyBidSupport(
   if (bidderState.allyId !== allyFaction) {
     errors.push(
       createError(
-        'ABILITY_NOT_AVAILABLE',
+        "ABILITY_NOT_AVAILABLE",
         `${biddingFaction} and ${allyFaction} are not allied`,
-        { suggestion: 'Only allies can help pay for bids' }
+        { suggestion: "Only allies can help pay for bids" }
       )
     );
     return invalidResult(errors, context);
@@ -246,10 +295,10 @@ export function validateAllyBidSupport(
   if (supportAmount > allyState.spice) {
     errors.push(
       createError(
-        'INSUFFICIENT_SPICE',
+        "INSUFFICIENT_SPICE",
         `Ally only has ${allyState.spice} spice, cannot contribute ${supportAmount}`,
         {
-          field: 'supportAmount',
+          field: "supportAmount",
           actual: supportAmount,
           expected: `<= ${allyState.spice}`,
           suggestion: `Ally can contribute up to ${allyState.spice} spice`,
@@ -263,10 +312,12 @@ export function validateAllyBidSupport(
   if (bidderContribution > bidderState.spice) {
     errors.push(
       createError(
-        'INSUFFICIENT_SPICE',
+        "INSUFFICIENT_SPICE",
         `Even with ally support, you need ${bidderContribution} spice but only have ${bidderState.spice}`,
         {
-          suggestion: `Ask ally to contribute ${totalBid - bidderState.spice} or more`,
+          suggestion: `Ask ally to contribute ${
+            totalBid - bidderState.spice
+          } or more`,
         }
       )
     );
@@ -321,7 +372,8 @@ export function getStartingBidder(
   // Subsequent cards: next eligible player to the right of previous bidder
   const prevIndex = state.stormOrder.indexOf(previousBidder);
   for (let i = 1; i <= state.stormOrder.length; i++) {
-    const nextFaction = state.stormOrder[(prevIndex + i) % state.stormOrder.length];
+    const nextFaction =
+      state.stormOrder[(prevIndex + i) % state.stormOrder.length];
     if (eligible.includes(nextFaction)) {
       return nextFaction;
     }

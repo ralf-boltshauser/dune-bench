@@ -186,3 +186,6 @@ The implementation correctly distinguishes between:
 This matches the Dune rules where leaders can only die from weapons or special effects (like lasgun-shield explosions), never from simply losing a battle.
 
 
+
+
+

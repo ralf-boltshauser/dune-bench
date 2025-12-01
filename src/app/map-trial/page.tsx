@@ -1,30 +1,37 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { TERRITORY_DEFINITIONS, TerritoryId } from "@/lib/game/types";
 import { Faction, FACTION_NAMES, TerritoryType } from "@/lib/game/types/enums";
+import { FactionState } from "@/lib/game/types/state";
 import {
   getForceSlotGroupId,
   territoryIdToSvgId,
 } from "@/lib/game/utils/territory-svg-mapper";
 import { useEffect, useMemo, useState } from "react";
+import { FACTION_COLORS } from "../components/constants";
+import FactionPanels from "../components/FactionPanels";
+import { createMockGameState } from "../components/mockFactionData";
 
 // Helper function to darken a color
 function darkenColor(color: string, amount: number): string {
   // Remove # if present
   const hex = color.replace("#", "");
-  
+
   // Convert to RGB
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
-  
+
   // Darken by reducing each component
   const newR = Math.max(0, Math.floor(r * (1 - amount)));
   const newG = Math.max(0, Math.floor(g * (1 - amount)));
   const newB = Math.max(0, Math.floor(b * (1 - amount)));
-  
+
   // Convert back to hex
-  return `#${newR.toString(16).padStart(2, "0")}${newG.toString(16).padStart(2, "0")}${newB.toString(16).padStart(2, "0")}`;
+  return `#${newR.toString(16).padStart(2, "0")}${newG
+    .toString(16)
+    .padStart(2, "0")}${newB.toString(16).padStart(2, "0")}`;
 }
 
 interface ForcePlacement {
@@ -38,9 +45,54 @@ interface ForcePlacement {
 export default function MapTrialPage() {
   const [forces, setForces] = useState<ForcePlacement[]>([]);
   const [currentTurn, setCurrentTurn] = useState<number>(1);
+  const [useMockData, setUseMockData] = useState<boolean>(true);
+  const [factionStates, setFactionStates] = useState<
+    Map<Faction, FactionState>
+  >(new Map());
+  const [gameId, setGameId] = useState<string>("");
+  const [loadingGame, setLoadingGame] = useState<boolean>(false);
 
   // Store original SVG content
   const [originalSvg, setOriginalSvg] = useState<string>("");
+
+  // Initialize with mock data
+  useEffect(() => {
+    if (useMockData) {
+      setFactionStates(createMockGameState());
+    }
+  }, [useMockData]);
+
+  // Load real game data
+  const loadGameData = async () => {
+    if (!gameId.trim()) {
+      alert("Please enter a game ID");
+      return;
+    }
+
+    setLoadingGame(true);
+    try {
+      const response = await fetch(`/api/game/${gameId}`);
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || "Failed to load game");
+      }
+
+      if (data.state && data.state.factions) {
+        setFactionStates(data.state.factions);
+        setUseMockData(false);
+      }
+    } catch (error) {
+      console.error("Error loading game:", error);
+      alert(
+        `Error loading game: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    } finally {
+      setLoadingGame(false);
+    }
+  };
 
   // Load SVG content
   useEffect(() => {
@@ -125,17 +177,7 @@ export default function MapTrialPage() {
           return aNum - bNum;
         });
 
-      // Color slots based on faction and count
-      const factionColors: Record<Faction, string> = {
-        [Faction.ATREIDES]: "#4A90E2", // Blue
-        [Faction.BENE_GESSERIT]: "#9B59B6", // Purple
-        [Faction.EMPEROR]: "#F39C12", // Orange
-        [Faction.FREMEN]: "#E74C3C", // Red
-        [Faction.HARKONNEN]: "#2C3E50", // Dark Blue
-        [Faction.SPACING_GUILD]: "#1ABC9C", // Teal
-      };
-
-      const color = factionColors[force.faction] || "#000000";
+      const color = FACTION_COLORS[force.faction] || "#000000";
 
       // Show the slot group if it has forces
       slotGroup.setAttribute("display", "block");
@@ -169,7 +211,7 @@ export default function MapTrialPage() {
             const rectY = parseFloat(rect.getAttribute("y") || "0");
             const rectWidth = parseFloat(rect.getAttribute("width") || "0");
             const rectHeight = parseFloat(rect.getAttribute("height") || "0");
-            
+
             const centerX = rectX + rectWidth / 2;
             const centerY = rectY + rectHeight / 2;
 
@@ -331,23 +373,25 @@ export default function MapTrialPage() {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Test Scenarios</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <button
+            <Button
               onClick={() =>
                 addForces(Faction.ATREIDES, TerritoryId.ARRAKEEN, 9, 2)
               }
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              variant="default"
+              className="bg-blue-500 text-white hover:bg-blue-600"
             >
               Atreides ships 2 to Arrakeen
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() =>
                 addForces(Faction.HARKONNEN, TerritoryId.CIELAGO_SOUTH, 2, 2)
               }
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+              variant="default"
+              className="bg-gray-700 text-white hover:bg-gray-800"
             >
               Harkonnen ships 2 to Cielago South (sector 2)
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() =>
                 addForces(
                   Faction.BENE_GESSERIT,
@@ -356,40 +400,66 @@ export default function MapTrialPage() {
                   10
                 )
               }
-              className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+              variant="default"
+              className="bg-purple-500 text-white hover:bg-purple-600"
             >
               BG ships 10 to Cielago South (sector 2)
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() =>
                 addForces(Faction.FREMEN, TerritoryId.MERIDIAN, 0, 5)
               }
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              variant="default"
+              className="bg-red-500 text-white hover:bg-red-600"
             >
               Fremen ships 5 to Meridian (sector 0)
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() =>
                 addForces(Faction.EMPEROR, TerritoryId.CARTHAG, 10, 3)
               }
-              className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+              variant="default"
+              className="bg-orange-500 text-white hover:bg-orange-600"
             >
               Emperor ships 3 to Carthag
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() =>
                 addForces(Faction.SPACING_GUILD, TerritoryId.SOUTH_MESA, 3, 4)
               }
-              className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600"
+              variant="default"
+              className="bg-teal-500 text-white hover:bg-teal-600"
             >
               Guild ships 4 to South Mesa (sector 3)
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={clearForces}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 col-span-full"
+              variant="destructive"
+              className="col-span-full"
             >
               Clear All Forces
-            </button>
+            </Button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">Load Game Data</h2>
+          <div className="flex gap-2 mb-4">
+            <input
+              type="text"
+              value={gameId}
+              onChange={(e) => setGameId(e.target.value)}
+              placeholder="Enter game ID"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <Button
+              onClick={loadGameData}
+              disabled={loadingGame}
+              variant="default"
+              className="bg-green-500 text-white hover:bg-green-600"
+            >
+              {loadingGame ? "Loading..." : "Load Game"}
+            </Button>
           </div>
         </div>
 
@@ -405,18 +475,7 @@ export default function MapTrialPage() {
                     <span
                       className="w-4 h-4 rounded"
                       style={{
-                        backgroundColor:
-                          force.faction === Faction.ATREIDES
-                            ? "#4A90E2"
-                            : force.faction === Faction.BENE_GESSERIT
-                            ? "#9B59B6"
-                            : force.faction === Faction.EMPEROR
-                            ? "#F39C12"
-                            : force.faction === Faction.FREMEN
-                            ? "#E74C3C"
-                            : force.faction === Faction.HARKONNEN
-                            ? "#2C3E50"
-                            : "#1ABC9C",
+                        backgroundColor: FACTION_COLORS[force.faction],
                       }}
                     />
                     <span className="font-medium">
@@ -436,35 +495,64 @@ export default function MapTrialPage() {
         <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
           <h2 className="text-xl font-semibold mb-4">Turn Control</h2>
           <div className="flex items-center gap-4">
-            <button
+            <Button
               onClick={() => setCurrentTurn((prev) => Math.max(1, prev - 1))}
-              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              variant="secondary"
               disabled={currentTurn === 1}
             >
               Turn -1
-            </button>
+            </Button>
             <div className="flex items-center gap-2">
               <span className="text-lg font-semibold">Current Turn:</span>
               <span className="text-2xl font-bold text-orange-600">
                 {currentTurn}
               </span>
             </div>
-            <button
+            <Button
               onClick={() => setCurrentTurn((prev) => Math.min(10, prev + 1))}
-              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              variant="secondary"
               disabled={currentTurn === 10}
             >
               Turn +1
-            </button>
+            </Button>
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
-          <h2 className="text-xl font-semibold mb-4">Map</h2>
-          <div
-            className="w-full"
-            dangerouslySetInnerHTML={{ __html: svgContent }}
-          />
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Map</h2>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={useMockData}
+                  onChange={(e) => setUseMockData(e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm">Use Mock Data</span>
+              </label>
+              <Button
+                onClick={() => setFactionStates(createMockGameState())}
+                variant="default"
+                size="sm"
+                className="bg-blue-500 text-white hover:bg-blue-600"
+              >
+                Refresh Mock Data
+              </Button>
+            </div>
+          </div>
+          <div className="relative w-full">
+            <div
+              className="w-full"
+              dangerouslySetInnerHTML={{ __html: svgContent }}
+            />
+            {factionStates.size > 0 && (
+              <FactionPanels
+                factions={factionStates}
+                className="absolute inset-0"
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

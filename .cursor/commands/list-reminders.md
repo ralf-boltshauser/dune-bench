@@ -1,0 +1,1 @@
+Check out verification.md and list all issues and verifications that need to be made. 

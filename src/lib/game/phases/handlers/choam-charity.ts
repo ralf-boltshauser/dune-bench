@@ -75,11 +75,48 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
 
     if (this.eligibleFactions.length === 0) {
       // No one eligible, skip phase
+      console.log("   ℹ️  No factions eligible for CHOAM Charity. Skipping phase.\n");
       return this.complete(state, Phase.BIDDING, events);
     }
 
     // Request charity decisions from eligible factions (simultaneously)
-    return this.requestCharityDecisions(state, events);
+    console.log(
+      `   📤 Requesting decisions from ${this.eligibleFactions.length} eligible faction(s)\n`
+    );
+    const result = this.requestCharityDecisions(state, events);
+    
+    // DEFENSIVE CHECK: Verify requests were created
+    if (result.pendingRequests.length === 0) {
+      console.error(
+        `\n❌ BUG: requestCharityDecisions() returned empty pendingRequests!`
+      );
+      console.error(
+        `   Eligible factions: ${this.eligibleFactions.map((f) => FACTION_NAMES[f]).join(", ")}`
+      );
+      throw new Error(
+        `Failed to create charity requests. Eligible factions exist but no requests created.`
+      );
+    }
+    
+    // CRITICAL FIX: Ensure phaseComplete is false when we have pending requests
+    // This prevents the phase manager from completing the phase prematurely
+    if (result.phaseComplete) {
+      console.error(
+        `\n❌ BUG: requestCharityDecisions() returned phaseComplete: true with pending requests!`
+      );
+      console.error(
+        `   Pending requests: ${result.pendingRequests.length}`
+      );
+      throw new Error(
+        `Phase cannot be complete when there are pending requests. This is a critical bug.`
+      );
+    }
+    
+    console.log(
+      `   ✅ Returning ${result.pendingRequests.length} pending request(s), phaseComplete: ${result.phaseComplete}\n`
+    );
+    
+    return result;
   }
 
   processStep(state: GameState, responses: AgentResponse[]): PhaseStepResult {
@@ -89,6 +126,26 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
     console.log("\n" + "=".repeat(80));
     console.log("💰 PROCESSING CHOAM CHARITY CLAIMS");
     console.log("=".repeat(80));
+    console.log(`   Received ${responses.length} response(s)`);
+
+    // CRITICAL FIX: If no responses were received but we have eligible factions,
+    // we must request decisions again. This prevents the phase from completing
+    // prematurely when the phase manager calls processStep with empty responses.
+    const remaining = this.eligibleFactions.filter(
+      (f) => !this.processedFactions.has(f)
+    );
+
+    // If we have eligible factions but no responses, we need to request decisions
+    // This can happen if the phase manager calls processStep before getting agent responses
+    if (responses.length === 0 && remaining.length > 0) {
+      console.log(
+        `   ⚠️  No responses received, but ${remaining.length} eligible faction(s) still need to decide: ${remaining.map((f) => FACTION_NAMES[f]).join(", ")}`
+      );
+      console.log(
+        `   🔄 Requesting decisions again...`
+      );
+      return this.requestCharityDecisions(newState, events);
+    }
 
     // Process charity claims
     // Rule 1.03.02: A Player may only Claim CHOAM Charity once a Turn
@@ -101,13 +158,39 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
     console.log("=".repeat(80) + "\n");
 
     // Check if all eligible factions have been processed
-    const remaining = this.eligibleFactions.filter(
+    const stillRemaining = this.eligibleFactions.filter(
       (f) => !this.processedFactions.has(f)
     );
 
-    if (remaining.length > 0) {
+    if (stillRemaining.length > 0) {
+      console.log(
+        `   ⏳ ${stillRemaining.length} faction(s) still need to decide: ${stillRemaining.map((f) => FACTION_NAMES[f]).join(", ")}`
+      );
       return this.requestCharityDecisions(newState, events);
     }
+
+    // VALIDATION: Ensure all eligible factions were processed before completing
+    if (this.eligibleFactions.length > 0 && this.processedFactions.size === 0) {
+      console.error(
+        `\n❌ BUG: Phase completing without processing any eligible factions!`
+      );
+      console.error(
+        `   Eligible factions: ${this.eligibleFactions.map((f) => FACTION_NAMES[f]).join(", ")}`
+      );
+      console.error(
+        `   Processed factions: ${Array.from(this.processedFactions).map((f) => FACTION_NAMES[f]).join(", ") || "none"}`
+      );
+      console.error(
+        `   Responses received: ${responses.length}`
+      );
+      throw new Error(
+        `Phase cannot complete without processing eligible factions: ${this.eligibleFactions.join(", ")}`
+      );
+    }
+
+    console.log(
+      `   ✅ All ${this.eligibleFactions.length} eligible faction(s) processed. Phase complete.\n`
+    );
 
     // Phase complete
     return this.complete(newState, Phase.BIDDING, events);
@@ -145,10 +228,12 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
     this.processedFactions.add(response.factionId);
 
     // Check if faction is claiming charity
-    if (response.actionType === "CLAIM_CHARITY" || !response.passed) {
+    // Only claim if explicitly CLAIM_CHARITY action type
+    // PASS action type or missing response should decline
+    if (response.actionType === "CLAIM_CHARITY") {
       return this.processCharityClaim(state, response.factionId, events);
     } else {
-      // Faction declined charity
+      // Faction declined charity (PASS action or no explicit claim)
       console.log(
         `  ❌ ${FACTION_NAMES[response.factionId]}: Declines CHOAM Charity`
       );
@@ -227,24 +312,73 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
   ): PhaseStepResult {
     const pendingRequests: AgentRequest[] = [];
 
+    console.log(
+      `\n📋 Requesting charity decisions from ${this.eligibleFactions.length} eligible faction(s)`
+    );
+    console.log(
+      `   Eligible factions: ${this.eligibleFactions.map((f) => FACTION_NAMES[f]).join(", ")}`
+    );
+    console.log(
+      `   Already processed: ${Array.from(this.processedFactions).map((f) => FACTION_NAMES[f]).join(", ") || "none"}`
+    );
+
     for (const faction of this.eligibleFactions) {
-      if (this.processedFactions.has(faction)) continue;
+      if (this.processedFactions.has(faction)) {
+        console.log(
+          `   ⏭️  Skipping ${FACTION_NAMES[faction]} (already processed)`
+        );
+        continue;
+      }
 
       const factionState = getFactionState(state, faction);
+      const charityAmount = getCharityAmount(state, faction, factionState.spice);
+      const newTotal = factionState.spice + charityAmount;
+
+      console.log(
+        `   📨 Creating request for ${FACTION_NAMES[faction]} (${factionState.spice} spice → ${newTotal} spice)`
+      );
 
       pendingRequests.push(
         createAgentRequest(
           faction,
           "CLAIM_CHARITY",
-          `You have ${factionState.spice} spice and are eligible for CHOAM Charity (${GAME_CONSTANTS.CHOAM_CHARITY_AMOUNT} spice). Do you want to claim it?`,
+          `You have ${factionState.spice} spice and are eligible for CHOAM Charity. You will receive ${charityAmount} spice from the bank (bringing you to ${newTotal} spice total). This is free spice with no strings attached - you should almost always claim it. Only reject if you have a very specific strategic reason (which is extremely rare).`,
           {
             currentSpice: factionState.spice,
-            charityAmount: GAME_CONSTANTS.CHOAM_CHARITY_AMOUNT,
+            charityAmount: charityAmount,
           },
           ["CLAIM_CHARITY", "PASS"]
         )
       );
     }
+
+    // DEFENSIVE CHECK: Ensure requests are created when eligible factions exist
+    if (pendingRequests.length === 0 && this.eligibleFactions.length > 0) {
+      const unprocessed = this.eligibleFactions.filter(
+        (f) => !this.processedFactions.has(f)
+      );
+      if (unprocessed.length > 0) {
+        console.error(
+          `\n❌ BUG: No requests created for ${unprocessed.length} eligible faction(s)!`
+        );
+        console.error(
+          `   Eligible: ${this.eligibleFactions.map((f) => FACTION_NAMES[f]).join(", ")}`
+        );
+        console.error(
+          `   Processed: ${Array.from(this.processedFactions).map((f) => FACTION_NAMES[f]).join(", ") || "none"}`
+        );
+        console.error(
+          `   Unprocessed: ${unprocessed.map((f) => FACTION_NAMES[f]).join(", ")}`
+        );
+        throw new Error(
+          `Failed to create charity requests for eligible factions: ${unprocessed.join(", ")}`
+        );
+      }
+    }
+
+    console.log(
+      `   ✅ Created ${pendingRequests.length} request(s) for charity decisions\n`
+    );
 
     return this.pending(state, pendingRequests, true, events);
   }

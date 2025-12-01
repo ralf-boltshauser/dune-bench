@@ -76,6 +76,8 @@ export type AgentRequestType =
   | 'GUILD_TIMING_DECISION' // Spacing Guild: act now or wait
   | 'SEND_ADVISOR' // BG ability
   | 'FLIP_ADVISORS' // BG ability
+  | 'TAKE_UP_ARMS' // BG ability
+  | 'BG_INTRUSION' // BG ability: intrusion response
 
   // Battle
   | 'CHOOSE_BATTLE'
@@ -177,12 +179,15 @@ export type PhaseEventType =
   // Setup
   | 'SETUP_STEP'
   | 'TRAITOR_SELECTED'
+  | 'TRAITOR_OPTIONS_AVAILABLE'
   | 'BG_PREDICTION_MADE'
   | 'BG_PREDICTION_REVEALED'
   | 'FORCES_PLACED'
 
   // Storm
   | 'STORM_DIAL_REVEALED'
+  | 'STORM_CARD_REVEALED'
+  | 'STORM_CARD_DRAWN'
   | 'STORM_MOVED'
   | 'FORCES_KILLED_BY_STORM'
   | 'SPICE_DESTROYED_BY_STORM'
@@ -215,12 +220,15 @@ export type PhaseEventType =
   | 'AUCTION_STARTED'
   | 'BID_PLACED'
   | 'BID_PASSED'
+  | 'CARD_PEEKED' // Atreides sees card before bidding (rule 2.01.05)
   | 'CARD_WON'
   | 'CARD_BOUGHT_IN'
   | 'CARD_RETURNED_TO_DECK'
   | 'CARD_DRAWN_FREE'
   | 'KARAMA_BUY_WITHOUT_PAYING'
+  | 'KARAMA_FREE_CARD'
   | 'BIDDING_COMPLETE'
+  | 'SPICE_REFUNDED' // Spice refunded due to error (e.g., hand size exceeded)
 
   // Revival
   | 'FORCES_REVIVED'
@@ -231,6 +239,7 @@ export type PhaseEventType =
   | 'FORCES_MOVED'
   | 'ADVISOR_SENT'
   | 'ADVISORS_FLIPPED'
+  | 'FORCES_CONVERTED' // Forces converted (e.g., BG fighters to advisors)
 
   // Battle
   | 'BATTLE_STARTED'
@@ -259,6 +268,7 @@ export type PhaseEventType =
   | 'KWISATZ_HADERACH_KILLED'
   | 'KWISATZ_HADERACH_REVIVED'
   | 'SPICE_AWARDED'
+  | 'STRONGHOLD_OCCUPANCY_VIOLATION' // Multiple factions in stronghold violation
 
   // Collection
   | 'SPICE_COLLECTED'
@@ -266,7 +276,10 @@ export type PhaseEventType =
 
   // Victory
   | 'VICTORY_ACHIEVED'
-  | 'GAME_ENDED';
+  | 'GAME_ENDED'
+
+  // Errors (for defensive checks and validation failures)
+  | 'ERROR';
 
 // =============================================================================
 // PHASE HANDLER INTERFACE

@@ -1,7 +1,13 @@
 /**
  * Spice Destruction Rules Scenario
- * 
- * Tests that spice is destroyed only in path (not starting sector).
+ *
+ * Tests that spice is destroyed in every affected sector:
+ * - starting sector
+ * - all intermediate sectors in the path
+ * - ending sector
+ *
+ * Also ensures spice in non-affected sectors (even in the same territory)
+ * is not destroyed.
  */
 
 import { Faction, Phase, TerritoryId } from '../../../types';
@@ -24,7 +30,7 @@ export async function testSpiceDestructionRules(): Promise<ScenarioResult> {
       {
         territory: TerritoryId.MERIDIAN,
         sector: 5,
-        amount: 5, // Starting sector - should NOT be destroyed
+        amount: 5, // Starting sector - SHOULD be destroyed
       },
       {
         territory: TerritoryId.CIELAGO_NORTH,
@@ -35,6 +41,11 @@ export async function testSpiceDestructionRules(): Promise<ScenarioResult> {
         territory: TerritoryId.CIELAGO_SOUTH,
         sector: 7,
         amount: 8, // Ending sector - should be destroyed
+      },
+      {
+        territory: TerritoryId.MERIDIAN,
+        sector: 4,
+        amount: 4, // Same territory, different sector - should survive
       },
     ],
   });

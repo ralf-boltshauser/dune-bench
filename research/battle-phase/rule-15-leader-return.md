@@ -292,3 +292,6 @@ The Leader Return rule is **correctly and completely implemented**. The code:
 The implementation follows the rule exactly: "After all battles have been fought, players collect any of their leaders used in battle still in Territories adding them to their Leader Pool."
 
 
+
+
+

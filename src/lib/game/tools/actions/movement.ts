@@ -12,6 +12,7 @@ import { successResult, failureResult, validationToToolError } from '../types';
 import { MoveForcesSchema, PassActionSchema } from '../schemas';
 import { getFactionState, moveForces } from '../../state';
 import { validateMovement, checkOrnithopterAccess, getMovementRange } from '../../rules';
+import { normalizeTerritoryId } from '../../utils/territory-normalize';
 
 // =============================================================================
 // MOVEMENT TOOLS
@@ -34,12 +35,34 @@ Movement Rules:
 - Fremen: 2 territories (desert movement)
 - Cannot move through storm
 - Cannot move into strongholds with 2+ other factions
-- You get ONE movement action per turn (all forces must move as a group)
+- You get ONE movement action per turn
+- IMPORTANT: You can move a SUBGROUP of forces - you don't have to move all forces from a territory
+  Example: If you have 10 forces in Arrakeen and want to collect spice nearby, you can move just 3 forces out, leaving 7 behind to keep control of the stronghold
 
 Ornithopters are key - controlling Arrakeen or Carthag gives mobility advantage.`,
       inputSchema: MoveForcesSchema,
       execute: async (params: z.infer<typeof MoveForcesSchema>, options) => {
-        const { fromTerritoryId, fromSector, toTerritoryId, toSector, count } = params;
+        const { fromTerritoryId: rawFrom, fromSector, toTerritoryId: rawTo, toSector, count } = params;
+        
+        // Normalize territory IDs (schema no longer has transform)
+        const fromTerritoryId = normalizeTerritoryId(rawFrom);
+        const toTerritoryId = normalizeTerritoryId(rawTo);
+        
+        if (!fromTerritoryId) {
+          return failureResult(
+            `Invalid from territory ID: "${rawFrom}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawFrom}" does not exist` },
+            false
+          );
+        }
+        if (!toTerritoryId) {
+          return failureResult(
+            `Invalid to territory ID: "${rawTo}"`,
+            { code: 'INVALID_TERRITORY', message: `Territory "${rawTo}" does not exist` },
+            false
+          );
+        }
+        
         const state = ctx.state;
         const faction = ctx.faction;
 
@@ -53,12 +76,13 @@ Ornithopters are key - controlling Arrakeen or Carthag gives mobility advantage.
         const movementRange = getMovementRange(state, faction, hasOrnithoptersOverride);
 
         // Validate the movement with ornithopter override
+        // Territory IDs are already normalized by schema, so validation receives normalized IDs
         const validation = validateMovement(
           state,
           faction,
-          fromTerritoryId as TerritoryId,
+          fromTerritoryId,
           fromSector,
-          toTerritoryId as TerritoryId,
+          toTerritoryId,
           toSector,
           count,
           hasOrnithoptersOverride
@@ -73,13 +97,13 @@ Ornithopters are key - controlling Arrakeen or Carthag gives mobility advantage.
           );
         }
 
-        // Execute movement
+        // Execute movement (IDs already normalized)
         const newState = moveForces(
           state,
           faction,
-          fromTerritoryId as TerritoryId,
+          fromTerritoryId,
           fromSector,
-          toTerritoryId as TerritoryId,
+          toTerritoryId,
           toSector,
           count
         );
@@ -95,6 +119,7 @@ Ornithopters are key - controlling Arrakeen or Carthag gives mobility advantage.
             count,
             hadOrnithopters: hasOrnithopters,
             movementRange,
+            appliedByTool: true,
           },
           true
         );

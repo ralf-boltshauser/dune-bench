@@ -1,0 +1,1582 @@
+<svg width="970" height="1099" viewBox="0 0 970 1099" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 9">
+<circle id="border" cx="483.097" cy="556.456" r="432.5" stroke="black"/>
+<path id="sector-0" d="M410.06 982.744C360.635 974.276 313.06 957.277 269.459 932.508L451.837 611.481C458.216 615.105 462.649 633.143 469.881 634.382L410.06 982.744Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-1" d="M559.251 982.198C509.89 991.028 459.369 991.206 409.946 982.725L469.644 634.851C478.733 636.411 488.024 636.378 497.102 634.754L559.251 982.198Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-2" d="M699.705 930.805C656.302 955.919 608.862 973.293 559.506 982.152L497.106 634.502C506.155 632.878 512.01 624.77 519.968 620.166L699.705 930.805Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-3" d="M814.029 834.916C781.743 873.285 743.032 905.747 699.623 930.851L519.609 619.607C519.609 619.607 520.215 611.301 522.005 605.683C523.795 600.064 526.461 597.603 528.514 595.164L814.029 834.916Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-4" d="M888.711 706.567C871.307 753.594 845.857 797.237 813.499 835.545L528.16 594.52C532.573 589.295 536.044 583.343 538.418 576.929L888.711 706.567Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-5" d="M915.572 561.138C915.029 611.28 905.77 660.946 888.21 707.916L537.464 576.782C539.821 570.478 549.803 565.129 549.876 558.4L915.572 561.138Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-6" d="M891.008 412.703C907.675 459.997 915.991 509.829 915.583 559.972L550.347 557.002C550.411 549.205 555.728 538.922 553.136 531.568L891.008 412.703Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-7" d="M816.683 281.18C848.599 319.857 873.546 363.789 890.409 411.014L552.92 531.524C550.029 523.428 543.06 518.137 537.588 511.506L816.683 281.18Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-8" d="M702.162 183.539C745.398 208.937 783.889 241.662 815.913 280.249L537.473 511.329C532.241 505.024 514.56 518.916 507.496 514.766L702.162 183.539Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-9" d="M561.768 131.171C611.077 140.292 658.423 157.919 701.692 183.263L507.245 515.519C502.129 512.522 498.231 507.243 492.4 506.164L561.768 131.171Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-10" d="M410.469 130.097C459.902 121.677 510.423 121.917 559.773 130.807L492.266 505.556C486.365 504.493 480.808 509.998 474.897 511.005L410.469 130.097Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-11" d="M268.232 181.103C311.751 156.191 359.271 139.037 408.668 130.408L475.195 511.225C469.951 512.142 464.907 513.963 460.286 516.607L268.232 181.103Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-12" d="M152.168 277.991C184.454 239.623 223.166 207.161 266.574 182.057L460.564 516.263C454.709 519.649 442.819 513.724 438.464 518.899L152.168 277.991Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-13" d="M77.0271 407.581C94.2878 360.501 119.604 316.781 151.846 278.375L438.075 518.978C432.985 525.041 421.714 525.519 418.989 532.952L77.0271 407.581Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-14" d="M50.5969 556.455C50.5969 506.311 59.3172 456.548 76.3681 409.391L418.814 532.889C415.747 541.369 405.324 547.438 405.324 556.456L50.5969 556.455Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-15" d="M76.9085 705.006C59.6854 657.912 50.7832 608.181 50.5999 558.037L404.299 556.744C404.333 565.88 398.911 578.17 402.049 586.75L76.9085 705.006Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-16" d="M152.795 835.663C120.423 797.367 94.9576 753.733 77.5366 706.712L402.101 586.464C405.58 595.855 418.412 598.363 424.877 606.011L152.795 835.663Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="sector-17" d="M269.011 932.253C225.44 907.431 186.518 875.222 153.984 837.064L424.624 606.192C430.082 612.593 445.881 607.85 453.19 612.014L269.011 932.253Z" stroke="black" stroke-width="3" stroke-dasharray="6 6"/>
+<path id="plastic-basin" d="M297.597 208.456L278.597 201.456L262.097 221.956L244.097 231.956L230.597 251.956L226.097 265.956L211.097 306.456L194.097 324.956L197.597 342.456L208.097 360.956L207.597 370.956L213.597 373.956L211.097 382.956L219.097 388.456L211.097 418.456L206.597 435.456H200.597L196.097 443.956V452.956L312.097 495.402L375.097 518.456L402.597 490.956L317.597 418.956L316.597 406.456L308.597 399.956L300.597 368.456L305.097 361.456L307.097 330.956L304.597 323.456L314.097 303.456L326.597 287.956L329.597 271.456L339.097 266.456L347.597 256.456L353.097 252.956L355.597 244.956L362.597 243.956L373.597 215.956L379.597 214.956L380.097 190.456L354.097 193.456L336.097 208.456H297.597Z" stroke="black"/>
+<path id="arsunt" d="M436.597 386.456L449.097 360.956L440.597 316.706C442.597 317.122 446.897 318.056 448.097 318.456C449.297 318.856 456.597 326.289 460.097 329.956L470.597 326.456L496.597 327.456L489.597 371.456L493.597 387.456L492.597 420.456L498.097 427.456L495.097 465.456L499.097 474.456L494.597 504.956L483.097 505.956L460.097 514.956C454.764 505.789 444.097 487.056 444.097 485.456C444.097 483.856 444.764 471.456 445.097 465.456L441.597 456.456L435.597 446.956L436.597 386.456Z" stroke="black"/>
+<path id="polar-sink" d="M437.097 519.456L460.097 514.956L483.097 505.956L494.597 504.956L501.097 515.456L516.097 514.956L524.597 511.456L537.097 512.456L554.097 530.956L550.597 556.956L537.097 577.456L527.597 596.456L521.597 604.956L519.597 619.456L500.597 634.956L471.597 636.456L451.81 611.638L440.597 613.456L426.597 607.956L415.097 596.956L406.597 596.456L400.314 587.956L398.097 584.956L403.597 559.456L417.597 534.956L437.097 519.456Z" stroke="black"/>
+<path id="wind-pass" d="M348.597 558.956L343.097 576.956L343.597 608.456L327.355 689.956L361.097 660.456L384.597 593.956L400.314 587.956L398.097 584.956L403.597 559.456L417.597 534.956L437.097 519.456L402.597 490.956L375.097 518.456L371.597 538.956L348.597 558.956Z" stroke="black"/>
+<path id="wind-pass-north" d="M440.597 613.456L451.536 611.821L381.718 734.456L363.097 696.456L361.097 660.456L384.597 593.956L400.314 587.956L406.597 596.456L415.097 596.956L426.597 607.956L440.597 613.456Z" stroke="black"/>
+<path id="cielago-north" d="M571.597 760.955L583.097 730.956L555.761 682.956L519.597 619.455L500.597 634.955L471.597 636.455L451.81 611.638L381.718 734.456L372.597 749.955L376.097 762.955L384.097 769.455L395.097 780.955L454.597 788.955L460.097 782.455L483.097 781.955L528.597 811.955L543.097 803.455L562.097 774.455L571.597 760.955Z" stroke="black"/>
+<path id="harg-pass" d="M521.597 604.956L527.597 596.456L554.097 615.956L579.597 604.456L599.597 614.456L591.097 645.956L574.097 645.456L563.597 641.956V661.456L555.761 682.956L519.597 619.456L521.597 604.956Z" stroke="black"/>
+<path id="false-wall-east" d="M537.097 512.456L524.597 511.456L522.597 501.456L539.097 488.456L548.597 470.956L570.097 484.956L577.597 494.956L595.597 518.456V557.956L589.097 561.956L592.097 575.956L579.597 604.456L554.097 615.956L527.597 596.456L537.097 577.456L550.597 556.956L554.097 530.956L537.097 512.456Z" stroke="black"/>
+<path id="the-minor-erg" d="M599.097 484.956L577.597 494.956L595.597 518.456V557.956L589.097 561.956L592.097 575.956L579.597 604.456L599.597 614.456L607.597 613.456L620.597 625.456L629.097 659.456L640.597 675.956L649.097 675.456L661.097 648.956L655.097 617.456L678.597 559.456L685.097 528.456L682.097 486.956L671.097 466.956L671.347 439.206L658.097 443.956L654.097 453.956L646.597 456.456L640.097 470.956L629.597 467.956L604.597 475.956L599.097 484.956Z" stroke="black"/>
+<path id="shield-wall" d="M758.097 297.456L732.597 300.456L712.597 326.956V337.956L682.597 358.456L670.597 360.956L609.097 395.956L600.597 396.956L592.097 397.956L573.597 430.956L579.597 437.956L548.597 470.956L570.097 484.956L577.597 494.956L599.097 484.956L604.597 475.956L629.597 467.956L640.097 470.956L646.597 456.456L654.097 453.956L658.097 443.956L671.347 439.206L684.597 434.456L689.597 428.456L689.097 421.956L700.597 418.456L710.597 407.456L721.597 381.456L753.597 355.456L769.597 342.956L785.097 313.956V304.956L758.097 297.456Z" stroke="black"/>
+<path id="imperial-basin" d="M574.097 178.456L553.597 162.456L531.597 190.956L515.097 228.956L506.097 236.956L515.097 251.456V287.456L496.597 327.456L489.597 371.456L493.597 387.456L492.597 420.456L498.097 427.456L495.097 465.456L499.097 474.456L494.597 504.956L501.097 515.456L516.097 514.956L524.597 511.456L522.597 501.456L539.097 488.456L548.597 470.956L579.597 437.956L573.597 430.956L592.097 397.956L600.597 396.956L617.597 350.956L615.097 345.956L619.597 341.456L617.097 328.456L628.597 308.871L616.097 305.456L606.097 308.456L596.597 291.456L572.597 274.456L571.097 257.956L584.597 244.956L596.097 218.956L590.097 197.956L592.597 191.456L584.097 178.456H574.097Z" stroke="black"/>
+<path id="hole-in-the-rock" d="M678.597 295.956L669.097 293.456L660.597 307.456L659.097 316.456L653.097 315.956L652.597 321.956L638.097 329.956L638.597 335.956L617.597 350.956L600.597 396.956L609.097 395.956L670.597 360.956L682.597 358.456L712.597 337.956V326.956L732.597 300.456L741.597 288.456L740.597 274.956H725.113L704.597 285.956L694.597 287.456L678.597 295.956Z" stroke="black"/>
+<path id="rim-wall-west" d="M675.097 242.456H667.597L628.597 308.871L617.097 328.456L619.597 341.456L615.097 345.956L617.597 350.956L638.597 335.956L638.097 329.956L652.597 321.956L653.097 315.956L659.097 316.456L660.597 307.456L669.097 293.456L675.097 282.456L678.597 263.956L687.097 254.456L685.097 237.956L680.597 234.956L675.097 242.456Z" stroke="black"/>
+<path id="arrakeen" d="M622.597 191.456H592.597L590.097 197.956L596.097 218.956L584.597 244.956L571.097 257.956L572.597 274.456L596.597 291.456L606.097 308.456L616.097 305.456L628.597 308.871L667.597 242.456L666.097 224.456L645.597 198.956L622.597 191.456Z" stroke="black"/>
+<path id="hagga-basin" d="M317.597 418.956L402.597 490.956L437.097 519.456L460.097 514.956C454.764 505.789 444.097 487.056 444.097 485.456C444.097 483.856 444.764 471.456 445.097 465.456L441.597 456.456L435.597 446.956L436.597 386.456L449.097 360.956L440.597 316.706L432.097 272.456L405.097 284.956L399.097 280.956L371.597 285.456L341.097 309.456L330.597 329.956L314.597 335.956L307.097 330.956L305.097 361.456L300.597 368.456L308.597 399.956L316.597 406.456L317.597 418.956Z" stroke="black"/>
+<path id="carthag" d="M430.597 249.456L432.097 272.456L440.597 316.706C442.597 317.122 446.897 318.056 448.097 318.456C449.297 318.856 456.597 326.289 460.097 329.956L470.597 326.456L496.597 327.456L515.097 287.456V251.456L506.097 236.956L477.097 232.956L465.597 239.456L430.597 249.456Z" stroke="black"/>
+<path id="tsimpo" d="M417.097 175.956L380.097 190.456L379.597 214.956L373.597 215.956L362.597 243.956L355.597 244.956L353.097 252.956L347.597 256.456L339.097 266.456L329.597 271.456L326.597 287.956L314.097 303.456L304.597 323.456L307.097 330.956L314.597 335.956L330.597 329.956L341.097 309.456L371.597 285.456L399.097 280.956L405.097 284.956L432.097 272.456L430.597 249.456L465.597 239.456L477.097 232.956L506.097 236.956L515.097 228.956L531.597 190.956L553.597 162.456L528.097 157.456H515.597L502.097 160.456L491.597 169.456L458.597 167.456L417.097 175.956Z" stroke="black"/>
+<path id="habbanya-ridge-flat" d="M268.097 932.815L302.097 875.456L308.597 837.956L298.597 824.956L285.097 823.956L268.597 814.456L265.597 786.456L250.597 755.956L249.097 732.456L256.097 726.456L257.097 713.956L247.597 699.956L228.597 694.456L213.097 685.456H201.597L190.097 674.456L180.597 673.956L171.097 673.456L77.1318 706.956C112.423 802.757 180.658 882.623 268.097 932.815Z" stroke="black"/>
+<path id="cielago-west" d="M331.097 872.956L355.097 850.956L356.597 828.956L370.097 814.456L375.097 786.956L371.097 776.456L384.097 769.456L376.097 762.956L372.597 749.956L381.718 734.456L363.097 696.456L361.097 660.456L327.355 689.956L315.597 748.956L296.597 769.956L298.597 824.956L308.597 837.956L302.097 875.456L331.097 872.956Z" stroke="black"/>
+<path id="meridian" d="M448.597 886.956L457.597 873.456L421.597 872.456L391.597 858.456L371.597 860.456L355.097 850.956L331.097 872.956L302.097 875.456L268.097 932.815C321.205 963.3 381.398 982.839 445.597 988.352L446.097 963.956L455.097 946.956L446.597 919.456L448.597 886.956Z" stroke="black"/>
+<path id="cielago-depression" d="M567.597 799.456L562.097 774.456L543.097 803.456L528.597 811.956L483.097 781.956L460.097 782.456L454.597 788.956L395.097 780.956L384.097 769.456L371.097 776.456L375.097 786.956L370.097 814.456L356.597 828.956L355.097 850.956L371.597 860.456L391.597 858.456L421.597 872.456L457.597 873.456L479.097 872.956L517.597 864.456L537.097 862.956L563.597 851.456L583.597 849.956L591.597 830.956L567.597 799.456Z" stroke="black"/>
+<path id="cielago-south" d="M585.097 866.956L583.597 849.956L563.597 851.456L537.097 862.956L517.597 864.456L479.097 872.956L457.597 873.456L448.597 886.956L446.597 919.456L455.097 946.956L446.097 963.956L445.597 988.352C457.956 989.414 470.463 989.956 483.097 989.956C522.916 989.956 561.479 984.574 598.097 974.5L593.097 966.456V934.456L598.597 917.956L596.597 886.956L585.097 866.956Z" stroke="black"/>
+<path id="cielago-east" d="M736.097 908.276L735.597 870.456L723.597 872.956L704.597 869.456L695.597 855.456L691.097 835.456L674.097 816.456L651.597 806.456L620.097 776.956L583.097 730.956L571.597 760.956L562.097 774.456L567.597 799.456L591.597 830.956L583.597 849.956L585.097 866.956L596.597 886.956L598.597 917.956L593.097 934.456V966.456L598.097 974.5C648.352 960.673 694.944 938.006 736.097 908.276Z" stroke="black"/>
+<path id="false-wall-south" d="M771.097 815.956L790.597 802.956L765.097 792.456L760.097 776.956L764.597 754.456L759.597 722.456V701.456L732.097 682.456L721.597 683.456L696.097 667.956L683.597 669.956L661.097 648.956L649.097 675.456L640.597 675.956L629.097 659.456L620.597 625.456L607.597 613.456L599.597 614.456L591.097 645.956L574.097 645.456L563.597 641.956V661.456L555.76 682.956L583.097 730.956L620.097 776.956L651.597 806.456L674.097 816.456L691.097 835.456L695.597 855.456L704.597 869.456L723.597 872.956L735.597 870.456L754.597 848.956C755.764 842.956 758.097 830.656 758.097 829.456C758.097 828.256 766.764 819.956 771.097 815.956Z" stroke="black"/>
+<path id="tueks-sietch" d="M840.097 720.456L845.597 699.956L821.597 693.956L812.097 683.456L775.097 675.956L759.597 701.456V722.456L764.597 754.456L760.097 776.956L765.097 792.456L790.597 802.956L824.097 772.956L841.097 743.456L840.097 720.456Z" stroke="black"/>
+<path id="south-mesa" d="M915.597 557.456H881.097L870.597 572.456L866.097 588.956L871.597 598.956L868.097 602.956L871.597 612.956L871.097 639.456L845.597 699.956L840.097 720.456L841.097 743.456L824.097 772.956L790.597 802.956L771.097 815.956C766.764 819.956 758.097 828.256 758.097 829.456C758.097 830.656 755.764 842.956 754.597 848.956L735.597 870.456L736.097 908.276C844.835 829.72 915.597 701.851 915.597 557.456Z" stroke="black"/>
+<path id="red-chasm" d="M915.597 557.456C915.597 515.819 909.713 475.557 898.733 437.456L873.597 463.956L873.097 471.956L857.097 483.456L849.097 501.456L854.097 523.956L869.097 544.956H881.597L881.097 557.456H915.597Z" stroke="black"/>
+<path id="pasty-mesa" d="M757.597 371.956L753.597 355.456L721.597 381.456L710.597 407.456L700.597 418.456L689.097 421.956L689.597 428.456L684.597 434.456L671.347 439.206L671.097 466.956L682.097 486.956L685.097 528.456L678.597 559.456L655.097 617.456L661.097 648.956L683.597 669.956L696.097 667.956L721.597 683.456L732.097 682.456L759.597 701.456L775.097 675.956L812.097 683.456L821.597 693.956L845.597 699.956L871.097 639.456L871.597 612.956L868.097 602.956L871.597 598.956L866.097 588.956L870.597 572.456L881.097 557.456L881.597 544.956H869.097L854.097 523.956L849.097 501.456L857.097 483.456L873.097 471.956L873.597 463.956L898.733 437.456C892.256 414.984 884.007 393.263 874.146 372.456H861.597L856.097 377.956L849.597 373.456L833.097 385.456L821.097 378.456L795.097 386.956L786.097 376.456L764.097 376.956L757.597 371.956Z" stroke="black"/>
+<path id="gara-kulon" d="M815.266 280.456L785.097 304.956V313.956L769.597 342.956L753.597 355.456L757.597 371.956L764.097 376.956L786.097 376.456L795.097 386.956L821.097 378.456L833.097 385.456L849.597 373.456L856.097 377.956L861.597 372.456H874.146C858.407 339.246 838.562 308.36 815.266 280.456Z" stroke="black"/>
+<path id="sihaya-ridge" d="M748.097 258.956L740.597 274.956L741.597 288.456L732.597 300.456L758.097 297.456L785.097 304.956L815.266 280.456C802.249 264.863 788.154 250.2 773.097 236.583L748.097 258.956Z" stroke="black"/>
+<path id="basin" d="M704.597 226.456L685.097 237.956L687.097 254.456L678.597 263.956L675.097 282.456L669.097 293.456L678.597 295.956L694.597 287.456L704.597 285.956L725.113 274.956H740.597L748.097 258.956L773.097 236.583C758.028 222.956 741.995 210.375 725.113 198.956L704.597 226.456Z" stroke="black"/>
+<path id="old-gap" d="M523.597 143.956L515.597 157.456H528.097L553.597 162.456L574.097 178.456H584.097L592.597 191.456H622.597L645.597 198.956L666.097 224.456L667.597 242.456H675.097L680.597 234.956L685.097 237.956L704.597 226.456L725.113 198.956C666.961 159.621 598.727 134.064 525.097 126.969L523.597 143.956Z" stroke="black"/>
+<path id="rock-outcroppings" d="M278.597 201.456L268.097 182.096C205.336 218.122 152.47 269.435 114.577 330.956L129.597 344.456L139.097 345.956L142.097 351.456L178.097 318.456L194.097 324.956L211.097 306.456L226.097 265.956L230.597 251.956L244.097 231.956L262.097 221.956L278.597 201.456Z" stroke="black"/>
+<path id="sietch-tabr" d="M195.597 414.956L211.097 418.456L219.097 388.456L211.097 382.956L213.597 373.956L207.597 370.956L208.097 360.956L197.597 342.456L194.097 324.956L178.097 318.456L142.097 351.456L141.597 358.456L134.597 373.456L124.597 374.956L123.597 391.956L138.597 409.956L149.597 411.456L159.597 406.956L182.597 415.956L195.597 414.956Z" stroke="black"/>
+<path id="bight-of-the-cliff" d="M183.097 461.956L196.097 452.956V443.956L200.597 435.456H206.597L211.097 418.456L195.597 414.956L182.597 415.956L159.597 406.956L149.597 411.456L138.597 409.956L123.597 391.956L124.597 374.956L134.597 373.456L141.597 358.456L142.097 351.456L139.097 345.956L129.597 344.456L114.577 330.956C92.7508 366.392 75.8924 405.216 64.9731 446.456L79.5969 447.456L88.0969 457.456L107.597 455.456L134.097 447.456L153.597 457.456L158.097 464.456L183.097 461.956Z" stroke="black"/>
+<path id="funeral-plain" d="M183.097 461.956L196.097 452.956L312.097 495.402L311.597 503.956L278.097 508.956L267.097 501.456L233.597 497.956C216.763 501.289 182.797 507.956 181.597 507.956C180.397 507.956 161.763 508.956 152.597 509.456L124.597 500.956L75.5968 498.956L56.4792 485.956C58.7059 472.571 61.5471 459.394 64.973 446.456L79.5968 447.456L88.0968 457.456L107.597 455.456L134.097 447.456L153.597 457.456L158.097 464.456L183.097 461.956Z" stroke="black"/>
+<path id="the-great-flat" d="M50.5969 557.456C50.5969 557.956 50.5978 558.456 50.5995 558.956H348.597L371.597 538.956L375.097 518.456L312.097 495.402L311.597 503.956L278.097 508.956L267.097 501.456L233.597 497.956C216.764 501.289 182.797 507.956 181.597 507.956C180.397 507.956 161.764 508.956 152.597 509.456L124.597 500.956L75.5969 498.956L56.4794 485.956C52.6102 509.214 50.5969 533.1 50.5969 557.456Z" stroke="black"/>
+<path id="the-greater-flat" d="M50.5969 557.456C50.5969 557.956 50.5978 558.456 50.5995 558.956M50.5995 558.956C50.6774 581.921 52.5454 604.465 56.071 626.456L67.5969 623.956L99.5969 629.956L140.597 630.956L173.597 623.456L207.597 622.456L228.597 617.956L243.097 622.456H263.097L282.097 632.956V607.956L286.597 606.456L287.097 600.956L307.097 591.956L310.597 580.456L343.097 576.956L348.597 558.956H50.5995Z" stroke="black"/>
+<path id="habbanya-erg" d="M228.597 694.456L247.597 699.956L255.597 680.456L282.597 650.456L282.097 632.956L263.097 622.456H243.097L228.597 617.956L207.597 622.456L173.597 623.456L140.597 630.956L99.5969 629.956L67.5969 623.956L56.071 626.456C60.5295 654.264 67.6389 681.186 77.1318 706.956L171.097 673.456L180.597 673.956L190.097 674.456L201.597 685.456H213.097L228.597 694.456Z" stroke="black"/>
+<path id="false-wall-west" d="M285.097 823.956L298.597 824.956L296.597 769.956L315.597 748.956L327.355 689.956L343.597 608.456L343.097 576.956L310.597 580.456L307.097 591.956L287.097 600.956L286.597 606.456L282.097 607.956V632.956L282.597 650.456L255.597 680.456L247.597 699.956L257.097 713.956L256.097 726.456L249.097 732.456L250.597 755.956L265.597 786.456L268.597 814.456L285.097 823.956Z" stroke="black"/>
+<path id="habbanya-sietch" d="M155.597 713.956L146.097 732.456L154.097 769.456L189.097 807.956C203.264 796.456 231.597 772.956 231.597 770.956C231.597 768.956 217.93 745.456 211.097 733.956L210.097 724.456L204.597 709.956L179.597 703.956L155.597 713.956Z" stroke="black"/>
+<path id="broken-land" d="M483.097 124.956C404.835 124.956 331.429 145.742 268.097 182.096L278.597 201.456L297.597 208.456H336.097L354.097 193.456L380.097 190.456L417.097 175.956L458.597 167.456L491.597 169.456L502.097 160.456L515.597 157.456L523.597 143.956L525.097 126.969C511.277 125.637 497.266 124.956 483.097 124.956Z" stroke="black"/>
+<g id="spice-broken-land">
+<rect x="316.097" y="162.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="321.847" y="176.319">0</tspan></text>
+</g>
+<g id="spice-old-gap">
+<rect x="566.097" y="138.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_2" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="571.847" y="152.319">0</tspan></text>
+</g>
+<g id="spice-sihaya-ridge">
+<rect x="764.097" y="242.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_3" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="769.847" y="256.319">0</tspan></text>
+</g>
+<g id="spice-the-minor-erg">
+<rect x="595.097" y="486.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_4" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="600.847" y="500.319">0</tspan></text>
+</g>
+<g id="spice-hagga-basin">
+<rect x="354.097" y="405.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_5" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="359.847" y="419.319">0</tspan></text>
+</g>
+<g id="spice-rock-outcroppings">
+<rect x="126.097" y="324.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_6" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="131.847" y="338.319">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-0">
+<g id="force-slot-meridian-sector-0-1">
+<rect x="337.597" y="896.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_7" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="343.347" y="907.819">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-0-2">
+<rect x="360.597" y="896.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_8" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="366.347" y="907.819">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-0-3">
+<rect x="337.597" y="914.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_9" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="343.347" y="925.819">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-0-4">
+<rect x="360.597" y="914.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_10" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="366.347" y="925.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-polar-sink">
+<g id="force-slot-polar-sink-1">
+<rect x="457.597" y="550.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_11" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="463.347" y="561.819">0</tspan></text>
+</g>
+<g id="force-slot-polar-sink-2">
+<rect x="480.597" y="550.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_12" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="486.347" y="561.819">0</tspan></text>
+</g>
+<g id="force-slot-polar-sink-3">
+<rect x="457.597" y="568.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_13" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="463.347" y="579.819">0</tspan></text>
+</g>
+<g id="force-slot-polar-sink-4">
+<rect x="480.597" y="568.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_14" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="486.347" y="579.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-south-sector-1">
+<g id="force-slot-cielago-south-sector-1-1">
+<rect x="475.597" y="891.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_15" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="481.347" y="902.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-south-sector-1-2">
+<rect x="498.597" y="891.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_16" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="504.347" y="902.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-south-sector-1-3">
+<rect x="475.597" y="909.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_17" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="481.347" y="920.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-south-sector-1-4">
+<rect x="498.597" y="909.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_18" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="504.347" y="920.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-south-sector-2">
+<g id="force-slot-cielago-south-sector-2-1">
+<rect x="550.597" y="884.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_19" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="556.347" y="895.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-south-sector-2-2">
+<rect x="573.597" y="884.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_20" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="579.347" y="895.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-south-sector-2-3">
+<rect x="550.597" y="902.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_21" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="556.347" y="913.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-south-sector-2-4">
+<rect x="573.597" y="902.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_22" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="579.347" y="913.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-east-sector-2">
+<g id="force-slot-cielago-east-sector-2-1">
+<rect x="606.597" y="869.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_23" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="612.347" y="880.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-east-sector-2-2">
+<rect x="629.597" y="869.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_24" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="635.347" y="880.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-east-sector-2-3">
+<rect x="606.597" y="887.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_25" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="612.347" y="898.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-east-sector-2-4">
+<rect x="629.597" y="887.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_26" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="635.347" y="898.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-east-sector-3">
+<g id="force-slot-cielago-east-sector-3-1">
+<rect x="686.597" y="875.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_27" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="692.347" y="886.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-east-sector-3-2">
+<rect x="709.597" y="875.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_28" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="715.347" y="886.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-east-sector-3-3">
+<rect x="686.597" y="893.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_29" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="692.347" y="904.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-east-sector-3-4">
+<rect x="709.597" y="893.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_30" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="715.347" y="904.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-south-sector-3">
+<g id="force-slot-false-wall-south-sector-3-1">
+<rect x="634.597" y="734.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_31" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="640.347" y="745.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-south-sector-3-2">
+<rect x="657.597" y="734.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_32" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="663.347" y="745.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-south-sector-3-3">
+<rect x="634.597" y="752.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_33" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="640.347" y="763.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-south-sector-3-4">
+<rect x="657.597" y="752.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_34" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="663.347" y="763.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-south-mesa-sector-3">
+<g id="force-slot-south-mesa-sector-3-1">
+<rect x="754.597" y="832.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_35" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="760.347" y="843.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-3-2">
+<rect x="777.597" y="832.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_36" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="783.347" y="843.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-3-3">
+<rect x="754.597" y="850.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_37" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="760.347" y="861.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-3-4">
+<rect x="777.597" y="850.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_38" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="783.347" y="861.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-south-mesa-sector-4">
+<g id="force-slot-south-mesa-sector-4-1">
+<rect x="796.597" y="791.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_39" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="802.347" y="802.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-4-2">
+<rect x="819.597" y="791.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_40" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="825.347" y="802.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-4-3">
+<rect x="808.097" y="809.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_41" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="813.847" y="820.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-tueks-sietch-sector-4">
+<g id="force-slot-tueks-sietch-sector-4-1">
+<rect x="781.597" y="719.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_42" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="787.347" y="730.819">0</tspan></text>
+</g>
+<g id="force-slot-tueks-sietch-sector-4-2">
+<rect x="804.597" y="719.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_43" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="810.347" y="730.819">0</tspan></text>
+</g>
+<g id="force-slot-tueks-sietch-sector-4-3">
+<rect x="781.597" y="737.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_44" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="787.347" y="748.819">0</tspan></text>
+</g>
+<g id="force-slot-tueks-sietch-sector-4-4">
+<rect x="804.597" y="737.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_45" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="810.347" y="748.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-south-sector-4">
+<g id="force-slot-false-wall-south-sector-4-1">
+<rect x="694.597" y="696.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_46" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="700.347" y="707.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-south-sector-4-2">
+<rect x="717.597" y="696.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_47" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="723.347" y="707.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-south-sector-4-3">
+<rect x="694.597" y="714.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_48" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="700.347" y="725.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-south-sector-4-4">
+<rect x="717.597" y="714.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_49" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="723.347" y="725.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-harg-pass-sector-3">
+<g id="force-slot-harg-pass-sector-3-1">
+<rect x="526.597" y="627.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_50" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="532.347" y="638.819">0</tspan></text>
+</g>
+<g id="force-slot-harg-pass-sector-3-2">
+<rect x="549.597" y="627.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_51" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="555.347" y="638.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-harg-pass-sector-4">
+<g id="force-slot-harg-pass-sector-4-1">
+<rect x="573.097" y="615.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_52" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="578.847" y="626.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-minor-erg-sector-5">
+<g id="force-slot-minor-erg-sector-5-1">
+<rect x="608.597" y="563.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_53" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="614.347" y="574.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-5-2">
+<rect x="631.597" y="563.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_54" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="637.347" y="574.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-5-3">
+<rect x="608.597" y="581.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_55" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="614.347" y="592.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-5-4">
+<rect x="631.597" y="581.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_56" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="637.347" y="592.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-east-sector-5">
+<g id="force-slot-false-wall-east-sector-5-1">
+<rect x="548.597" y="566.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_57" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="554.347" y="577.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-east-sector-5-2">
+<rect x="571.597" y="566.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_58" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="577.347" y="577.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-east-sector-4">
+<g id="force-slot-false-wall-east-sector-4-1">
+<rect x="536.597" y="591.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_59" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="542.347" y="602.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-east-sector-4-2">
+<rect x="559.597" y="591.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_60" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="565.347" y="602.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-east-sector-6">
+<g id="force-slot-false-wall-east-sector-6-1">
+<rect x="553.597" y="534.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_61" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="559.347" y="545.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-east-sector-6-2">
+<rect x="576.597" y="534.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_62" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="582.347" y="545.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-east-sector-7">
+<g id="force-slot-false-wall-east-sector-7-1">
+<rect x="545.597" y="504.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_63" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="551.347" y="515.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-east-sector-7-2">
+<rect x="568.597" y="504.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_64" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="574.347" y="515.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-east-sector-8">
+<g id="force-slot-false-wall-east-sector-8-1">
+<rect x="542.097" y="478.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_65" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="547.847" y="489.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-minor-erg-sector-7">
+<g id="force-slot-minor-erg-sector-7-1">
+<rect x="618.597" y="476.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_66" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="624.347" y="487.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-7-2">
+<rect x="641.597" y="476.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_67" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="647.347" y="487.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-minor-erg-sector-6">
+<g id="force-slot-minor-erg-sector-6-1">
+<rect x="627.597" y="512.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_68" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="633.347" y="523.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-6-2">
+<rect x="650.597" y="512.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_69" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="656.347" y="523.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-6-3">
+<rect x="627.597" y="530.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_70" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="633.347" y="541.819">0</tspan></text>
+</g>
+<g id="force-slot-minor-erg-sector-6-4">
+<rect x="650.597" y="530.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_71" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="656.347" y="541.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-pasty-mesa-sector-5">
+<g id="force-slot-pasty-mesa-sector-5-1">
+<rect x="744.597" y="585.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_72" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="750.347" y="596.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-5-2">
+<rect x="767.597" y="585.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_73" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="773.347" y="596.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-5-3">
+<rect x="744.597" y="603.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_74" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="750.347" y="614.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-5-4">
+<rect x="767.597" y="603.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_75" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="773.347" y="614.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-pasty-mesa-sector-4">
+<g id="force-slot-pasty-mesa-sector-4-1">
+<rect x="704.597" y="657.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_76" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="710.347" y="668.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-4-2">
+<rect x="727.597" y="657.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_77" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="733.347" y="668.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-pasty-mesa-sector-6">
+<g id="force-slot-pasty-mesa-sector-6-1">
+<rect x="760.597" y="478.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_78" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="766.347" y="489.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-6-2">
+<rect x="783.597" y="478.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_79" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="789.347" y="489.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-6-3">
+<rect x="760.597" y="496.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_80" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="766.347" y="507.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-6-4">
+<rect x="783.597" y="496.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_81" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="789.347" y="507.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-pasty-mesa-sector-7">
+<g id="force-slot-pasty-mesa-sector-7-1">
+<rect x="739.597" y="398.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_82" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="745.347" y="409.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-7-2">
+<rect x="762.597" y="398.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_83" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="768.347" y="409.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-7-3">
+<rect x="739.597" y="416.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_84" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="745.347" y="427.819">0</tspan></text>
+</g>
+<g id="force-slot-pasty-mesa-sector-7-4">
+<rect x="762.597" y="416.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_85" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="768.347" y="427.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-red-chasm-sector-6">
+<g id="force-slot-red-chasm-sector-6-1">
+<rect x="865.597" y="479.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_86" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="871.347" y="490.819">0</tspan></text>
+</g>
+<g id="force-slot-red-chasm-sector-6-2">
+<rect x="888.597" y="479.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_87" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="894.347" y="490.819">0</tspan></text>
+</g>
+<g id="force-slot-red-chasm-sector-6-3">
+<rect x="865.597" y="497.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_88" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="871.347" y="508.819">0</tspan></text>
+</g>
+<g id="force-slot-red-chasm-sector-6-4">
+<rect x="888.597" y="497.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_89" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="894.347" y="508.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-south-mesa-sector-5">
+<g id="force-slot-south-mesa-sector-5-1">
+<rect x="871.597" y="573.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_90" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="877.347" y="584.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-5-2">
+<rect x="894.597" y="573.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_91" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="900.347" y="584.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-5-3">
+<rect x="871.597" y="591.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_92" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="877.347" y="602.819">0</tspan></text>
+</g>
+<g id="force-slot-south-mesa-sector-5-4">
+<rect x="894.597" y="591.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_93" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="900.347" y="602.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-gara-kulon-sector-7">
+<g id="force-slot-gara-kulon-sector-7-1">
+<rect x="797.597" y="325.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_94" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="803.347" y="336.819">0</tspan></text>
+</g>
+<g id="force-slot-gara-kulon-sector-7-2">
+<rect x="820.597" y="325.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_95" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="826.347" y="336.819">0</tspan></text>
+</g>
+<g id="force-slot-gara-kulon-sector-7-3">
+<rect x="797.597" y="343.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_96" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="803.347" y="354.819">0</tspan></text>
+</g>
+<g id="force-slot-gara-kulon-sector-7-4">
+<rect x="820.597" y="343.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_97" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="826.347" y="354.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-shield-wall-sector-7">
+<g id="force-slot-shield-wall-sector-7-1">
+<rect x="665.597" y="399.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_98" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="671.347" y="410.819">0</tspan></text>
+</g>
+<g id="force-slot-shield-wall-sector-7-2">
+<rect x="688.597" y="399.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_99" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="694.347" y="410.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-shield-wall-sector-8">
+<g id="force-slot-shield-wall-sector-8-1">
+<rect x="596.597" y="398.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_100" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="602.347" y="409.819">0</tspan></text>
+</g>
+<g id="force-slot-shield-wall-sector-8-2">
+<rect x="619.597" y="398.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_101" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="625.347" y="409.819">0</tspan></text>
+</g>
+<g id="force-slot-shield-wall-sector-8-3">
+<rect x="596.597" y="416.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_102" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="602.347" y="427.819">0</tspan></text>
+</g>
+<g id="force-slot-shield-wall-sector-8-4">
+<rect x="619.597" y="416.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_103" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="625.347" y="427.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-hole-in-the-rock-sector-8">
+<g id="force-slot-hole-in-the-rock-sector-8-1">
+<rect x="658.597" y="313.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_104" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="664.347" y="324.819">0</tspan></text>
+</g>
+<g id="force-slot-hole-in-the-rock-sector-8-2">
+<rect x="681.597" y="313.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_105" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="687.347" y="324.819">0</tspan></text>
+</g>
+<g id="force-slot-hole-in-the-rock-sector-8-3">
+<rect x="658.597" y="331.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_106" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="664.347" y="342.819">0</tspan></text>
+</g>
+<g id="force-slot-hole-in-the-rock-sector-8-4">
+<rect x="681.597" y="331.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_107" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="687.347" y="342.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-old-gap-sector-8">
+<g id="force-slot-old-gap-sector-8-1">
+<rect x="689.097" y="205.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_108" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="694.847" y="216.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-old-gap-sector-9">
+<g id="force-slot-old-gap-sector-9-1">
+<rect x="620.597" y="162.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_109" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="626.347" y="173.819">0</tspan></text>
+</g>
+<g id="force-slot-old-gap-sector-9-2">
+<rect x="643.597" y="162.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_110" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="649.347" y="173.819">0</tspan></text>
+</g>
+<g id="force-slot-old-gap-sector-9-3">
+<rect x="620.597" y="180.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_111" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="626.347" y="191.819">0</tspan></text>
+</g>
+<g id="force-slot-old-gap-sector-9-4">
+<rect x="643.597" y="180.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_112" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="649.347" y="191.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-sihaya-ridge-sector-7">
+<g id="force-slot-sihaya-ridge-sector-7-1">
+<rect x="754.597" y="264.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_113" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="760.347" y="275.819">0</tspan></text>
+</g>
+<g id="force-slot-sihaya-ridge-sector-7-2">
+<rect x="777.597" y="264.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_114" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="783.347" y="275.819">0</tspan></text>
+</g>
+<g id="force-slot-sihaya-ridge-sector-7-3">
+<rect x="754.597" y="282.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_115" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="760.347" y="293.819">0</tspan></text>
+</g>
+<g id="force-slot-sihaya-ridge-sector-7-4">
+<rect x="777.597" y="282.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_116" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="783.347" y="293.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-basin-sector-7">
+<g id="force-slot-basin-sector-7-1">
+<rect x="702.597" y="233.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_117" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="708.347" y="244.819">0</tspan></text>
+</g>
+<g id="force-slot-basin-sector-7-2">
+<rect x="725.597" y="233.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_118" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="731.347" y="244.819">0</tspan></text>
+</g>
+<g id="force-slot-basin-sector-7-3">
+<rect x="702.597" y="251.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_119" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="708.347" y="262.819">0</tspan></text>
+</g>
+<g id="force-slot-basin-sector-7-4">
+<rect x="725.597" y="251.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_120" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="731.347" y="262.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-rim-wall-west-sector-8">
+<g id="force-slot-rim-wall-west-sector-8-1">
+<rect x="641.097" y="282.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_121" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="646.847" y="293.819">0</tspan></text>
+</g>
+<g id="force-slot-rim-wall-west-sector-8-2">
+<rect x="641.097" y="300.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_122" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="646.847" y="311.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-arrakeen-sector-9">
+<g id="force-slot-arrakeen-sector-9-1">
+<rect x="601.597" y="228.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_123" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="607.347" y="239.819">0</tspan></text>
+</g>
+<g id="force-slot-arrakeen-sector-9-2">
+<rect x="624.597" y="228.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_124" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="630.347" y="239.819">0</tspan></text>
+</g>
+<g id="force-slot-arrakeen-sector-9-3">
+<rect x="601.597" y="246.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_125" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="607.347" y="257.819">0</tspan></text>
+</g>
+<g id="force-slot-arrakeen-sector-9-4">
+<rect x="624.597" y="246.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_126" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="630.347" y="257.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-imperial-basin-sector-9">
+<g id="force-slot-imperial-basin-sector-9-1">
+<rect x="541.597" y="319.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_127" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="547.347" y="330.819">0</tspan></text>
+</g>
+<g id="force-slot-imperial-basin-sector-9-2">
+<rect x="564.597" y="319.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_128" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="570.347" y="330.819">0</tspan></text>
+</g>
+<g id="force-slot-imperial-basin-sector-9-3">
+<rect x="541.597" y="337.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_129" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="547.347" y="348.819">0</tspan></text>
+</g>
+<g id="force-slot-imperial-basin-sector-9-4">
+<rect x="564.597" y="337.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_130" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="570.347" y="348.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-imperial-basin-sector-8">
+<g id="force-slot-imperial-basin-sector-8-1">
+<rect x="555.097" y="429.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_131" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="560.847" y="440.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-imperial-basin-sector-10">
+<g id="force-slot-imperial-basin-sector-10-1">
+<rect x="496.597" y="329.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_132" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="502.347" y="340.819">0</tspan></text>
+</g>
+<g id="force-slot-imperial-basin-sector-10-2">
+<rect x="496.597" y="347.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_133" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="502.347" y="358.819">0</tspan></text>
+</g>
+<g id="force-slot-imperial-basin-sector-10-3">
+<rect x="496.597" y="365.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_134" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="502.347" y="376.819">0</tspan></text>
+</g>
+<g id="force-slot-imperial-basin-sector-10-4">
+<rect x="496.597" y="383.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_135" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="502.347" y="394.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-carthag-sector-10">
+<g id="force-slot-carthag-sector-10-1">
+<rect x="453.597" y="264.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_136" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="459.347" y="275.819">0</tspan></text>
+</g>
+<g id="force-slot-carthag-sector-10-2">
+<rect x="476.597" y="264.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_137" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="482.347" y="275.819">0</tspan></text>
+</g>
+<g id="force-slot-carthag-sector-10-3">
+<rect x="453.597" y="282.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_138" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="459.347" y="293.819">0</tspan></text>
+</g>
+<g id="force-slot-carthag-sector-10-4">
+<rect x="476.597" y="282.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_139" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="482.347" y="293.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-tsimpo-sector-10">
+<g id="force-slot-tsimpo-sector-10-1">
+<rect x="460.597" y="180.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_140" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="466.347" y="191.819">0</tspan></text>
+</g>
+<g id="force-slot-tsimpo-sector-10-2">
+<rect x="483.597" y="180.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_141" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="489.347" y="191.819">0</tspan></text>
+</g>
+<g id="force-slot-tsimpo-sector-10-3">
+<rect x="460.597" y="198.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_142" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="466.347" y="209.819">0</tspan></text>
+</g>
+<g id="force-slot-tsimpo-sector-10-4">
+<rect x="483.597" y="198.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_143" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="489.347" y="209.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-broken-land-sector-10">
+<g id="force-slot-broken-land-sector-10-1">
+<rect x="446.597" y="129.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_144" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="452.347" y="140.819">0</tspan></text>
+</g>
+<g id="force-slot-broken-land-sector-10-2">
+<rect x="469.597" y="129.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_145" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="475.347" y="140.819">0</tspan></text>
+</g>
+<g id="force-slot-broken-land-sector-10-3">
+<rect x="446.597" y="147.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_146" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="452.347" y="158.819">0</tspan></text>
+</g>
+<g id="force-slot-broken-land-sector-10-4">
+<rect x="469.597" y="147.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_147" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="475.347" y="158.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-broken-land-sector-11">
+<g id="force-slot-broken-land-sector-11-1">
+<rect x="341.597" y="150.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_148" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="347.347" y="161.819">0</tspan></text>
+</g>
+<g id="force-slot-broken-land-sector-11-2">
+<rect x="364.597" y="150.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_149" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="370.347" y="161.819">0</tspan></text>
+</g>
+<g id="force-slot-broken-land-sector-11-3">
+<rect x="341.597" y="168.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_150" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="347.347" y="179.819">0</tspan></text>
+</g>
+<g id="force-slot-broken-land-sector-11-4">
+<rect x="364.597" y="168.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_151" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="370.347" y="179.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-tsimpo-sector-11">
+<g id="force-slot-tsimpo-sector-11-1">
+<rect x="373.597" y="229.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_152" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="379.347" y="240.819">0</tspan></text>
+</g>
+<g id="force-slot-tsimpo-sector-11-2">
+<rect x="396.597" y="229.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_153" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="402.347" y="240.819">0</tspan></text>
+</g>
+<g id="force-slot-tsimpo-sector-11-3">
+<rect x="373.597" y="247.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_154" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="379.347" y="258.819">0</tspan></text>
+</g>
+<g id="force-slot-tsimpo-sector-11-4">
+<rect x="396.597" y="247.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_155" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="402.347" y="258.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-tsimpo-sector-12">
+<g id="force-slot-tsimpo-sector-12-1">
+<rect x="315.097" y="303.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_156" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="320.847" y="314.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-plastic-basin-sector-11">
+<g id="force-slot-plastic-basin-sector-11-1">
+<rect x="314.597" y="214.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_157" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="320.347" y="225.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-11-2">
+<rect x="337.597" y="214.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_158" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="343.347" y="225.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-11-3">
+<rect x="314.597" y="232.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_159" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="320.347" y="243.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-11-4">
+<rect x="337.597" y="232.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_160" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="343.347" y="243.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-hagga-basin-sector-11">
+<g id="force-slot-hagga-basin-sector-11-1">
+<rect x="379.597" y="318.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_161" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="385.347" y="329.819">0</tspan></text>
+</g>
+<g id="force-slot-hagga-basin-sector-11-2">
+<rect x="402.597" y="318.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_162" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="408.347" y="329.819">0</tspan></text>
+</g>
+<g id="force-slot-hagga-basin-sector-11-3">
+<rect x="379.597" y="336.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_163" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="385.347" y="347.819">0</tspan></text>
+</g>
+<g id="force-slot-hagga-basin-sector-11-4">
+<rect x="402.597" y="336.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_164" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="408.347" y="347.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-arsunt-sector-11">
+<g id="force-slot-arsunt-sector-11-1">
+<rect x="442.097" y="418.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_165" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="447.847" y="429.819">0</tspan></text>
+</g>
+<g id="force-slot-arsunt-sector-11-2">
+<rect x="442.097" y="436.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_166" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="447.847" y="447.819">0</tspan></text>
+</g>
+<g id="force-slot-arsunt-sector-11-3">
+<rect x="442.097" y="454.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_167" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="447.847" y="465.819">0</tspan></text>
+</g>
+<g id="force-slot-arsunt-sector-11-4">
+<rect x="442.097" y="472.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_168" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="447.847" y="483.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-arsunt-sector-10">
+<g id="force-slot-arsunt-sector-10-1">
+<rect x="466.097" y="362.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_169" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="471.847" y="373.819">0</tspan></text>
+</g>
+<g id="force-slot-arsunt-sector-10-2">
+<rect x="466.097" y="380.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_170" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="471.847" y="391.819">0</tspan></text>
+</g>
+<g id="force-slot-arsunt-sector-10-3">
+<rect x="466.097" y="398.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_171" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="471.847" y="409.819">0</tspan></text>
+</g>
+<g id="force-slot-arsunt-sector-10-4">
+<rect x="466.097" y="416.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_172" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="471.847" y="427.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-hagga-basin-sector-12">
+<g id="force-slot-hagga-basin-sector-12-1">
+<rect x="320.597" y="357.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_173" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="326.347" y="368.819">0</tspan></text>
+</g>
+<g id="force-slot-hagga-basin-sector-12-2">
+<rect x="343.597" y="357.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_174" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="349.347" y="368.819">0</tspan></text>
+</g>
+<g id="force-slot-hagga-basin-sector-12-3">
+<rect x="320.597" y="375.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_175" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="326.347" y="386.819">0</tspan></text>
+</g>
+<g id="force-slot-hagga-basin-sector-12-4">
+<rect x="343.597" y="375.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_176" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="349.347" y="386.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-plastic-basin-sector-12">
+<g id="force-slot-plastic-basin-sector-12-1">
+<rect x="241.597" y="286.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_177" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="247.347" y="297.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-12-2">
+<rect x="264.597" y="286.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_178" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="270.347" y="297.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-12-3">
+<rect x="241.597" y="304.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_179" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="247.347" y="315.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-12-4">
+<rect x="264.597" y="304.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_180" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="270.347" y="315.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-rock-outcroppings-sector-12">
+<g id="force-slot-rock-outcroppings-sector-12-1">
+<rect x="184.597" y="243.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_181" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="190.347" y="254.819">0</tspan></text>
+</g>
+<g id="force-slot-rock-outcroppings-sector-12-2">
+<rect x="207.597" y="243.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_182" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="213.347" y="254.819">0</tspan></text>
+</g>
+<g id="force-slot-rock-outcroppings-sector-12-3">
+<rect x="184.597" y="261.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_183" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="190.347" y="272.819">0</tspan></text>
+</g>
+<g id="force-slot-rock-outcroppings-sector-12-4">
+<rect x="207.597" y="261.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_184" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="213.347" y="272.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-rock-outcroppings-sector-13">
+<g id="force-slot-rock-outcroppings-sector-13-1">
+<rect x="135.597" y="299.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_185" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="141.347" y="310.819">0</tspan></text>
+</g>
+<g id="force-slot-rock-outcroppings-sector-13-2">
+<rect x="158.597" y="299.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_186" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="164.347" y="310.819">0</tspan></text>
+</g>
+<g id="force-slot-rock-outcroppings-sector-13-3">
+<rect x="147.097" y="317.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_187" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="152.847" y="328.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-sietch-tabr-sector-13">
+<g id="force-slot-sietch-tabr-sector-13-1">
+<rect x="151.597" y="355.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_188" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="157.347" y="366.819">0</tspan></text>
+</g>
+<g id="force-slot-sietch-tabr-sector-13-2">
+<rect x="174.597" y="355.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_189" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="180.347" y="366.819">0</tspan></text>
+</g>
+<g id="force-slot-sietch-tabr-sector-13-3">
+<rect x="151.597" y="373.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_190" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="157.347" y="384.819">0</tspan></text>
+</g>
+<g id="force-slot-sietch-tabr-sector-13-4">
+<rect x="174.597" y="373.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_191" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="180.347" y="384.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-plastic-basin-sector-13">
+<g id="force-slot-plastic-basin-sector-13-1">
+<rect x="248.597" y="412.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_192" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="254.347" y="423.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-13-2">
+<rect x="271.597" y="412.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_193" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="277.347" y="423.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-13-3">
+<rect x="248.597" y="430.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_194" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="254.347" y="441.819">0</tspan></text>
+</g>
+<g id="force-slot-plastic-basin-sector-13-4">
+<rect x="271.597" y="430.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_195" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="277.347" y="441.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-bight-of-the-cliff-sector-13">
+<g id="force-slot-bight-of-the-cliff-sector-13-1">
+<rect x="99.0969" y="359.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_196" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="104.847" y="370.819">0</tspan></text>
+</g>
+<g id="force-slot-bight-of-the-cliff-sector-13-2">
+<rect x="99.0969" y="377.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_197" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="104.847" y="388.819">0</tspan></text>
+</g>
+<g id="force-slot-bight-of-the-cliff-sector-13-3">
+<rect x="99.0969" y="395.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_198" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="104.847" y="406.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-bight-of-the-cliff-sector-14">
+<g id="force-slot-bight-of-the-cliff-sector-14-1">
+<rect x="72.5969" y="431.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_199" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="78.3469" y="442.819">0</tspan></text>
+</g>
+<g id="force-slot-bight-of-the-cliff-sector-14-2">
+<rect x="95.5969" y="431.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_200" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="101.347" y="442.819">0</tspan></text>
+</g>
+<g id="force-slot-bight-of-the-cliff-sector-14-3">
+<rect x="118.597" y="431.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_201" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="124.347" y="442.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-funeral-plain-sector-14">
+<g id="force-slot-funeral-plain-sector-14-1">
+<rect x="131.097" y="474.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_202" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="136.847" y="485.819">0</tspan></text>
+</g>
+<g id="force-slot-funeral-plain-sector-14-2">
+<rect x="154.097" y="474.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_203" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="159.847" y="485.819">0</tspan></text>
+</g>
+<g id="force-slot-funeral-plain-sector-14-3">
+<rect x="177.097" y="474.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_204" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="182.847" y="485.819">0</tspan></text>
+</g>
+<g id="force-slot-funeral-plain-sector-14-4">
+<rect x="200.097" y="474.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_205" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="205.847" y="485.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-great-flat-sector-14">
+<g id="force-slot-great-flat-sector-14-1">
+<rect x="230.597" y="513.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_206" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="236.347" y="524.819">0</tspan></text>
+</g>
+<g id="force-slot-great-flat-sector-14-2">
+<rect x="253.597" y="513.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_207" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="259.347" y="524.819">0</tspan></text>
+</g>
+<g id="force-slot-great-flat-sector-14-3">
+<rect x="230.597" y="531.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_208" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="236.347" y="542.819">0</tspan></text>
+</g>
+<g id="force-slot-great-flat-sector-14-4">
+<rect x="253.597" y="531.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_209" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="259.347" y="542.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-greater-flat-sector-15">
+<g id="force-slot-greater-flat-sector-15-1">
+<rect x="121.597" y="575.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_210" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="127.347" y="586.819">0</tspan></text>
+</g>
+<g id="force-slot-greater-flat-sector-15-2">
+<rect x="144.597" y="575.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_211" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="150.347" y="586.819">0</tspan></text>
+</g>
+<g id="force-slot-greater-flat-sector-15-3">
+<rect x="121.597" y="593.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_212" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="127.347" y="604.819">0</tspan></text>
+</g>
+<g id="force-slot-greater-flat-sector-15-4">
+<rect x="144.597" y="593.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_213" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="150.347" y="604.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-habbanya-erg-sector-15">
+<g id="force-slot-habbanya-erg-sector-15-1">
+<rect x="106.597" y="643.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_214" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="112.347" y="654.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-erg-sector-15-2">
+<rect x="129.597" y="643.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_215" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="135.347" y="654.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-erg-sector-15-3">
+<rect x="152.597" y="643.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_216" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="158.347" y="654.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-erg-sector-15-4">
+<rect x="175.597" y="643.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_217" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="181.347" y="654.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-habbanya-erg-sector-16">
+<g id="force-slot-habbanya-erg-sector-16-1">
+<rect x="214.597" y="654.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_218" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="220.347" y="665.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-erg-sector-16-2">
+<rect x="237.597" y="654.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_219" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="243.347" y="665.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-erg-sector-16-3">
+<rect x="214.597" y="672.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_220" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="220.347" y="683.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-erg-sector-16-4">
+<rect x="237.597" y="672.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_221" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="243.347" y="683.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-west-sector-16">
+<g id="force-slot-false-wall-west-sector-16-1">
+<rect x="282.597" y="649.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_222" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="288.347" y="660.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-west-sector-16-2">
+<rect x="305.597" y="649.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_223" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="311.347" y="660.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-west-sector-16-3">
+<rect x="282.597" y="667.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_224" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="288.347" y="678.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-west-sector-16-4">
+<rect x="305.597" y="667.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_225" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="311.347" y="678.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-west-sector-15">
+<g id="force-slot-false-wall-west-sector-15-1">
+<rect x="296.597" y="594.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_226" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="302.347" y="605.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-west-sector-15-2">
+<rect x="319.597" y="594.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_227" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="325.347" y="605.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-wind-pass-sector-15">
+<g id="force-slot-wind-pass-sector-15-1">
+<rect x="349.597" y="569.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_228" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="355.347" y="580.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-sector-15-2">
+<rect x="372.597" y="569.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_229" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="378.347" y="580.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-wind-pass-sector-16">
+<g id="force-slot-wind-pass-sector-16-1">
+<rect x="345.097" y="619.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_230" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="350.847" y="630.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-sector-16-2">
+<rect x="345.097" y="637.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_231" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="350.847" y="648.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-wind-pass-north-sector-16">
+<g id="force-slot-wind-pass-north-sector-16-1">
+<rect x="377.597" y="614.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_232" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="383.347" y="625.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-wind-pass-north-sector-17">
+<g id="force-slot-wind-pass-north-sector-17-1">
+<rect x="367.597" y="655.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_233" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="373.347" y="666.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-north-sector-17-2">
+<rect x="390.597" y="655.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_234" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="396.347" y="666.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-north-sector-17-3">
+<rect x="367.597" y="673.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_235" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="373.347" y="684.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-north-sector-17-4">
+<rect x="390.597" y="673.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_236" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="396.347" y="684.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-west-sector-17">
+<g id="force-slot-cielago-west-sector-17-1">
+<rect x="308.597" y="758.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_237" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="314.347" y="769.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-west-sector-17-2">
+<rect x="331.597" y="758.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_238" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="337.347" y="769.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-west-sector-17-3">
+<rect x="308.597" y="776.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_239" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="314.347" y="787.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-west-sector-17-4">
+<rect x="331.597" y="776.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_240" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="337.347" y="787.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-false-wall-west-sector-17">
+<g id="force-slot-false-wall-west-sector-17-1">
+<rect x="262.597" y="744.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_241" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="268.347" y="755.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-west-sector-17-2">
+<rect x="285.597" y="744.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_242" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="291.347" y="755.819">0</tspan></text>
+</g>
+<g id="force-slot-false-wall-west-sector-17-3">
+<rect x="274.097" y="762.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_243" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="279.847" y="773.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-17">
+<g id="force-slot-habbanya-ridge-flat-sector-17-1">
+<rect x="218.597" y="815.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_244" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="224.347" y="826.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-17-2">
+<rect x="241.597" y="815.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_245" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="247.347" y="826.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-17-3">
+<rect x="218.597" y="833.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_246" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="224.347" y="844.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-17-4">
+<rect x="241.597" y="833.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_247" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="247.347" y="844.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-tleilaxu-tanks">
+<g id="force-slot-tleilaxu-tanks-1">
+<rect x="40.5969" y="946.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_248" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="46.3469" y="957.819">0</tspan></text>
+</g>
+<g id="force-slot-tleilaxu-tanks-2">
+<rect x="63.5969" y="946.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_249" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="69.3469" y="957.819">0</tspan></text>
+</g>
+<g id="force-slot-tleilaxu-tanks-3">
+<rect x="40.5969" y="964.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_250" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="46.3469" y="975.819">0</tspan></text>
+</g>
+<g id="force-slot-tleilaxu-tanks-4">
+<rect x="63.5969" y="964.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_251" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="69.3469" y="975.819">0</tspan></text>
+</g>
+<g id="force-slot-tleilaxu-tanks-5">
+<rect x="40.5969" y="982.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_252" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="46.3469" y="993.819">0</tspan></text>
+</g>
+<g id="force-slot-tleilaxu-tanks-6">
+<rect x="63.5969" y="982.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_253" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="69.3469" y="993.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-habbanya-sietch-sector-16">
+<g id="force-slot-habbanya-sietch-sector-16-1">
+<rect x="162.597" y="726.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_254" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="168.347" y="737.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-sietch-sector-16-2">
+<rect x="185.597" y="726.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_255" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="191.347" y="737.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-sietch-sector-16-3">
+<rect x="162.597" y="744.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_256" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="168.347" y="755.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-sietch-sector-16-4">
+<rect x="185.597" y="744.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_257" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="191.347" y="755.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-16">
+<g id="force-slot-habbanya-ridge-flat-sector-16-1">
+<rect x="100.597" y="706.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_258" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="106.347" y="717.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-16-2">
+<rect x="123.597" y="706.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_259" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="129.347" y="717.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-16-3">
+<rect x="100.597" y="724.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_260" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="106.347" y="735.819">0</tspan></text>
+</g>
+<g id="force-slot-habbanya-ridge-flat-sector-16-4">
+<rect x="123.597" y="724.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_261" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="129.347" y="735.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-west-sector-0">
+<g id="force-slot-cielago-west-sector-0-1">
+<rect x="332.597" y="822.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_262" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="338.347" y="833.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-west-sector-0-2">
+<rect x="332.597" y="840.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_263" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="338.347" y="851.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-north-sector-0">
+<g id="force-slot-cielago-north-sector-0-1">
+<rect x="396.597" y="724.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_264" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="402.347" y="735.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-0-2">
+<rect x="419.597" y="724.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_265" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="425.347" y="735.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-0-3">
+<rect x="396.597" y="742.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_266" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="402.347" y="753.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-0-4">
+<rect x="419.597" y="742.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_267" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="425.347" y="753.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-north-sector-1">
+<g id="force-slot-cielago-north-sector-1-1">
+<rect x="464.597" y="732.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_268" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="470.347" y="743.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-1-2">
+<rect x="487.597" y="732.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_269" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="493.347" y="743.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-1-3">
+<rect x="464.597" y="750.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_270" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="470.347" y="761.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-1-4">
+<rect x="487.597" y="750.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_271" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="493.347" y="761.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-north-sector-2">
+<g id="force-slot-cielago-north-sector-2-1">
+<rect x="526.597" y="720.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_272" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="532.347" y="731.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-2-2">
+<rect x="549.597" y="720.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_273" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="555.347" y="731.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-2-3">
+<rect x="526.597" y="738.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_274" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="532.347" y="749.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-north-sector-2-4">
+<rect x="549.597" y="738.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_275" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="555.347" y="749.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-depression-sector-1">
+<g id="force-slot-cielago-depression-sector-1-1">
+<rect x="463.597" y="817.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_276" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="469.347" y="828.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-1-2">
+<rect x="486.597" y="817.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_277" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="492.347" y="828.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-1-3">
+<rect x="463.597" y="835.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_278" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="469.347" y="846.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-1-4">
+<rect x="486.597" y="835.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_279" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="492.347" y="846.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-depression-sector-0">
+<g id="force-slot-cielago-depression-sector-0-1">
+<rect x="380.597" y="805.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_280" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="386.347" y="816.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-0-2">
+<rect x="403.597" y="805.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_281" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="409.347" y="816.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-0-3">
+<rect x="380.597" y="823.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_282" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="386.347" y="834.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-0-4">
+<rect x="403.597" y="823.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_283" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="409.347" y="834.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-cielago-depression-sector-2">
+<g id="force-slot-cielago-depression-sector-2-1">
+<rect x="538.597" y="815.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_284" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="544.347" y="826.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-2-2">
+<rect x="561.597" y="815.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_285" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="567.347" y="826.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-2-3">
+<rect x="538.597" y="833.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_286" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="544.347" y="844.819">0</tspan></text>
+</g>
+<g id="force-slot-cielago-depression-sector-2-4">
+<rect x="561.597" y="833.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_287" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="567.347" y="844.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-wind-pass-sector-14">
+<g id="force-slot-wind-pass-sector-14-1">
+<rect x="369.597" y="535.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_288" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="375.347" y="546.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-sector-14-2">
+<rect x="392.597" y="535.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_289" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="398.347" y="546.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-wind-pass-sector-13">
+<g id="force-slot-wind-pass-sector-13-1">
+<rect x="385.597" y="507.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_290" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="391.347" y="518.819">0</tspan></text>
+</g>
+<g id="force-slot-wind-pass-sector-13-2">
+<rect x="408.597" y="507.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_291" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="414.347" y="518.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-old-gap-sector-10">
+<g id="force-slot-old-gap-sector-10-1">
+<rect x="518.597" y="138.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_292" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="524.347" y="149.819">0</tspan></text>
+</g>
+<g id="force-slot-old-gap-sector-10-2">
+<rect x="541.597" y="138.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_293" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="547.347" y="149.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-minor-erg-sector-4">
+<g id="force-slot-minor-erg-sector-4-1">
+<rect x="633.097" y="633.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_294" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="638.847" y="644.819">0</tspan></text>
+</g>
+</g>
+<g id="force-slot-meridian-sector-1">
+<g id="force-slot-meridian-sector-1-1">
+<rect x="425.097" y="902.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_295" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="430.847" y="913.819">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-1-2">
+<rect x="425.097" y="920.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_296" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="430.847" y="931.819">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-1-3">
+<rect x="425.097" y="938.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_297" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="430.847" y="949.819">0</tspan></text>
+</g>
+<g id="force-slot-meridian-sector-1-4">
+<rect x="425.097" y="956.456" width="19" height="14" rx="7" stroke="black"/>
+<text id="0_298" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="430.847" y="967.819">0</tspan></text>
+</g>
+</g>
+<g id="spice-funeral-plain">
+<rect x="70.0969" y="463.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_299" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="75.8469" y="477.319">0</tspan></text>
+</g>
+<g id="spice-the-great-flat">
+<rect x="62.0969" y="511.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_300" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="67.8469" y="525.319">0</tspan></text>
+</g>
+<g id="spice-habbanya-erg">
+<rect x="73.0969" y="645.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_301" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="78.8469" y="659.319">0</tspan></text>
+</g>
+<g id="spice-wind-pass-north">
+<rect x="393.097" y="597.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_302" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="398.847" y="611.319">0</tspan></text>
+</g>
+<g id="spice-cielago-north">
+<rect x="521.097" y="691.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_303" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="526.847" y="705.319">0</tspan></text>
+</g>
+<g id="spice-south-mesa">
+<rect x="853.097" y="709.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_304" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="858.847" y="723.319">0</tspan></text>
+</g>
+<g id="spice-red-chasm">
+<rect x="882.097" y="508.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_305" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="887.847" y="522.319">0</tspan></text>
+</g>
+<g id="spice-cielago-south">
+<rect x="486.097" y="953.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_306" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="491.847" y="967.319">0</tspan></text>
+</g>
+<g id="spice-habbanya-ridge-flat">
+<rect x="203.097" y="853.456" width="19" height="19" rx="9.5" stroke="black"/>
+<text id="0_307" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="208.847" y="867.319">0</tspan></text>
+</g>
+<circle id="turn-indicator" cx="90.8936" cy="108.508" r="82.7253" stroke="black"/>
+<g id="turn-indicator-1">
+<mask id="path-677-inside-1_2028_809" fill="white">
+<path d="M90.8936 25.2822C108.469 25.2822 125.593 30.8462 139.812 41.1768L105.576 88.2987C101.308 85.198 96.1687 83.528 90.8936 83.528L90.8936 25.2822Z"/>
+</mask>
+<path d="M90.8936 25.2822C108.469 25.2822 125.593 30.8462 139.812 41.1768L105.576 88.2987C101.308 85.198 96.1687 83.528 90.8936 83.528L90.8936 25.2822Z" stroke="black" stroke-width="2" mask="url(#path-677-inside-1_2028_809)"/>
+</g>
+<g id="turn-indicator-2">
+<mask id="path-678-inside-2_2028_809" fill="white">
+<path d="M139.812 41.1769C154.031 51.5075 164.614 66.0743 170.046 82.7895L114.651 100.788C113.02 95.7715 109.844 91.3994 105.576 88.2987L139.812 41.1769Z"/>
+</mask>
+<path d="M139.812 41.1769C154.031 51.5075 164.614 66.0743 170.046 82.7895L114.651 100.788C113.02 95.7715 109.844 91.3994 105.576 88.2987L139.812 41.1769Z" stroke="black" stroke-width="2" mask="url(#path-678-inside-2_2028_809)"/>
+</g>
+<g id="turn-indicator-3">
+<mask id="path-679-inside-3_2028_809" fill="white">
+<path d="M170.046 82.7895C175.477 99.5048 175.477 117.51 170.046 134.226L114.651 116.227C116.281 111.21 116.281 105.805 114.651 100.788L170.046 82.7895Z"/>
+</mask>
+<path d="M170.046 82.7895C175.477 99.5048 175.477 117.51 170.046 134.226L114.651 116.227C116.281 111.21 116.281 105.805 114.651 100.788L170.046 82.7895Z" stroke="black" stroke-width="2" mask="url(#path-679-inside-3_2028_809)"/>
+</g>
+<g id="turn-indicator-4">
+<mask id="path-680-inside-4_2028_809" fill="white">
+<path d="M170.046 134.226C164.614 150.941 154.031 165.508 139.812 175.838L105.576 128.716C109.844 125.616 113.02 121.244 114.651 116.227L170.046 134.226Z"/>
+</mask>
+<path d="M170.046 134.226C164.614 150.941 154.031 165.508 139.812 175.838L105.576 128.716C109.844 125.616 113.02 121.244 114.651 116.227L170.046 134.226Z" stroke="black" stroke-width="2" mask="url(#path-680-inside-4_2028_809)"/>
+</g>
+<g id="turn-indicator-5">
+<mask id="path-681-inside-5_2028_809" fill="white">
+<path d="M139.812 175.838C125.593 186.169 108.469 191.733 90.8936 191.733L90.8936 133.487C96.1687 133.487 101.308 131.817 105.576 128.716L139.812 175.838Z"/>
+</mask>
+<path d="M139.812 175.838C125.593 186.169 108.469 191.733 90.8936 191.733L90.8936 133.487C96.1687 133.487 101.308 131.817 105.576 128.716L139.812 175.838Z" stroke="black" stroke-width="2" mask="url(#path-681-inside-5_2028_809)"/>
+</g>
+<g id="turn-indicator-6">
+<mask id="path-682-inside-6_2028_809" fill="white">
+<path d="M90.8936 191.733C73.3181 191.733 56.1938 186.169 41.975 175.838L76.211 128.716C80.4787 131.817 85.6184 133.487 90.8936 133.487L90.8936 191.733Z"/>
+</mask>
+<path d="M90.8936 191.733C73.3181 191.733 56.1938 186.169 41.975 175.838L76.211 128.716C80.4787 131.817 85.6184 133.487 90.8936 133.487L90.8936 191.733Z" stroke="black" stroke-width="2" mask="url(#path-682-inside-6_2028_809)"/>
+</g>
+<g id="turn-indicator-7">
+<mask id="path-683-inside-7_2028_809" fill="white">
+<path d="M41.9749 175.838C27.7561 165.508 17.1727 150.941 11.7416 134.226L67.1366 116.227C68.7667 121.244 71.9433 125.616 76.211 128.716L41.9749 175.838Z"/>
+</mask>
+<path d="M41.9749 175.838C27.7561 165.508 17.1727 150.941 11.7416 134.226L67.1366 116.227C68.7667 121.244 71.9433 125.616 76.211 128.716L41.9749 175.838Z" stroke="black" stroke-width="2" mask="url(#path-683-inside-7_2028_809)"/>
+</g>
+<g id="turn-indicator-8">
+<mask id="path-684-inside-8_2028_809" fill="white">
+<path d="M11.7415 134.226C6.31044 117.51 6.31044 99.5048 11.7415 82.7895L67.1366 100.788C65.5065 105.805 65.5065 111.21 67.1366 116.227L11.7415 134.226Z"/>
+</mask>
+<path d="M11.7415 134.226C6.31044 117.51 6.31044 99.5048 11.7415 82.7895L67.1366 100.788C65.5065 105.805 65.5065 111.21 67.1366 116.227L11.7415 134.226Z" stroke="black" stroke-width="2" mask="url(#path-684-inside-8_2028_809)"/>
+</g>
+<g id="turn-indicator-9">
+<mask id="path-685-inside-9_2028_809" fill="white">
+<path d="M11.7416 82.7895C17.1727 66.0743 27.7561 51.5075 41.9749 41.1769L76.2109 88.2987C71.9433 91.3994 68.7667 95.7715 67.1366 100.788L11.7416 82.7895Z"/>
+</mask>
+<path d="M11.7416 82.7895C17.1727 66.0743 27.7561 51.5075 41.9749 41.1769L76.2109 88.2987C71.9433 91.3994 68.7667 95.7715 67.1366 100.788L11.7416 82.7895Z" stroke="black" stroke-width="2" mask="url(#path-685-inside-9_2028_809)"/>
+</g>
+<g id="turn-indicator-10">
+<mask id="path-686-inside-10_2028_809" fill="white">
+<path d="M41.9749 41.1768C56.1938 30.8463 73.3181 25.2822 90.8935 25.2822L90.8935 83.528C85.6184 83.528 80.4786 85.198 76.211 88.2987L41.9749 41.1768Z"/>
+</mask>
+<path d="M41.9749 41.1768C56.1938 30.8463 73.3181 25.2822 90.8935 25.2822L90.8935 83.528C85.6184 83.528 80.4786 85.198 76.211 88.2987L41.9749 41.1768Z" stroke="black" stroke-width="2" mask="url(#path-686-inside-10_2028_809)"/>
+</g>
+<text id="turn-indicator-text-1" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="102.523" y="60.0417">1</tspan></text>
+<text id="turn-indicator-text-2" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="131.481" y="81.99">2</tspan></text>
+<text id="turn-indicator-text-9" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="33.385" y="81.99">9</tspan></text>
+<text id="turn-indicator-text-4" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="131.821" y="151.563">4</tspan></text>
+<text id="turn-indicator-text-7" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="35.4985" y="151.563">7</tspan></text>
+<text id="turn-indicator-text-5" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="103.145" y="174.339">5</tspan></text>
+<text id="turn-indicator-text-6" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="63.2021" y="174.339">6</tspan></text>
+<text id="turn-indicator-text-3" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="143.553" y="116.362">3</tspan></text>
+<text id="turn-indicator-text-8" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="18.0505" y="116.362">8</tspan></text>
+<text id="turn-indicator-text-10" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="55.8342" y="60.0417">10</tspan></text>
+<g id="phase-storm">
+<circle cx="238.902" cy="89.0115" r="25.5559" stroke="black"/>
+<circle cx="238.902" cy="89.0115" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-spice-blow">
+<circle cx="296.344" cy="60.4021" r="25.5559" stroke="black"/>
+<circle cx="296.344" cy="60.4021" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-choam-charity">
+<circle cx="357.338" cy="40.8601" r="25.5559" stroke="black"/>
+<circle cx="357.338" cy="40.8601" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-bidding">
+<circle cx="419.517" cy="29.0168" r="25.5559" stroke="black"/>
+<circle cx="419.517" cy="29.0168" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-revival">
+<circle cx="484.065" cy="26.0559" r="25.5559" stroke="black"/>
+<circle cx="484.065" cy="26.0559" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-shipment-movement">
+<circle cx="548.613" cy="29.0168" r="25.5559" stroke="black"/>
+<circle cx="548.613" cy="29.0168" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-battle">
+<circle cx="610.792" cy="39.676" r="25.5559" stroke="black"/>
+<circle cx="610.792" cy="39.676" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-spice-collection">
+<circle cx="671.786" cy="59.218" r="25.5559" stroke="black"/>
+<circle cx="671.786" cy="59.218" r="25.5559" stroke="black"/>
+</g>
+<g id="phase-mentat-pause">
+<circle cx="729.82" cy="88.8269" r="25.5559" stroke="black"/>
+<circle cx="729.82" cy="88.8269" r="25.5559" stroke="black"/>
+</g>
+<path id="tleilaxu-tanks" d="M340.613 1097.47L11.5157 1097.94C5.43443 1097.95 0.5 1093.02 0.5 1086.94V893.956C0.5 887.88 5.42487 882.956 11.5 882.956H100.291C103.355 882.956 106.247 884.198 108.355 886.422C121.037 899.805 168.269 948.612 206.097 973.956C249.026 1002.72 320.856 1028.74 344.097 1036.77C348.593 1038.33 351.597 1042.53 351.597 1047.29V1086.47C351.597 1092.54 346.682 1097.46 340.613 1097.47Z" stroke="black"/>
+<path id="spice-bank" d="M628.581 1097.47L957.581 1097.94C963.662 1097.95 968.597 1093.02 968.597 1086.94V893.956C968.597 887.88 963.672 882.956 957.597 882.956H868.836C865.771 882.956 862.878 884.199 860.771 886.424C848.091 899.808 800.873 948.613 763.057 973.955C720.14 1002.72 648.332 1028.73 625.096 1036.77C620.601 1038.32 617.597 1042.53 617.597 1047.29V1086.47C617.597 1092.54 622.512 1097.46 628.581 1097.47Z" stroke="black"/>
+<circle id="faction-token-slot-1" cx="484.097" cy="1032.46" r="20" stroke="black"/>
+<circle id="faction-token-slot-2" cx="896.097" cy="795.456" r="20" stroke="black"/>
+<circle id="faction-token-slot-3" cx="895.097" cy="321.456" r="20" stroke="black"/>
+<circle id="faction-token-slot-4" cx="484.097" cy="83.4556" r="20" stroke="black"/>
+<circle id="faction-token-slot-5" cx="72.0969" cy="320.456" r="20" stroke="black"/>
+<circle id="faction-token-slot-6" cx="73.0969" cy="795.456" r="20" stroke="black"/>
+</g>
+</svg>

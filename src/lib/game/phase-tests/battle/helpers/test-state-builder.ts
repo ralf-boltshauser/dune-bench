@@ -11,7 +11,6 @@ import {
   addSpiceToTerritory,
   getFactionState,
   formAlliance,
-  convertBGAdvisorsToFighters,
 } from '../../../state';
 import {
   Faction,
@@ -20,7 +19,6 @@ import {
   LeaderLocation,
   CardLocation,
   type GameState,
-  type FactionState,
 } from '../../../types';
 import { getTreacheryCardDefinition, getLeaderDefinition } from '../../../data';
 
@@ -159,7 +157,6 @@ export function buildTestState(config: TestStateConfig): GameState {
         );
         if (stack && stack.advisors !== undefined && stack.advisors > 0) {
           // Convert all advisors to fighters for battle
-          const advisorsToConvert = stack.advisors;
           stack.advisors = 0; // All become fighters
           // The forces are already there, we just need to remove the advisor flag
         }

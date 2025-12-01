@@ -36,7 +36,7 @@ Rules:
 
 Max hand size is 4 cards (8 for Harkonnen).`,
       inputSchema: PlaceBidSchema,
-      execute: async (params: z.infer<typeof PlaceBidSchema>, options) => {
+      execute: async (params: z.infer<typeof PlaceBidSchema>, _options) => {
         const { amount } = params;
         const state = ctx.state;
         const faction = ctx.faction;
@@ -86,7 +86,7 @@ Max hand size is 4 cards (8 for Harkonnen).`,
 Once you pass, you cannot bid again on this card.
 If everyone passes, the first eligible player in storm order takes the card for free (buy-in).`,
       inputSchema: PassActionSchema,
-      execute: async (params, options) => {
+      execute: async (_params, _options) => {
         return successResult(
           'Passed on this auction',
           { faction: ctx.faction, action: 'pass' },

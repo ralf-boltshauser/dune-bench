@@ -35,6 +35,16 @@ export {
   getTerritoriesWithinDistance,
 } from './movement';
 
+// Storm validation utilities
+export {
+  canMoveThroughStorm,
+  isTerritoryProtectedFromStorm,
+  findSafeSector,
+  validateSourceSectorNotInStorm,
+  validateDestinationSectorNotInStorm,
+  validateSectorNotInStorm,
+} from './storm-validation';
+
 // Combat validation and resolution
 export {
   type BattlePlanSuggestion,
@@ -57,6 +67,7 @@ export {
 
 // Bidding validation
 export {
+  type BidValidationOptions,
   validateBiddingEligibility,
   validateBid,
   validateAllyBidSupport,
@@ -88,3 +99,11 @@ export {
   calculateCharityAmount,
   getCharityAmount,
 } from './choam-charity';
+
+// BG Advisor flipping validation
+export {
+  type AdvisorFlipValidationResult,
+  isPEACETIMERestrictionActive,
+  isSTORMEDINRestrictionActive,
+  validateAdvisorFlipToFighters,
+} from './bg-advisor-validation';

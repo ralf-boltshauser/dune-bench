@@ -16,6 +16,7 @@
  * 10. Complex Mixed Scenario
  */
 
+import { type GameState } from '../../types';
 import { testStandardZeroSpice } from './scenarios/standard-zero-spice';
 import { testStandardOneSpice } from './scenarios/standard-one-spice';
 import { testBGAdvancedHighSpice } from './scenarios/bg-advanced-high-spice';
@@ -51,7 +52,7 @@ async function runAllTests() {
     results.push({
       name: 'Standard Charity - Zero Spice',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -73,7 +74,7 @@ async function runAllTests() {
     results.push({
       name: 'Standard Charity - One Spice',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -95,7 +96,7 @@ async function runAllTests() {
     results.push({
       name: 'BG Advanced - High Spice',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -117,7 +118,7 @@ async function runAllTests() {
     results.push({
       name: 'BG Advanced - One Spice',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -139,7 +140,7 @@ async function runAllTests() {
     results.push({
       name: 'BG Basic Rules',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -161,7 +162,7 @@ async function runAllTests() {
     results.push({
       name: 'Multiple Factions Simultaneous',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -183,7 +184,7 @@ async function runAllTests() {
     results.push({
       name: 'Mixed Claim and Decline',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -205,7 +206,7 @@ async function runAllTests() {
     results.push({
       name: 'Fraud Safeguards',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -227,7 +228,7 @@ async function runAllTests() {
     results.push({
       name: 'No Eligible Factions',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,
@@ -249,7 +250,7 @@ async function runAllTests() {
     results.push({
       name: 'Complex Mixed Scenario',
       result: {
-        state: {} as any,
+        state: {} as GameState,
         events: [],
         stepCount: 0,
         completed: false,

@@ -13,7 +13,9 @@ import {
 } from '../types';
 import { createGameState, type CreateGameOptions } from '../state';
 import { addSpice, removeSpice, getFactionState, shipForces } from '../state';
-import { PhaseManager, MockAgentProvider } from './phase-manager';
+import { PhaseManager } from './phase-manager';
+import '../agent/env-loader';
+import { createAgentProvider } from '../agent/azure-provider';
 import {
   StormPhaseHandler,
   SpiceBlowPhaseHandler,
@@ -58,7 +60,7 @@ function testPhaseManagerInitialization(): void {
   console.log('Testing Phase Manager Initialization...');
 
   const state = createTestState();
-  const provider = new MockAgentProvider('pass');
+  const provider = createAgentProvider(state, { verbose: false });
   const manager = new PhaseManager(provider);
 
   // Register handlers
@@ -161,7 +163,7 @@ function testChoamCharityPhase(): void {
   const handler = new ChoamCharityPhaseHandler();
 
   // Give Atreides low spice
-  let testState = removeSpice(state, Faction.ATREIDES, getFactionState(state, Faction.ATREIDES).spice);
+  const testState = removeSpice(state, Faction.ATREIDES, getFactionState(state, Faction.ATREIDES).spice);
 
   // Initialize
   const initResult = handler.initialize(testState);
