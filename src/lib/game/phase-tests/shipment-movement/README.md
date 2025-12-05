@@ -1,185 +1,191 @@
-# Shipment & Movement Phase Test Suite
+# Shipment & Movement Phase - Test Suite
 
-Comprehensive test suite for the shipment-movement phase with all factions and various scenarios.
+## Overview
 
-## Philosophy: Manual Validation via Log Files
+Comprehensive test suite for the refactored shipment-movement phase handler. Tests are organized into maintainable, reusable modules following DRY principles.
 
-**The goal of these tests is NOT automated assertions.** Instead, tests write detailed log files containing:
-- All agent requests and responses
-- All phase events
-- State snapshots at key points
-- Tool calls and their data
-- Thoughts and decision points
-
-You then **manually review these log files** to validate that:
-- Rules are being followed correctly
-- State changes are correct
-- Events are firing in the right order
-- Agent interactions are working as expected
-- Edge cases are handled properly
-
-This approach is better for complex game logic where automated assertions might miss nuanced issues or where you need to understand the full flow of execution.
-
-## Structure
+## Test Structure
 
 ```
 phase-tests/shipment-movement/
-├── README.md                    # This file
-├── test-shipment-movement.ts     # Main test runner
 ├── helpers/
-│   ├── test-state-builder.ts    # Helper for creating test states
-│   └── agent-response-builder.ts # Helper for mocking agent responses
-└── scenarios/
-    ├── base-scenario.ts         # Base scenario utilities
-    ├── hajr-extra-movement.ts   # HAJR card test
-    ├── fremen-abilities.ts      # Fremen special abilities
-    ├── guild-out-of-order.ts    # Guild act out of order
-    ├── guild-cross-ship.ts      # Guild cross-ship and off-planet
-    ├── bg-spiritual-advisors.ts # BG spiritual advisors
-    ├── ornithopter-access.ts    # Ornithopter access at phase start
-    └── complex-multi-faction.ts  # Complex multi-faction scenario
+│   ├── assertions.ts              # All assertion helpers (no duplication)
+│   ├── fixtures.ts                 # Test data presets (territories, factions, etc.)
+│   ├── test-state-builder.ts       # State builder (reuses battle phase builder)
+│   ├── agent-response-builder.ts   # Enhanced with fluent API + specialized builders
+│   ├── scenario-builder.ts         # Fluent scenario builder (combines setup + execution + assertions)
+│   └── test-helpers.ts             # Common test utilities
+├── scenarios/                      # Scenario tests (high-level)
+│   ├── base-scenario.ts           # Base scenario utilities
+│   ├── core-sequential.ts         # Tests 1.1-1.5: Sequential processing
+│   ├── guild-handling.ts          # Tests 2.1-2.12: Guild special handling
+│   ├── bg-spiritual-advisors.ts   # Tests 3.1-3.9: BG Spiritual Advisor
+│   ├── bg-intrusion.ts            # Tests 4.1-4.10: BG INTRUSION (TODO)
+│   ├── bg-wartime.ts              # Tests 5.1-5.6: BG WARTIME (TODO)
+│   ├── bg-take-up-arms.ts         # Tests 6.1-6.13: BG TAKE UP ARMS (TODO)
+│   ├── alliance-constraints.ts    # Tests 7.1-7.5: Alliance constraints (TODO)
+│   ├── ornithopter-access.ts      # Tests 8.1-8.6: Ornithopter access
+│   ├── fremen-abilities.ts        # Tests 11.5-11.9: Fremen abilities
+│   ├── negative-cases.ts          # Tests 10.1-10.14: Invalid actions (TODO)
+│   └── edge-cases.ts              # Tests 11.1-11.12: Edge cases (TODO)
+├── unit/                          # Unit tests for modules (TODO)
+│   ├── state-machine.test.ts
+│   ├── guild-handler.test.ts
+│   ├── bg-advisors.test.ts
+│   └── ...
+├── integration/                   # Integration tests (TODO)
+│   ├── sequential-processing.test.ts
+│   ├── guild-timing-flow.test.ts
+│   └── ...
+└── test-shipment-movement.ts      # Main test runner
 ```
 
-## Test Scenarios
+## Key Features
 
-### 1. HAJR Extra Movement Card
-- **Goal**: Test HAJR card granting extra movement action
-- **What to check in logs**:
-  - HAJR can be played during movement
-  - Extra movement action granted
-  - Can move same group or different group
-  - Ornithopter access applies to both movements
-  - HAJR discarded after use
+### 1. Reusable Infrastructure
 
-### 2. Fremen Free Shipment and 2-Territory Movement
-- **Goal**: Test Fremen special shipment and movement abilities
-- **What to check in logs**:
-  - Free shipment to Great Flat
-  - Free shipment within 2 territories of Great Flat
-  - 2-territory movement (base)
-  - Storm migration calculation (half loss, rounded up)
-  - Storm restrictions apply
+**Assertions** (`helpers/assertions.ts`):
+- State assertions (forces, spice, reserves, ornithopter access)
+- Event assertions (emitted, not emitted, sequence, count, data)
+- Phase assertions (complete, not complete, pending requests)
+- BG-specific assertions (advisors, fighters)
+- Guild-specific assertions (payment received)
+- Alliance assertions (forces in tanks)
 
-### 3. Spacing Guild Act Out of Order
-- **Goal**: Test Guild's ability to act before/after any faction
-- **What to check in logs**:
-  - Guild can act first
-  - Guild can act in middle
-  - Guild can delay to end
-  - Normal storm order continues after Guild acts
-  - Guild receives payment from other factions
+**Fixtures** (`helpers/fixtures.ts`):
+- Territory presets (ARRAKEEN, CARTHAG, IMPERIAL_BASIN, etc.)
+- Faction presets (BASIC, WITH_GUILD, WITH_BG, etc.)
+- Storm order presets
+- Force presets (SMALL, MEDIUM, LARGE, etc.)
+- Spice presets (NONE, LOW, MEDIUM, HIGH, etc.)
+- Alliance presets
+- BG presets (ADVISORS_ONLY, FIGHTERS_ONLY, MIXED, etc.)
 
-### 4. Spacing Guild Cross-Ship and Off-Planet
-- **Goal**: Test Guild's special shipment abilities
-- **What to check in logs**:
-  - Cross-ship works (territory to territory)
-  - Off-planet shipment works (board to reserves)
-  - Half-price calculation (rounded up)
-  - Cost calculations correct
+**Enhanced Response Builder** (`helpers/agent-response-builder.ts`):
+- Fluent API with specialized builders:
+  - `forFaction(faction)` - FactionResponseBuilder
+  - `forGuild()` - GuildResponseBuilder
+  - `forBG()` - BGResponseBuilder
+- Common patterns:
+  - `queueShipmentThenMovement()`
+  - `queuePassBoth()`
+  - `queueAllFactionsPass()`
+- BG ability helpers:
+  - `queueBGIntrusion()`
+  - `queueBGWartime()`
+  - `queueBGTakeUpArms()`
+  - `queueBGPassAbility()`
+- Guild helpers:
+  - `queueGuildTiming()`
+  - `queueGuildShipmentSequence()`
 
-### 5. Bene Gesserit Spiritual Advisors
-- **Goal**: Test BG advisor placement when other factions ship
-- **What to check in logs**:
-  - Advisor sent to Polar Sink option
-  - Advisor sent to same territory option
-  - Advisor vs fighter distinction
-  - Multiple advisors from multiple shipments
+### 2. Test Organization
 
-### 6. Ornithopter Access at Phase Start
-- **Goal**: Test ornithopter access determined at phase start
-- **What to check in logs**:
-  - Atreides has ornithopters (forces in Arrakeen at start)
-  - Harkonnen doesn't have ornithopters (shipped in during phase)
-  - 3-territory movement for Atreides
-  - 1-territory movement for Harkonnen
-
-### 7. Complex Multi-Faction Scenario
-- **Goal**: Test complex scenario with multiple factions and abilities
-- **What to check in logs**:
-  - All abilities work together
-  - Sequential processing correct
-  - Alliance constraints applied correctly
-  - Complex interactions handled
-
-## Running Tests
-
-```bash
-# Run all shipment-movement phase tests
-pnpm test:shipment-movement
-```
-
-## Log Files
-
-After running tests, detailed log files are written to:
-```
-test-logs/shipment-movement/
-├── hajr-extra-movement-card-YYYY-MM-DDTHH-MM-SS.log
-├── fremen-free-shipment-and-2-territory-movement-YYYY-MM-DDTHH-MM-SS.log
-├── spacing-guild-act-out-of-order-YYYY-MM-DDTHH-MM-SS.log
-├── spacing-guild-cross-ship-and-off-planet-YYYY-MM-DDTHH-MM-SS.log
-├── bene-gesserit-spiritual-advisors-YYYY-MM-DDTHH-MM-SS.log
-├── ornithopter-access-at-phase-start-YYYY-MM-DDTHH-MM-SS.log
-└── complex-multi-faction-scenario-YYYY-MM-DDTHH-MM-SS.log
-```
-
-Each log file contains:
-- **Step-by-step execution**: Every step with sub-phase information
-- **Agent Requests**: What each faction was asked to do
-- **Agent Responses**: What each faction responded with
-- **Events**: All phase events with full data
-- **State Snapshots**: Complete game state at key points
-- **Final Summary**: Overview of what happened
-
-## Reviewing Log Files
-
-When reviewing a log file, check:
-
-1. **Sequential Processing**: Each faction does ship THEN move before next faction
-2. **Agent Requests**: Are requests formatted correctly with proper context?
-3. **Agent Responses**: Do responses match the requests?
-4. **State Changes**: Are state mutations correct after each step?
-5. **Event Ordering**: Do events fire in the correct sequence?
-6. **Rule Compliance**: Are game rules being followed?
-7. **Edge Cases**: Are special cases handled correctly?
-8. **Special Abilities**: Do faction abilities work correctly?
-9. **Alliance Constraints**: Applied after each faction completes?
-10. **Guild Timing**: Can Guild act out of order correctly?
-
-## Adding New Tests
-
-1. Create a new scenario file in `scenarios/`
-2. Use `buildTestState` to set up the state
-3. Use `AgentResponseBuilder` to mock responses
-4. Call `runPhaseScenario()` with a descriptive name
-5. Run the test and review the generated log file
-
-Example:
+**Scenario Tests** (`scenarios/`):
+- High-level scenario tests
+- Use infrastructure helpers
+- Easy to read and maintain
+- Example:
 ```typescript
-export async function testMyScenario() {
-  const state = buildTestState({
-    factions: [Faction.ATREIDES, Faction.HARKONNEN],
-    // ... configuration
-  });
-
-  const responses = new AgentResponseBuilder();
-  responses.queueShipment(Faction.ATREIDES, { /* ... */ });
-  responses.queueMovement(Faction.ATREIDES, { /* ... */ });
-
-  // This will write a log file automatically
-  return await runPhaseScenario(
-    state,
-    responses,
-    'My Test Scenario' // Used for log file name
-  );
+export async function testBasicSequentialFlow() {
+  const state = buildTestState({...});
+  const responses = new AgentResponseBuilder()
+    .forFaction(Faction.ATREIDES)
+      .shipment({...})
+      .movement({...})
+    .forFaction(Faction.HARKONNEN)
+      .passBoth();
+  
+  const result = await runPhaseScenario(state, responses, 'Test Name', 200);
+  
+  assertions.assertPhaseComplete({ phaseComplete: result.completed } as any);
+  assertions.assertEventEmitted(result.events, 'FORCES_SHIPPED');
+  // ... more assertions
 }
 ```
 
-## What Gets Logged
+## Usage
 
-- **Agent Requests**: Full request with prompt, context, available actions
-- **Agent Responses**: Action type, data, and whether they passed
-- **Phase Events**: All events with type, message, and data
-- **State Snapshots**: Complete faction states, forces, leaders, spice, etc.
-- **Step Information**: Sub-phase, pending requests, responses queue
-- **Errors**: Any errors with stack traces and context
+### Running Tests
 
+```bash
+# Run all tests
+pnpm test:shipment-movement
+
+# Or run specific test file
+node src/lib/game/phase-tests/shipment-movement/scenarios/core-sequential.ts
+```
+
+### Writing New Tests
+
+1. **Use fixtures** - Don't hardcode territory IDs, faction lists, etc.
+   ```typescript
+   import { TEST_TERRITORIES, TEST_FACTIONS, FORCE_PRESETS } from '../helpers/fixtures';
+   ```
+
+2. **Use assertions** - Don't write custom assertion logic
+   ```typescript
+   import * as assertions from '../helpers/assertions';
+   assertions.assertForcesInTerritory(state, faction, territory, sector, count);
+   ```
+
+3. **Use enhanced builders** - Use fluent API for readability
+   ```typescript
+   const responses = new AgentResponseBuilder()
+     .forFaction(Faction.ATREIDES)
+       .shipment({...})
+       .movement({...})
+     .forGuild()
+       .timing('NOW')
+       .normalShipment({...});
+   ```
+
+4. **Follow the pattern** - Use `runPhaseScenario` and `logScenarioResults`
+   ```typescript
+   const result = await runPhaseScenario(state, responses, 'Test Name', 200);
+   logScenarioResults('Test Name', result);
+   ```
+
+## Test Coverage
+
+### Implemented
+- ✅ Foundation infrastructure (assertions, fixtures, builders)
+- ✅ Core sequential processing tests (1.1-1.5)
+- ✅ Guild handling tests (2.1, 2.5, 2.7)
+- ✅ Existing scenario tests (enhanced)
+
+### TODO
+- [ ] BG Spiritual Advisor tests (3.1-3.9) - enhance existing
+- [ ] BG INTRUSION tests (4.1-4.10)
+- [ ] BG WARTIME tests (5.1-5.6)
+- [ ] BG TAKE UP ARMS tests (6.1-6.13)
+- [ ] Alliance constraint tests (7.1-7.5)
+- [ ] Ornithopter access tests (8.1-8.6) - enhance existing
+- [ ] Event emission tests (9.1-9.5)
+- [ ] Negative test cases (10.1-10.14)
+- [ ] Edge cases (11.1-11.12) - enhance existing
+- [ ] Unit tests for modules
+- [ ] Integration tests for flows
+
+## Principles
+
+1. **DRY (Don't Repeat Yourself)**
+   - One place for assertions
+   - One place for test data
+   - Reusable builders and utilities
+
+2. **Maintainability**
+   - Clear organization
+   - Descriptive names
+   - Helper functions for complex logic
+   - Type-safe (TypeScript)
+
+3. **Testability**
+   - Pure functions where possible
+   - Isolated tests
+   - Fast execution
+   - Deterministic results
+
+## Examples
+
+See `scenarios/core-sequential.ts` and `scenarios/guild-handling.ts` for complete examples of test implementation.

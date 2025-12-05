@@ -5,10 +5,11 @@
  */
 
 import { Faction } from '../../../types';
-import type { AgentResponse } from '../../../phases/types';
+import type { AgentRequest, AgentResponse } from '../../../phases/types';
 
 export class AgentResponseBuilder {
   private responses: Map<string, AgentResponse[]> = new Map();
+  private responseSequence: AgentResponse[] = [];
 
   /**
    * Queue a Fremen protection decision response
@@ -54,15 +55,60 @@ export class AgentResponseBuilder {
       factionId: faction,
       actionType: action,
       data: targetFaction ? { targetFaction } : {},
-      passed: false,
+      passed: action === 'PASS',
     });
     return this;
   }
 
   /**
+   * Fluent API: For a specific faction
+   */
+  forFremen(): FremenResponseBuilder {
+    return new FremenResponseBuilder(this, Faction.FREMEN);
+  }
+
+  forFaction(faction: Faction): FactionResponseBuilder {
+    return new FactionResponseBuilder(this, faction);
+  }
+
+  /**
+   * Queue a response sequence (for multi-step scenarios)
+   */
+  queueResponseSequence(responses: AgentResponse[]): this {
+    this.responseSequence.push(...responses);
+    return this;
+  }
+
+  /**
+   * Auto-match responses to requests (for dynamic scenarios)
+   */
+  autoMatchRequests(requests: AgentRequest[]): AgentResponse[] {
+    const matched: AgentResponse[] = [];
+    
+    for (const request of requests) {
+      const responses = this.responses.get(request.requestType);
+      if (responses && responses.length > 0) {
+        matched.push(responses.shift()!);
+      } else if (this.responseSequence.length > 0) {
+        matched.push(this.responseSequence.shift()!);
+      } else {
+        // Default: pass
+        matched.push({
+          factionId: request.factionId,
+          actionType: 'PASS',
+          data: {},
+          passed: true,
+        });
+      }
+    }
+    
+    return matched;
+  }
+
+  /**
    * Queue a generic response
    */
-  private queueResponse(
+  queueResponse(
     requestType: string,
     response: AgentResponse
   ): this {
@@ -85,6 +131,67 @@ export class AgentResponseBuilder {
    */
   clear(): this {
     this.responses.clear();
+    this.responseSequence = [];
+    return this;
+  }
+}
+
+/**
+ * Fluent builder for Fremen responses
+ */
+class FremenResponseBuilder {
+  constructor(
+    private parent: AgentResponseBuilder,
+    private faction: Faction
+  ) {}
+
+  protectAlly(protect: boolean): this {
+    this.parent.queueFremenProtection(this.faction, protect);
+    return this;
+  }
+
+  rideWorm(ride: boolean): this {
+    this.parent.queueWormRide(this.faction, ride);
+    return this;
+  }
+
+  formAlliance(target: Faction): this {
+    this.parent.queueAllianceDecision(this.faction, 'FORM_ALLIANCE', target);
+    return this;
+  }
+
+  breakAlliance(): this {
+    this.parent.queueAllianceDecision(this.faction, 'BREAK_ALLIANCE');
+    return this;
+  }
+
+  pass(): this {
+    this.parent.queueAllianceDecision(this.faction, 'PASS');
+    return this;
+  }
+}
+
+/**
+ * Fluent builder for any faction responses
+ */
+class FactionResponseBuilder {
+  constructor(
+    private parent: AgentResponseBuilder,
+    private faction: Faction
+  ) {}
+
+  formAlliance(target: Faction): this {
+    this.parent.queueAllianceDecision(this.faction, 'FORM_ALLIANCE', target);
+    return this;
+  }
+
+  breakAlliance(): this {
+    this.parent.queueAllianceDecision(this.faction, 'BREAK_ALLIANCE');
+    return this;
+  }
+
+  pass(): this {
+    this.parent.queueAllianceDecision(this.faction, 'PASS');
     return this;
   }
 }

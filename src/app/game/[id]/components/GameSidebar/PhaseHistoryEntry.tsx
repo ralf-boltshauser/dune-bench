@@ -9,6 +9,7 @@ import SpiceBlowInfoCard from "../PhaseInfo/SpiceBlowInfoCard";
 import CHOAMCharityCard from "../PhaseInfo/CHOAMCharityCard";
 import BiddingPanel from "../PhaseInfo/BiddingPanel";
 import ShipmentMovementInfoCard from "../PhaseInfo/ShipmentMovementInfoCard";
+import BattleInfoCard from "../PhaseInfo/BattleInfoCard";
 
 // =============================================================================
 // TYPES
@@ -79,6 +80,13 @@ export default function PhaseHistoryEntry({
       return (
         <div className={isHistorical ? "opacity-75" : ""}>
           <ShipmentMovementInfoCard shipmentMovementInfo={phaseInfo.shipmentMovementInfo} />
+        </div>
+      );
+
+    case Phase.BATTLE:
+      return (
+        <div className={isHistorical ? "opacity-75" : ""}>
+          <BattleInfoCard battleInfo={phaseInfo.battleInfo} />
         </div>
       );
 

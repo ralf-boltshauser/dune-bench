@@ -204,6 +204,11 @@ export interface GameState {
 
   // Board state
   stormSector: number;
+  /**
+   * Legacy alias for storm sector used in older tests/utilities.
+   * Prefer using stormSector in new code.
+   */
+  stormMarker?: number;
   shieldWallDestroyed: boolean;
   spiceOnBoard: SpiceLocation[];
 

@@ -85,3 +85,27 @@ export {
   type SpiceCollectionContext,
   type MentatPauseContext,
 } from './state';
+
+// Phase system types (agent I/O and events)
+export type {
+  AgentRequest,
+  AgentRequestType,
+  AgentResponse,
+  PhaseStepResult,
+  PhaseEvent,
+  PhaseEventType,
+} from '../phases/types';
+
+// Rules & validation types (including battle resolution)
+export type {
+  ValidationResult,
+  ValidationError,
+  ValidationErrorCode,
+  ShipmentSuggestion,
+  MovementSuggestion,
+  BidSuggestion,
+  RevivalSuggestion,
+  BattleResult,
+  BattleSideResult,
+} from '../rules/types';
+

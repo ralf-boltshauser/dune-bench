@@ -1,10 +1,14 @@
 /**
+ * @rule-test 1.01.02, 1.01.03
  * Standard Storm Movement and Destruction - Difficult Scenario
  * 
  * Tests:
- * - Normal storm movement (Turn 2+)
- * - Force destruction in sand territories
- * - Spice destruction in storm path
+ * - Normal storm movement (Turn 2+) - verifies rule 1.01.02: two players dial 1-3,
+ *   reveal simultaneously, add together, advance storm marker counterclockwise
+ * - Force destruction in sand territories - verifies rule 1.01.03: forces in sand territories
+ *   (except protected) where storm starts, passes, or ends are destroyed
+ * - Spice destruction in storm path - verifies rule 1.01.03: spice in sectors where storm
+ *   passes over or stops is destroyed
  * - Protected territories (Imperial Basin) remain safe
  * - Multi-sector territory (Imperial Basin spans 8, 9, 10)
  * - Forces in different sectors of same territory

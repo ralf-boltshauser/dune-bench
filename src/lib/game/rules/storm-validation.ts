@@ -2,10 +2,13 @@
  * Storm Validation Utilities
  * 
  * Single source of truth for storm-related validation rules.
- * Implements Rule 1.06.03.05: "no Force may Move into, out of, or through a Sector in storm"
+ * 
+ * @rule 1.01.04 - OBSTRUCTION: Forces may not Ship/Send/Move into, out of, or through a Sector in Storm.
  * 
  * Rule References:
- * - 1.06.03.05: Storm movement restrictions
+ * - 1.01.04: Base storm obstruction rule (movement/shipment restrictions)
+ * - 1.06.03.05: Storm movement restrictions (detailed implementation)
+ * - 1.06.02.04: Storm shipment restrictions (detailed implementation)
  * - 2.04.17: Fremen exception (can move through storm)
  */
 
@@ -110,9 +113,9 @@ export function validateSourceSectorNotInStorm(
 }
 
 /**
+ * @rule 1.06.05.06 STORM: As defined above in the Storm Phase section, no Force may Move into, out of, or through a Sector in storm.
+ * @rule 1.06.06 SAFE HAVEN: The Polar Sink is never in storm.
  * Validate that a destination sector is not in storm (for movement INTO or shipment).
- * 
- * Rule 1.06.03.05: Cannot move INTO storm sector
  * Exception: Polar Sink (has no sectors, so never in storm)
  * 
  * @param state Game state
@@ -129,6 +132,13 @@ export function validateDestinationSectorNotInStorm(
   fieldName: string = 'toSector',
   context: string = 'move to'
 ): ValidationError | null {
+  // Fremen exception: can move through storm (movement INTO / THROUGH allowed)
+  // Note: Shipment still uses validateSectorNotInStorm separately.
+  if (fieldName === 'toSector' && canMoveThroughStorm(Faction.FREMEN as Faction)) {
+    // The caller must still decide based on faction; this function is faction-agnostic.
+    // Fremen-specific callers should skip calling this or treat errors as non-fatal.
+  }
+
   // Polar Sink exemption: has no sectors, so never in storm (Rule 1.06.03.07)
   // Other protected territories can still have sectors in storm
   const territory = TERRITORY_DEFINITIONS[territoryId];

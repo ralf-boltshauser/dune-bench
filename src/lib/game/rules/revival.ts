@@ -53,6 +53,12 @@ export interface RevivalLimits {
 }
 
 /**
+ * @rule 2.01.04
+ * @rule 2.02.04
+ * @rule 2.03.03
+ * @rule 2.04.04
+ * @rule 2.05.05
+ * @rule 2.06.03
  * Get the revival limits for a faction.
  */
 export function getRevivalLimits(state: GameState, faction: Faction): RevivalLimits {
@@ -86,7 +92,10 @@ export function getRevivalLimits(state: GameState, faction: Faction): RevivalLim
   const isFremenAlly = fremenState?.allyId === faction;
   const fremenBoostGranted = factionState.fremenRevivalBoostGranted ?? false;
 
+  // @rule 1.05.01.02
   // If Fremen granted the boost, override the faction's normal free revival count
+  // @rule 2.04.04: Fremen gets 3 free revivals (stored in FREMEN_CONFIG.freeRevival)
+  // @rule 2.04.11 ALLIANCE: At your discretion, your ally's free revival is 3
   let freeForces = config.freeRevival;
   if (isFremenAlly && fremenBoostGranted) {
     freeForces = 3;
@@ -113,6 +122,12 @@ export function getRevivalLimits(state: GameState, faction: Faction): RevivalLim
 /**
  * Validate force revival from tanks.
  */
+/**
+ * @rule 2.03.10
+ * @rule 2.04.19 FEDAYKIN REVIVAL: They are each treated as one Force in revival
+ * Validate force revival from tanks.
+ * Elite forces (Sardaukar/Fedaykin) are treated as one Force in revival.
+ */
 export function validateForceRevival(
   state: GameState,
   faction: Faction,
@@ -122,7 +137,8 @@ export function validateForceRevival(
   const errors: ReturnType<typeof createError>[] = [];
   const factionState = getFactionState(state, faction);
   const limits = getRevivalLimits(state, faction);
-  const totalRequested = regularCount + eliteCount;
+  // @rule 2.04.19: Elite forces count as 1 each in revival (not 2x like in battle)
+  const totalRequested = regularCount + eliteCount; // Elite forces count as 1 each
 
   const context = {
     ...limits,
@@ -165,7 +181,8 @@ export function validateForceRevival(
     );
   }
 
-  // Check: Elite revival limit (Fedaykin/Sardaukar - only 1 per turn)
+  // @rule 2.03.11: Check: Elite revival limit (Fedaykin/Sardaukar - only 1 per turn)
+  // @rule 2.04.20 FEDAYKIN TRAINING: Only one Fedaykin Force can be revived per Turn
   if (eliteCount > 1 && (faction === Faction.FREMEN || faction === Faction.EMPEROR)) {
     errors.push(
       createError(
@@ -181,7 +198,8 @@ export function validateForceRevival(
     );
   }
 
-  // Check: Already revived elite forces this turn
+  // @rule 2.03.11: Check: Already revived elite forces this turn
+  // @rule 2.04.20: Only one Fedaykin Force can be revived per Turn
   const alreadyRevived = factionState.eliteForcesRevivedThisTurn ?? 0;
   if (eliteCount > 0 && alreadyRevived >= 1 && (faction === Faction.FREMEN || faction === Faction.EMPEROR)) {
     errors.push(

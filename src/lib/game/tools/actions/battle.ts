@@ -66,19 +66,28 @@ you decide the order. Choose strategically based on:
 Components:
 - Leader: Adds strength to your dial. Required if you have available leaders.
 - Forces Dialed: 0 to your forces in territory. These are LOST regardless of outcome.
-- Weapon Card: Kills opponent's leader (if not defended)
-- Defense Card: Protects your leader from opponent's weapon
+- Weapon Card: ⚔️ HIGHLY VALUABLE - Kills opponent's leader (if not defended). This removes their leader's strength from the battle total, giving you a huge advantage. If you have a weapon, strongly consider using it - weapons win battles!
+- Defense Card: Protects your leader from opponent's weapon. Use if you expect opponent to play a weapon.
+- Spice Dialed (Advanced Rules): Pay 1 spice per force to make them count at FULL strength. Unspiced forces count at HALF strength. This is critical for winning battles!
 
 Battle Resolution:
-- Total = Forces Dialed + Leader Strength (if leader survives)
+- Total = Forces Strength (with spice dialing) + Leader Strength (if leader survives)
+- If opponent's leader is killed by weapon: Their leader strength is REMOVED from their total
+- In Advanced Rules: Unspiced forces count at 0.5x strength, spiced forces count at 1x strength
 - Higher total wins (aggressor wins ties)
 - Winner loses only forces dialed
 - Loser loses ALL forces in territory
 
+Strategic Priority:
+1. If you have a weapon card, STRONGLY consider using it - killing opponent's leader is a huge advantage
+2. Weapons are often more valuable than defense - offense wins battles
+3. Don't "save" weapons for later - use them to win important battles now
+
 Special:
 - Lasgun + Shield = Both sides destroyed
 - Cheap Hero: Can be used instead of a leader (0 strength)
-- Kwisatz Haderach (Atreides): +2 to leader strength`,
+- Kwisatz Haderach (Atreides): +2 to leader strength
+- Fremen (BATTLE HARDENED): Forces always count at full strength without spice`,
       inputSchema: BattlePlanSchema,
       execute: async (params: z.infer<typeof BattlePlanSchema>, _options) => {
         const {

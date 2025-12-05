@@ -8,6 +8,8 @@ import GameSidebar from "./components/GameSidebar";
 import { useGameMap } from "./hooks/useGameMap";
 import { usePhaseVisualizations } from "./hooks/usePhaseVisualizations";
 import { handleEventToast } from "./utils/toastHandlers";
+import { GameLifecycleEvent } from "@/lib/game/stream/types";
+import type { StreamEvent } from "@/lib/game/stream/types";
 
 // =============================================================================
 // COMPONENT
@@ -56,9 +58,6 @@ export default function GameView() {
   const {
     currentPhase: phaseFromEvents,
     currentTurn: turnFromEvents,
-    stormAffectedTerritories,
-    spiceBlowTerritories,
-    recentShipments,
   } = usePhaseVisualizations(events);
 
   // Use map data as source of truth, fallback to event-based values
@@ -113,14 +112,17 @@ export default function GameView() {
       }
 
       // Show success message
-      handleEventToast({
-        id: `resume-${Date.now()}`,
-        type: 'info',
-        seq: 0,
-        timestamp: Date.now(),
-        data: { message: 'Game resumed successfully' },
-        message: 'Game resumed successfully',
-      } as any);
+      if (gameId) {
+        const resumeEvent: StreamEvent<{ message: string }> = {
+          id: `resume-${Date.now()}`,
+          type: GameLifecycleEvent.GAME_RESUMED,
+          gameId,
+          seq: 0,
+          timestamp: Date.now(),
+          data: { message: 'Game resumed successfully' },
+        };
+        handleEventToast(resumeEvent);
+      }
 
       // Reload the page after a short delay to refresh state
       setTimeout(() => {

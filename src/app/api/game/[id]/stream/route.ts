@@ -75,18 +75,6 @@ export async function GET(
     async start(controller) {
       const encoder = new TextEncoder();
 
-      /**
-       * Check if controller is still open
-       */
-      const isControllerOpen = (): boolean => {
-        try {
-          // Try to check controller state - if it's closed, accessing it will throw
-          // We can't directly check state, but we can catch errors when enqueueing
-          return isActive;
-        } catch {
-          return false;
-        }
-      };
 
       /**
        * Send data to the client (with error handling)

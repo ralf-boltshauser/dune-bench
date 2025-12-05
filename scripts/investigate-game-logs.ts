@@ -606,6 +606,103 @@ function showFilteredEvents(
         if (phaseEvent) {
           console.log(`  📋 Event Type: ${phaseEvent.type}`);
           console.log(`  💬 Message: ${phaseEvent.message || "N/A"}`);
+          
+          // Show hand contents when battle plans are submitted
+          if (phaseEvent.type === "BATTLE_PLAN_SUBMITTED" && previousState) {
+            const battleData = phaseEvent.data;
+            if (battleData && (battleData.aggressor || battleData.faction)) {
+              const factions = previousState.factions?.entries || [];
+              
+              // Get factions involved in battle
+              const aggressor = battleData.aggressor || (battleData.faction === battleData.aggressor ? battleData.faction : null);
+              const defender = battleData.defender || (battleData.faction === battleData.defender ? battleData.faction : null);
+              
+              // Show hand for the faction that just submitted (if single faction)
+              if (battleData.faction && !battleData.aggressorPlan && !battleData.defenderPlan) {
+                const factionId = battleData.faction;
+                const factionState = factions.find(([f]: any[]) => f === factionId)?.[1];
+                if (factionState) {
+                  const hand = (factionState as any).hand || [];
+                  if (hand.length > 0) {
+                    console.log(`  🃏 ${factionId.toUpperCase()} Hand (${hand.length} cards):`);
+                    for (const card of hand) {
+                      const cardId = card.definitionId || card.id || "unknown";
+                      const cardType = card.type || "unknown";
+                      console.log(`    - ${cardId} (${cardType})`);
+                    }
+                  } else {
+                    console.log(`  🃏 ${factionId.toUpperCase()} Hand: EMPTY`);
+                  }
+                }
+              }
+              
+              // Show hands when battle plans are revealed (both factions)
+              if (battleData.aggressorPlan && battleData.defenderPlan) {
+                console.log(`  🃏 Faction Hands at Battle Plan Submission:`);
+                
+                if (aggressor) {
+                  const aggressorState = factions.find(([f]: any[]) => f === aggressor)?.[1];
+                  if (aggressorState) {
+                    const hand = (aggressorState as any).hand || [];
+                    if (hand.length > 0) {
+                      console.log(`    ${aggressor.toUpperCase()} (${hand.length} cards):`);
+                      for (const card of hand) {
+                        const cardId = card.definitionId || card.id || "unknown";
+                        const cardType = card.type || "unknown";
+                        console.log(`      - ${cardId} (${cardType})`);
+                      }
+                    } else {
+                      console.log(`    ${aggressor.toUpperCase()}: EMPTY`);
+                    }
+                  }
+                }
+                
+                if (defender) {
+                  const defenderState = factions.find(([f]: any[]) => f === defender)?.[1];
+                  if (defenderState) {
+                    const hand = (defenderState as any).hand || [];
+                    if (hand.length > 0) {
+                      console.log(`    ${defender.toUpperCase()} (${hand.length} cards):`);
+                      for (const card of hand) {
+                        const cardId = card.definitionId || card.id || "unknown";
+                        const cardType = card.type || "unknown";
+                        console.log(`      - ${cardId} (${cardType})`);
+                      }
+                    } else {
+                      console.log(`    ${defender.toUpperCase()}: EMPTY`);
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          // Show hand contents when battle starts
+          if (phaseEvent.type === "BATTLE_STARTED" && previousState) {
+            const battleData = phaseEvent.data;
+            if (battleData && battleData.aggressor && battleData.defender) {
+              const factions = previousState.factions?.entries || [];
+              console.log(`  🃏 Faction Hands at Battle Start:`);
+              
+              for (const factionId of [battleData.aggressor, battleData.defender]) {
+                const factionState = factions.find(([f]: any[]) => f === factionId)?.[1];
+                if (factionState) {
+                  const hand = (factionState as any).hand || [];
+                  if (hand.length > 0) {
+                    console.log(`    ${factionId.toUpperCase()} (${hand.length} cards):`);
+                    for (const card of hand) {
+                      const cardId = card.definitionId || card.id || "unknown";
+                      const cardType = card.type || "unknown";
+                      console.log(`      - ${cardId} (${cardType})`);
+                    }
+                  } else {
+                    console.log(`    ${factionId.toUpperCase()}: EMPTY`);
+                  }
+                }
+              }
+            }
+          }
+          
           if (phaseEvent.data) {
             const dataStr = JSON.stringify(phaseEvent.data, null, 2);
             console.log(

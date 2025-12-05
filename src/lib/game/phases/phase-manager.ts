@@ -363,6 +363,36 @@ export class PhaseManager {
       // Get agent responses if needed
       let responses: AgentResponse[] = [];
       if (result.pendingRequests.length > 0) {
+        // ARCHITECTURAL SAFEGUARD: Detect duplicate pending requests to prevent infinite loops
+        // This catches bugs where the same request is created multiple times
+        const requestKey = (req: AgentRequest) => `${req.factionId}:${req.requestType}:${JSON.stringify(req.context?.cardIndex ?? req.context?.cardInfo?.id ?? '')}`;
+        const requestKeys = new Set<string>();
+        const duplicates: AgentRequest[] = [];
+        
+        for (const req of result.pendingRequests) {
+          const key = requestKey(req);
+          if (requestKeys.has(key)) {
+            duplicates.push(req);
+          } else {
+            requestKeys.add(key);
+          }
+        }
+        
+        if (duplicates.length > 0) {
+          console.error(
+            `\n⚠️  ARCHITECTURAL VALIDATION: Duplicate pending requests detected at step ${stepCount}:`
+          );
+          duplicates.forEach((req) => {
+            console.error(
+              `  - Duplicate: ${req.factionId} ${req.requestType} (cardIndex: ${req.context?.cardIndex ?? 'N/A'})`
+            );
+          });
+          throw new Error(
+            `Duplicate pending requests detected. This indicates a bug in request creation logic. ` +
+            `Check that request creation functions are idempotent. Duplicates: ${duplicates.length}`
+          );
+        }
+
         // State manager already has latest state synced, so tools will have current state
 
         // Set ornithopter access override if specified in request context

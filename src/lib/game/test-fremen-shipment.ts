@@ -55,18 +55,18 @@ console.log('\n=== Test Specific Territories ===');
 
 // Test the territories mentioned in the bug report
 const testCases = [
-  'sietch_tabr',
-  'the_great_flat',
-  'funeral_plain',
-  'the_greater_flat',
-  'habbanya_erg',
-  'false_wall_west',
+  TerritoryId.SIETCH_TABR,
+  TerritoryId.THE_GREAT_FLAT,
+  TerritoryId.FUNERAL_PLAIN,
+  TerritoryId.THE_GREATER_FLAT,
+  TerritoryId.HABBANYA_ERG,
+  TerritoryId.FALSE_WALL_WEST,
 ];
 
 console.log('\nTesting specific territories:');
 for (const testId of testCases) {
-  const isValid = validDestinations.has(testId as TerritoryId);
-  const territory = TERRITORY_DEFINITIONS[testId as TerritoryId];
+  const isValid = validDestinations.has(testId);
+  const territory = TERRITORY_DEFINITIONS[testId];
   console.log(`  ${isValid ? '✅' : '❌'} ${testId} (${territory?.name})`);
 }
 

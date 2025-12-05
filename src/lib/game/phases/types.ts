@@ -339,7 +339,8 @@ export interface BiddingPhaseContext {
   highBidder: Faction | null;
   passedFactions: Set<Faction>;
   startingBidder: Faction;
-  atreidesHasPeeked: boolean;
+  /** Set of card indices that Atreides has already peeked at (prevents duplicate peek requests) */
+  atreidesPeekedCards: Set<number>;
   cardsToReturnToDeck?: string[]; // Cards that no one bid on (rule 1.04.06)
 }
 

@@ -76,6 +76,15 @@ function testDataIntegrity(): void {
   }
 }
 
+/**
+ * @rule-test 0.10
+ * Tests that each faction receives their correct starting spice amount
+ * as specified by their faction ability 2.XX.01 (stored in config.startingSpice).
+ * 
+ * @rule-test 0.12
+ * Tests that each player draws their starting treachery card(s) from the Treachery Deck
+ * during game setup, as specified by config.startingTreacheryCards.
+ */
 function testGameCreation(): void {
   section('Game Creation');
 
@@ -122,6 +131,11 @@ function testGameCreation(): void {
   }
 }
 
+/**
+ * @rule-test 0.11
+ * Tests that starting forces are placed on the board and in reserves correctly
+ * as specified by each faction's ability 2.XX.02 (stored in config.startingForces).
+ */
 function testForceManagement(): void {
   section('Force Management');
 

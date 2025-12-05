@@ -1,143 +1,165 @@
 # Battle Phase Test Suite
 
-Comprehensive test suite for the battle phase with all 6 factions and various scenarios.
-
-## Philosophy: Manual Validation via Log Files
-
-**The goal of these tests is NOT automated assertions.** Instead, tests write detailed log files containing:
-- All agent requests and responses
-- All phase events
-- State snapshots at key points
-- Tool calls and their data
-- Thoughts and decision points
-
-You then **manually review these log files** to validate that:
-- Rules are being followed correctly
-- State changes are correct
-- Events are firing in the right order
-- Agent interactions are working as expected
-- Edge cases are handled properly
-
-This approach is better for complex game logic where automated assertions might miss nuanced issues or where you need to understand the full flow of execution.
+Comprehensive test suite for the refactored battle phase handler.
 
 ## Structure
 
 ```
-phase-tests/battle/
-├── README.md                    # This file
-├── QUICK_START.md              # Quick reference guide
-├── test-battle-phase.ts         # Main test runner
-├── helpers/
-│   ├── test-state-builder.ts   # Helper for creating test states
-│   ├── agent-response-builder.ts # Helper for mocking agent responses
-│   └── test-logger.ts          # Writes detailed log files
-├── scenarios/
-│   ├── stronghold-battle.ts     # Atreides vs Bene Gesserit in stronghold
-│   ├── multi-faction-battle.ts # Fremen vs Harkonnen vs Emperor in sand
-│   └── base-scenario.ts        # Base scenario utilities
-└── assertions/
-    └── battle-assertions.ts    # Optional assertion helpers (not primary goal)
+battle/
+├── fixtures/              # Reusable test data and configurations
+│   ├── test-data.ts       # Shared constants (leaders, cards, territories)
+│   ├── battle-scenarios.ts # Common battle setups
+│   ├── faction-setups.ts  # Faction-specific configurations
+│   └── storm-patterns.ts  # Storm pattern configurations
+│
+├── builders/              # Composable state builders
+│   └── battle-state-builder.ts  # Battle-specific state builder
+│
+├── assertions/            # Assertion library
+│   ├── battle-assertions.ts    # Core assertions (existing)
+│   ├── state-assertions.ts     # State validation assertions
+│   └── event-assertions.ts     # Event-specific assertions
+│
+├── helpers/               # Test utilities (existing)
+│   ├── test-state-builder.ts   # Base state builder
+│   ├── agent-response-builder.ts # Response mocking
+│   └── decision-agent-provider.ts # Agent provider
+│
+├── scenarios/             # Scenario runners (existing)
+│   └── base-scenario.ts   # Base scenario runner
+│
+└── suites/                # Organized test suites
+    ├── 01-identification/     # Battle identification tests
+    ├── 02-sub-phases/         # Sub-phase execution tests
+    ├── 03-battle-plans/       # Battle plan validation tests
+    ├── 04-resolution/         # Battle resolution tests
+    ├── 05-events/             # Event emission tests
+    └── 06-agent-handling/      # Agent request/response tests
 ```
 
-## Test Scenarios
+## Usage
 
-### 1. Stronghold Battle (Atreides vs Bene Gesserit)
-- **Location**: Stronghold territory
-- **Factions**: Atreides (aggressor) vs Bene Gesserit (defender)
-- **What to check in logs**: 
-  - Prescience ability usage and reveals
-  - Voice ability commands
-  - Stronghold battle mechanics
-  - Battle plan submission
-  - Winner determination
-  - Card discard choices
-
-### 2. Multi-Faction Battle (Fremen vs Harkonnen vs Emperor)
-- **Location**: Sand territory
-- **Factions**: Fremen (with elite Fedaykin) vs Harkonnen vs Emperor
-- **What to check in logs**:
-  - Elite forces (Fedaykin) handling
-  - Battle Hardened ability (Fremen no spice needed)
-  - Leader capture (Harkonnen)
-  - Multiple battles in same territory
-  - Aggressor choosing which battle to fight
-  - Sequential battle processing
-
-## Running Tests
+### Running Tests
 
 ```bash
-# Run all battle phase tests
-pnpm test:battle
+# Run all battle tests
+npm test -- battle
 
-# Run specific scenario
-pnpm test:battle:stronghold
-pnpm test:battle:multi
+# Run specific suite
+npm test -- battle/suites/01-identification
+
+# Run specific test file
+npm test -- battle/suites/01-identification/test-basic-detection
 ```
 
-## Log Files
+### Writing New Tests
 
-After running tests, detailed log files are written to:
+#### 1. Use Fixtures for Test Data
+
+```typescript
+import { BattleScenarios } from '../fixtures/battle-scenarios';
+
+const scenario = BattleScenarios.twoFaction.basic(
+  Faction.ATREIDES,
+  Faction.HARKONNEN
+);
 ```
-test-logs/battle/
-├── stronghold-battle-YYYY-MM-DDTHH-MM-SS.log
-└── multi-faction-battle-YYYY-MM-DDTHH-MM-SS.log
+
+#### 2. Use Builders for State Creation
+
+```typescript
+import { BattleStateBuilder } from '../builders/battle-state-builder';
+
+const state = new BattleStateBuilder()
+  .twoFactionBattle(Faction.ATREIDES, Faction.HARKONNEN)
+  .withDefaultSpice()
+  .withAlliance(Faction.ATREIDES, Faction.BENE_GESSERIT)
+  .build();
 ```
 
-Each log file contains:
-- **Step-by-step execution**: Every step with sub-phase information
-- **Agent Requests**: What each faction was asked to do
-- **Agent Responses**: What each faction responded with
-- **Events**: All phase events with full data
-- **State Snapshots**: Complete game state at key points
-- **Final Summary**: Overview of what happened
+#### 3. Use Assertions Library
 
-## Reviewing Log Files
+```typescript
+import {
+  assertEventOccurred,
+  assertForcesCount,
+  assertFactionSpice,
+} from '../assertions';
 
-When reviewing a log file, check:
+const assertions = [
+  assertEventOccurred('BATTLE_RESOLVED'),
+  assertForcesCount(Faction.ATREIDES, TerritoryId.ARRAKEEN, 5, 0),
+  assertFactionSpice(Faction.ATREIDES, 25),
+];
+```
 
-1. **Battle Identification**: Are battles correctly identified?
-2. **Agent Requests**: Are requests formatted correctly with proper context?
-3. **Agent Responses**: Do responses match the requests?
-4. **State Changes**: Are state mutations correct after each step?
-5. **Event Ordering**: Do events fire in the correct sequence?
-6. **Rule Compliance**: Are game rules being followed?
-7. **Edge Cases**: Are special cases handled correctly?
+## Test Categories
+
+### Suite 01: Battle Identification
+- Basic battle detection
+- Storm separation
+- Stronghold occupancy
+- Multiple battles
+- Universal Stewards rule
+
+### Suite 02: Sub-Phase Execution
+- Sub-phase sequence
+- Voice sub-phase
+- Prescience sub-phase
+- Battle plans sub-phase
+- Reveal sub-phase
+- Traitor call sub-phase
+- Resolution sub-phase
+
+### Suite 03: Battle Plans Validation
+- Forces dialed validation
+- Leader/Cheap Hero validation
+- Treachery cards validation
+- Spice dialing
+- Prescience commitment
+- Voice command
+
+### Suite 04: Battle Resolution
+- Basic resolution
+- Weapon/defense interactions
+- Elite forces
+- Traitor resolution
+- Lasgun-shield explosion
+- Kwisatz Haderach
+
+### Suite 05: Event Emission
+- Phase start events
+- Battle flow events
+- Post-resolution events
+- Phase end events
+
+### Suite 06: Agent Handling
+- Battle choice requests
+- Voice requests
+- Prescience requests
+- Battle plans requests
+- Traitor call requests
+- Response validation
+
+## Best Practices
+
+1. **Use Fixtures**: Don't duplicate test data
+2. **Compose Builders**: Chain builder methods for complex states
+3. **Reuse Assertions**: Use assertion library, don't write custom checks
+4. **Organize by Category**: Put tests in appropriate suite
+5. **Document Test Intent**: Clear test names and comments
 
 ## Adding New Tests
 
-1. Create a new scenario file in `scenarios/`
-2. Use `TestStateBuilder` to set up the state
-3. Use `AgentResponseBuilder` to mock responses
-4. Call `runBattleScenario()` with a descriptive name
-5. Run the test and review the generated log file
-6. Manually validate correctness by reading the log
+1. Identify the appropriate suite
+2. Create or update test file in that suite
+3. Use fixtures and builders
+4. Use assertion library
+5. Import test file in suite's `index.ts`
 
-Example:
-```typescript
-export async function testMyScenario() {
-  const state = buildTestState({
-    factions: [Faction.ATREIDES, Faction.HARKONNEN],
-    // ... configuration
-  });
+## Test Coverage Goals
 
-  const responses = new AgentResponseBuilder();
-  responses.queueBattlePlan(Faction.ATREIDES, { /* ... */ });
-
-  // This will write a log file automatically
-  return await runBattleScenario(
-    state,
-    responses,
-    'My Test Scenario' // Used for log file name
-  );
-}
-```
-
-## What Gets Logged
-
-- **Agent Requests**: Full request with prompt, context, available actions
-- **Agent Responses**: Action type, data, and whether they passed
-- **Phase Events**: All events with type, message, and data
-- **State Snapshots**: Complete faction states, forces, leaders, spice, etc.
-- **Step Information**: Sub-phase, pending requests, responses queue
-- **Errors**: Any errors with stack traces and context
-
+- ✅ Core functionality: 100%
+- ✅ Edge cases: 95%+
+- ✅ Module-specific: 100%
+- ✅ Negative tests: 90%+

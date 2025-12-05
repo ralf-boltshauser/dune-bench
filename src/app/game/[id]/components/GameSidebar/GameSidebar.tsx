@@ -177,7 +177,7 @@ export default function GameSidebar({
       `}
     >
       {/* Header with collapse button */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white flex-shrink-0">
+      <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white shrink-0">
         {!isCollapsed && (
           <h2 className="text-lg font-semibold text-slate-800 tracking-tight">
             Game Information
@@ -213,7 +213,7 @@ export default function GameSidebar({
 
       {/* Tabs */}
       {!isCollapsed && (
-        <div className="flex border-b border-slate-200 bg-slate-50/50 flex-shrink-0">
+        <div className="flex border-b border-slate-200 bg-slate-50/50 shrink-0">
           <Button
             onClick={() => {
               setActiveTab('phase');

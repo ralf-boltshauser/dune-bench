@@ -125,8 +125,9 @@ export function validateBid(
     return invalidResult(errors, context);
   }
 
+  // @rule 1.04.06.02
   // Check: Bid is positive
-  // Rule 1.04.06.01: "The player who bids first must bid 1 spice or more otherwise they must pass."
+  // Rule 1.04.06.02: "The player who bids first must bid 1 spice or more otherwise they must pass."
   // NOTE: We intentionally *do not* allow Karama to create a "0 bid". Karama can still
   // waive payment (handled in resolveAuction) but the bid itself must be a legal Dune bid.
   if (bidAmount < 1) {
@@ -172,8 +173,9 @@ export function validateBid(
     );
   }
 
+  // @rule 1.04.06.04
   // Check: Sufficient spice (without Karama)
-  // Rule 1.04.06.03: "Players may not bid more spice than they have."
+  // Rule 1.04.06.04: "Players may not bid more spice than they have."
   // Exception: Karama card allows bidding over spice limit (Rule 3.01.11)
   if (bidAmount > factionState.spice && !karamaBiddingActive) {
     errors.push(
@@ -259,6 +261,7 @@ function generateBidSuggestions(
 /**
  * Validate ally paying for part of a bid.
  * Allies can help each other by paying some or all of the cost.
+ * @rule 1.10.02.05
  */
 export function validateAllyBidSupport(
   state: GameState,

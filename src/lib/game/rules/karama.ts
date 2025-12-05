@@ -41,6 +41,7 @@ export function canUseKarama(
     // Actual Karama card always works
     if (isActualKaramaCard(def)) return true;
 
+    // @rule 1.14.06, 2.02.22
     // BG can use worthless as Karama
     if (faction === Faction.BENE_GESSERIT && def.type === TreacheryCardType.WORTHLESS) {
       return true;
@@ -57,7 +58,7 @@ export function canUseKarama(
     // Check for actual Karama
     if (isActualKaramaCard(def)) return true;
 
-    // BG special: worthless cards work as Karama
+    // @rule 2.02.22 BG special: worthless cards work as Karama
     if (faction === Faction.BENE_GESSERIT && def.type === TreacheryCardType.WORTHLESS) {
       return true;
     }
@@ -88,7 +89,7 @@ export function getKaramaCards(state: GameState, faction: Faction): string[] {
     if (isActualKaramaCard(def)) {
       cards.push(card.definitionId);
     }
-    // BG can use worthless as Karama
+    // @rule 2.02.22 BG can use worthless as Karama
     else if (faction === Faction.BENE_GESSERIT && def.type === TreacheryCardType.WORTHLESS) {
       cards.push(card.definitionId);
     }
@@ -111,7 +112,7 @@ export function isKaramaCardForFaction(cardId: string, faction: Faction): boolea
   // Actual Karama works for everyone
   if (isActualKaramaCard(def)) return true;
 
-  // BG special: worthless cards work as Karama
+  // @rule 2.02.22 BG special: worthless cards work as Karama
   if (faction === Faction.BENE_GESSERIT && def.type === TreacheryCardType.WORTHLESS) {
     return true;
   }

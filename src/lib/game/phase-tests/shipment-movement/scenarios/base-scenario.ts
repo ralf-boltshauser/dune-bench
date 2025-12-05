@@ -6,15 +6,17 @@
 
 import { ShipmentMovementPhaseHandler } from '../../../phases/handlers/shipment-movement';
 import '../../../agent/env-loader';
-import { createAgentProvider } from '../../../agent/azure-provider';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
+import { MockAgentProvider } from '../helpers/mock-agent-provider';
 import { TestLogger } from '../../helpers/test-logger';
 import type { GameState } from '../../../types';
 import type { AgentResponse } from '../../../phases/types';
 
+import type { PhaseEvent } from '../../../phases/types';
+
 export interface ScenarioResult {
   state: GameState;
-  events: Array<{ type: string; message: string }>;
+  events: PhaseEvent[];
   stepCount: number;
   completed: boolean;
   error?: Error;
@@ -30,16 +32,17 @@ export async function runPhaseScenario(
   maxSteps: number = 200
 ): Promise<ScenarioResult> {
   const handler = new ShipmentMovementPhaseHandler();
-  const provider = createAgentProvider(state, { verbose: false });
+  const provider = new MockAgentProvider(state, responseBuilder);
   const logger = new TestLogger(scenarioName, 'shipment-movement');
   
   // Log initial state
   logger.logState(0, 'Initial State', state);
   logger.logInfo(0, `Starting scenario: ${scenarioName}`);
   
-  // Note: Using Azure OpenAI agent - responses are generated dynamically
+  // Log queued responses
   const responses = responseBuilder.getResponses();
-  logger.logInfo(0, `Note: ${Array.from(responses.values()).flat().length} expected responses (using Azure OpenAI)`);
+  const totalResponses = Array.from(responses.values()).flat().length;
+  logger.logInfo(0, `Using ${totalResponses} mocked responses from AgentResponseBuilder`);
 
   // Initialize phase
   const initResult = handler.initialize(state);
@@ -53,7 +56,7 @@ export async function runPhaseScenario(
     });
   });
   
-  const events: Array<{ type: string; message: string }> = [];
+  const events: PhaseEvent[] = [];
   let currentState = initResult.state;
   let responsesQueue: AgentResponse[] = [];
   let stepCount = 0;
@@ -77,11 +80,26 @@ export async function runPhaseScenario(
         });
       });
       
-      // Get responses from provider
+      // Get responses from mock provider (uses pre-queued responses)
       responsesQueue = await provider.getResponses(
         pendingRequests,
         initResult.simultaneousRequests || false
       );
+      
+      // Debug: Log responses for Guild shipments
+      const guildResponses = responsesQueue.filter(r => r.factionId === 'spacing_guild' || r.factionId === 'SPACING_GUILD');
+      if (guildResponses.length > 0) {
+        console.log(`   🔍 DEBUG: base-scenario - Got ${guildResponses.length} Guild responses with actionTypes: ${guildResponses.map(r => r.actionType).join(', ')}`);
+      }
+      
+      // Update provider state for next iteration
+      provider.updateState(currentState);
+    }
+    
+    // Debug: Log responses before processStep for Guild shipments
+    const guildResponsesBefore = responsesQueue.filter(r => r.factionId === 'spacing_guild' || r.factionId === 'SPACING_GUILD');
+    if (guildResponsesBefore.length > 0) {
+      console.log(`   🔍 DEBUG: base-scenario - Before processStep, responsesQueue has ${guildResponsesBefore.length} Guild responses with actionTypes: ${guildResponsesBefore.map(r => r.actionType).join(', ')}`);
     }
     
     const stepResult = handler.processStep(currentState, responsesQueue);
@@ -101,10 +119,7 @@ export async function runPhaseScenario(
 
     // Log events
     stepResult.events.forEach(event => {
-      events.push({
-        type: event.type,
-        message: event.message,
-      });
+      events.push(event); // Push full PhaseEvent, not just type/message
       logger.logEvent(stepCount, {
         type: event.type,
         message: event.message,
@@ -184,7 +199,7 @@ export function logScenarioResults(
       event.type.includes('ALLIANCE') ||
       event.type.includes('HAJR')
     ) {
-      console.log(`  ${i + 1}. [${event.type}] ${event.message}`);
+      console.log(`  ${i + 1}. [${event.type}] ${event.message || ''}`);
     }
   });
   

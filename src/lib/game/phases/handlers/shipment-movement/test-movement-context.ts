@@ -5,9 +5,9 @@
  * Run with: tsx src/lib/game/phases/handlers/shipment-movement/test-movement-context.ts
  */
 
-import { Faction, TerritoryId } from '../../../types';
-import { createGameState, shipForces, addSpiceToTerritory } from '../../../state';
-import { buildMovementContext } from './movement-context';
+import { Faction, TerritoryId } from '@/lib/game/types';
+import { createGameState, shipForces, addSpiceToTerritory } from '@/lib/game/state';
+import { buildMovementContext } from './builders/movement-context';
 
 function assert(condition: boolean, message: string): void {
   if (!condition) {

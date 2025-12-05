@@ -16,7 +16,7 @@ import {
   getForceCountInTerritory,
   hasCheapHero,
 } from "../../../state";
-import { getBGFightersInSector } from "../../../state/queries";
+import { getBattleCapableForces } from "./utils";
 
 /**
  * Create a default battle plan (used when a player fails to submit a valid plan).
@@ -43,18 +43,10 @@ export function createDefaultBattlePlan(
   if (state && territoryId !== undefined) {
     const factionState = getFactionState(state, faction);
     
-    // IMPORTANT: For Bene Gesserit, use getBGFightersInSector to exclude advisors when sector is provided
-    // Advisors are non-combatants and shouldn't be counted as available forces
+    // Get battle-capable forces (for BG, excludes advisors; for others, includes all forces)
     const forcesInTerritory =
-      sector !== undefined && faction === Faction.BENE_GESSERIT
-        ? getBGFightersInSector(state, territoryId, sector)
-        : sector !== undefined
-        ? (() => {
-            const forces = factionState.forces.onBoard.find(
-              (f) => f.territoryId === territoryId && f.sector === sector
-            );
-            return forces ? forces.forces.regular + forces.forces.elite : 0;
-          })()
+      sector !== undefined
+        ? getBattleCapableForces(state, faction, territoryId, sector)
         : getForceCountInTerritory(state, faction, territoryId);
 
     // Dial at least 1 force if available, or all forces if only 1-2 available

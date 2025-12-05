@@ -71,6 +71,7 @@ Use this to plan your strategy and understand your resources.`,
 
     /**
      * View another faction's public information.
+     * @rule 1.10.01.03
      */
     view_faction: tool({
       description: `View public information about another faction:

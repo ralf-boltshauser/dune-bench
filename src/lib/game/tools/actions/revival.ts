@@ -326,6 +326,7 @@ REAWAKEN: When killed, the Kwisatz Haderach must be revived like any other leade
     }),
 
     /**
+     * @rule 2.03.07
      * Emperor pays spice for ally's extra revival beyond their normal limit.
      */
     emperor_pay_ally_revival: tool({
@@ -581,6 +582,7 @@ Your ally will use their normal free revival count instead.`,
 
     /**
      * Use Tleilaxu Ghola card for extra revival.
+     * @rule 3.01.20
      */
     use_tleilaxu_ghola: tool({
       description: `Play Tleilaxu Ghola card for an extra revival.

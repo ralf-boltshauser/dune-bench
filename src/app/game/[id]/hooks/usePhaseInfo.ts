@@ -88,12 +88,76 @@ export interface ShipmentMovementInfo {
   factionActions: FactionActions[]; // Actions grouped by faction, in order they occurred
 }
 
+// ---------------------------------------------------------------------------
+// BATTLE PHASE
+// ---------------------------------------------------------------------------
+
+export type BattleTimelineEventType =
+  | "started"
+  | "prescience"
+  | "voice"
+  | "plan_submitted"
+  | "traitor"
+  | "resolved";
+
+export interface BattleTimelineEvent {
+  type: BattleTimelineEventType;
+  timestamp: number;
+  description: string;
+  data?: Record<string, unknown>;
+}
+
+export interface BattleSideInfo {
+  faction: Faction;
+  isAggressor: boolean;
+  planSubmitted: boolean;
+  planInvalid: boolean;
+  planUsedDefault: boolean;
+  // Full plan details (when available from reveal event)
+  plan?: {
+    leaderId: string | null;
+    cheapHeroUsed: boolean;
+    forcesDialed: number;
+    weaponCardId: string | null;
+    defenseCardId: string | null;
+    spiceDialed: number;
+    kwisatzHaderachUsed: boolean;
+    announcedNoLeader: boolean;
+  };
+}
+
+export interface BattleInfo {
+  key: string;
+  territoryId?: string;
+  sector?: number;
+  aggressor?: Faction;
+  defender?: Faction;
+  prescienceUsed: boolean;
+  prescienceTarget?: "leader" | "weapon" | "defense" | "number";
+  prescienceResult?: string;
+  voiceUsed: boolean;
+  voiceCommand?: Record<string, unknown> | null;
+  winner?: Faction;
+  loser?: Faction;
+  traitorCalled: boolean;
+  traitorCallerId?: Faction;
+  sides: BattleSideInfo[];
+  timeline: BattleTimelineEvent[];
+}
+
+export interface BattlePhaseInfo {
+  totalBattles?: number;
+  noBattles: boolean;
+  battles: BattleInfo[];
+}
+
 export interface PhaseInfo {
   stormInfo: StormInfo | null;
   spiceBlowInfo: SpiceBlowInfo | null;
   choamCharityInfo: ChoamCharityInfo | null;
   biddingInfo: BiddingInfo | null;
   shipmentMovementInfo: ShipmentMovementInfo | null;
+  battleInfo: BattlePhaseInfo | null;
 }
 
 // =============================================================================
@@ -116,6 +180,7 @@ export function usePhaseInfo(
     let choamCharityInfo: ChoamCharityInfo | null = null;
     let biddingInfo: BiddingInfo | null = null;
     let shipmentMovementInfo: ShipmentMovementInfo | null = null;
+    let battleInfo: BattlePhaseInfo | null = null;
 
     // Temporary state for accumulating data
     const stormDialResults = new Map<Faction, number>();
@@ -129,6 +194,57 @@ export function usePhaseInfo(
     
     // Shipment/Movement tracking
     const factionActionsMap = new Map<Faction, FactionActions>();
+
+    // Battle tracking
+    const battleMap = new Map<string, BattleInfo>();
+    let battlePhaseTotalBattles: number | undefined;
+    let battlePhaseHasBattles = false;
+    let battlePhaseHasNoBattles = false;
+    let currentBattleKey: string | null = null;
+
+    const getOrCreateBattle = (key: string): BattleInfo => {
+      const existing = battleMap.get(key);
+      if (existing) return existing;
+
+      const info: BattleInfo = {
+        key,
+        territoryId: undefined,
+        sector: undefined,
+        aggressor: undefined,
+        defender: undefined,
+        prescienceUsed: false,
+        prescienceTarget: undefined,
+        prescienceResult: undefined,
+        voiceUsed: false,
+        voiceCommand: null,
+        winner: undefined,
+        loser: undefined,
+        traitorCalled: false,
+        traitorCallerId: undefined,
+        sides: [],
+        timeline: [],
+      };
+      battleMap.set(key, info);
+      return info;
+    };
+
+    const ensureBattleSide = (battle: BattleInfo, faction: Faction, isAggressor: boolean): BattleSideInfo => {
+      let side = battle.sides.find((s) => s.faction === faction);
+      if (!side) {
+        side = {
+          faction,
+          isAggressor,
+          planSubmitted: false,
+          planInvalid: false,
+          planUsedDefault: false,
+        };
+        battle.sides.push(side);
+      } else if (isAggressor && !side.isAggressor) {
+        // Once we know a side is aggressor, keep that information
+        side.isAggressor = true;
+      }
+      return side;
+    };
 
     // Process events in chronological order
     for (const event of events) {
@@ -432,6 +548,246 @@ export function usePhaseInfo(
           count: data.count,
         });
       }
+
+      // =======================================================================
+      // BATTLE PHASE EVENTS
+      // =======================================================================
+      if (phaseEvent.type === 'BATTLE_STARTED') {
+        const data = phaseEvent.data as {
+          totalBattles?: number;
+          territory?: string;
+          sector?: number;
+          aggressor?: Faction;
+          defender?: Faction;
+        };
+
+        if (typeof data.totalBattles === 'number') {
+          battlePhaseTotalBattles = data.totalBattles;
+        }
+
+        if (data.territory && typeof data.sector === 'number') {
+          battlePhaseHasBattles = true;
+          const key = `${data.territory}:${data.sector}`;
+          currentBattleKey = key;
+          const battle = getOrCreateBattle(key);
+          battle.territoryId = data.territory;
+          battle.sector = data.sector;
+          if (data.aggressor) {
+            battle.aggressor = data.aggressor;
+            ensureBattleSide(battle, data.aggressor, true);
+          }
+          if (data.defender) {
+            battle.defender = data.defender;
+            ensureBattleSide(battle, data.defender, false);
+          }
+          battle.timeline.push({
+            type: "started",
+            timestamp: event.timestamp,
+            description: "Battle started",
+            data,
+          });
+        }
+      }
+
+      if (phaseEvent.type === 'PRESCIENCE_USED') {
+        const data = phaseEvent.data as {
+          target?: "leader" | "weapon" | "defense" | "number";
+          revealed?: string;
+          opponent?: Faction;
+          territory?: string;
+          sector?: number;
+        };
+
+        const key =
+          data.territory && typeof data.sector === 'number'
+            ? `${data.territory}:${data.sector}`
+            : currentBattleKey ?? "battle";
+        const battle = getOrCreateBattle(key);
+        battle.prescienceUsed = true;
+        if (data.target) battle.prescienceTarget = data.target;
+        if (typeof data.revealed === "string") {
+          battle.prescienceResult = data.revealed;
+        }
+        battle.timeline.push({
+          type: "prescience",
+          timestamp: event.timestamp,
+          description: "Atreides prescience used",
+          data,
+        });
+      }
+
+      if (phaseEvent.type === 'VOICE_USED') {
+        const data = phaseEvent.data as {
+          command?: Record<string, unknown>;
+          territory?: string;
+          sector?: number;
+        };
+
+        const key =
+          data.territory && typeof data.sector === 'number'
+            ? `${data.territory}:${data.sector}`
+            : currentBattleKey ?? "battle";
+        const battle = getOrCreateBattle(key);
+        battle.voiceUsed = true;
+        if (data.command) {
+          battle.voiceCommand = data.command;
+        }
+        battle.timeline.push({
+          type: "voice",
+          timestamp: event.timestamp,
+          description: "Bene Gesserit Voice used",
+          data,
+        });
+      }
+
+      if (phaseEvent.type === 'BATTLE_PLAN_SUBMITTED') {
+        const data = phaseEvent.data as {
+          faction?: Faction;
+          invalid?: boolean;
+          default?: boolean;
+          aggressor?: Faction;
+          defender?: Faction;
+          aggressorPlan?: {
+            leaderId?: string | null;
+            cheapHeroUsed?: boolean;
+            forcesDialed?: number;
+            weaponCardId?: string | null;
+            defenseCardId?: string | null;
+            spiceDialed?: number;
+            kwisatzHaderachUsed?: boolean;
+            announcedNoLeader?: boolean;
+          };
+          defenderPlan?: {
+            leaderId?: string | null;
+            cheapHeroUsed?: boolean;
+            forcesDialed?: number;
+            weaponCardId?: string | null;
+            defenseCardId?: string | null;
+            spiceDialed?: number;
+            kwisatzHaderachUsed?: boolean;
+            announcedNoLeader?: boolean;
+          };
+          territory?: string;
+          sector?: number;
+        };
+
+        const key =
+          data.territory && typeof data.sector === 'number'
+            ? `${data.territory}:${data.sector}`
+            : currentBattleKey ?? "battle";
+        const battle = getOrCreateBattle(key);
+
+        // If this is the reveal event, make sure aggressor/defender are set and capture full plans
+        if (data.aggressor && data.aggressorPlan) {
+          battle.aggressor = data.aggressor;
+          const aggressorSide = ensureBattleSide(battle, data.aggressor, true);
+          aggressorSide.planSubmitted = true;
+          aggressorSide.plan = {
+            leaderId: data.aggressorPlan.leaderId ?? null,
+            cheapHeroUsed: data.aggressorPlan.cheapHeroUsed ?? false,
+            forcesDialed: data.aggressorPlan.forcesDialed ?? 0,
+            weaponCardId: data.aggressorPlan.weaponCardId ?? null,
+            defenseCardId: data.aggressorPlan.defenseCardId ?? null,
+            spiceDialed: data.aggressorPlan.spiceDialed ?? 0,
+            kwisatzHaderachUsed: data.aggressorPlan.kwisatzHaderachUsed ?? false,
+            announcedNoLeader: data.aggressorPlan.announcedNoLeader ?? false,
+          };
+        }
+        if (data.defender && data.defenderPlan) {
+          battle.defender = data.defender;
+          const defenderSide = ensureBattleSide(battle, data.defender, false);
+          defenderSide.planSubmitted = true;
+          defenderSide.plan = {
+            leaderId: data.defenderPlan.leaderId ?? null,
+            cheapHeroUsed: data.defenderPlan.cheapHeroUsed ?? false,
+            forcesDialed: data.defenderPlan.forcesDialed ?? 0,
+            weaponCardId: data.defenderPlan.weaponCardId ?? null,
+            defenseCardId: data.defenderPlan.defenseCardId ?? null,
+            spiceDialed: data.defenderPlan.spiceDialed ?? 0,
+            kwisatzHaderachUsed: data.defenderPlan.kwisatzHaderachUsed ?? false,
+            announcedNoLeader: data.defenderPlan.announcedNoLeader ?? false,
+          };
+        }
+
+        // Handle individual faction submission (not the reveal event)
+        if (data.faction && !data.aggressorPlan && !data.defenderPlan) {
+          const isAggressor = battle.aggressor === data.faction;
+          const side = ensureBattleSide(battle, data.faction, !!isAggressor);
+          side.planSubmitted = true;
+          if (data.invalid) side.planInvalid = true;
+          if (data.default) side.planUsedDefault = true;
+
+          battle.timeline.push({
+            type: "plan_submitted",
+            timestamp: event.timestamp,
+            description: "Battle plan submitted",
+            data,
+          });
+        } else if (data.aggressorPlan || data.defenderPlan) {
+          // This is the reveal event
+          battle.timeline.push({
+            type: "plan_submitted",
+            timestamp: event.timestamp,
+            description: "Battle plans revealed",
+            data,
+          });
+        }
+      }
+
+      if (phaseEvent.type === 'TRAITOR_CALLED') {
+        const data = phaseEvent.data as {
+          caller?: Faction;
+          territory?: string;
+          sector?: number;
+        };
+
+        const key =
+          data.territory && typeof data.sector === 'number'
+            ? `${data.territory}:${data.sector}`
+            : currentBattleKey ?? "battle";
+        const battle = getOrCreateBattle(key);
+        battle.traitorCalled = true;
+        if (data.caller) {
+          battle.traitorCallerId = data.caller;
+        }
+        battle.timeline.push({
+          type: "traitor",
+          timestamp: event.timestamp,
+          description: "Traitor called",
+          data,
+        });
+      }
+
+      if (phaseEvent.type === 'BATTLE_RESOLVED') {
+        const data = phaseEvent.data as {
+          winner?: Faction;
+          loser?: Faction;
+          territory?: string;
+          sector?: number;
+        };
+
+        const key =
+          data.territory && typeof data.sector === 'number'
+            ? `${data.territory}:${data.sector}`
+            : currentBattleKey ?? "battle";
+        const battle = getOrCreateBattle(key);
+        if (data.winner) {
+          battle.winner = data.winner;
+        }
+        if (data.loser) {
+          battle.loser = data.loser;
+        }
+        battle.timeline.push({
+          type: "resolved",
+          timestamp: event.timestamp,
+          description: "Battle resolved",
+          data,
+        });
+      }
+
+      if (phaseEvent.type === 'NO_BATTLES') {
+        battlePhaseHasNoBattles = true;
+      }
     }
 
     // Finalize bidding info if we have any auctions or an active auction
@@ -468,6 +824,26 @@ export function usePhaseInfo(
       };
     }
 
+    // Finalize battle info
+    if (battleMap.size > 0 || battlePhaseHasBattles || battlePhaseHasNoBattles) {
+      const battles: BattleInfo[] = Array.from(battleMap.values()).map((battle) => {
+        // Sort timeline by timestamp to ensure chronological order
+        const sortedTimeline = [...battle.timeline].sort(
+          (a, b) => a.timestamp - b.timestamp
+        );
+        return {
+          ...battle,
+          timeline: sortedTimeline,
+        };
+      });
+
+      battleInfo = {
+        totalBattles: battlePhaseTotalBattles,
+        noBattles: battlePhaseHasNoBattles && !battlePhaseHasBattles && battles.length === 0,
+        battles,
+      };
+    }
+
     // Return null for phases that don't have data available
     return {
       stormInfo: currentPhase === Phase.STORM ? stormInfo : null,
@@ -475,6 +851,7 @@ export function usePhaseInfo(
       choamCharityInfo: currentPhase === Phase.CHOAM_CHARITY ? choamCharityInfo : null,
       biddingInfo: currentPhase === Phase.BIDDING ? biddingInfo : null,
       shipmentMovementInfo: currentPhase === Phase.SHIPMENT_MOVEMENT ? shipmentMovementInfo : null,
+      battleInfo: currentPhase === Phase.BATTLE ? battleInfo : null,
     };
   }, [events, currentPhase, stormOrder]);
 }

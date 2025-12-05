@@ -3,10 +3,8 @@
  *
  * Phase 1.05: Revival
  * - Factions may revive forces from the Tleilaxu Tanks
- * - Free revival limit: 2 per turn (3 for Fremen/Sardaukar)
- * - Additional revival costs 2 spice each
- * - Leaders can be revived (costs leader's strength in spice)
- * - Tleilaxu get money for all revival
+ * - Free revival limit and paid revival costs are determined by faction config
+ * - Leaders can be revived (cost = leader strength in spice)
  */
 
 import {
@@ -78,8 +76,8 @@ export class RevivalPhaseHandler implements PhaseHandler {
     }
     newState = { ...state, factions: newFactions };
 
-    // Rule 1.05: "There is no Storm Order in this Phase."
-    // Request revival decisions from all factions simultaneously
+    // @rule 1.05.00 / 1.05 - There is no Storm Order in this Phase; all players may revive simultaneously.
+    // Request revival decisions from all factions simultaneously.
     return this.requestRevivalDecisions(newState, events);
   }
 
@@ -212,6 +210,9 @@ export class RevivalPhaseHandler implements PhaseHandler {
   // ===========================================================================
   // PRIVATE METHODS
   // ===========================================================================
+  // @rule 2.01.15 ASCENSION: Alive or dead, the Kwisatz Haderach does not prevent
+  // the Atreides from reviving leaders. This rule is implemented by the absence of
+  // any blocking logic - leader revival proceeds normally regardless of KH state.
 
   private requestRevivalDecisions(
     state: GameState,
@@ -444,6 +445,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
       if (newActual > 0) {
         newState = reviveForces(newState, faction, newActual);
         if (newCost > 0) {
+          // @rule 1.05.01.04
           newState = removeSpice(newState, faction, newCost);
           // Note: In expansion, Tleilaxu would receive revival payments
         }
@@ -466,6 +468,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
     // Full revival (only if tool hasn't already applied it - checked above)
     newState = reviveForces(newState, faction, actualCount);
     if (cost > 0) {
+      // @rule 1.05.01.04
       newState = removeSpice(newState, faction, cost);
       // Note: In expansion, Tleilaxu would receive revival payments
     }
@@ -514,6 +517,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
       return { state, events: newEvents };
     }
 
+    // @rule 1.05.03.02
     const cost = leaderDef.strength;
 
     // Check if faction can afford
@@ -528,6 +532,7 @@ export class RevivalPhaseHandler implements PhaseHandler {
 
     // Revive the leader
     newState = reviveLeader(newState, faction, leaderId);
+    // @rule 1.05.03.03
     newState = removeSpice(newState, faction, cost);
     // Note: In expansion, Tleilaxu would receive revival payments
 

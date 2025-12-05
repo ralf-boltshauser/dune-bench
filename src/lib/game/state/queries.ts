@@ -59,6 +59,7 @@ export function getFactionHandSize(state: GameState, faction: Faction): number {
 
 /**
  * Get faction's maximum hand size.
+ * @rule 1.04.02
  */
 export function getFactionMaxHandSize(faction: Faction): number {
   return FACTION_CONFIGS[faction].maxHandSize;
@@ -74,13 +75,16 @@ export function canFactionBid(state: GameState, faction: Faction): boolean {
 /**
  * Validate that a faction's hand size does not exceed the maximum limit.
  * Throws an error if the hand size exceeds the limit.
- * 
+ *
  * This is a defensive check to catch hand size violations early.
  * Only active in development mode (or when explicitly enabled).
  */
 export function validateHandSize(state: GameState, faction: Faction): void {
   // Only validate in development mode to avoid performance impact in production
-  if (process.env.NODE_ENV === 'production' && !process.env.ENABLE_HAND_SIZE_VALIDATION) {
+  if (
+    process.env.NODE_ENV === "production" &&
+    !process.env.ENABLE_HAND_SIZE_VALIDATION
+  ) {
     return;
   }
 
@@ -134,6 +138,9 @@ export function getLeadersInTanks(
 /**
  * Check if faction can revive a leader.
  * Can only revive when all leaders are dead or have died at least once.
+ *
+ * @rule 1.05.03 LEADER REVIVAL: Leaders may only be revived from the tanks once all leaders are dead
+ * or at least one has been killed and is available in the tanks.
  */
 export function canReviveLeader(state: GameState, faction: Faction): boolean {
   const factionState = getFactionState(state, faction);
@@ -189,10 +196,10 @@ export function getForceCountInTerritory(
  *
  * IMPORTANT: For Bene Gesserit, only includes them if they have fighters (battle-capable forces).
  * BG advisors (spiritual side) are non-combatants and don't count for battle purposes.
- * 
+ *
  * Use this function for:
  * - Battle identification (who can battle)
- * 
+ *
  * Use getFactionsOccupyingTerritory() for:
  * - Occupancy validation (stronghold limits)
  * - Pathfinding (blocking movement)
@@ -226,18 +233,19 @@ export function getFactionsInTerritory(
 
 /**
  * Get all factions occupying a territory (for occupancy limits).
- * 
+ * @rule 2.02.12
+ *
  * IMPORTANT: For Bene Gesserit, only includes them if they have fighters (battle-capable forces).
  * BG advisors (spiritual side) are non-combatants and DON'T count toward occupancy limits.
  * Rule 2.02.12: "Advisors... prevent another faction from challenging a Stronghold (Occupancy Limit)"
- * 
+ *
  * This is the SAME logic as getFactionsInTerritory() - both exclude BG if they only have advisors.
- * 
+ *
  * Use this function for:
  * - Occupancy validation (stronghold limits)
  * - Pathfinding (blocking movement through full strongholds)
  * - Suggestion generation (available destinations)
- * 
+ *
  * Use getFactionsInTerritory() for:
  * - Battle identification (who can battle)
  */
@@ -299,7 +307,9 @@ export function getBGFightersInTerritory(
 
   const totalForces = getTotalForces(stack.forces);
   const advisors = stack.advisors ?? 0;
-  return totalForces - advisors;
+  // Clamp to 0 to handle cases where advisors might exceed total forces
+  // (shouldn't happen in normal gameplay, but defensive programming)
+  return Math.max(0, totalForces - advisors);
 }
 
 /**
@@ -332,7 +342,9 @@ export function getBGFightersInSector(
 
   const totalForces = getTotalForces(stack.forces);
   const advisors = stack.advisors ?? 0;
-  return totalForces - advisors;
+  // Clamp to 0 to handle cases where advisors might exceed total forces
+  // (shouldn't happen in normal gameplay, but defensive programming)
+  return Math.max(0, totalForces - advisors);
 }
 
 /**
@@ -413,6 +425,12 @@ export function areSectorsSeparatedByStorm(
 
   const stormSector = state.stormSector;
 
+   // Rule 1.01.04 (OBSTRUCTION) – forces may not battle if either force is in storm
+   // and the other is not. Treat that situation as "separated" even if the storm
+   // sector is not strictly between the sectors on the shortest path.
+   if (sector1 === stormSector && sector2 !== stormSector) return true;
+   if (sector2 === stormSector && sector1 !== stormSector) return true;
+
   // Check if storm is between the two sectors
   // Sectors are arranged in a circle (0-17)
   const min = Math.min(sector1, sector2);
@@ -457,7 +475,7 @@ export function getSpiceInTerritory(
 
 /**
  * Check how many factions occupy a stronghold (for occupancy limit).
- * 
+ *
  * Uses getFactionsOccupyingTerritory() which excludes BG advisors-only
  * (Rule 2.02.12: advisors don't count toward occupancy limit).
  */
@@ -470,7 +488,7 @@ export function getStrongholdOccupancy(
 
 /**
  * Check if a faction can ship to a territory (occupancy limit check).
- * 
+ *
  * Uses getFactionsOccupyingTerritory() which excludes BG advisors-only
  * (Rule 2.02.12: advisors don't count toward occupancy limit).
  */
@@ -495,7 +513,7 @@ export function canShipToTerritory(
 /**
  * Validate stronghold occupancy limits across all strongholds.
  * Returns an array of violations found.
- * 
+ *
  * Uses getFactionsOccupyingTerritory() which excludes BG advisors-only
  * (Rule 2.02.12: advisors don't count toward occupancy limit).
  */
@@ -554,6 +572,8 @@ export function getOccupiedStrongholds(
 
 /**
  * Check if faction meets stronghold victory condition.
+ * @rule 1.09.02.02, 1.09.02.03
+ * @rule 1.10.02.01, 1.10.02.02
  */
 export function checkStrongholdVictory(
   state: GameState,
@@ -914,4 +934,43 @@ export function getProtectedLeaders(
   return factionState.leaders
     .filter((l) => l.location === LeaderLocation.ON_BOARD)
     .map((l) => l.definitionId);
+}
+
+// =============================================================================
+// KARAMA INTERRUPT QUERIES
+// =============================================================================
+
+/**
+ * Check if a Karama interrupt is pending.
+ *
+ * @param state - Current game state
+ * @returns True if there is an active Karama interrupt
+ */
+export function hasActiveKaramaInterrupt(state: GameState): boolean {
+  return state.karamaState !== null;
+}
+
+/**
+ * Check if all eligible factions have responded to Karama interrupt.
+ *
+ * @param state - Current game state
+ * @returns True if all eligible factions have responded or an interrupt occurred
+ */
+export function allKaramaResponsesReceived(state: GameState): boolean {
+  if (!state.karamaState) return false;
+  return (
+    state.karamaState.responses.size ===
+      state.karamaState.eligibleFactions.length || state.karamaState.interrupted
+  );
+}
+
+/**
+ * Get the Karama interrupt result.
+ * Returns the faction that interrupted, or null if no interrupt.
+ *
+ * @param state - Current game state
+ * @returns The faction that interrupted, or null if no interrupt occurred
+ */
+export function getKaramaInterruptor(state: GameState): Faction | null {
+  return state.karamaState?.interruptor ?? null;
 }

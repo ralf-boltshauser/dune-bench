@@ -56,6 +56,7 @@ export {
   getTotalForcesOnBoard,
   getWeaponCards,
   hasAvailableLeaders,
+  hasActiveKaramaInterrupt,
   hasCheapHero,
   hasKaramaCard,
   isEarlierInStormOrder,
@@ -65,6 +66,8 @@ export {
   shouldTriggerPrisonBreak,
   validateHandSize,
   validateStrongholdOccupancy,
+  allKaramaResponsesReceived,
+  getKaramaInterruptor,
 } from "./queries";
 
 // Mutations

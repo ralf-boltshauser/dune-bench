@@ -8,7 +8,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { serializeGameState } from '@/lib/game/state/serialize';
 import { deserializeGameState } from '@/lib/game/state/serialize';
 import { WrapperEvent } from '@/lib/game/stream/types';
-import type { StreamEvent } from '@/lib/game/stream/types';
 
 export async function GET(
   request: NextRequest,

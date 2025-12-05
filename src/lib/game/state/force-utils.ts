@@ -417,8 +417,11 @@ export function removeFromStackForFaction(
  * Move forces between two locations on the board.
  * Returns new array.
  *
- * ADAPTIVE FORCE Rule (2.02.21): When you Move advisors or fighters into a Territory
- * where you have the opposite type they flip to match the type already in the Territory.
+ * ADAPTIVE FORCE Rule
+ * @rule 2.02.20
+ * 
+ * When you Move advisors or fighters into a Territory where you have the opposite type
+ * they flip to match the type already in the Territory.
  * - Move advisors to territory with your fighters → Flip to fighters
  * - Move fighters to territory with your advisors → Flip to advisors
  * - Automatic (not optional)
@@ -632,12 +635,13 @@ export function calculateLossDistribution(
 ): { regularLost: number; eliteLost: number } {
   const { regular, elite } = forcesInTerritory;
 
-  // Sardaukar only worth 1x vs Fremen (battle.md line 109)
+  // @rule 2.03.09: Sardaukar only worth 1x vs Fremen (battle.md line 109)
   // Faction enum values are lowercase strings
   const isSardaukarVsFremen =
     faction.toString() === 'emperor' && opponentFaction.toString() === 'fremen';
 
-  // Elite forces are worth 2 losses each, except Sardaukar vs Fremen
+  // @rule 2.03.08: Elite forces are worth 2 losses each, except Sardaukar vs Fremen
+  // @rule 2.04.18 FEDAYKIN: They are worth two normal Forces in battle and in taking losses
   const eliteValue = isSardaukarVsFremen ? 1 : 2;
 
   // Strategy: Lose regular forces first (each absorbs 1 loss)

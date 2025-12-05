@@ -36,7 +36,7 @@ export interface GameRunnerConfig {
   factions: Faction[];
   /** Maximum turns before game ends */
   maxTurns?: number;
-  /** Whether to use advanced rules */
+  /** Whether to use advanced rules (deprecated: always true, ignored if set) */
   advancedRules?: boolean;
   /** Agent configuration */
   agentConfig?: AgentConfig;
@@ -114,7 +114,7 @@ export class GameRunner {
     this.config = {
       factions: config.factions,
       maxTurns: config.maxTurns ?? 10,
-      advancedRules: config.advancedRules ?? true,
+      advancedRules: true, // Always use advanced rules
       agentConfig: config.agentConfig ?? {},
       enableMetrics: config.enableMetrics,
       modelName: config.modelName,

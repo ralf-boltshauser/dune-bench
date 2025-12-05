@@ -44,6 +44,7 @@ export class SpiceCollectionPhaseHandler implements PhaseHandler {
 
     // Automatic collection for all factions
     for (const [faction, factionState] of state.factions) {
+      // @rule 1.08.02
       // Check if faction has ornithopter access (forces in Arrakeen or Carthag)
       // Rule 1.08.02: "If the player occupies Carthag and/or Arrakeen their collection rate is now 3 spice per Force."
       const hasOrnithopterBonus = this.checkOrnithopterAccess(
@@ -112,6 +113,7 @@ export class SpiceCollectionPhaseHandler implements PhaseHandler {
           const advisors = forceStack.advisors ?? 0;
           const fighterCount = totalForces - advisors; // Exclude advisors
           const maxCollection = fighterCount * collectionRate;
+          // @rule 1.08.03 - Uncollected spice remains (Math.min limits collection to available spice)
           const actualCollection = Math.min(
             maxCollection,
             currentSpiceLocation.amount

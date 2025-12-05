@@ -26,6 +26,7 @@ import { FACTION_NAMES } from '../types';
 // =============================================================================
 
 /**
+ * @rule 1.09.02, 1.09.03
  * Check all victory conditions and return the winner(s) if any.
  * Called during Mentat Pause phase.
  */
@@ -171,6 +172,12 @@ function checkBeneGesseritPrediction(state: GameState): WinResult | null {
 // =============================================================================
 
 /**
+ * @rule 2.04.09 FREMEN SPECIAL VICTORY CONDITION
+ * @rule 2.04.09.01 When the Spacing Guild is in the game and no faction has won by the end of the last turn
+ * @rule 2.04.09.02 Only your Forces (or no Forces) occupy Sietch Tabr and Habbanya Sietch
+ * @rule 2.04.09.03 Neither Harkonnen, Atreides, nor Emperor Forces occupy Tuek's Sietch
+ * @rule 2.04.12 ALLIANCE: Your allies win with you when you win with the Fremen Special Victory Condition
+ * 
  * Check Fremen special victory condition.
  * Fremen win if Guild is in game, no one else wins, and:
  * - Only Fremen (or no one) occupies Sietch Tabr and Habbanya Sietch
@@ -219,6 +226,8 @@ export function checkFremenSpecialVictory(state: GameState): WinResult | null {
 /**
  * Check Guild special victory condition.
  * Guild wins if no one achieves stronghold victory by end of game.
+ * @rule 2.06.08 SPACING GUILD SPECIAL VICTORY CONDITION: If no faction has been able to win the game by the end of play, Guild automatically wins.
+ * @rule 2.06.11 ALLIANCE: Guild's ally wins with Guild when Guild wins with the Special Victory Condition.
  */
 export function checkGuildSpecialVictory(state: GameState): WinResult | null {
   if (!state.factions.has(Faction.SPACING_GUILD)) return null;

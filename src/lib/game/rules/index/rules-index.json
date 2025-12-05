@@ -1,0 +1,3366 @@
+{
+  "generatedAt": "2025-12-02T18:25:30.276Z",
+  "totalRules": 336,
+  "rules": [
+    {
+      "id": "0.00",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 3,
+          "context": "0.00 This category of the rulebook goes over the set up of the game. NOTE: No Deals or Bribes may be"
+        }
+      ]
+    },
+    {
+      "id": "0.01",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 4,
+          "context": "0.01 Set up the game by doing the following steps through 0.16."
+        }
+      ]
+    },
+    {
+      "id": "0.02",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 5,
+          "context": "0.02 LENGTH OF GAME: Determine the number of Turns that will be played. In tournament play, a game w"
+        }
+      ]
+    },
+    {
+      "id": "0.03",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 6,
+          "context": "0.03 VARIANTS: Determine what variants will be used, if any."
+        }
+      ]
+    },
+    {
+      "id": "0.04",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 7,
+          "context": "0.04 SPICE BANK: Place all spice tokens in the Spice Bank."
+        }
+      ]
+    },
+    {
+      "id": "0.05",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 8,
+          "context": "0.05 SPICE DECK: Shuffle the Spice deck and Put it face down next to the game board. Played cards wi"
+        }
+      ]
+    },
+    {
+      "id": "0.06",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 9,
+          "context": "0.06 TREACHERY DECK: Shuffle the Treachery deck and Put it face down next to the game board. Played "
+        }
+      ]
+    },
+    {
+      "id": "0.07",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 10,
+          "context": "0.07 SEATING ORDER: Players now determine seating order. In tournament play, remove numbers greater "
+        }
+      ]
+    },
+    {
+      "id": "0.08",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 11,
+          "context": "0.08 FACTION SELECTION: Players now choose factions. In tournament play, each player is dealt two al"
+        }
+      ]
+    },
+    {
+      "id": "0.09",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 12,
+          "context": "0.09 FACTION COMPONENTS: Players take their player shields, player sheets, and corresponding faction"
+        }
+      ]
+    },
+    {
+      "id": "0.10",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 13,
+          "context": "0.10 PLAYER POSITIONS: Players Place their Player Marker on the player circle closest to their Playe"
+        }
+      ]
+    },
+    {
+      "id": "0.11",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 14,
+          "context": "0.11 TRAITORS: Remove the cards for all factions that are not in play from the Traitor deck. Then sh"
+        }
+      ]
+    },
+    {
+      "id": "0.12",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 15,
+          "context": "0.12 STARTING SPICE: Spice equal to the amount indicated by a faction's ability 2.XX.01 is removed f"
+        }
+      ]
+    },
+    {
+      "id": "0.13",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 16,
+          "context": "0.13 STARTING FORCES: Each player's Forces are Placed on the board as indicated by their ability 2.X"
+        }
+      ]
+    },
+    {
+      "id": "0.14",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 17,
+          "context": "0.14 STARTING TREACHERY CARD: Each player Draws 1 card from the Treachery Deck. -2.05.04 -2.07.03 +4"
+        }
+      ]
+    },
+    {
+      "id": "0.15",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 18,
+          "context": "0.15 TURN MARKER: Place the turn marker at 1 on the Turn Track."
+        }
+      ]
+    },
+    {
+      "id": "0.16",
+      "sources": [
+        {
+          "file": "numbered_rules/0.md",
+          "line": 19,
+          "context": "0.16 FIRST STORM: The first time the storm is moved, the Storm Marker is Placed at a random location"
+        }
+      ]
+    },
+    {
+      "id": "1.00.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 3,
+          "context": "1.00.00 This Category of the rulebook goes over the Phases of the game and how the base rules are ob"
+        }
+      ]
+    },
+    {
+      "id": "1.00.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 4,
+          "context": "1.00.01 A faction has special abilities that may contradict the rules. A faction's particular abilit"
+        }
+      ]
+    },
+    {
+      "id": "1.00.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 5,
+          "context": "1.00.02 A Treachery Card may contradict the rules or a faction's particular abilities. A Treachery C"
+        }
+      ]
+    },
+    {
+      "id": "1.00.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 6,
+          "context": "1.00.03 A Variant [4] may contradict the rules, a faction ability, or a Treachery Card. Variants alw"
+        }
+      ]
+    },
+    {
+      "id": "1.00.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 7,
+          "context": "1.00.04 When a Karama card is used to cancel an ability, as detailed in Karama card description 3.01"
+        }
+      ]
+    },
+    {
+      "id": "1.00.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 8,
+          "context": "1.00.05 When a faction’s ability is used all other actions that can take place must wait until the a"
+        }
+      ]
+    },
+    {
+      "id": "1.01.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 12,
+          "context": "1.01.00 This is the first Phase of the Turn. In this Phase the Storm Marker is moved around the Map "
+        }
+      ]
+    },
+    {
+      "id": "1.01.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 13,
+          "context": "1.01.01 DECIDING FIRST PLAYER: The faction whose Player Marker the storm next approaches will be the"
+        }
+      ]
+    },
+    {
+      "id": "1.01.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 14,
+          "context": "1.01.02 STORM MOVEMENT: In all subsequent Storm Phases after Turn 1, the two players who last used t"
+        }
+      ]
+    },
+    {
+      "id": "1.01.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 15,
+          "context": "1.01.03 STORM DESTRUCTION: When the Storm Marker moves, any Forces in a Sector of a Sand Territory ("
+        }
+      ]
+    },
+    {
+      "id": "1.01.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 16,
+          "context": "1.01.04 OBSTRUCTION: Forces may not Ship/Send/Move into, out of, or through a Sector in Storm. Force"
+        }
+      ]
+    },
+    {
+      "id": "1.02.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 20,
+          "context": "1.02.00 This is the second Phase of the Turn. In this Phase spice is Placed on the board and allianc"
+        }
+      ]
+    },
+    {
+      "id": "1.02.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 21,
+          "context": "1.02.01 BLOW THE SPICE: The top card of the Spice Deck is Revealed and discarded. +1.14.03 +1.14.03"
+        }
+      ]
+    },
+    {
+      "id": "1.02.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 22,
+          "context": "1.02.02 FIRST TURN: During the first turn's Spice Blow Phase only, all Shai-Hulud cards Revealed are"
+        }
+      ]
+    },
+    {
+      "id": "1.02.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 23,
+          "context": "1.02.03 NO NEXUS: There can not be a Nexus on Turn one for any reason."
+        }
+      ]
+    },
+    {
+      "id": "1.02.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 24,
+          "context": "1.02.04 TERRITORY CARD: This is a Spice Blow. When this type of card is discarded the amount of spic"
+        }
+      ]
+    },
+    {
+      "id": "1.02.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 25,
+          "context": "1.02.05 SHAI-HULUD: This is a Sandworm. When this type of card is discarded destroy all spice and Fo"
+        }
+      ]
+    },
+    {
+      "id": "1.02.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 26,
+          "context": "1.02.06 NEXUS: Revealing a Shai-Hulud card after the first Turn causes a Nexus at the end of the Pha"
+        }
+      ]
+    },
+    {
+      "id": "1.03.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 30,
+          "context": "1.03.00 This is the third Phase of the Turn. Players with 0 or 1 spice may claim CHOAM Charity."
+        }
+      ]
+    },
+    {
+      "id": "1.03.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 31,
+          "context": "1.03.01 COLLECTING CHOAM CHARITY: All players with 0 or 1 spice can collect spice from the bank to b"
+        }
+      ]
+    },
+    {
+      "id": "1.03.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 32,
+          "context": "1.03.02 FRAUD SAFE GUARDS: A Player may only Claim CHOAM Charity once a Turn."
+        }
+      ]
+    },
+    {
+      "id": "1.04.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 36,
+          "context": "1.04.00 This is the fourth Phase of the Turn. Players can bid spice to acquire Treachery Cards."
+        }
+      ]
+    },
+    {
+      "id": "1.04.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 37,
+          "context": "1.04.01 DECLARATION: Before bidding starts, all players must publicly announce how many Treachery Ca"
+        }
+      ]
+    },
+    {
+      "id": "1.04.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 38,
+          "context": "1.04.02 MAX HAND SIZE: A player's maximum hand size is 4 Treachery cards. -2.05.07 -2.09.05 -2.05.07"
+        }
+      ]
+    },
+    {
+      "id": "1.04.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 39,
+          "context": "1.04.03 INELIGIBLE: Players with a full hand are not eligible to bid and must pass during a bid for "
+        }
+      ]
+    },
+    {
+      "id": "1.04.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 40,
+          "context": "1.04.04 DEALER: A selected player deals 1 card for each player who is eligible to bid from the Treac"
+        }
+      ]
+    },
+    {
+      "id": "1.04.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 41,
+          "context": "1.04.05 AUCTION: The first card in the row is now auctioned off for spice."
+        }
+      ]
+    },
+    {
+      "id": "1.04.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 42,
+          "context": "1.04.06 BIDDING: The bidding is started by the First Player. If that player is not eligible to bid t"
+        }
+      ]
+    },
+    {
+      "id": "1.04.06.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 43,
+          "context": "1.04.06.01 This is the procedure for bidding on a card:"
+        }
+      ]
+    },
+    {
+      "id": "1.04.06.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 44,
+          "context": "1.04.06.02 The player who bids first must bid 1 spice or more otherwise they must pass. Bidding then"
+        }
+      ]
+    },
+    {
+      "id": "1.04.06.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 45,
+          "context": "1.04.06.03 Buying A Card: The top bidding player then pays the number of spice they bid to the Spice"
+        }
+      ]
+    },
+    {
+      "id": "1.04.06.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 46,
+          "context": "1.04.06.04 Bid Limit: Players may not bid more spice than they have. -1.10.02.04 -3.01.11.04 -1.10.0"
+        }
+      ]
+    },
+    {
+      "id": "1.04.06.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 47,
+          "context": "1.04.06.05 Time Limit: Each player must bid within 10 seconds of the previous player or they are ass"
+        }
+      ]
+    },
+    {
+      "id": "1.04.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 48,
+          "context": "1.04.07 NEXT STARTING BIDDER: In subsequent bidding during this Phase, the first eligible player, to"
+        }
+      ]
+    },
+    {
+      "id": "1.04.08",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 49,
+          "context": "1.04.08 END OF BIDDING: Bidding for Treachery Cards continues until all cards available for bid have"
+        }
+      ]
+    },
+    {
+      "id": "1.04.09",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 50,
+          "context": "1.04.09 BOUGHT-IN: When a face down Treachery card is passed on by everyone, all remaining cards are"
+        }
+      ]
+    },
+    {
+      "id": "1.04.10",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 51,
+          "context": "1.04.10 TRANSPARENCY: The amount (not the type) of Treachery Cards a player has in their hand must b"
+        }
+      ]
+    },
+    {
+      "id": "1.05.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 55,
+          "context": "1.05.00 This is the fifth Phase of the Turn. All players are allowed to revive Forces and leaders fr"
+        }
+      ]
+    },
+    {
+      "id": "1.05.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 56,
+          "context": "1.05.01 Force Revival: All players may now revive up to 3 Forces from the Tleilaxu Tanks. -1.14.08 -"
+        }
+      ]
+    },
+    {
+      "id": "1.05.01.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 57,
+          "context": "1.05.01.01 To revive Forces you must adhere to the following:"
+        }
+      ]
+    },
+    {
+      "id": "1.05.01.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 58,
+          "context": "1.05.01.02 FREE REVIVAL: A certain number of Forces are revived for free as stated on the player she"
+        }
+      ]
+    },
+    {
+      "id": "1.05.01.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 59,
+          "context": "1.05.01.03 BY SPICE: Any additional Forces that may be revived, beyond your free revival and up to y"
+        }
+      ]
+    },
+    {
+      "id": "1.05.01.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 60,
+          "context": "1.05.01.04 PAYMENT: All spice paid for Force Revival is Placed in the Spice Bank."
+        }
+      ]
+    },
+    {
+      "id": "1.05.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 61,
+          "context": "1.05.02 TO RESERVES: Revived Forces must be Put in the player's reserves."
+        }
+      ]
+    },
+    {
+      "id": "1.05.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 62,
+          "context": "1.05.03 Leader Revival: When a player has no Active Leaders or all of there leaders have died at lea"
+        }
+      ]
+    },
+    {
+      "id": "1.05.03.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 63,
+          "context": "1.05.03.01 To revive leaders you must adhere to the following:"
+        }
+      ]
+    },
+    {
+      "id": "1.05.03.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 64,
+          "context": "1.05.03.02 COST: For a leader, a player must pay that leader's fighting strength in spice to revive "
+        }
+      ]
+    },
+    {
+      "id": "1.05.03.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 65,
+          "context": "1.05.03.03 PAYMENT: All spice paid for leader revival is Placed in the Spice Bank."
+        }
+      ]
+    },
+    {
+      "id": "1.05.03.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 66,
+          "context": "1.05.03.04 REVIVED LEADER STATUS: A revived leader is added to that player's Leader Pool and can be "
+        }
+      ]
+    },
+    {
+      "id": "1.05.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 67,
+          "context": "1.05.04 DEAD AGAIN: When a revived leader is killed again, place it face down in the Tleilaxu Tanks."
+        }
+      ]
+    },
+    {
+      "id": "1.05.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 68,
+          "context": "1.05.05 FACE DOWN LEADERS: At anytime through out the Turn you may look at any face down leader with"
+        }
+      ]
+    },
+    {
+      "id": "1.06.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 72,
+          "context": "1.06.00 This is the sixth Phase of the Turn. All players are allowed to Ship and/or Move Forces duri"
+        }
+      ]
+    },
+    {
+      "id": "1.06.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 73,
+          "context": "1.06.01 The First Player conducts their Force Shipment action and then Force Movement action. Play p"
+        }
+      ]
+    },
+    {
+      "id": "1.06.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 74,
+          "context": "1.06.02 ONE FORCE SHIPMENT: Each player may make only one Force Shipment action per Turn."
+        }
+      ]
+    },
+    {
+      "id": "1.06.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 75,
+          "context": "1.06.03 Shipment of Reserves: A player with off-planet reserves may use one shipment action to Ship "
+        }
+      ]
+    },
+    {
+      "id": "1.06.03.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 76,
+          "context": "1.06.03.00 On your Ship action you must adhere to the following:"
+        }
+      ]
+    },
+    {
+      "id": "1.06.03.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 77,
+          "context": "1.06.03.01 COST: The cost of shipping off-planet reserves is 1 spice per Force shipped into any Stro"
+        }
+      ]
+    },
+    {
+      "id": "1.06.03.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 78,
+          "context": "1.06.03.02 PAYMENT: All spice paid for Shipment is Placed in the Spice Bank. -2.06.04 -2.06.04"
+        }
+      ]
+    },
+    {
+      "id": "1.06.03.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 79,
+          "context": "1.06.03.03 SECTORS: When shipping into a Territory lying in several Sectors, a player must make clea"
+        }
+      ]
+    },
+    {
+      "id": "1.06.03.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 80,
+          "context": "1.06.03.04 RESTRICTION: No player may Ship into or out of a Sector in Storm. -2.04.17 -2.04.17"
+        }
+      ]
+    },
+    {
+      "id": "1.06.03.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 81,
+          "context": "1.06.03.05 OCCUPANCY LIMIT: No player may Ship into a stronghold already occupied by two other playe"
+        }
+      ]
+    },
+    {
+      "id": "1.06.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 82,
+          "context": "1.06.04 Restriction: No player may ship Forces from the board back to their reserves. -2.06.05.02 -2"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 83,
+          "context": "1.06.05 FORCE MOVEMENT: Each player may Move, as a group, any number of their Forces from one Territ"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 84,
+          "context": "1.06.05.00 On your Movement action you must adhere to the following:"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 85,
+          "context": "1.06.05.01 ONE FORCE MOVE: Each player may make only one Force movement action per Turn. -3.01.09 -3"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 86,
+          "context": "1.06.05.02 Forces are free to Move into, out of, or through any Territory occupied by any number of "
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 87,
+          "context": "1.06.05.03 ONE ADJACENT TERRITORY: A player without a Force in either Arrakeen or Carthag at the sta"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 88,
+          "context": "1.06.05.04 ORNITHOPTERS: A player who starts a force move with one or more Forces in either Arrakeen"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 89,
+          "context": "1.06.05.05 SECTORS: Sectors have no effect on movement. Forces can Move into or through a Territory "
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 90,
+          "context": "1.06.05.06 STORM: As defined above in the Storm Phase section, no Force may Move into, out of, or th"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 91,
+          "context": "1.06.05.07 Many territories occupy several Sectors, so that a player may Move into and out of a Terr"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.08",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 92,
+          "context": "1.06.05.08 When ending a Move in a Territory lying in several Sectors, a player must make clear in w"
+        }
+      ]
+    },
+    {
+      "id": "1.06.05.09",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 93,
+          "context": "1.06.05.09 Occupancy Limit: Like Shipment, Forces can not be moved into or through a Stronghold if F"
+        }
+      ]
+    },
+    {
+      "id": "1.06.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 94,
+          "context": "1.06.06 SAFE HAVEN: The Polar Sink is never in storm."
+        }
+      ]
+    },
+    {
+      "id": "1.06.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 95,
+          "context": "1.06.07 CONSTRAINT: At the end of your Shipment and Movement actions, Place all your Forces that are"
+        }
+      ]
+    },
+    {
+      "id": "1.06.08",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 96,
+          "context": "1.06.08 Repositioning: A player may use their movement action to reposition their Forces to relocate"
+        }
+      ]
+    },
+    {
+      "id": "1.07.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 100,
+          "context": "1.07.00 This is the seventh Phase of the Turn. Players must resolve battles in every Territory that "
+        }
+      ]
+    },
+    {
+      "id": "1.07.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 101,
+          "context": "1.07.01 Battle Determination: Wherever two or more players' Forces occupy the same Territory, battle"
+        }
+      ]
+    },
+    {
+      "id": "1.07.01.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 102,
+          "context": "1.07.01.01 Players can not battle one another in a Territory if their Forces are separated by a Sect"
+        }
+      ]
+    },
+    {
+      "id": "1.07.01.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 103,
+          "context": "1.07.01.02 BATTLING BLIND: Whenever two or more players’ Forces are in the same Territory and in the"
+        }
+      ]
+    },
+    {
+      "id": "1.07.01.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 104,
+          "context": "1.07.01.03 NEUTRAL ZONE: Players can not battle in the Polar Sink. It is a safe haven for everyone."
+        }
+      ]
+    },
+    {
+      "id": "1.07.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 105,
+          "context": "1.07.02 FIRST PLAYER: When resolving battles, the First Player is named the Aggressor until all thei"
+        }
+      ]
+    },
+    {
+      "id": "1.07.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 106,
+          "context": "1.07.03 MULTIPLE BATTLES: When there are three or more players in the same Territory, the Aggressor "
+        }
+      ]
+    },
+    {
+      "id": "1.07.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 107,
+          "context": "1.07.04 Battle Plan: To resolve a battle, each player secretly formulates a Battle Plan. -1.14.01 -2"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 108,
+          "context": "1.07.04.01 A Battle Plan always includes the number of Forces dialed on the Battle Wheel. When possi"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 109,
+          "context": "1.07.04.02 BATTLE WHEEL: Each player picks up a Battle Wheel and secretly dials a number from zero t"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 110,
+          "context": "1.07.04.03 LEADERS: One Leader Disc is selected and put face up in the slot on the wheel. A Cheap He"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 111,
+          "context": "1.07.04.04 DEDICATED LEADER: Leaders that survive battles may fight more than once in a single Terri"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 112,
+          "context": "1.07.04.05 LEADER ANNOUNCEMENT: A player must always play either a leader or a Cheap Hero card as pa"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 113,
+          "context": "1.07.04.06 NO TREACHERY: A player with no leader or Cheap Hero must still battle, but they can not p"
+        }
+      ]
+    },
+    {
+      "id": "1.07.04.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 114,
+          "context": "1.07.04.07 TREACHERY CARDS: Players with a leader or Cheap Hero may play a Weapon Treachery Card, De"
+        }
+      ]
+    },
+    {
+      "id": "1.07.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 115,
+          "context": "1.07.05 REVEALING WHEELS: When both players are ready, the Battle Plans are Revealed simultaneously."
+        }
+      ]
+    },
+    {
+      "id": "1.07.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 116,
+          "context": "1.07.06 BATTLE RESOLUTION: The winner is the player with the higher total of number dialed on the Ba"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 117,
+          "context": "1.07.06.01 NO TIES: In the case of a tie, the Aggressor wins the battle."
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 118,
+          "context": "1.07.06.02 WEAPONS: Check to see if your opponent protected their leader from your weapon with the p"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 119,
+          "context": "1.07.06.03 KILLED LEADERS: Any leaders killed are immediately Placed face up in the Tleilaxu TanksTh"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 120,
+          "context": "1.07.06.04 SURVIVING LEADERS: Leaders who survive remain in the Territory where they were used. (Gam"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 121,
+          "context": "1.07.06.05 LOSING: The losing player loses all the Forces they had in the Territory to the Tleilaxu "
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 122,
+          "context": "1.07.06.06 WINNING: The winning player loses only the number of Forces they dialed on the Battle Whe"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 123,
+          "context": "1.07.06.07 TRAITORS: When you are in a battle and your opponent uses a leader that matches a Traitor"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.07.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 124,
+          "context": "1.07.06.07.01 When a Traitor Card is Revealed the Player who revealed the Traitor Card: immediately "
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.07.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 125,
+          "context": "1.07.06.07.02 The Player Whose Traitor Was Revealed: loses all their Forces in the Territory and dis"
+        }
+      ]
+    },
+    {
+      "id": "1.07.06.07.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 126,
+          "context": "1.07.06.07.03 TWO TRAITORS: When both leaders are traitors (each a traitor for the opponent), both p"
+        }
+      ]
+    },
+    {
+      "id": "1.07.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 127,
+          "context": "1.07.07 LEADER RETURN: After all battles have been fought, players collect any of their leaders used"
+        }
+      ]
+    },
+    {
+      "id": "1.08.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 131,
+          "context": "1.08.00 This is the eighth Phase of the Turn. Forces in territories that contain spice may collect t"
+        }
+      ]
+    },
+    {
+      "id": "1.08.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 132,
+          "context": "1.08.01 HARVESTING SPICE: Any player whose Forces Occupy a Sector of a Territory in which there is s"
+        }
+      ]
+    },
+    {
+      "id": "1.08.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 133,
+          "context": "1.08.02 COLLECTION RATE: The collection rate of spice for each Force is 2 spice per Force. If the pl"
+        }
+      ]
+    },
+    {
+      "id": "1.08.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 134,
+          "context": "1.08.03 UNCLAIMED SPICE: Uncollected spice remains where it is for future turns."
+        }
+      ]
+    },
+    {
+      "id": "1.09.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 138,
+          "context": "1.09.00 This is the ninth Phase of the Turn. A winner (or winners) is declared, or players take some"
+        }
+      ]
+    },
+    {
+      "id": "1.09.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 139,
+          "context": "1.09.01 COLLECT BRIBE SPICE: Add any spice from in front of your shield to your spice reserves."
+        }
+      ]
+    },
+    {
+      "id": "1.09.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 140,
+          "context": "1.09.02 Stronghold Victory"
+        }
+      ]
+    },
+    {
+      "id": "1.09.02.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 141,
+          "context": "1.09.02.01 Players now check to see if the following requirements are met to achieve Stronghold Vict"
+        }
+      ]
+    },
+    {
+      "id": "1.09.02.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 142,
+          "context": "1.09.02.02 Unallied Stronghold Victory: The requirement for an Unallied player to win is to Control "
+        }
+      ]
+    },
+    {
+      "id": "1.09.02.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 143,
+          "context": "1.09.02.03 Allied Stronghold Victory: The requirement for an Alliance to win is to Control, between "
+        }
+      ]
+    },
+    {
+      "id": "1.09.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 144,
+          "context": "1.09.03 MULTIPLE WINNERS: A player or alliance that has met the Stronghold requirement wins the game"
+        }
+      ]
+    },
+    {
+      "id": "1.09.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 145,
+          "context": "1.09.04 WAR CONTINUES: When there are no winners, players mull over their positions on the board, co"
+        }
+      ]
+    },
+    {
+      "id": "1.09.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 146,
+          "context": "1.09.05 END GAME OR DEFAULT VICTORY: The game is over when the desired number of Turns are reached. "
+        }
+      ]
+    },
+    {
+      "id": "1.10.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 150,
+          "context": "1.10.00 Once a Shai-Hulud (sandworm) card is turned over on the second or subsequent turns, at the e"
+        }
+      ]
+    },
+    {
+      "id": "1.10.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 151,
+          "context": "1.10.01 NEXUS"
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 152,
+          "context": "1.10.01.01 Discussion: Players may discuss among themselves the advantages and disadvantages of ally"
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 153,
+          "context": "1.10.01.02 Forming an Alliance: A player may ally once per Nexus. Two players may announce that they"
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 154,
+          "context": "1.10.01.03 Transparency: The members of an Alliance must be made known to all. Alliances cannot be s"
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 155,
+          "context": "1.10.01.04 Alliance Limits: No more than two players may be in an Alliance with each other."
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 156,
+          "context": "1.10.01.05 Landsraad Limits: Several Alliances can be formed during a Nexus, but no player can be a "
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 157,
+          "context": "1.10.01.06 Breaking an Alliance: Any player may break an Alliance during a Nexus. A player announces"
+        }
+      ]
+    },
+    {
+      "id": "1.10.01.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 158,
+          "context": "1.10.01.07 Conclusion of A Nexus: Once all players have had a chance to ally, no further Alliances c"
+        }
+      ]
+    },
+    {
+      "id": "1.10.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 159,
+          "context": "1.10.02 How an Alliance Functions -2.11.15 -2.03.06 -2.02.12"
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 160,
+          "context": "1.10.02.01 Allied players' Forces are considered the same for the purposes of victory."
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 161,
+          "context": "1.10.02.02 The win condition is now 4 strongholds instead of 3 for players in an Alliance. If togeth"
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 162,
+          "context": "1.10.02.03 Ally Secrecy: Allies may discuss and share strategy and information secretly at any time."
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 163,
+          "context": "1.10.02.04 Separate Spice Holding: Allies may not give spice to one another. -2.03.06 -2.03.06"
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 164,
+          "context": "1.10.02.05 Bidding: During the Bidding Phase, allies may help each other by paying some or all the c"
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 165,
+          "context": "1.10.02.06 Movement: During the Shipment and Movement Phase, allies may pay for each other's shipmen"
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 166,
+          "context": "1.10.02.07 Constraint: At the end of your Shipment and Movement actions, Place all your Forces that "
+        }
+      ]
+    },
+    {
+      "id": "1.10.02.08",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 167,
+          "context": "1.10.02.08 Shared Advantages: Allies may assist one another with any abilities labeled: ALLIANCE."
+        }
+      ]
+    },
+    {
+      "id": "1.11.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 171,
+          "context": "1.11.00 Players are never required to keep their cards, spice holdings, or the traitors they selecte"
+        }
+      ]
+    },
+    {
+      "id": "1.11.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 172,
+          "context": "1.11.01 SPICE RESERVES: All spice holdings should be kept behind the Player Shield."
+        }
+      ]
+    },
+    {
+      "id": "1.11.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 173,
+          "context": "1.11.02 HIDDEN HAND: The amount of Treachery Cards that any player has must be made known to any pla"
+        }
+      ]
+    },
+    {
+      "id": "1.12.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 177,
+          "context": "1.12.00 ALLIANCE DEALS: Any Player can make any kind of verbal Deal between one another. Once made, "
+        }
+      ]
+    },
+    {
+      "id": "1.12.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 178,
+          "context": "1.12.01 BRIBE SPICE: When Spice is paid as part of a Deal it is considered a Bribe. Allies can make "
+        }
+      ]
+    },
+    {
+      "id": "1.12.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 179,
+          "context": "1.12.02 BRIBE CONSTRAINTS: When spice is transferred as part of a Bribe, the spice is Put in FRONT o"
+        }
+      ]
+    },
+    {
+      "id": "1.12.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 180,
+          "context": "1.12.03 BRIBE LIMITS: A deal or bribe cannot involve the transfer or gift of Treachery Cards, Traito"
+        }
+      ]
+    },
+    {
+      "id": "1.12.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 181,
+          "context": "1.12.04 NO BRIBES DURING GAME SET UP: A Deal or Bribe can not be made until after 0.16."
+        }
+      ]
+    },
+    {
+      "id": "1.12.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 182,
+          "context": "1.12.05 TIME TO COLLECT: A Bribe can not be made after Mentat Pause Phase [1.09] of any Turn."
+        }
+      ]
+    },
+    {
+      "id": "1.13.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 186,
+          "context": "1.13.00 For experienced players the game is changed by adding these rules: increasing the number of "
+        }
+      ]
+    },
+    {
+      "id": "1.13.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 187,
+          "context": "1.13.01 Increased Spice Flow: During Collection Phase [1.08], each occupant of Carthag and Arrakeen "
+        }
+      ]
+    },
+    {
+      "id": "1.13.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 188,
+          "context": "1.13.02 DOUBLE SPICE BLOW: After 1.02.01 another Spice Card will be Revealed creating a second Spice"
+        }
+      ]
+    },
+    {
+      "id": "1.13.02.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 189,
+          "context": "1.13.02.01 When using double spice blow:"
+        }
+      ]
+    },
+    {
+      "id": "1.13.02.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 190,
+          "context": "1.13.02.02 When a Shai-Hulud appears in the first discard pile (Pile A) any spice and Forces on a Te"
+        }
+      ]
+    },
+    {
+      "id": "1.13.02.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 191,
+          "context": "1.13.02.03 Now Reveal another spice card and repeat the above procedure using discard pile B."
+        }
+      ]
+    },
+    {
+      "id": "1.13.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 192,
+          "context": "1.13.03 SPICE DECK RESUFFLE: When the Spice Deck needs to be reshuffled, Shuffle in all discarded te"
+        }
+      ]
+    },
+    {
+      "id": "1.13.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 193,
+          "context": "1.13.04 SPICE DIALING: Each Force used in a battle is valued at its full strength if 1 spice is paid"
+        }
+      ]
+    },
+    {
+      "id": "1.13.04.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 194,
+          "context": "1.13.04.01 Spice now plays an important role in the combat procedure. When using spice dialing:"
+        }
+      ]
+    },
+    {
+      "id": "1.13.04.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 195,
+          "context": "1.13.04.02 UNSPICED FORCES: A Force used in a battle that is not supported by 1 spice is valued at h"
+        }
+      ]
+    },
+    {
+      "id": "1.13.04.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 196,
+          "context": "1.13.04.03 NUMBER DIALED CALCULATION: When dialing a Battle Plan, one-half increments can be indicat"
+        }
+      ]
+    },
+    {
+      "id": "1.13.04.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 197,
+          "context": "1.13.04.04 SPICED FORCES: When creating a Battle Plan, a player must add the amount of spice they pl"
+        }
+      ]
+    },
+    {
+      "id": "1.13.04.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 198,
+          "context": "1.13.04.05 PAYMENT: All spice paid for Spice Dialing is Placed in the Spice Bank."
+        }
+      ]
+    },
+    {
+      "id": "1.13.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 199,
+          "context": "1.13.05 LOSING NOTHING: When a traitor card is played, the winner keeps all spice paid to support th"
+        }
+      ]
+    },
+    {
+      "id": "1.13.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 200,
+          "context": "1.13.06 ONE TIME ULTIMATE: When playing a Karama Card [3.01.11], in addition to it's normal effects "
+        }
+      ]
+    },
+    {
+      "id": "1.14.00",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 204,
+          "context": "1.14.00 In addition to the regular Karama power, all factions gain a unique power that can be used o"
+        }
+      ]
+    },
+    {
+      "id": "1.14.01",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 205,
+          "context": "1.14.01 Atreides: During Battle Phase [1.07] you may use a Karama Card to look at any one player's e"
+        }
+      ]
+    },
+    {
+      "id": "1.14.02",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 206,
+          "context": "1.14.02 Emperor: During Revival Phase [1.05] you may use a Karama Card to revive up to three of your"
+        }
+      ]
+    },
+    {
+      "id": "1.14.03",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 207,
+          "context": "1.14.03 Fremen: During Spice Blow and Nexus Phase [1.02], after turn 1 you may use a Karama Card to "
+        }
+      ]
+    },
+    {
+      "id": "1.14.04",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 208,
+          "context": "1.14.04 Harkonnen: During the Bidding Phase [1.04] you may use a Karama Card to take the entire hand"
+        }
+      ]
+    },
+    {
+      "id": "1.14.05",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 209,
+          "context": "1.14.05 Spacing Guild: During Shipment and Movement Phase [1.06] you may use a Karama Card to cancel"
+        }
+      ]
+    },
+    {
+      "id": "1.14.06",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 210,
+          "context": "1.14.06 Bene Gesserit: Instead of a once a game ability you may use any worthless card as if it is a"
+        }
+      ]
+    },
+    {
+      "id": "1.14.07",
+      "sources": [
+        {
+          "file": "numbered_rules/1.md",
+          "line": 211,
+          "context": "1.14.07 Free Traders: During Battle PHASE [1.07], you may use a Karama Card to flip all Smugglers in"
+        }
+      ]
+    },
+    {
+      "id": "2.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 4,
+          "context": "2.01 A faction has special abilities that may contradict the rules. A faction's particular abilities"
+        }
+      ]
+    },
+    {
+      "id": "2.01.00",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 12,
+          "context": "2.01.00 When playing Basic rules use only abilities 2.01.01 through 2.01.09. When playing Advanced R"
+        }
+      ]
+    },
+    {
+      "id": "2.01.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 13,
+          "context": "2.01.01 Starting Spice [0.12]: Put 10 spice behind your shield from the bank."
+        }
+      ]
+    },
+    {
+      "id": "2.01.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 14,
+          "context": "2.01.02 Starting Forces [0.13]: Place 10 Forces in Arrakeen and 10 in reserves (off-planet)."
+        }
+      ]
+    },
+    {
+      "id": "2.01.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 15,
+          "context": "2.01.03 PROPER MANAGMENT: After Player Positions [0.10] Put the Spice Deck and the Treachery Deck ne"
+        }
+      ]
+    },
+    {
+      "id": "2.01.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 16,
+          "context": "2.01.04 FREE REVIVAL: 2 Forces."
+        }
+      ]
+    },
+    {
+      "id": "2.01.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 17,
+          "context": "2.01.05 ✷BIDDING: During the Bidding Phase when a Treachery Card comes up for purchase, you may look"
+        }
+      ]
+    },
+    {
+      "id": "2.01.06",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 18,
+          "context": "2.01.06 FILAMENT BOOK: You, and only you, may keep written records about Treachery cards."
+        }
+      ]
+    },
+    {
+      "id": "2.01.07",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 19,
+          "context": "2.01.07 ✷WORMSIGN: During Shipment and Movement Phase [1.06], before anyone ships, you may look at t"
+        }
+      ]
+    },
+    {
+      "id": "2.01.08",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 20,
+          "context": "2.01.08 PRESCIENCE: Before Battle Wheel [1.07.04.01], before any elements of the Battle Plan are det"
+        }
+      ]
+    },
+    {
+      "id": "2.01.09",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 21,
+          "context": "2.01.09 ALLIANCE: In your ally's battle you may use ability Prescience [2.01.08] on your ally's oppo"
+        }
+      ]
+    },
+    {
+      "id": "2.01.10",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 22,
+          "context": "2.01.10 THE SLEEPER HAS AWAKENED: The Kwisatz Haderach card starts out inactive and the Kwisatz Hade"
+        }
+      ]
+    },
+    {
+      "id": "2.01.11",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 23,
+          "context": "2.01.11 ✷KWISATZ HADERACH: In your battle you may add the Kwisatz Haderach token to your leader or C"
+        }
+      ]
+    },
+    {
+      "id": "2.01.12",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 24,
+          "context": "2.01.12 ATREIDES LOYALTY: A leader accompanied by Kwisatz Haderach can not turn traitor."
+        }
+      ]
+    },
+    {
+      "id": "2.01.13",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 25,
+          "context": "2.01.13 PROPHECY BLINDED: The Kwisatz Haderach token can only be killed if blown up by a lasgun/shie"
+        }
+      ]
+    },
+    {
+      "id": "2.01.14",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 26,
+          "context": "2.01.14 REAWAKEN: When killed, the Kwisatz Haderach must be revived like any other leader. When all "
+        }
+      ]
+    },
+    {
+      "id": "2.01.15",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 27,
+          "context": "2.01.15 ASCENSION: Alive or dead, the Kwisatz Haderach does not prevent the Atreides from reviving l"
+        }
+      ]
+    },
+    {
+      "id": "2.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 5,
+          "context": "2.02 A Treachery Card may contradict the rules or a faction's particular abilities. A Treachery Card"
+        }
+      ]
+    },
+    {
+      "id": "2.02.00",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 31,
+          "context": "2.02.00 When playing Basic rules use only abilities 2.02.01 through 2.02.10. When playing Advanced R"
+        }
+      ]
+    },
+    {
+      "id": "2.02.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 32,
+          "context": "2.02.01 Starting Spice [0.12]: Put 5 spice behind your shield from the bank."
+        }
+      ]
+    },
+    {
+      "id": "2.02.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 33,
+          "context": "2.02.02 Starting Forces [0.13]: Place 1 Force in Polar Sink and 19 forces in reserves (off-planet).-"
+        }
+      ]
+    },
+    {
+      "id": "2.02.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 34,
+          "context": "2.02.03 PREDICTION: After Player Positions [0.10], you secretly predict when one other faction will "
+        }
+      ]
+    },
+    {
+      "id": "2.02.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 35,
+          "context": "2.02.04 FREE REVIVAL: 1 Force."
+        }
+      ]
+    },
+    {
+      "id": "2.02.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 36,
+          "context": "2.02.05 SPIRITUAL ADVISORS: Whenever any other faction Ships Forces onto Dune from off-planet, you m"
+        }
+      ]
+    },
+    {
+      "id": "2.02.06",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 37,
+          "context": "2.02.06 VOICE: After Battle Plans [1.07.04.00] you may command your opponent to play or not play one"
+        }
+      ]
+    },
+    {
+      "id": "2.02.07",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 38,
+          "context": "2.02.07 ALLIANCE: In your ally's battle you may use ability Voice [2.02.06] on your ally's opponent."
+        }
+      ]
+    },
+    {
+      "id": "2.02.08",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 39,
+          "context": "2.02.08 ADVANCED STARTING FORCES: During Forces setup [0.13], Place 1 advisor in any Territory on th"
+        }
+      ]
+    },
+    {
+      "id": "2.02.09",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 40,
+          "context": "2.02.09 CHARITY: You always receive CHOAM Charity of at least 2 spice regardless of how much spice y"
+        }
+      ]
+    },
+    {
+      "id": "2.02.10",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 41,
+          "context": "2.02.10 NONCOMBATANTS: Your Force tokens have two sides, the spiritual, striped side (advisor) and t"
+        }
+      ]
+    },
+    {
+      "id": "2.02.11",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 42,
+          "context": "2.02.11 ADVISORS: When using ability Spiritual Advisors [2.02.05], you may send 1 advisor for free f"
+        }
+      ]
+    },
+    {
+      "id": "2.02.12",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 43,
+          "context": "2.02.12 COEXISTENCE: Advisors coexist peacefully with other faction Forces in the same Territory, in"
+        }
+      ]
+    },
+    {
+      "id": "2.02.13",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 44,
+          "context": "2.02.13 FIGHTERS: When you use your normal shipment action [1.06.03] Forces must be shipped as fight"
+        }
+      ]
+    },
+    {
+      "id": "2.02.14",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 45,
+          "context": "2.02.14 ENLISTMENT: When you Move advisors to an unoccupied Territory, you must flip them to fighter"
+        }
+      ]
+    },
+    {
+      "id": "2.02.15",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 46,
+          "context": "2.02.15 INTRUSION: When a Force of another faction that you are not allied to enters a Territory whe"
+        }
+      ]
+    },
+    {
+      "id": "2.02.16",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 47,
+          "context": "2.02.16 TAKE UP ARMS: When you Move advisors into an occupied Territory, you may flip them to fighte"
+        }
+      ]
+    },
+    {
+      "id": "2.02.17",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 48,
+          "context": "2.02.17 WARTIME: Before Shipment and Movement [1.06.00], in each Territory that you have advisors, y"
+        }
+      ]
+    },
+    {
+      "id": "2.02.18",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 49,
+          "context": "2.02.18 PEACETIME: Advisors can not flip to fighters with an ally present."
+        }
+      ]
+    },
+    {
+      "id": "2.02.19",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 50,
+          "context": "2.02.19 STORMED IN: Advisors can not flip to fighters under storm."
+        }
+      ]
+    },
+    {
+      "id": "2.02.20",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 51,
+          "context": "2.02.20 ADAPTIVE FORCE: When you Move advisors or fighters into a Territory where you have the oppos"
+        }
+      ]
+    },
+    {
+      "id": "2.02.21",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 52,
+          "context": "2.02.21 UNIVERSAL STEWARDS: When advisors are ever alone in a Territory before Battle Phase [1.07], "
+        }
+      ]
+    },
+    {
+      "id": "2.02.22",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 53,
+          "context": "2.02.22 KARAMA: You may use any worthless card as if it were a Karama Card.✷"
+        }
+      ]
+    },
+    {
+      "id": "2.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 6,
+          "context": "2.03 A Variant [4] may contradict the rules, a faction ability, or a Treachery Card. Variants always"
+        }
+      ]
+    },
+    {
+      "id": "2.03.00",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 57,
+          "context": "2.03.00 When playing Basic rules use only abilities 2.03.01 through 2.03.07. When playing Advanced R"
+        }
+      ]
+    },
+    {
+      "id": "2.03.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 58,
+          "context": "2.03.01 Starting Spice [0.12]: Put 10 spice behind your shield from the bank."
+        }
+      ]
+    },
+    {
+      "id": "2.03.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 59,
+          "context": "2.03.02 Starting Forces 0.13: Place 20 Forces in reserves (off-planet)."
+        }
+      ]
+    },
+    {
+      "id": "2.03.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 60,
+          "context": "2.03.03 FREE REVIVAL: 1 Force."
+        }
+      ]
+    },
+    {
+      "id": "2.03.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 61,
+          "context": "2.03.04 PAYMENT FOR TREACHERY: During Buying A Card [1.04.06.02], when any other faction pays spice "
+        }
+      ]
+    },
+    {
+      "id": "2.03.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 62,
+          "context": "2.03.05 FAIR MARKET: You may not discount the price of Treachery Cards; the full price must be paid."
+        }
+      ]
+    },
+    {
+      "id": "2.03.06",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 63,
+          "context": "2.03.06 ALLIANCE: You may give spice to your ally at any time for any reason. Spice you give to your"
+        }
+      ]
+    },
+    {
+      "id": "2.03.07",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 64,
+          "context": "2.03.07 ALLIANCE: You may pay spice for the revival of up to 3 extra of your ally's Forces beyond th"
+        }
+      ]
+    },
+    {
+      "id": "2.03.08",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 65,
+          "context": "2.03.08 ✷SARDAUKAR: Your five starred Forces, elite Sardaukar, have a special fighting capability. T"
+        }
+      ]
+    },
+    {
+      "id": "2.03.09",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 66,
+          "context": "2.03.09 SARDAUKAR WEAKNESS: Your starred Forces are worth just one Force against Fremen Forces."
+        }
+      ]
+    },
+    {
+      "id": "2.03.10",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 67,
+          "context": "2.03.10 SARDAUKAR REVIVAL: They are treated as one Force in revival."
+        }
+      ]
+    },
+    {
+      "id": "2.03.11",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 68,
+          "context": "2.03.11 SARDAUKAR TRAINING: Only one Sardaukar Force can be revived per Turn."
+        }
+      ]
+    },
+    {
+      "id": "2.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 7,
+          "context": "2.04 When a Karama card is used to cancel an ability, as detailed in Karama card description 3.01.11"
+        }
+      ]
+    },
+    {
+      "id": "2.04.00",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 72,
+          "context": "2.04.00 When playing Basic rules use only abilities 2.04.01 through 2.04.12. When playing Advanced R"
+        }
+      ]
+    },
+    {
+      "id": "2.04.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 73,
+          "context": "2.04.01 Starting Spice [0.12]: Put 3 spice behind your shield from the bank."
+        }
+      ]
+    },
+    {
+      "id": "2.04.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 74,
+          "context": "2.04.02 Starting Forces [0.13]: Place 10 Forces distributed as you like on Sietch Tabr, False Wall S"
+        }
+      ]
+    },
+    {
+      "id": "2.04.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 75,
+          "context": "2.04.03 NATIVES: Your Reserves are in a Territory on the far side of Dune (in front of your shield, "
+        }
+      ]
+    },
+    {
+      "id": "2.04.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 76,
+          "context": "2.04.04 FREE REVIVAL: 3 Forces."
+        }
+      ]
+    },
+    {
+      "id": "2.04.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 77,
+          "context": "2.04.05 SHIPMENT: During the Shipment [1.06.03], you may Send any or all your reserves for free onto"
+        }
+      ]
+    },
+    {
+      "id": "2.04.06",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 78,
+          "context": "2.04.06 MOVEMENT: During movement you may Move your Forces two territories instead of one.✷"
+        }
+      ]
+    },
+    {
+      "id": "2.04.07",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 79,
+          "context": "2.04.07 SHAI-HULUD: When Shai-Hulud appears in a Territory where you have Forces, they are not devou"
+        }
+      ]
+    },
+    {
+      "id": "2.04.08",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 80,
+          "context": "2.04.08 BEAST OF BURDEN: Upon conclusion of the Nexus you may ride the sandworm and Move some or all"
+        }
+      ]
+    },
+    {
+      "id": "2.04.09",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 81,
+          "context": "2.04.09 FREMEN SPECIAL VICTORY CONDITION"
+        }
+      ]
+    },
+    {
+      "id": "2.04.09.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 82,
+          "context": "2.04.09.01 When the Spacing Guild is in the game and no faction has won by the end of the last turn "
+        }
+      ]
+    },
+    {
+      "id": "2.04.09.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 83,
+          "context": "2.04.09.02 Only your Forces (or no Forces) occupy Sietch Tabr and Habbanya Sietch"
+        }
+      ]
+    },
+    {
+      "id": "2.04.09.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 84,
+          "context": "2.04.09.03 Neither Harkonnen, Atreides, nor Emperor Forces occupy Tuek's Sietch."
+        }
+      ]
+    },
+    {
+      "id": "2.04.10",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 85,
+          "context": "2.04.10 ALLIANCE: You may decide to protect (or not protect) your allies from being devoured by sand"
+        }
+      ]
+    },
+    {
+      "id": "2.04.11",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 86,
+          "context": "2.04.11 ALLIANCE: At your discretion, your ally's free revival is 3.✷"
+        }
+      ]
+    },
+    {
+      "id": "2.04.12",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 87,
+          "context": "2.04.12 ALLIANCE: Your allies win with you when you win with the Fremen Special Victory Condition (a"
+        }
+      ]
+    },
+    {
+      "id": "2.04.13",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 88,
+          "context": "2.04.13 STORM RULE: Move the Storm Marker normally using the Battle Wheels on the first Turn of the "
+        }
+      ]
+    },
+    {
+      "id": "2.04.14",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 89,
+          "context": "2.04.14 ✷THERE'S A STORM COMING: At the end of the Storm Phase [1.01] you may secretly look at the S"
+        }
+      ]
+    },
+    {
+      "id": "2.04.15",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 90,
+          "context": "2.04.15 SANDWORMS: During Spice Blow [1.02], all additional sandworms that appear after the first sa"
+        }
+      ]
+    },
+    {
+      "id": "2.04.16",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 91,
+          "context": "2.04.16 STORM LOSSES: When your Forces are caught in a storm, only half of them there are destroyed "
+        }
+      ]
+    },
+    {
+      "id": "2.04.17",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 92,
+          "context": "2.04.17 STORM MIGRATION: You may Send your reserves into a storm at half loss.✷"
+        }
+      ]
+    },
+    {
+      "id": "2.04.18",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 93,
+          "context": "2.04.18 ✷FEDAYKIN: Your three starred Forces, Fedaykin, have a special fighting capability. They are"
+        }
+      ]
+    },
+    {
+      "id": "2.04.19",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 94,
+          "context": "2.04.19 FEDAYKIN REVIVAL: They are each treated as one Force in revival."
+        }
+      ]
+    },
+    {
+      "id": "2.04.20",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 95,
+          "context": "2.04.20 FEDAYKIN TRAINING: Only one Fedaykin Force can be revived per Turn."
+        }
+      ]
+    },
+    {
+      "id": "2.04.21",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 96,
+          "context": "2.04.21 ✷BATTLE HARDENED: Your Forces do not require spice to count at full strength in battles."
+        }
+      ]
+    },
+    {
+      "id": "2.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 8,
+          "context": "2.05 When a faction’s ability is used all other actions that can take place must wait until the abil"
+        }
+      ]
+    },
+    {
+      "id": "2.05.00",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 100,
+          "context": "2.05.00 When playing Basic rules use only abilities 2.05.01 through 2.05.09. When playing Advanced R"
+        }
+      ]
+    },
+    {
+      "id": "2.05.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 101,
+          "context": "2.05.01 Starting Spice [0.12]: Put 10 spice behind your shield from the bank."
+        }
+      ]
+    },
+    {
+      "id": "2.05.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 102,
+          "context": "2.05.02 Starting Forces [0.13]: Place 10 Forces in Carthag and 10 Forces in reserves (off-planet)."
+        }
+      ]
+    },
+    {
+      "id": "2.05.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 103,
+          "context": "2.05.03 TERRIBLY TRAITOROUS: During Traitors setup [0.11] keep all four Traitor cards you are dealt."
+        }
+      ]
+    },
+    {
+      "id": "2.05.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 104,
+          "context": "2.05.04 MYSTERY CARD: After Starting Treachery Card [0.14] Draw a Treachery Card."
+        }
+      ]
+    },
+    {
+      "id": "2.05.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 105,
+          "context": "2.05.05 FREE REVIVAL: 2 Forces."
+        }
+      ]
+    },
+    {
+      "id": "2.05.06",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 106,
+          "context": "2.05.06 TRAITORS: All four of the Traitor cards you kept during Traitors setup [0.14] can be used no"
+        }
+      ]
+    },
+    {
+      "id": "2.05.07",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 107,
+          "context": "2.05.07 TRAMENDOUSLY TREACHEROUS: You hand size is 8 Treachery Cards. When you have 8 Treachery Card"
+        }
+      ]
+    },
+    {
+      "id": "2.05.08",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 108,
+          "context": "2.05.08 TOP CARD: When you Buy a card, you Draw an extra card for free from the Treachery Deck (unle"
+        }
+      ]
+    },
+    {
+      "id": "2.05.09",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 109,
+          "context": "2.05.09 ALLIANCE: In your ally’s battle you may use your Traitor Cards on your ally’s opponent. This"
+        }
+      ]
+    },
+    {
+      "id": "2.05.10",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 110,
+          "context": "2.05.10 CAPTURED LEADERS"
+        }
+      ]
+    },
+    {
+      "id": "2.05.10.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 111,
+          "context": "2.05.10.01 After you win a battle and all effects have been resolved randomly select 1 Active Leader"
+        }
+      ]
+    },
+    {
+      "id": "2.05.10.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 112,
+          "context": "2.05.10.02 KILL: Place the Leader Disc face down into the Tleilaxu Tanks to gain 2 spice from the Sp"
+        }
+      ]
+    },
+    {
+      "id": "2.05.10.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 113,
+          "context": "2.05.10.03 CAPTURE: That leader is now in your Active Leader Pool. After it is used in a battle, if "
+        }
+      ]
+    },
+    {
+      "id": "2.05.11",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 114,
+          "context": "2.05.11 PRISON BREAK: When all your own leaders have been killed, you must return all captured leade"
+        }
+      ]
+    },
+    {
+      "id": "2.05.12",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 115,
+          "context": "2.05.12 TYING UP LOOSE ENDS: Killed captured leaders are Placed in the Tleilaxu Tanks from which the"
+        }
+      ]
+    },
+    {
+      "id": "2.05.13",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 116,
+          "context": "2.05.13 NO LOYALTY: A captured leader used in battle may be called traitor with the matching Traitor"
+        }
+      ]
+    },
+    {
+      "id": "2.06.00",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 120,
+          "context": "2.06.00 When playing Basic rules use only abilities 2.06.01 through 2.06.11. When playing Advanced R"
+        }
+      ]
+    },
+    {
+      "id": "2.06.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 121,
+          "context": "2.06.01 Starting Spice [0.12]: Put 5 spice behind your shield from the bank."
+        }
+      ]
+    },
+    {
+      "id": "2.06.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 122,
+          "context": "2.06.02 Starting Forces [0.13]: Place 5 Forces in Tuek's Sietch and 15 Forces in reserves (off-plane"
+        }
+      ]
+    },
+    {
+      "id": "2.06.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 123,
+          "context": "2.06.03 FREE REVIVAL: 1 Force."
+        }
+      ]
+    },
+    {
+      "id": "2.06.04",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 124,
+          "context": "2.06.04 PAYMENT FOR SHIPMENT: When another faction ships Forces onto Dune, they pay the spice to you"
+        }
+      ]
+    },
+    {
+      "id": "2.06.05",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 125,
+          "context": "2.06.05 THREE TYPES OF SHIPMENT: You are capable of making one of three types of shipments each Turn"
+        }
+      ]
+    },
+    {
+      "id": "2.06.05.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 126,
+          "context": "2.06.05.01 NORMAL SHIPMENT: You may ship normally from off-planet reserves to Dune."
+        }
+      ]
+    },
+    {
+      "id": "2.06.05.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 127,
+          "context": "2.06.05.02 CROSS-SHIP: You may ship any number of Forces from any one Territory to any other Territo"
+        }
+      ]
+    },
+    {
+      "id": "2.06.05.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 128,
+          "context": "2.06.05.03 OFF-PLANET: You may ship any number of Forces from any one Territory back to your reserve"
+        }
+      ]
+    },
+    {
+      "id": "2.06.06",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 129,
+          "context": "2.06.06 HALF PRICE SHIPPING: You pay only half the normal price (rounded up) when shipping your Forc"
+        }
+      ]
+    },
+    {
+      "id": "2.06.07",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 130,
+          "context": "2.06.07 RETREAT CALCULATIONS: The final price of your Forces shipped back to reserves is 1 spice for"
+        }
+      ]
+    },
+    {
+      "id": "2.06.08",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 131,
+          "context": "2.06.08 SPACING GUILD SPECIAL VICTORY CONDITION: If no faction has been able to win the game by the "
+        }
+      ]
+    },
+    {
+      "id": "2.06.09",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 132,
+          "context": "2.06.09 ALLIANCE: Your ally may use the ability HALF PRICE SHIPPING [2.06.06].✷"
+        }
+      ]
+    },
+    {
+      "id": "2.06.10",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 133,
+          "context": "2.06.10 ALLIANCE: Your ally may use the ability CROSS-SHIP [2.06.05.01].✷"
+        }
+      ]
+    },
+    {
+      "id": "2.06.11",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 134,
+          "context": "2.06.11 ALLIANCE: Your ally wins with you when you win with the Spacing Guild Special Victory Condit"
+        }
+      ]
+    },
+    {
+      "id": "2.06.12",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 135,
+          "context": "2.06.12 ✷SHIP AS IT PLEASES YOU: During the Shipment and Movement Phase you may activate either abil"
+        }
+      ]
+    },
+    {
+      "id": "2.06.12.01",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 136,
+          "context": "2.06.12.01 The rest of the factions must make their shipments and movements in the proper sequence. "
+        }
+      ]
+    },
+    {
+      "id": "2.06.12.02",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 137,
+          "context": "2.06.12.02 SHIP AND MOVE AHEAD OF SCHEDULE: You may take your shipment and move action before any pl"
+        }
+      ]
+    },
+    {
+      "id": "2.06.12.03",
+      "sources": [
+        {
+          "file": "numbered_rules/2.md",
+          "line": 138,
+          "context": "2.06.12.03 HOLDING PATTERN: When you are up next in storm order you may announce, \"Delay\". You may t"
+        }
+      ]
+    },
+    {
+      "id": "3.01",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 4,
+          "context": "3.01 A faction has special abilities that may contradict the rules. A faction's particular abilities"
+        }
+      ]
+    },
+    {
+      "id": "3.01.00",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 12,
+          "context": "3.01.00 This section of the rules lists all Treachery Cards in the Classic Dune game."
+        }
+      ]
+    },
+    {
+      "id": "3.01.01",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 13,
+          "context": "3.01.01 BALISET: Worthless Card - Play as part of your Battle Plan in place of a weapon, defense, or"
+        }
+      ]
+    },
+    {
+      "id": "3.01.02",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 14,
+          "context": "3.01.02 CHAUMAS: Weapon-Poison - Play as part of your Battle Plan. Kills opponent's leader before ba"
+        }
+      ]
+    },
+    {
+      "id": "3.01.03",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 15,
+          "context": "3.01.03 CHAUMURKY: Weapon-Poison - Play as part of your Battle Plan. Kills opponent's leader before "
+        }
+      ]
+    },
+    {
+      "id": "3.01.04",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 16,
+          "context": "3.01.04 CHEAP HERO: Special-Leader - Play as a leader with zero strength on your Battle Plan. You ma"
+        }
+      ]
+    },
+    {
+      "id": "3.01.05",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 17,
+          "context": "3.01.05 CRYSKNIFE: Weapon-Projectile - Play as part of your Battle Plan. Kills opponent's leader bef"
+        }
+      ]
+    },
+    {
+      "id": "3.01.06",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 18,
+          "context": "3.01.06 ELLACA DRUG: Weapon-Poison - Play as part of your Battle Plan. Kills opponent's leader befor"
+        }
+      ]
+    },
+    {
+      "id": "3.01.07",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 19,
+          "context": "3.01.07 FAMILY ATOMICS: Special-Storm - After the first game Turn, if you have one or more Forces on"
+        }
+      ]
+    },
+    {
+      "id": "3.01.08",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 20,
+          "context": "3.01.08 GOM JABBAR: Weapon-Poison - Play as part of your Battle Plan. Kills opponent's leader before"
+        }
+      ]
+    },
+    {
+      "id": "3.01.09",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 21,
+          "context": "3.01.09 HAJR: Special-Movement - Play during FORCE MOVEMENT [1.06.05]. You gain an extra Force movem"
+        }
+      ]
+    },
+    {
+      "id": "3.01.10",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 22,
+          "context": "3.01.10 JUBBA CLOAK: Worthless Card - Play as part of your Battle Plan in place of a weapon, defense"
+        }
+      ]
+    },
+    {
+      "id": "3.01.11",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 23,
+          "context": "3.01.11 KARAMA: Special"
+        }
+      ]
+    },
+    {
+      "id": "3.01.11.00",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 24,
+          "context": "3.01.11.00 Play at anytime to do one of these options when appropriate, then discard."
+        }
+      ]
+    },
+    {
+      "id": "3.01.11.01",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 25,
+          "context": "3.01.11.01 Cancel one use of a faction ability that has an ✷ after it when another player attempts t"
+        }
+      ]
+    },
+    {
+      "id": "3.01.11.02",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 26,
+          "context": "3.01.11.02 Prevent one use of a faction ability that has an ✷ before and after it. This must be done"
+        }
+      ]
+    },
+    {
+      "id": "3.01.11.03",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 27,
+          "context": "3.01.11.03 Purchase a shipment of Forces onto the board at Guild Rates (1/2 normal) paid to the Spic"
+        }
+      ]
+    },
+    {
+      "id": "3.01.11.04",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 28,
+          "context": "3.01.11.04 Bid more spice than you have (without Revealing this card) and/or Buy a Treachery Card wi"
+        }
+      ]
+    },
+    {
+      "id": "3.01.11.05",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 29,
+          "context": "3.01.11.05 In Advanced use a Once-a-game special Karama power (see 1.14)."
+        }
+      ]
+    },
+    {
+      "id": "3.01.12",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 30,
+          "context": "3.01.12 KULON: Worthless Card - Play as part of your Battle Plan in place of a weapon, defense, or b"
+        }
+      ]
+    },
+    {
+      "id": "3.01.13",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 31,
+          "context": "3.01.13 LA, LA, LA: Worthless Card - Play as part of your Battle Plan in place of a weapon, defense,"
+        }
+      ]
+    },
+    {
+      "id": "3.01.14",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 32,
+          "context": "3.01.14 LASGUN: Weapon-Special - Play as part of your Battle Plan. Kills opponent's leader before ba"
+        }
+      ]
+    },
+    {
+      "id": "3.01.15",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 33,
+          "context": "3.01.15 MAULA PISTOL: Weapon-Projectile - Play as part of your Battle Plan. Kills opponent's leader "
+        }
+      ]
+    },
+    {
+      "id": "3.01.16",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 34,
+          "context": "3.01.16 SHIELD: Defense-Projectile - Play as part of your Battle Plan. Protects your leader from a p"
+        }
+      ]
+    },
+    {
+      "id": "3.01.17",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 35,
+          "context": "3.01.17 SLIP TIP: Weapon-Projectile - Play as part of your Battle Plan. Kills opponent's leader befo"
+        }
+      ]
+    },
+    {
+      "id": "3.01.18",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 36,
+          "context": "3.01.18 SNOOPER: Defense-Poison - Play as part of your Battle Plan. Protects your leader from a pois"
+        }
+      ]
+    },
+    {
+      "id": "3.01.19",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 37,
+          "context": "3.01.19 STUNNER: Weapon-Projectile - Play as part of your Battle Plan. Kills opponent's leader befor"
+        }
+      ]
+    },
+    {
+      "id": "3.01.20",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 38,
+          "context": "3.01.20 TLEILAXU GHOLA: Special - Play at any time to gain an extra Revival. You may immediately rev"
+        }
+      ]
+    },
+    {
+      "id": "3.01.21",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 39,
+          "context": "3.01.21 TRIP TO GAMONT: Worthless Card - Play as part of your Battle Plan in place of a weapon, defe"
+        }
+      ]
+    },
+    {
+      "id": "3.01.22",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 40,
+          "context": "3.01.22 TRUTHTRANCE: Special - Play at anytime to publicly ask one other player a single yes/no ques"
+        }
+      ]
+    },
+    {
+      "id": "3.01.23",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 41,
+          "context": "3.01.23 WEATHER CONTROL: Special-Storm - After the first game Turn, play during 1.01.02 before the S"
+        }
+      ]
+    },
+    {
+      "id": "3.02",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 5,
+          "context": "3.02 A Treachery Card may contradict the rules or a faction's particular abilities. A Treachery Card"
+        }
+      ]
+    },
+    {
+      "id": "3.03",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 6,
+          "context": "3.03 A Variant [4] may contradict the rules, a faction ability, or a Treachery Card. Variants always"
+        }
+      ]
+    },
+    {
+      "id": "3.04",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 7,
+          "context": "3.04 When a Karama card is used to cancel an ability, as detailed in Karama card description 3.01.11"
+        }
+      ]
+    },
+    {
+      "id": "3.05",
+      "sources": [
+        {
+          "file": "numbered_rules/3.md",
+          "line": 8,
+          "context": "3.05 When a faction’s ability is used all other actions that can take place must wait until the abil"
+        }
+      ]
+    }
+  ]
+}

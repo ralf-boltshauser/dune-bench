@@ -8,7 +8,6 @@
  */
 
 import { setActiveFactions } from "../../../state";
-import { getBGFightersInSector } from "../../../state/queries";
 import {
   Faction,
   FACTION_NAMES,
@@ -22,10 +21,14 @@ import {
   type PhaseEvent,
   type PhaseStepResult,
 } from "../../types";
+import { isBattleCapable, createBattleContext } from "./utils";
 
 /**
  * Request battle choice from the current aggressor.
  * Returns a PhaseStepResult with a request to choose a battle, or forces resolution if needed.
+ *
+ * @rule 1.07.02 - FIRST PLAYER: When resolving battles, the First Player is named the Aggressor until all their battles, if any, have been fought. The Aggressor chooses the order in which they wish to fight their battles. Then the player next in Storm Order becomes the Aggressor and so on, until all battles are resolved.
+ * @rule 1.07.03 - MULTIPLE BATTLES: When there are three or more players in the same Territory, the Aggressor picks who they will battle first, second, etc. for as long as they have Forces in that Territory.
  */
 export function requestBattleChoice(
   context: BattlePhaseContext,
@@ -54,14 +57,8 @@ export function requestBattleChoice(
     const availableBattles = context.pendingBattles.filter((b) => {
       if (!b.factions.includes(aggressor)) return false;
 
-      // For Bene Gesserit, only include battles where they have fighters (not just advisors)
-      // Advisors cannot participate in combat (Rule 2.02.12)
-      if (aggressor === Faction.BENE_GESSERIT) {
-        const fighters = getBGFightersInSector(state, b.territoryId, b.sector);
-        return fighters > 0;
-      }
-
-      return true;
+      // Only include battles where aggressor has battle-capable forces
+      return isBattleCapable(state, aggressor, b.territoryId, b.sector);
     });
 
     if (availableBattles.length > 0) {
@@ -147,13 +144,8 @@ export function processChooseBattle(
     const availableBattles = context.pendingBattles.filter((b) => {
       if (!b.factions.includes(currentAggressor)) return false;
 
-      // For Bene Gesserit, only include battles where they have fighters (not just advisors)
-      if (currentAggressor === Faction.BENE_GESSERIT) {
-        const fighters = getBGFightersInSector(state, b.territoryId, b.sector);
-        return fighters > 0;
-      }
-
-      return true;
+      // Only include battles where aggressor has battle-capable forces
+      return isBattleCapable(state, currentAggressor, b.territoryId, b.sector);
     });
 
     if (availableBattles.length > 0) {
@@ -180,24 +172,12 @@ export function processChooseBattle(
       }
 
       // Set up current battle (but don't create default plans yet - ask agents first)
-      context.currentBattle = {
-        territoryId: firstBattle.territoryId,
-        sector: firstBattle.sector,
-        aggressor: currentAggressor,
-        defender,
-        aggressorPlan: null, // Will be set when agents respond
-        defenderPlan: null, // Will be set when agents respond
-        prescienceUsed: false,
-        prescienceTarget: null,
-        prescienceOpponent: null,
-        prescienceResult: null,
-        prescienceBlocked: false,
-        voiceUsed: false,
-        voiceCommand: null,
-        traitorCalled: false,
-        traitorCalledBy: null,
-        traitorCallsByBothSides: false,
-      };
+      context.currentBattle = createBattleContext(
+        firstBattle.territoryId,
+        firstBattle.sector,
+        currentAggressor,
+        defender
+      );
 
       events.push({
         type: "BATTLE_STARTED",
@@ -236,27 +216,19 @@ export function processChooseBattle(
       b.factions.includes(defender)
   );
 
-  // Validate that Bene Gesserit has fighters (not just advisors) if they're the aggressor
-  // Advisors cannot participate in combat (Rule 2.02.12)
-  if (aggressor === Faction.BENE_GESSERIT) {
-    const fighters = getBGFightersInSector(state, territoryId, sector);
-    if (fighters === 0) {
-      // Invalid choice - BG only has advisors, cannot battle
-      console.warn(
-        `[BattlePhase] ${FACTION_NAMES[aggressor]} chose battle in ${territoryId} but only has advisors (no fighters). ` +
-          `Forcing resolution of first available battle with fighters.`
-      );
+  // Validate that aggressor has battle-capable forces
+  if (!isBattleCapable(state, aggressor, territoryId, sector)) {
+    // Invalid choice - aggressor doesn't have battle-capable forces
+    console.warn(
+      `[BattlePhase] ${FACTION_NAMES[aggressor]} chose battle in ${territoryId} but has no battle-capable forces. ` +
+        `Forcing resolution of first available battle.`
+    );
 
-      // Find first available battle where BG has fighters
-      const availableBattles = context.pendingBattles.filter((b) => {
-        if (!b.factions.includes(aggressor)) return false;
-        const bgFighters = getBGFightersInSector(
-          state,
-          b.territoryId,
-          b.sector
-        );
-        return bgFighters > 0;
-      });
+    // Find first available battle where aggressor has battle-capable forces
+    const availableBattles = context.pendingBattles.filter((b) => {
+      if (!b.factions.includes(aggressor)) return false;
+      return isBattleCapable(state, aggressor, b.territoryId, b.sector);
+    });
 
       if (availableBattles.length > 0) {
         const firstBattle = availableBattles[0];
@@ -274,24 +246,12 @@ export function processChooseBattle(
           return requestBattleChoice();
         }
 
-        context.currentBattle = {
-          territoryId: firstBattle.territoryId,
-          sector: firstBattle.sector,
+        context.currentBattle = createBattleContext(
+          firstBattle.territoryId,
+          firstBattle.sector,
           aggressor,
-          defender: validDefender,
-          aggressorPlan: null, // Will be set when agents respond
-          defenderPlan: null, // Will be set when agents respond
-          prescienceUsed: false,
-          prescienceTarget: null,
-          prescienceOpponent: null,
-          prescienceResult: null,
-          prescienceBlocked: false,
-          voiceUsed: false,
-          voiceCommand: null,
-          traitorCalled: false,
-          traitorCalledBy: null,
-          traitorCallsByBothSides: false,
-        };
+          validDefender
+        );
 
         events.push({
           type: "BATTLE_STARTED",
@@ -315,7 +275,6 @@ export function processChooseBattle(
         return requestBattleChoice();
       }
     }
-  }
 
   if (battleIndex === -1) {
     // Invalid battle choice - try to force resolve instead of moving to next aggressor
@@ -326,13 +285,8 @@ export function processChooseBattle(
     const availableBattles = context.pendingBattles.filter((b) => {
       if (!b.factions.includes(aggressor)) return false;
 
-      // For Bene Gesserit, only include battles where they have fighters (not just advisors)
-      if (aggressor === Faction.BENE_GESSERIT) {
-        const fighters = getBGFightersInSector(state, b.territoryId, b.sector);
-        return fighters > 0;
-      }
-
-      return true;
+      // Only include battles where aggressor has battle-capable forces
+      return isBattleCapable(state, aggressor, b.territoryId, b.sector);
     });
 
     if (availableBattles.length > 0) {
@@ -351,24 +305,12 @@ export function processChooseBattle(
         return requestBattleChoice();
       }
 
-      context.currentBattle = {
-        territoryId: firstBattle.territoryId,
-        sector: firstBattle.sector,
+      context.currentBattle = createBattleContext(
+        firstBattle.territoryId,
+        firstBattle.sector,
         aggressor,
-        defender: validDefender,
-        aggressorPlan: null, // Will be set when agents respond
-        defenderPlan: null, // Will be set when agents respond
-        prescienceUsed: false,
-        prescienceTarget: null,
-        prescienceOpponent: null,
-        prescienceResult: null,
-        prescienceBlocked: false,
-        voiceUsed: false,
-        voiceCommand: null,
-        traitorCalled: false,
-        traitorCalledBy: null,
-        traitorCallsByBothSides: false,
-      };
+        validDefender
+      );
 
       events.push({
         type: "BATTLE_STARTED",
@@ -394,24 +336,7 @@ export function processChooseBattle(
   }
 
   // Set up current battle
-  context.currentBattle = {
-    territoryId,
-    sector,
-    aggressor,
-    defender,
-    aggressorPlan: null,
-    defenderPlan: null,
-    prescienceUsed: false,
-    prescienceTarget: null,
-    prescienceOpponent: null,
-    prescienceResult: null,
-    prescienceBlocked: false,
-    voiceUsed: false,
-    voiceCommand: null,
-    traitorCalled: false,
-    traitorCalledBy: null,
-    traitorCallsByBothSides: false,
-  };
+  context.currentBattle = createBattleContext(territoryId, sector, aggressor, defender);
 
   events.push({
     type: "BATTLE_STARTED",
@@ -506,24 +431,12 @@ function forceResolveBattle(
   }
 
   // Set up current battle (but don't create default plans yet - ask agents first)
-  context.currentBattle = {
-    territoryId: firstBattle.territoryId,
-    sector: firstBattle.sector,
+  context.currentBattle = createBattleContext(
+    firstBattle.territoryId,
+    firstBattle.sector,
     aggressor,
-    defender,
-    aggressorPlan: null, // Will be set when agents respond
-    defenderPlan: null, // Will be set when agents respond
-    prescienceUsed: false,
-    prescienceTarget: null,
-    prescienceOpponent: null,
-    prescienceResult: null,
-    prescienceBlocked: false,
-    voiceUsed: false,
-    voiceCommand: null,
-    traitorCalled: false,
-    traitorCalledBy: null,
-    traitorCallsByBothSides: false,
-  };
+    defender
+  );
 
   // Proceed to battle plans - ask agents for their plans
   return requestBattlePlans(state, events);

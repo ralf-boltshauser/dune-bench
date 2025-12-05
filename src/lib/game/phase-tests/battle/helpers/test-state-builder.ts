@@ -37,7 +37,7 @@ export interface SpicePlacement {
 }
 
 export interface TestStateConfig {
-  factions: Faction[];
+  factions: readonly Faction[];
   phase?: Phase;
   turn?: number;
   advancedRules?: boolean;

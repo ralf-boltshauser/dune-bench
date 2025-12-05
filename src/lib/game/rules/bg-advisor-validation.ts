@@ -2,14 +2,14 @@
  * Bene Gesserit Advisor Flipping Validation Rules
  * 
  * Validates restrictions on flipping advisors to fighters:
- * - PEACETIME (Rule 2.02.19): Cannot flip with ally present
- * - STORMED IN (Rule 2.02.20): Cannot flip under storm
+ * @rule 2.02.18 PEACETIME: Cannot flip with ally present
+ * @rule 2.02.19 STORMED IN: Cannot flip under storm
  * 
  * These restrictions apply to all flip abilities:
- * - ENLISTMENT (Rule 2.02.15)
- * - TAKE UP ARMS (Rule 2.02.17)
- * - WARTIME (Rule 2.02.18)
- * - UNIVERSAL STEWARDS (Rule 2.02.22)
+ * - ENLISTMENT (Rule 2.02.14)
+ * - TAKE UP ARMS (Rule 2.02.16)
+ * - WARTIME (Rule 2.02.17)
+ * - UNIVERSAL STEWARDS (Rule 2.02.21)
  */
 
 import { Faction, TerritoryId, type GameState } from '../types';
@@ -21,8 +21,9 @@ import { getAlly, getForcesInTerritory, isSectorInStorm } from '../state';
 
 /**
  * Check if PEACETIME restriction prevents flipping advisors to fighters.
+ * @rule 2.02.18
  * 
- * Rule 2.02.19: "Advisors can not flip to fighters with an ally present."
+ * Rule 2.02.18: "Advisors can not flip to fighters with an ally present."
  * 
  * @param state Game state
  * @param faction Bene Gesserit faction
@@ -52,8 +53,9 @@ export function isPEACETIMERestrictionActive(
 
 /**
  * Check if STORMED IN restriction prevents flipping advisors to fighters.
+ * @rule 2.02.19
  * 
- * Rule 2.02.20: "Advisors can not flip to fighters under storm."
+ * Rule 2.02.19: "Advisors can not flip to fighters under storm."
  * 
  * @param state Game state
  * @param sector Sector where advisors are located
@@ -128,5 +130,7 @@ export function validateAdvisorFlipToFighters(
     canFlip: true,
   };
 }
+
+
 
 

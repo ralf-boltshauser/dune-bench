@@ -14,12 +14,17 @@ import type { AbilityContext, AbilityResult } from './types';
 // =============================================================================
 
 /**
- * Rule 2.01.05: BIDDING ability
- * "During the Bidding Phase when a Treachery Card comes up for purchase,
- * you may look at it before any faction bids on it."
+ * @rule 2.01.05
+ * BIDDING ability: During the Bidding Phase when a Treachery Card comes up for purchase,
+ * you may look at it before any faction bids on it.
+ * 
+ * ARCHITECTURAL SAFEGUARD: This function is idempotent - it checks if Atreides has already
+ * peeked at this card index to prevent duplicate requests and infinite loops.
  * 
  * @param context - Ability context containing state, card info, and auction details
- * @returns Ability result with peek request if Atreides is in game
+ * @param cardIndex - The index of the card in the auction (0-based)
+ * @param atreidesPeekedCards - Set of card indices that Atreides has already peeked at
+ * @returns Ability result with peek request if Atreides is in game and hasn't peeked yet
  */
 export function createAtreidesBiddingPeekRequest(
   context: AbilityContext & {
@@ -27,12 +32,21 @@ export function createAtreidesBiddingPeekRequest(
     auctionNumber: number;
     totalAuctions: number;
     startingBidder: Faction;
-  }
+  },
+  cardIndex: number,
+  atreidesPeekedCards: Set<number>
 ): AbilityResult {
   const { state, cardId, auctionNumber, totalAuctions, startingBidder } = context;
 
   // Check if Atreides is in the game
   if (!state.factions.has(Faction.ATREIDES)) {
+    return { shouldTrigger: false };
+  }
+
+  // ARCHITECTURAL SAFEGUARD: Prevent duplicate peek requests for the same card
+  // This makes the function idempotent and prevents infinite loops
+  if (atreidesPeekedCards.has(cardIndex)) {
+    // Atreides has already peeked at this card - don't create another request
     return { shouldTrigger: false };
   }
 
@@ -58,6 +72,7 @@ export function createAtreidesBiddingPeekRequest(
       totalAuctions,
       startingBidder,
       isAtreides: true,
+      cardIndex, // Include card index for tracking
     },
     availableActions: ['PASS'], // This is informational - they can acknowledge
   };

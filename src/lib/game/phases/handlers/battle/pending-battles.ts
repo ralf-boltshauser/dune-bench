@@ -4,9 +4,10 @@
  * Handles updating pending battles after battles are resolved.
  */
 
-import { getBGFightersInSector, getFactionsInTerritoryAndSector } from "../../../state";
+import { getFactionsInTerritoryAndSector } from "../../../state";
 import { Faction, TerritoryId, type GameState } from "../../../types";
 import { type PendingBattle } from "../../types";
+import { isBattleCapable } from "./utils";
 
 /**
  * Update pending battles after a battle is resolved.
@@ -26,22 +27,9 @@ export function updatePendingBattlesAfterBattle(
   const currentFactions = getFactionsInTerritoryAndSector(state, territoryId, sector);
   
   // Filter to only battle-capable factions
-  const battleCapableFactions = currentFactions.filter((faction) => {
-    if (faction === Faction.BENE_GESSERIT) {
-      // BG: Only fighters (not advisors) can battle
-      return getBGFightersInSector(state, territoryId, sector) > 0;
-    }
-    // Other factions: Check if they have any forces
-    const factionState = state.factions.get(faction);
-    if (!factionState) return false;
-    
-    const stack = factionState.forces.onBoard.find(
-      (s) => s.territoryId === territoryId && s.sector === sector
-    );
-    if (!stack) return false;
-    
-    return stack.forces.regular + stack.forces.elite > 0;
-  });
+  const battleCapableFactions = currentFactions.filter((faction) =>
+    isBattleCapable(state, faction, territoryId, sector)
+  );
 
   // Update all battles in this territory
   return pendingBattles

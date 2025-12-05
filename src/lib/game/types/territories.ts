@@ -83,6 +83,17 @@ export interface TerritoryDefinition {
   protectedFromStorm?: boolean; // Rock territories are protected
   forceSlots?: ForceSlotMapping[]; // Force slot mappings for visualization
   spiceSlotId?: string; // Spice slot SVG ID (e.g., "spice-broken-land")
+  /**
+   * Amount of spice that blows when this territory's spice card is revealed.
+   * Only defined for spice blow territories (those with a spiceSlotId/spiceSector).
+   */
+  spiceAmount?: number;
+  /**
+   * Primary sector used for spice blows in this territory.
+   * When present, MUST be one of the entries in `sectors`.
+   * Used as the canonical location of the spice blow icon.
+   */
+  spiceSector?: number;
 }
 
 // Stronghold territories
@@ -98,6 +109,25 @@ export const STRONGHOLD_TERRITORIES: TerritoryId[] = [
 export const ORNITHOPTER_TERRITORIES: TerritoryId[] = [
   TerritoryId.ARRAKEEN,
   TerritoryId.CARTHAG,
+];
+
+// Territories where spice blows can occur (must have spiceBlowLocation: true)
+export const SPICE_BLOW_TERRITORIES: TerritoryId[] = [
+  TerritoryId.CIELAGO_NORTH,
+  TerritoryId.CIELAGO_SOUTH,
+  TerritoryId.SOUTH_MESA,
+  TerritoryId.FUNERAL_PLAIN,
+  TerritoryId.THE_GREAT_FLAT,
+  TerritoryId.HABBANYA_ERG,
+  TerritoryId.HABBANYA_RIDGE_FLAT,
+  TerritoryId.WIND_PASS_NORTH,
+  TerritoryId.THE_MINOR_ERG,
+  TerritoryId.RED_CHASM,
+  TerritoryId.SIHAYA_RIDGE,
+  TerritoryId.OLD_GAP,
+  TerritoryId.BROKEN_LAND,
+  TerritoryId.HAGGA_BASIN,
+  TerritoryId.ROCK_OUTCROPPINGS,
 ];
 
 // The full territory map - adjacencies based on GF9 board
@@ -287,6 +317,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       },
     ],
     spiceSlotId: "spice-cielago-north",
+    // Spice icon is in sector 2 on the board
+    spiceSector: 2,
+    spiceAmount: 8,
   },
   [TerritoryId.CIELAGO_SOUTH]: {
     id: TerritoryId.CIELAGO_SOUTH,
@@ -313,6 +346,8 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       },
     ],
     spiceSlotId: "spice-cielago-south",
+    spiceSector: 1,
+    spiceAmount: 12,
   },
   [TerritoryId.MERIDIAN]: {
     id: TerritoryId.MERIDIAN,
@@ -438,6 +473,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       },
     ],
     spiceSlotId: "spice-south-mesa",
+    // Spice icon is in sector 4 on the board
+    spiceSector: 4,
+    spiceAmount: 10,
   },
   [TerritoryId.FUNERAL_PLAIN]: {
     id: TerritoryId.FUNERAL_PLAIN,
@@ -458,6 +496,8 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 4,
       },
     ],
+    spiceSector: 14,
+    spiceAmount: 6,
   },
   [TerritoryId.THE_GREAT_FLAT]: {
     id: TerritoryId.THE_GREAT_FLAT,
@@ -479,6 +519,8 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 4,
       },
     ],
+    spiceSector: 14,
+    spiceAmount: 10,
   },
   [TerritoryId.THE_GREATER_FLAT]: {
     id: TerritoryId.THE_GREATER_FLAT,
@@ -524,6 +566,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 4,
       },
     ],
+    // Spice icon is in sector 15 on the board
+    spiceSector: 15,
+    spiceAmount: 8,
   },
   [TerritoryId.HABBANYA_RIDGE_FLAT]: {
     id: TerritoryId.HABBANYA_RIDGE_FLAT,
@@ -550,6 +595,8 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 4,
       },
     ],
+    // Spice icon is in sector 17 on the board
+    spiceSector: 17,
   },
   [TerritoryId.FALSE_WALL_WEST]: {
     id: TerritoryId.FALSE_WALL_WEST,
@@ -609,6 +656,8 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 4,
       },
     ],
+    spiceSector: 16,
+    spiceAmount: 6,
   },
   [TerritoryId.THE_MINOR_ERG]: {
     id: TerritoryId.THE_MINOR_ERG,
@@ -629,6 +678,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       { sector: 7, slotGroupId: "force-slot-minor-erg-sector-7", slotCount: 2 },
     ],
     spiceSlotId: "spice-the-minor-erg",
+    // Spice icon is in sector 7 on the board
+    spiceSector: 7,
+    spiceAmount: 8,
   },
   [TerritoryId.PASTY_MESA]: {
     id: TerritoryId.PASTY_MESA,
@@ -682,12 +734,16 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       { sector: 6, slotGroupId: "force-slot-red-chasm-sector-6", slotCount: 4 },
     ],
     spiceSlotId: "spice-red-chasm",
+    // Spice icon is in sector 6 on the board
+    spiceSector: 6,
+    spiceAmount: 8,
   },
   [TerritoryId.SIHAYA_RIDGE]: {
     id: TerritoryId.SIHAYA_RIDGE,
     name: "Sihaya Ridge",
     type: TerritoryType.SAND,
-    sectors: [7],
+    // Sihaya Ridge spans sector 8 on the board
+    sectors: [8],
     adjacentTerritories: [
       TerritoryId.RED_CHASM,
       TerritoryId.SHIELD_WALL,
@@ -696,12 +752,15 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     spiceBlowLocation: true,
     forceSlots: [
       {
-        sector: 7,
-        slotGroupId: "force-slot-sihaya-ridge-sector-7",
+        sector: 8,
+        slotGroupId: "force-slot-sihaya-ridge-sector-8",
         slotCount: 4,
       },
     ],
     spiceSlotId: "spice-sihaya-ridge",
+    // Spice icon is in sector 8 on the board
+    spiceSector: 8,
+    spiceAmount: 6,
   },
   [TerritoryId.SHIELD_WALL]: {
     id: TerritoryId.SHIELD_WALL,
@@ -734,7 +793,6 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
     name: "Hole In The Rock",
     type: TerritoryType.SAND,
     sectors: [8],
-    protectedFromStorm: true,
     adjacentTerritories: [
       TerritoryId.SIHAYA_RIDGE,
       TerritoryId.SHIELD_WALL,
@@ -822,6 +880,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       { sector: 10, slotGroupId: "force-slot-old-gap-sector-10", slotCount: 2 },
     ],
     spiceSlotId: "spice-old-gap",
+    // Spice icon is in sector 9 on the board
+    spiceSector: 9,
+    spiceAmount: 6,
   },
   [TerritoryId.BROKEN_LAND]: {
     id: TerritoryId.BROKEN_LAND,
@@ -848,6 +909,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
       },
     ],
     spiceSlotId: "spice-broken-land",
+    // Spice icon is in sector 11 on the board
+    spiceSector: 11,
+    spiceAmount: 8,
   },
   [TerritoryId.TSIMPO]: {
     id: TerritoryId.TSIMPO,
@@ -935,6 +999,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 4,
       },
     ],
+    // Spice icon is in sector 11 on the board
+    spiceSector: 11,
+    spiceAmount: 10,
   },
   [TerritoryId.ROCK_OUTCROPPINGS]: {
     id: TerritoryId.ROCK_OUTCROPPINGS,
@@ -962,6 +1029,9 @@ export const TERRITORY_DEFINITIONS: Record<TerritoryId, TerritoryDefinition> = {
         slotCount: 3,
       },
     ],
+    // Spice icon is in sector 13 on the board
+    spiceSector: 13,
+    spiceAmount: 6,
   },
   [TerritoryId.WIND_PASS]: {
     id: TerritoryId.WIND_PASS,

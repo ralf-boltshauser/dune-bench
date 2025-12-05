@@ -9,8 +9,11 @@ import '../../../agent/env-loader';
 import { createAgentProvider } from '../../../agent/azure-provider';
 import { AgentResponseBuilder } from '../helpers/agent-response-builder';
 import { TestLogger } from '../../helpers/test-logger';
-import type { GameState } from '../../../types';
-import type { AgentResponse } from '../../../phases/types';
+import { StormAssertions } from '../helpers/assertions';
+import { EventAssertions } from '../helpers/event-assertions';
+import { StateAssertions } from '../helpers/state-assertions';
+import type { GameState, Phase, Faction } from '../../../types';
+import type { AgentResponse, PhaseStepResult } from '../../../phases/types';
 
 export interface ScenarioResult {
   state: GameState;
@@ -18,6 +21,10 @@ export interface ScenarioResult {
   stepCount: number;
   completed: boolean;
   error?: Error;
+  // Helper access for assertions
+  assertions: typeof StormAssertions;
+  eventAssertions: typeof EventAssertions;
+  stateAssertions: typeof StateAssertions;
 }
 
 /**
@@ -200,6 +207,9 @@ export async function runStormScenario(
         events,
         stepCount,
         completed: true,
+        assertions: StormAssertions,
+        eventAssertions: EventAssertions,
+        stateAssertions: StateAssertions,
       };
       
       logger.writeLog(result);
@@ -213,6 +223,9 @@ export async function runStormScenario(
     stepCount,
     completed: stepCount < maxSteps,
     error: stepCount >= maxSteps ? new Error('Max steps reached') : undefined,
+    assertions: StormAssertions,
+    eventAssertions: EventAssertions,
+    stateAssertions: StateAssertions,
   };
 
   if (stepCount >= maxSteps) {
@@ -255,5 +268,73 @@ export function logScenarioResults(
   });
   
   console.log('='.repeat(80));
+}
+
+/**
+ * Run scenario with built-in assertions
+ */
+export async function runStormScenarioWithAssertions(
+  state: GameState,
+  responseBuilder: AgentResponseBuilder,
+  scenarioName: string,
+  assertions?: (result: ScenarioResult) => void
+): Promise<ScenarioResult> {
+  const result = await runStormScenario(state, responseBuilder, scenarioName);
+  
+  if (assertions) {
+    assertions(result);
+  }
+  
+  return result;
+}
+
+/**
+ * Run scenario and auto-validate common expectations
+ */
+export async function runAndValidateScenario(
+  state: GameState,
+  responseBuilder: AgentResponseBuilder,
+  scenarioName: string,
+  expectedResults: {
+    stormMoved?: { from: number; to: number; movement: number };
+    dialsRevealed?: Map<Faction, number>;
+    forcesDestroyed?: number;
+    spiceDestroyed?: number;
+    phaseCompleted?: boolean;
+    nextPhase?: Phase;
+  }
+): Promise<ScenarioResult> {
+  const result = await runStormScenario(state, responseBuilder, scenarioName);
+  
+  // Convert events to PhaseEvent format for assertions
+  const phaseEvents = result.events.map(e => ({
+    type: e.type,
+    message: e.message,
+    data: {} as any,
+  })) as any[];
+  
+  if (expectedResults.stormMoved) {
+    StormAssertions.assertStormMoved(
+      phaseEvents,
+      expectedResults.stormMoved.from,
+      expectedResults.stormMoved.to,
+      expectedResults.stormMoved.movement
+    );
+  }
+  
+  if (expectedResults.dialsRevealed) {
+    const dialers = Array.from(expectedResults.dialsRevealed.keys());
+    StormAssertions.assertDialsRevealed(phaseEvents, dialers, expectedResults.dialsRevealed);
+  }
+  
+  if (expectedResults.phaseCompleted !== undefined) {
+    if (expectedResults.phaseCompleted) {
+      if (!result.completed) {
+        throw new Error('Expected phase to complete, but it did not');
+      }
+    }
+  }
+  
+  return result;
 }
 

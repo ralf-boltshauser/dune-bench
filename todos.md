@@ -11,4 +11,6 @@
 - same for old gap -> actually not!!! 
 - no deals possible yet
 - no alliance working yet i guess
-- 
+- spice blow is not a deck it's just andm pick 
+- spice placed is not correct.
+- there are 3 spice blows with 6 players why?

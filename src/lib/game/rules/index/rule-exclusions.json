@@ -1,0 +1,549 @@
+{
+  "exclude": [
+    {
+      "id": "0.00",
+      "reason": "Meta setup/length-of-game description, not modeled directly in code.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.01",
+      "reason": "Setup-time player decision step (determining which variants to use). Variants are already supported via GameConfig.variants configuration - this rule describes the organizational step of making that decision, not a code implementation requirement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.02",
+      "reason": "Physical setup step (placing all spice tokens into the bank). The engine treats spice bank as an abstract supply; when spiceOnBoard is empty, all spice is implicitly in the bank. This rule describes initial physical token placement, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.03",
+      "reason": "Setup-time player decision step (determining which variants to use). Variants are supported via GameConfig.variants configuration, but this rule describes the organizational step of making that decision during setup, not a code implementation requirement. Since variants are not used in this implementation, this rule is excluded.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.04",
+      "reason": "Physical setup step (placing all spice tokens in the Spice Bank). The engine treats spice bank as an abstract supply; when spiceOnBoard is empty, all spice is implicitly in the bank. This rule describes initial physical token placement, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.05",
+      "reason": "Physical/social setup step (determining physical seating order at the table). The engine doesn't model physical table positions - turn order is determined by storm position (stormOrder), not seating. This rule describes a physical/social procedure for tournament play, not game logic.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.06",
+      "reason": "Setup-time player decision step (choosing which faction to play). The engine accepts factions as input to createGameState() - this rule describes the organizational/tournament procedure for faction selection, not a code implementation requirement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.07",
+      "reason": "Physical setup step (players taking their physical components: shields, sheets, pieces/cards). The engine doesn't model physical components - faction state is created programmatically. This rule describes initial physical component distribution, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.08",
+      "reason": "Physical setup step (placing Player Marker on the player circle). The engine doesn't model physical board positions or player markers - this rule describes initial physical component placement, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.09",
+      "reason": "Physical setup step (players taking their player shields, player sheets, and corresponding faction pieces/cards). The engine doesn't model physical components - faction state is created programmatically. This rule describes initial physical component distribution, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.13",
+      "reason": "Physical setup step (placing the turn marker at 1 on the Turn Track). The engine tracks turn number in gameState.turn - this rule describes initial physical component placement, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "0.14",
+      "reason": "Physical/social setup procedure (players secretly dialing numbers 0-20 on Battle Wheels to determine initial storm position). The engine implements the logic (determining dialers, accepting dial values, calculating movement from sector 0) but the physical act of secretly dialing and simultaneously revealing on battle wheels is a UI/social interaction, not code logic. The game logic for first storm placement is handled in initializeStormPhase() and related functions.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.00.00",
+      "reason": "Descriptive/introductory rule that explains what the 'Phases of the Game' category covers. This rule serves as a section introduction/meta-description explaining that the category goes over phases and how base rules are observed. The actual phase mechanics and rule precedence are covered by specific rules: 1.00.01 (faction ability precedence), 1.00.02 (Treachery Card precedence), 1.00.03 (Variant precedence), 1.00.04 (Karama cancellation), and 1.00.05 (ability blocking). This rule does not describe a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.00.01",
+      "reason": "Meta rule/design principle describing that faction abilities have precedence over base rules. The enforcement is implicit: individual faction abilities check for faction type and apply special logic that overrides base rules (e.g., Fremen can move through storm, Bene Gesserit always eligible for CHOAM charity). There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual ability implementations, not through a centralized implementation of rule 1.00.01 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.00.02",
+      "reason": "Meta rule/design principle describing that Treachery Cards have precedence over rules and faction abilities. The enforcement is implicit: individual Treachery Card implementations apply their effects which naturally override base rules and faction abilities (e.g., weapons kill leaders, defenses protect, special cards like Karama cancel abilities). There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual card implementations, not through a centralized implementation of rule 1.00.02 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.00.03",
+      "reason": "Meta rule/design principle describing that Variants have precedence over rules, faction abilities, and Treachery Cards. The enforcement is implicit: individual variant implementations check state.config.variants and apply variant-specific logic that overrides base rules, faction abilities, and card effects (e.g., shieldWallStronghold variant changes stronghold victory conditions). There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual variant implementations, not through a centralized implementation of rule 1.00.03 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.00.04",
+      "reason": "Karama cancellation retry logic partially implemented. While Karama cancellation infrastructure exists (KaramaInterruptState, createKaramaInterrupt, response tools), the rule also requires that when an ability is cancelled, the target faction may recalculate and retake that same action (revival, shipment, movement) without the ability. This retry logic is not implemented - phase handlers (revival.ts, shipment-movement/index.ts) do not check for cancelled abilities or allow the target faction to retry their action without the ability. The abilityContext is stored but not used to enable retries.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.00.05",
+      "reason": "Action sequencing/blocking rule describing that when a faction uses an ability, other actions must wait until the ability completes. The codebase uses a tool-based execution model where actions are processed sequentially through phase handlers and tool responses, which implicitly enforces sequential execution. However, there is no explicit mechanism that blocks other actions while an ability is executing - the sequencing is handled through the natural flow of tool execution and phase state machines, not through explicit blocking logic. This rule describes the expected behavior of the execution model rather than a specific implementation requirement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.01.00",
+      "reason": "Descriptive/introductory rule that explains what the Storm Phase is. The fact that it's 'the first Phase of the Turn' is a structural property defined in PHASE_ORDER (Storm Phase is first). The mechanics described (storm marker movement and storm order determination) are fully covered by specific rules: 1.01.01 (DECIDING FIRST PLAYER) and 1.01.02 (STORM MOVEMENT). This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.01.02",
+      "reason": "Storm movement dialer selection is implemented using a positional heuristic (two players whose markers are nearest to the storm on either side) instead of tracking 'the two players who last used the Battle Wheels' as required by the rule. Dial ranges, simultaneous reveal, addition, and movement are implemented correctly, but the core 'last used battle wheels' tracking is missing. This rule is therefore only approximately implemented and needs a proper implementation that records actual battle wheel users between turns.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.02.00",
+      "reason": "Descriptive/introductory rule that explains what the Spice Blow And Nexus Phase is. The fact that it's 'the second Phase of the Turn' is a structural property defined in PHASE_ORDER (Spice Blow Phase is second). The mechanics described (spice placement on the board and alliances) are fully covered by specific rules: 1.02.01 (BLOW THE SPICE), 1.02.04 (TERRITORY CARD), 1.02.05 (SHAI-HULUD), 1.02.06 (NEXUS), etc. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.03.00",
+      "reason": "Descriptive/introductory rule that explains what the CHOAM Charity Phase is. The fact that it's 'the third Phase of the Turn' is a structural property defined in PHASE_ORDER (CHOAM Charity Phase is third). The mechanics described (players with 0 or 1 spice may claim CHOAM Charity) are fully covered by specific rules: 1.03.01 (COLLECTING CHOAM CHARITY) and 1.03.02 (FRAUD SAFE GUARDS). This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.04.00",
+      "reason": "Descriptive/introductory rule that explains what the Bidding Phase is. The fact that it's 'the fourth Phase of the Turn' is a structural property defined in PHASE_ORDER (Bidding Phase is fourth). The mechanics described (players can bid spice to acquire Treachery Cards) are fully covered by specific rules: 1.04.01 (DECLARATION), 1.04.04 (DEALER), 1.04.06 (BIDDING), 1.04.06.02 (Buying A Card), etc. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.00",
+      "reason": "Descriptive/introductory rule that explains what the Revival Phase is. The fact that it's 'the fifth Phase of the Turn' is a structural property defined in PHASE_ORDER (Revival Phase is fifth). The mechanics described (all players are allowed to revive Forces and leaders from the Tleilaxu Tanks, there is no Storm Order in this Phase) are fully covered by specific rules: 1.05.01 (FORCE REVIVAL), 1.05.02 (TO RESERVES), 1.05.03 (LEADER REVIVAL), etc. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.01.01",
+      "reason": "Descriptive/introductory sub-rule that introduces the force revival requirements. The actual requirements are fully implemented in processForceRevival() which is already tagged with @rule 1.05.01. This sub-rule only describes that players must adhere to following rules - the specific requirements (1.05.01.02 FREE REVIVAL, 1.05.01.03 BY SPICE, 1.05.01.04 PAYMENT, 1.05.01.05 TO RESERVES) are what need implementation, not this introductory statement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.03.01",
+      "reason": "Descriptive/introductory sub-rule that introduces the leader revival requirements. The actual requirements are fully implemented in processLeaderRevival() and validateLeaderRevival(). This sub-rule only describes that players must adhere to following rules - the specific requirements (1.05.03.02 COST, 1.05.03.03 PAYMENT, 1.05.03.04 REVIVED LEADER STATUS) are what need implementation, not this introductory statement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.05",
+      "reason": "UI/permission rule describing that players may look at their own face-down leaders. The game engine does not restrict viewing of faction state - players can query their own faction information including leaders. The UI (FactionInspector) displays all leader states including face-down leaders. This rule describes a permission that is inherently available through state queries and UI, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.09.00",
+      "reason": "Descriptive/introductory rule that explains what the Mentat Pause Phase is. The fact that it's 'the ninth Phase of the Turn' is a structural property defined in PHASE_ORDER. The mechanics described (winner declaration, turn counter advancement) are fully covered by specific rules: 1.09.01 (COLLECT BRIBE SPICE), 1.09.02/1.09.03 (Stronghold Victory), 1.09.04 (WAR CONTINUES), and 1.09.05 (END GAME OR DEFAULT VICTORY). The turn counter advancement is handled by PhaseManager. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.09.02.01",
+      "reason": "Descriptive/introductory sub-rule that introduces the stronghold victory checking process. The actual checking logic is fully implemented in checkVictoryConditions() which is already tagged with @rule 1.09.02, 1.09.03. This sub-rule only describes that 'players now check' - the action of checking is already covered by the parent rule 1.09.02. The specific requirements (1.09.02.02 and 1.09.02.03) are what need implementation, not this introductory statement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.09.04",
+      "reason": "Descriptive/social rule describing what happens when there are no winners. The social aspect (players 'mull over positions', 'consider options', 'when they are ready') is not modeled in code - this describes player interaction/thinking time. The mechanical part (moving turn marker, beginning next turn) is handled by PhaseManager.advanceTurn() as part of general game flow when no winner is set, not as a specific implementation of this rule. This rule serves to describe the social process that accompanies turn advancement, not a specific game mechanic.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.09.05",
+      "reason": "Partially implemented. The rule states 'On the last Turn if no one has won and the Spacing Guild is not in the game the Fremen win' - this automatic Fremen victory condition (when Guild is not in game, regardless of stronghold count) is not implemented. The code checks endgame victory at max turns and implements the default winner logic (most strongholds wins), and Fremen special victory (when Guild IS in game with conditions), but is missing the automatic Fremen win when Guild is not in game. The 'most strongholds wins' and tiebreaker logic is implemented in determineDefaultWinner(), but the specific 'Guild not in game \u2192 Fremen win' condition is missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.07.00",
+      "reason": "Descriptive/introductory rule that explains what the Battle Phase is. The fact that it's 'the seventh Phase of the Turn' is a structural property defined in PHASE_ORDER (Battle Phase is seventh). The mechanics described (resolving battles in territories with two or more factions) are fully covered by specific rules: 1.07.01 (Battle Determination), 1.07.02 (FIRST PLAYER/Aggressor), and the battle identification logic in identifyBattles(). This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.08.00",
+      "reason": "Descriptive/introductory rule that explains what the Spice Collection Phase is. The fact that it's 'the eighth Phase of the Turn' is a structural property defined in PHASE_ORDER (Spice Collection Phase is eighth). The mechanics described (forces in territories with spice may collect it) are fully covered by specific rules: 1.08.01 (HARVESTING SPICE), 1.08.02 (COLLECTION RATE), and 1.08.03 (UNCLAIMED SPICE). This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.10.01.01",
+      "reason": "Social/communication rule allowing players to discuss alliance strategies. The game engine does not model or restrict player discussions - this describes a social interaction that occurs outside the game logic (in UI, chat, etc.). Players are free to communicate as allowed by the platform/implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.14.00",
+      "reason": "General rule describing faction-specific Karama powers (once per game). The codebase implements general Karama card functionality (bidding, canceling abilities) and Bene Gesserit's special ability to use worthless cards as Karama (rule 1.14.06), but does not implement: (1) once-per-game tracking for faction Karama powers, (2) the specific faction Karama power abilities (1.14.01-1.14.05, 1.14.07). This rule is not fully implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.01.00",
+      "reason": "Configuration rule that defines which Atreides abilities are available in Basic vs Advanced rules (Basic: 2.01.01-2.01.09, Advanced: 2.01.01-2.01.15). While the codebase has an advancedRules flag in GameConfig and implements Kwisatz Haderach abilities (2.01.10-2.01.15), it does not restrict these advanced abilities when advancedRules is false. The Kwisatz Haderach state is always initialized and abilities are always available regardless of the advancedRules setting. This rule requires enforcement logic that is not implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.01.03",
+      "reason": "Physical setup step (placing Spice Deck and Treachery Deck near player position). The engine manages decks programmatically and does not model physical deck placement or player management of decks. This rule describes initial physical component placement and player responsibility, not runtime game logic.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.01.06",
+      "reason": "Social/record-keeping rule allowing Atreides to keep written records about Treachery cards. The game engine does not model or restrict written record-keeping - this describes a player action that occurs outside the game logic (note-taking, memory aids, etc.). Players are free to take notes as allowed by the platform/implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.01.07",
+      "reason": "Atreides WORMSIGN ability: During Shipment and Movement Phase, before anyone ships, look at the top card of the Spice Deck. This ability is not implemented - there is no code that allows Atreides to peek at the top spice card during shipment phase.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.01.11",
+      "reason": "Atreides KWISATZ HADERACH ability: Add +2 strength to leader/Cheap Hero in one Territory per Turn. This ability is partially implemented - the +2 strength bonus is added for the aggressor when kwisatzHaderachUsed is true and leader is not killed, and the 'one Territory per Turn' usage limit is tracked via usedInTerritoryThisTurn. However, the bonus is only applied to the aggressor, not the defender. The rule states 'In your battle' which should allow both aggressor and defender to use it, but the code only implements it for aggressor.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.14.01",
+      "reason": "Atreides Karama power: During Battle Phase, use a Karama Card to look at any one player's entire Battle Plan. This ability is not implemented - there is no code that allows Atreides to use a Karama card during Battle Phase to reveal another player's Battle Plan. The codebase has Atreides Prescience ability (regular faction ability) but not this once-per-game Karama power.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.14.02",
+      "reason": "Emperor Karama power: During Revival Phase, use a Karama Card to revive up to three Forces or one leader for free. This ability is not implemented - there is no code that allows Emperor to use a Karama card during Revival Phase for free revivals. The codebase implements normal revival mechanics but not this once-per-game Karama power.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.14.03",
+      "reason": "Fremen Karama power: During Spice Blow and Nexus Phase (after turn 1), use a Karama Card to Place sandworm token in any sand Territory. This ability is not implemented - there is no code that allows Fremen to use a Karama card to place a sandworm token. The codebase implements normal sandworm mechanics but not this once-per-game Karama power.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.14.04",
+      "reason": "Harkonnen Karama power: During Bidding Phase, use a Karama Card to take the entire hand of another player and exchange cards. This ability is not implemented - there is no code that allows Harkonnen to use a Karama card to steal and exchange hands during bidding. The codebase implements normal bidding mechanics but not this once-per-game Karama power.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.14.05",
+      "reason": "Spacing Guild Karama power: During Shipment and Movement Phase, use a Karama Card to cancel one off-planet shipment of any player. This ability is not implemented - there is no code that allows Spacing Guild to use a Karama card to cancel shipments. The codebase implements normal shipment mechanics but not this once-per-game Karama power.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.14.07",
+      "reason": "Free Traders Karama power: During Battle Phase, use a Karama Card to flip all Smugglers in one Territory to fighters. This ability is not implemented - there is no code that allows Free Traders to use a Karama card to flip Smugglers. The codebase does not implement Free Traders faction or this once-per-game Karama power.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.02.00",
+      "reason": "Descriptive/meta rule that explains which Bene Gesserit abilities are available in Basic vs Advanced rules. The enforcement is implicit: individual advanced abilities (2.02.11-2.02.22) check state.config.advancedRules before activating (e.g., bg-intrusion.ts, choam-charity.ts). There is no centralized mechanism that explicitly enforces this rule - the behavior it describes (only certain abilities available in basic vs advanced) is enforced through individual ability checks, not through a centralized implementation of rule 2.02.00 itself. This rule serves as a section introduction/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.00",
+      "reason": "Descriptive/introductory rule that explains what Advanced Game mode is and when to decide to use it. The fact that Advanced Game adds specific rules (double spice blow, spice dialing, etc.) is covered by specific rules: 1.13.01 (Increased Spice Flow), 1.13.02 (Double Spice Blow), 1.13.04 (Spice Dialing), etc. The 'decide as a group' part is a setup-time player decision step - the engine supports advancedRules via GameConfig.advancedRules, but this rule describes the organizational step of making that decision during setup, not a code implementation requirement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.01",
+      "reason": "Advanced Game rule for flat spice collection from strongholds (2 spice for Carthag/Arrakeen, 1 spice for Tuek's Sietch) based on occupation. The current implementation only handles the base game rule 1.08.02 (3 spice per force if in Arrakeen/Carthag), but does not implement the Advanced Game flat collection bonus. This rule requires additional logic to check stronghold occupation and award flat amounts, which is not currently implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.10.02",
+      "reason": "Descriptive/section header that introduces 'How an Alliance Functions' subsection. The specific alliance function rules are covered by individual rules: 1.10.02.01 (victory conditions), 1.10.02.02 (4 strongholds win), 1.10.02.04 (separate spice), 1.10.02.05 (bidding support), 1.10.02.06 (shipment payment), 1.10.02.07 (constraint), 1.10.02.08 (shared advantages). This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.10.02.03",
+      "reason": "Social/communication rule allowing allies to discuss and share strategy secretly. The game engine does not model or restrict player communications - this describes a social interaction that occurs outside the game logic (in UI, chat, private channels, etc.). Players are free to communicate as allowed by the platform/implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.10.02.04",
+      "reason": "Constraint rule preventing allies from giving spice to one another. The game engine does not implement spice transfer/gifting between players - spice can only be collected from spice blows, paid to bank/Guild, or used for bids/shipments. Since there is no mechanism to transfer spice between players, this constraint is inherently enforced by the absence of such a mechanism, but it is not explicitly implemented as a rule check.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.10.02.06",
+      "reason": "Alliance ability allowing allies to pay for each other's shipments during Shipment and Movement Phase. The codebase does not implement ally payment for shipments - there is no code allowing an ally to contribute spice toward another ally's shipment costs. While ally bid support is implemented (1.10.02.05), shipment payment support is not.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.10.02.08",
+      "reason": "General rule describing that allies may assist one another with abilities labeled ALLIANCE. While specific alliance abilities exist (e.g., Spacing Guild's Half Price Shipping for allies, Fremen's Sandworm Protection for allies), there is no general implementation that automatically grants ALL alliance-labeled abilities to allies. Each alliance ability is implemented individually as faction-specific abilities rather than through a general 'ALLIANCE label' mechanism. This rule describes a pattern/convention rather than a specific implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.03",
+      "reason": "Advanced Game special reshuffle rule requiring cards to be shuffled under the topmost territory card in Pile A, while Pile B is shuffled normally. The current implementation (reshuffleSpiceDeck) uses a standard shuffle for both piles and does not preserve the topmost territory card in Pile A. Test cases note that 'Advanced game special reshuffle may not be fully implemented'. This rule requires special reshuffle logic that is not currently implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.11.00",
+      "reason": "Permissive rule describing optional information sharing - players may choose to reveal cards, spice holdings, or traitors but are not required to. This describes a social/table interaction where players can voluntarily show information, but the engine doesn't model this optional revealing mechanism. Players can view their own information and limited public information about others, but there's no implementation that allows players to reveal/share this information with others.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.11.01",
+      "reason": "Physical/social rule about component organization - players should keep spice tokens behind their player shield. The engine tracks spice in game state (factionState.spice) and distinguishes between regular spice and bribe spice (spiceBribes) for game mechanics, but doesn't model or enforce the physical placement of tokens behind shields. This describes physical component organization, not game logic.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.11.02",
+      "reason": "Hand size visibility rule not fully implemented. While hand sizes are declared publicly during Bidding Phase initialization (Rule 1.04.01), the view_faction tool exposes hand size to all players during ALL phases, not just Bidding Phase. The rule requires: (1) hand size must be made known if asked during Bidding Phase, (2) hand size can be kept secret during other phases. The current implementation doesn't restrict hand size visibility to only Bidding Phase, and there's no 'ask' mechanism - hand size is always visible via the information tools.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.13.02.01",
+      "reason": "Introductory sub-rule that introduces the double spice blow procedure. The actual procedure is fully covered by rule 1.13.02 (which is implemented) and the base game Shai-Hulud handling logic (rule 1.02.05) which works for both deck A and deck B via the deckType parameter. This rule serves as a section introduction, not a specific game mechanic requiring separate implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.02.02",
+      "reason": "Procedure rule for handling Shai-Hulud in Pile A during Advanced Game. The procedure (devour from topmost territory card, continue drawing until Territory Card appears, trigger Nexus) is fully implemented in handleNormalWorm() and getTopmostTerritoryCardLocation() which work for both deck A and deck B via the deckType parameter. This rule describes the same procedure as base game rule 1.02.05, but specifically for Pile A in Advanced Game - the implementation already handles this correctly.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.02.03",
+      "reason": "Procedure rule for repeating the Shai-Hulud procedure for Pile B. The code already reveals card B in Advanced Rules (rule 1.13.02) and the Shai-Hulud handling logic works for both deck A and deck B via the deckType parameter. This rule is fully covered by the implementation of rule 1.13.02 and the existing Shai-Hulud handling code.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.04.01",
+      "reason": "Introductory sub-rule that introduces the spice dialing procedure. The actual spice dialing mechanics are fully covered by rules 1.13.04 (main rule), 1.13.04.02 (unspiced forces), 1.13.04.04 (spice declaration), and 1.13.04.05 (payment). This rule serves as a section introduction, not a specific game mechanic requiring separate implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.04.03",
+      "reason": "Physical battle wheel mechanics rule describing how to indicate one-half increments on the physical battle wheel component. The engine accepts decimal/float values for forcesDialed (e.g., 2.5 forces), but this rule describes the physical UI interaction of aligning the wheel's line with numbers, not code logic. The code implementation (accepting fractional force values) is functionally equivalent but doesn't model the physical wheel mechanics.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.13.06",
+      "reason": "Advanced Game rule allowing Karama cards to be used for faction-specific Karama powers once per game. The codebase implements general Karama card functionality (bidding, canceling abilities) but does not implement: (1) once-per-game tracking for faction Karama powers, (2) the ability to use a Karama card to trigger faction Karama powers. This rule requires faction Karama power implementation (see 1.14.00 exclusion) which is not present.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.03.00",
+      "reason": "Configuration rule that defines which Emperor abilities are available in Basic vs Advanced rules (Basic: 2.03.01-2.03.07, Advanced: 2.03.01-2.03.11). While the codebase has an advancedRules flag in GameConfig and implements Sardaukar abilities (2.03.08-2.03.11), it does not restrict these advanced abilities when advancedRules is false. The Sardaukar elite force mechanics are always available regardless of the advancedRules setting. This rule requires enforcement logic that is not implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.03.05",
+      "reason": "Constraint rule preventing Emperor from discounting the price of Treachery Cards. The bidding system requires full price bids (validateBid enforces bid amounts), but there is no explicit check preventing Emperor from offering discounts. Since the bidding system has no discount mechanism at all, this constraint is inherently enforced by the absence of such a mechanism, but it is not explicitly implemented as a rule check for Emperor specifically.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.03.06",
+      "reason": "Alliance ability allowing Emperor to give spice to their ally at any time. While a transferSpice function exists in the codebase, there is no tool or mechanism specifically for Emperor to give spice to their ally. The general rule 1.10.02.04 prevents allies from giving spice to each other, but Emperor has an exception. Since there is no implementation of this exception (no tool, no validation, no UI mechanism), this rule is not implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.04.06.01",
+      "reason": "Descriptive header that introduces the bidding procedure subsection. The actual bidding procedure is fully covered by rule 1.04.06.02 (opening bid, raising bids, passing). This rule only states 'This is the procedure for bidding on a card:' and serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.04.06.05",
+      "reason": "Time limit rule requiring players to bid within 10 seconds or be assumed to have passed. This is a UI/timing concern for real-time gameplay, not a game logic requirement. The engine processes bids asynchronously through agent responses and does not implement time-based auto-passing. Players not at the table are also not modeled as a separate category. This rule describes a real-time gameplay constraint, not core game logic.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.06.00",
+      "reason": "Descriptive/introductory rule that explains what the Shipment and Movement Phase is. The fact that it's 'the sixth Phase of the Turn' is a structural property defined in PHASE_ORDER (Shipment Movement Phase is sixth). The mechanics described (shipping and moving forces) are fully covered by specific rules: 1.06.01 (storm order), 1.06.02 (one shipment per turn), 1.06.03 (shipment mechanics), 1.06.05 (movement mechanics), etc. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.06.03.00",
+      "reason": "Introductory/structural rule that introduces the sub-rules for shipment actions ('On your Ship action you must adhere to the following:'). This is an organizational header that groups the specific shipment rules (1.06.03.01 COST, 1.06.03.02 PAYMENT, 1.06.03.03 SECTORS, 1.06.03.04 RESTRICTION, 1.06.03.05 OCCUPANCY LIMIT), all of which are fully implemented. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.06.05.00",
+      "reason": "Introductory/structural rule that introduces the sub-rules for movement actions ('On your Movement action you must adhere to the following:'). This is an organizational header that groups the specific movement rules (1.06.05.01 ONE FORCE MOVE, 1.06.05.02 movement freedom, 1.06.05.03 ONE ADJACENT TERRITORY, 1.06.05.04 ORNITHOPTERS, etc.), all of which are fully implemented. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.01.00",
+      "reason": "Descriptive/introductory rule that explains what Section 3.01 contains (the Treachery Card List). The actual treachery cards are defined as data structures in src/lib/game/data/treachery-cards.ts (ALL_TREACHERY_CARDS array), but this rule only describes what the section is about, not a specific game mechanic. The individual card rules (3.01.01-3.01.23) describe the actual card mechanics. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.01.09",
+      "reason": "HAJR card: Special-Movement card that grants an extra Force movement action during FORCE MOVEMENT [1.06.05]. While test scenarios exist for HAJR functionality, the actual implementation in the shipment-movement phase handler is not complete. The card should allow an extra movement action (can move same group again or different group), but the phase handler does not properly detect and handle HAJR card plays to grant the extra movement. This rule requires phase handler logic that is not fully implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "3.01.11",
+      "reason": "Descriptive/header rule that introduces the Karama card name and type ('KARAMA: Special'). The actual Karama card mechanics are implemented in individual sub-rules: 3.01.11.00 (general usage), 3.01.11.01 (cancel abilities), 3.01.11.02 (prevent abilities), 3.01.11.03 (Guild rates shipment), 3.01.11.04 (bid over spice/buy for free), 3.01.11.05 (faction Karama powers). This rule serves as a card header, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.01.11.00",
+      "reason": "Descriptive/introductory rule that introduces the Karama card and its general usage ('Play at anytime to do one of these options when appropriate, then discard'). The actual Karama abilities are implemented in individual sub-rules: 3.01.11.01 (cancel abilities), 3.01.11.02 (prevent abilities), 3.01.11.03 (Guild rates shipment), 3.01.11.04 (bid over spice/buy for free). This rule serves as an introduction to the Karama card section, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.01.11.05",
+      "reason": "Advanced Game rule for once-per-game faction Karama powers. The codebase implements general Karama card functionality (bidding, canceling abilities) and Bene Gesserit's special ability to use worthless cards as Karama (rule 1.14.06), but does not implement: (1) once-per-game tracking for faction Karama powers, (2) the specific faction Karama power abilities (1.14.01-1.14.05, 1.14.07). This rule requires faction-specific Karama power implementations that are not present in the codebase.",
+      "needsImplementation": true
+    },
+    {
+      "id": "3.01.22",
+      "reason": "TRUTHTRANCE card: Special card that allows asking one other player a single yes/no question about the game. While the card is defined in the data structures (treachery-cards.ts), there is no implementation for: (1) playing the card to ask a question, (2) pausing the game until an answer is given, (3) enforcing that the answer must be truthful yes/no, (4) validating that questions pertain to present/past (not future). This rule requires a question-answer interaction system that is not implemented in the codebase.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.05.00",
+      "reason": "Configuration rule that defines which Harkonnen abilities are available in Basic vs Advanced rules (Basic: 2.05.01-2.05.09, Advanced: 2.05.01-2.05.13). While the codebase has an advancedRules flag in GameConfig and implements Captured Leaders abilities (2.05.10-2.05.13), it does not restrict these advanced abilities when advancedRules is false. The captured leaders functionality is always available regardless of the advancedRules setting. This rule requires enforcement logic that is not implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.05.06",
+      "reason": "Descriptive rule clarifying that Harkonnen's four traitor cards (kept during setup per rule 2.05.03) can be used normally in battle. Traitor cards already work normally for all factions - there is no special restriction or special ability for Harkonnen's traitor cards. The rule serves to clarify that having 4 traitor cards (instead of 1) doesn't change how they function - they work the same way as any other faction's traitor cards. This is a descriptive clarification, not a game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.04.00",
+      "reason": "Descriptive/meta rule that explains which Fremen abilities are available in Basic vs Advanced rules. The enforcement is implicit: individual advanced abilities check state.config.advancedRules before activating. There is no centralized mechanism that explicitly enforces this rule (e.g., preventing use of advanced abilities when advancedRules is false). This rule serves as a section header/description, not a runtime game mechanic.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.04.14",
+      "reason": "THERE'S A STORM COMING: At the end of the Storm Phase [1.01] you may secretly look at the Storm Card. While the storm card is stored in fremenStormCard field and can be accessed by the agent through game state queries, there is no explicit tool or action that allows Fremen to 'secretly look at' the storm card at the end of the Storm Phase. The card value is stored but there's no dedicated mechanism for viewing it as a distinct action. This rule requires a specific action/tool that is not implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.04.15",
+      "reason": "SANDWORMS: During Spice Blow [1.02], all additional sandworms that appear after the first sandworm in a Spice Blow can be Placed by you in any sand Territory you wish. This feature is NOT YET IMPLEMENTED in the codebase. The test cases explicitly note this as a missing feature. Currently, additional sandworms devour at the topmost Territory Card location, but there is no mechanism for Fremen to choose where to place additional sandworms.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.02.03",
+      "reason": "Partially implemented. The core prediction mechanics are implemented (making prediction after player positions, storing it, checking during Mentat Pause, BG wins alone if fulfilled). However, the rule states 'You cannot predict the Spacing Guild or Fremen to win with their special victory conditions' - this validation is missing. The tool (bg_prediction) allows predicting any faction including Fremen and Spacing Guild without restriction. While the rule's wording is ambiguous (prediction is about 'Stronghold Victory' while restriction mentions 'special victory conditions'), the implementation should validate this restriction but does not.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.02.08",
+      "reason": "ADVANCED STARTING FORCES: During Forces setup [0.13], Place 1 advisor in any Territory on the Map of your choice. If you are alone in the Territory, flip the advisor to a fighter. This ability replaces the normal Bene Gesserit Starting Forces ability [2.02.02]. This is not implemented - the codebase uses the standard starting forces (1 Force in Polar Sink, 19 in reserves) from BENE_GESSERIT_CONFIG. There is no mechanism for BG to choose a different starting territory or to place an advisor in any territory of choice during setup when advanced rules are enabled.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.02.10",
+      "reason": "Descriptive rule explaining the physical design of Bene Gesserit Force tokens (two-sided: spiritual/advisor side and battle/fighter side). This describes the physical component design, not a game mechanic. The codebase models advisors vs fighters through the advisor count field in ForceStack, but this rule only describes the physical token appearance, not runtime behavior.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.01.01",
+      "reason": "Descriptive/introductory statement that introduces the list of requirements for force revival. The rule states 'To revive Forces you must adhere to the following:' and then lists the specific requirements: 1.05.01.02 (FREE REVIVAL), 1.05.01.03 (BY SPICE), 1.05.01.04 (PAYMENT). The actual mechanics are fully covered by these specific sub-rules. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.03.01",
+      "reason": "Descriptive/introductory statement that introduces the list of requirements for leader revival. The rule states 'To revive leaders you must adhere to the following:' and then lists the specific requirements: 1.05.03.02 (COST), 1.05.03.03 (PAYMENT), 1.05.03.04 (REVIVED LEADER STATUS). The actual mechanics are fully covered by these specific sub-rules. This rule serves as a section introduction, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.05.04",
+      "reason": "Partially implemented. The rule states that when a revived leader is killed again, it is placed face down in Tleilaxu Tanks (this is implemented in killLeader() - line 40-41 in leaders.ts). However, the rule also states 'This leader can not be revived again until all the player's other revivable leaders have been revived, killed, and sent to the Tleilaxu Tanks again / are unavailable.' The current implementation prevents reviving face-down leaders entirely (validateLeaderRevival lines 394-399), but does not implement the logic to allow reviving a face-down leader once all other leaders have been revived/killed again and are unavailable. The full conditional revival logic is missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.05.05",
+      "reason": "Social/UI interaction rule allowing players to look at face down leaders with matching faction symbol. The game engine does not model or restrict player viewing of their own faction's face-down leaders - this describes a physical/social interaction where players can inspect their own face-down leader cards. The codebase tracks leader locations (TANKS_FACE_DOWN) but does not implement viewing restrictions or permissions - players can see their own faction state including face-down leaders through the game state. This rule describes a physical component interaction, not a game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.10.01",
+      "reason": "Descriptive/section header that introduces the Nexus procedure subsection. The actual Nexus mechanics are fully covered by specific rules: 1.10.01.01 (Discussion), 1.10.01.02 (Forming an Alliance), 1.10.01.03 (Transparency), 1.10.01.04 (Alliance Limits), 1.10.01.05 (Landsraad Limits), 1.10.01.06 (Breaking an Alliance), and 1.10.01.07 (Conclusion of A Nexus), all of which are implemented and labeled. The parent rule 1.10.00 (Nexus trigger) is also implemented. This rule serves as a section introduction, not a specific game mechanic requiring separate implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "1.12.00",
+      "reason": "Deal and bribe creation/management not implemented. While data structures exist (Deal interface, pendingDeals, dealHistory) and event types are defined (DEAL_PROPOSED, DEAL_ACCEPTED, DEAL_REJECTED), there is no actual implementation for: creating/proposing deals or bribes, accepting/rejecting them, distinguishing between deals (allies) and bribes (non-allies), enforcing that deals/bribes must be honored, or preventing reneging. The rule requires full deal/bribe lifecycle management which is not present in the codebase.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.12.01",
+      "reason": "Bribe classification logic not implemented. This rule requires: (1) detecting when spice is paid as part of a deal to classify it as a bribe, (2) preventing allies from making spice-based deals (bribes). Since deal/bribe creation logic is not implemented (see 1.12.00), this classification and validation logic is also missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.12.02",
+      "reason": "Bribe transfer logic partially implemented. While bribe collection is implemented (collectBribes in mentat-pause.ts, tagged with @rule 1.09.01), the rule also requires that when spice is transferred as part of a bribe, it must go to spiceBribes (in front of shield) rather than directly to spice reserves. There is no code that transfers spice to spiceBribes when a bribe is made - the transferSpice function transfers directly to reserves. Since deal/bribe creation is not implemented (see 1.12.00), this transfer logic is also missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.12.03",
+      "reason": "Deal/bribe validation logic not implemented. This rule requires validation to prevent deals/bribes from involving: Treachery Cards, Traitor Cards, leaders, Forces, or faction abilities, and to prevent deals/bribes that contravene rules or faction powers. Since deal/bribe creation logic is not implemented (see 1.12.00), this validation logic is also missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.12.04",
+      "reason": "Deal/bribe timing validation not implemented. This rule requires validation to prevent deals/bribes from being made during setup (before rule 0.16 completes). Since deal/bribe creation logic is not implemented (see 1.12.00), this timing validation is also missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "1.12.05",
+      "reason": "Deal/bribe timing validation not implemented. This rule requires validation to prevent bribes from being made after Mentat Pause Phase. Since deal/bribe creation logic is not implemented (see 1.12.00), this timing validation is also missing.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.01",
+      "reason": "Meta rule/design principle describing that faction abilities have precedence over base rules. This is a duplicate of rule 1.00.01, restated in the Factions section. The enforcement is implicit: individual faction abilities check for faction type and apply special logic that overrides base rules. There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual ability implementations, not through a centralized implementation of rule 2.01 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.02",
+      "reason": "Meta rule/design principle describing that Treachery Cards have precedence over rules and faction abilities. This is a duplicate of rule 1.00.02, restated in the Factions section. The enforcement is implicit: individual Treachery Card implementations apply their effects which naturally override base rules and faction abilities. There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual card implementations, not through a centralized implementation of rule 2.02 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.03",
+      "reason": "Meta rule/design principle describing that Variants have precedence over rules, faction abilities, and Treachery Cards. This is a duplicate of rule 1.00.03, restated in the Factions section. The enforcement is implicit: individual variant implementations check state.config.variants and apply variant-specific logic that overrides base rules, faction abilities, and card effects. There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual variant implementations, not through a centralized implementation of rule 2.03 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.04",
+      "reason": "Meta rule describing Karama cancellation retry logic. This is a duplicate of rule 1.00.04, restated in the Factions section. While Karama cancellation infrastructure exists (KaramaInterruptState, createKaramaInterrupt, response tools), the rule also requires that when an ability is cancelled, the target faction may recalculate and retake that same action (revival, shipment, movement) without the ability. This retry logic is not implemented - phase handlers (revival.ts, shipment-movement/index.ts) do not check for cancelled abilities or allow the target faction to retry their action without the ability.",
+      "needsImplementation": true
+    },
+    {
+      "id": "2.05",
+      "reason": "Meta rule/design principle describing that when a faction uses an ability, other actions must wait until the ability completes. This is a duplicate of rule 1.00.05, restated in the Factions section. The codebase uses a tool-based execution model where actions are processed sequentially through phase handlers and tool responses, which implicitly enforces sequential execution. However, there is no explicit mechanism that blocks other actions while an ability is executing - the sequencing is handled through the natural flow of tool execution and phase state machines, not through explicit blocking logic. This rule describes the expected behavior of the execution model rather than a specific implementation requirement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.06.00",
+      "reason": "Configuration rule that defines which Spacing Guild abilities are available in Basic vs Advanced rules (Basic: 2.06.01-2.06.11, Advanced: 2.06.01-2.06.12). While the codebase has an advancedRules flag in GameConfig and implements advanced abilities (2.06.12), it does not restrict these advanced abilities when advancedRules is false. The advanced abilities are always available regardless of the advancedRules setting. This rule requires enforcement logic that is not implemented.",
+      "needsImplementation": true
+    },
+    {
+      "id": "3.01",
+      "reason": "Meta rule/design principle describing that faction abilities have precedence over base rules. This is a duplicate of rule 1.00.01, restated in the Treachery Cards section. The enforcement is implicit: individual faction abilities check for faction type and apply special logic that overrides base rules. There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual ability implementations, not through a centralized implementation of rule 3.01 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.02",
+      "reason": "Meta rule/design principle describing that Treachery Cards have precedence over rules and faction abilities. This is a duplicate of rule 1.00.02, restated in the Treachery Cards section. The enforcement is implicit: individual Treachery Card implementations apply their effects which naturally override base rules and faction abilities. There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual card implementations, not through a centralized implementation of rule 3.02 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.03",
+      "reason": "Meta rule/design principle describing that Variants have precedence over rules, faction abilities, and Treachery Cards. This is a duplicate of rule 1.00.03, restated in the Treachery Cards section. The enforcement is implicit: individual variant implementations check state.config.variants and apply variant-specific logic that overrides base rules, faction abilities, and card effects. There is no centralized mechanism that explicitly enforces this precedence principle - the behavior it describes is enforced through individual variant implementations, not through a centralized implementation of rule 3.03 itself. This rule serves as a design principle/meta-description, not a specific game mechanic requiring implementation.",
+      "needsImplementation": false
+    },
+    {
+      "id": "3.04",
+      "reason": "Meta rule describing Karama cancellation retry logic. This is a duplicate of rule 1.00.04, restated in the Treachery Cards section. While Karama cancellation infrastructure exists (KaramaInterruptState, createKaramaInterrupt, response tools), the rule also requires that when an ability is cancelled, the target faction may recalculate and retake that same action (revival, shipment, movement) without the ability. This retry logic is not implemented - phase handlers (revival.ts, shipment-movement/index.ts) do not check for cancelled abilities or allow the target faction to retry their action without the ability.",
+      "needsImplementation": true
+    },
+    {
+      "id": "3.05",
+      "reason": "Meta rule/design principle describing that when a faction uses an ability, other actions must wait until the ability completes. This is a duplicate of rule 1.00.05, restated in the Treachery Cards section. The codebase uses a tool-based execution model where actions are processed sequentially through phase handlers and tool responses, which implicitly enforces sequential execution. However, there is no explicit mechanism that blocks other actions while an ability is executing - the sequencing is handled through the natural flow of tool execution and phase state machines, not through explicit blocking logic. This rule describes the expected behavior of the execution model rather than a specific implementation requirement.",
+      "needsImplementation": false
+    },
+    {
+      "id": "2.06.05.01",
+      "reason": "Descriptive rule stating that Spacing Guild may ship normally from off-planet reserves to Dune. This is redundant with the base game shipment rule 1.06.03 (Shipment of Reserves), which applies to all factions including Guild. The normal shipment mechanics are fully implemented in processNormalShipment() and validateShipment(), which work for all factions. This rule only serves to clarify that Guild can use normal shipment in addition to their special abilities (cross-ship, off-planet), not a separate implementation requirement.",
+      "needsImplementation": false
+    }
+  ]
+}

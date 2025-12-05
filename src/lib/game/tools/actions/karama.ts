@@ -105,6 +105,10 @@ export const KaramaTradeForFreeCardSchema = z.object({
 /**
  * Create Karama tools bound to a context manager.
  */
+/**
+ * Karama card tools implementation.
+ * @rule 3.01.11.01, 3.01.11.02, 3.01.11.03, 3.01.11.04
+ */
 export function createKaramaTools(ctx: ToolContextManager) {
   return {
     /**

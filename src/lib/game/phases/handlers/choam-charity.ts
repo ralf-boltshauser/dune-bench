@@ -2,9 +2,9 @@
  * CHOAM Charity Phase Handler
  *
  * Phase 1.03: CHOAM Charity
- * - Factions with 0-1 spice may claim CHOAM charity
- * - Charity is 2 spice from the bank
- * - This is optional (faction can decline)
+ * - Factions with 0–1 spice may claim CHOAM charity
+ * - Charity brings a player up to 2 spice from the bank
+ * - Claiming is optional (faction can decline)
  */
 
 import { GAME_CONSTANTS } from "../../data";
@@ -207,6 +207,8 @@ export class ChoamCharityPhaseHandler extends BasePhaseHandler {
   /**
    * Process a single charity response.
    * Handles fraud safeguards, amount calculation, and state updates.
+   * 
+   * @rule 1.03.02 FRAUD SAFE GUARDS: A Player may only Claim CHOAM Charity once a Turn.
    */
   private processCharityResponse(
     state: GameState,

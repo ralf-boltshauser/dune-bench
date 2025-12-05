@@ -126,6 +126,7 @@ export class MentatPausePhaseHandler implements PhaseHandler {
   /**
    * Collect spice bribes for a faction.
    * Bribes are spice placed in front of the shield during the turn.
+   * @rule 1.09.01
    */
   private collectBribes(
     state: GameState,

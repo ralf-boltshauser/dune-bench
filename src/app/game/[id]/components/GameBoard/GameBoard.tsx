@@ -27,7 +27,7 @@ export default function GameBoard() {
   const { gameState, map, events } = useGameMap(gameId);
 
   // Get phase visualization data
-  const { stormAffectedTerritories, spiceBlowTerritories, recentShipments } =
+  const { spiceBlowTerritories, recentShipments } =
     usePhaseVisualizations(events);
 
   return (

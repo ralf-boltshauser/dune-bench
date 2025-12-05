@@ -5,7 +5,7 @@
 
 export { SetupPhaseHandler } from './setup';
 export { StormPhaseHandler } from './storm';
-export { SpiceBlowPhaseHandler } from './spice-blow';
+export { SpiceBlowPhaseHandler } from './spice-blow/index';
 export { ChoamCharityPhaseHandler } from './choam-charity';
 export { BiddingPhaseHandler } from './bidding';
 export { RevivalPhaseHandler } from './revival';
@@ -17,7 +17,7 @@ export { MentatPausePhaseHandler } from './mentat-pause';
 import { type PhaseHandler } from '../types';
 import { SetupPhaseHandler } from './setup';
 import { StormPhaseHandler } from './storm';
-import { SpiceBlowPhaseHandler } from './spice-blow';
+import { SpiceBlowPhaseHandler } from './spice-blow/index';
 import { ChoamCharityPhaseHandler } from './choam-charity';
 import { BiddingPhaseHandler } from './bidding';
 import { RevivalPhaseHandler } from './revival';

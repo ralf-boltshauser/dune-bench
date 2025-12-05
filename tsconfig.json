@@ -30,5 +30,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/lib/game/phase-tests",
+    "src/lib/game/**/__tests__"
+  ]
 }

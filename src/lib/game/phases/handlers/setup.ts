@@ -90,9 +90,9 @@ export class SetupPhaseHandler implements PhaseHandler {
 
     // Note: PhaseManager emits PHASE_STARTED event, so we don't emit it here
 
-    // Deal 4 traitor cards to each faction from the traitor deck
-    // The traitor deck is stored in the game state but we need to access it
-    // For now, we'll generate traitor options from leaders in the game
+    // @rule 0.11 - Deal 4 traitor cards to each faction from the traitor deck
+    // The traitor deck is created and shuffled by createTraitorDeck() (rule 0.11)
+    // Each player will later pick 1 card to keep (handled in traitor selection)
     const traitorDeck = this.createTraitorDeck(state);
     let deckIndex = 0;
 
@@ -313,6 +313,13 @@ export class SetupPhaseHandler implements PhaseHandler {
   // PRIVATE METHODS
   // ===========================================================================
 
+  /**
+   * @rule 0.11
+   * Creates the traitor deck by removing cards for factions not in play,
+   * then shuffles it thoroughly. The deck is created from leaders of factions
+   * currently in the game, effectively removing cards for factions not in play.
+   * Each player is dealt 4 cards, then picks 1 card to keep (Harkonnen keeps all 4).
+   */
   private createTraitorDeck(state: GameState): TraitorCard[] {
     // Create traitor cards from leaders in the game
     const traitors: TraitorCard[] = [];
@@ -353,7 +360,7 @@ export class SetupPhaseHandler implements PhaseHandler {
       message: 'Traitor selection beginning',
     });
 
-    // Harkonnen automatically keeps all 4
+    // @rule 2.05.03 - TERRIBLY TRAITOROUS: Harkonnen automatically keeps all 4
     if (state.factions.has(Faction.HARKONNEN)) {
       const dealt = this.context.pendingTraitorSelection.get(Faction.HARKONNEN);
       if (dealt) {
@@ -674,7 +681,9 @@ Example: {
   }
 
   /**
+   * @rule 2.04.02
    * Apply Fremen force distribution to game state.
+   * Places 10 forces distributed across Sietch Tabr, False Wall South, and False Wall West.
    */
   private distributeFremenForces(
     state: GameState,

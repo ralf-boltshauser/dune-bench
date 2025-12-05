@@ -238,7 +238,10 @@ Use this when you want to:
     }),
 
     /**
-     * Fremen special ability: Send forces for free to Great Flat area.
+     * @rule 2.04.05 SHIPMENT: Fremen special ability - Send forces for free to Great Flat area.
+     * During Shipment [1.06.03], send any or all reserves for free onto Great Flat or 
+     * any territory within 2 territories of Great Flat (subject to storm and Occupancy Limit).
+     * This ability costs 1 shipment action to use.
      */
     fremen_send_forces: tool({
       description: `Fremen special ability: Send forces from reserves for FREE to the Great Flat or nearby territories.
@@ -389,6 +392,7 @@ This is your only shipment method as Fremen - you cannot use normal off-planet s
         }
 
         // Apply storm migration losses if sending into storm
+        // @rule 2.04.17 STORM MIGRATION: You may Send your reserves into a storm at half loss
         let lostToStorm = 0;
         if (inStorm && allowStormMigration) {
           lostToStorm = Math.ceil(totalCount / 2);
@@ -550,6 +554,7 @@ Use this when you need to reposition forces on the board without bringing new fo
 
     /**
      * Bene Gesserit spiritual advisor: Send 1 force for free when another faction ships.
+     * @rule 2.02.05, 2.02.11
      */
     bg_send_spiritual_advisor: tool({
       description: `Bene Gesserit special ability: Send 1 spiritual advisor for FREE when another faction ships forces.

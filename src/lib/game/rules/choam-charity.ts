@@ -20,7 +20,7 @@ export interface CharityEligibility {
  * Check if a faction is eligible for CHOAM Charity.
  * 
  * Rule 1.03.01: Players with 0 or 1 spice can claim CHOAM Charity
- * Rule 2.02.09 (Advanced): Bene Gesserit always eligible regardless of spice
+ * @rule 2.02.09 (Advanced): Bene Gesserit always eligible regardless of spice
  */
 export function isEligibleForCharity(
   state: GameState,
@@ -75,7 +75,7 @@ export function getEligibleFactions(state: GameState): Faction[] {
 /**
  * Calculate the charity amount a faction should receive.
  * 
- * Rule 1.03.01: Spice is collected to bring their total to 2 spice
+ * @rule 1.03.01 COLLECTING CHOAM CHARITY: All players with 0 or 1 spice can collect spice from the bank to bring their total to 2 by calling out "CHOAM Charity". -2.02.09
  * - Standard: 0 spice → 2 spice, 1 spice → 1 spice
  * - Bene Gesserit (Advanced): Always receive at least 2 spice
  * 

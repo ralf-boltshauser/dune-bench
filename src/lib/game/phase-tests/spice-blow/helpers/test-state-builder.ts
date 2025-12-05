@@ -238,3 +238,81 @@ export function getDefaultSpice(): Map<Faction, number> {
   ]);
 }
 
+/**
+ * Fluent builder for test states
+ */
+export class TestStateBuilder {
+  private config: Partial<TestStateConfig> = {};
+
+  static create(): TestStateBuilder {
+    return new TestStateBuilder();
+  }
+
+  withFactions(factions: Faction[]): this {
+    this.config.factions = factions;
+    return this;
+  }
+
+  withTurn(turn: number): this {
+    this.config.turn = turn;
+    return this;
+  }
+
+  withAdvancedRules(advanced: boolean): this {
+    this.config.advancedRules = advanced;
+    return this;
+  }
+
+  withStormSector(sector: number): this {
+    this.config.stormSector = sector;
+    return this;
+  }
+
+  withForces(forces: ForcePlacement[]): this {
+    this.config.forces = forces;
+    return this;
+  }
+
+  withSpice(spice: Map<Faction, number>): this {
+    this.config.spice = spice;
+    return this;
+  }
+
+  withTerritorySpice(spice: SpicePlacement[]): this {
+    this.config.territorySpice = spice;
+    return this;
+  }
+
+  withAlliances(alliances: Array<[Faction, Faction]>): this {
+    this.config.alliances = alliances;
+    return this;
+  }
+
+  withSpiceDeckA(cards: string[]): this {
+    this.config.spiceDeckA = cards;
+    return this;
+  }
+
+  withSpiceDeckB(cards: string[]): this {
+    this.config.spiceDeckB = cards;
+    return this;
+  }
+
+  withSpiceDiscardA(cards: string[]): this {
+    this.config.spiceDiscardA = cards;
+    return this;
+  }
+
+  withSpiceDiscardB(cards: string[]): this {
+    this.config.spiceDiscardB = cards;
+    return this;
+  }
+
+  build(): GameState {
+    if (!this.config.factions || this.config.factions.length < 2) {
+      this.config.factions = [Faction.ATREIDES, Faction.HARKONNEN];
+    }
+    return buildTestState(this.config as TestStateConfig);
+  }
+}
+
