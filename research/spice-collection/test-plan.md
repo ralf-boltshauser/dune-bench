@@ -96,4 +96,3 @@
 - Harkonnen: 3 forces in Hagga Basin (sector 8) with 10 spice - not in storm
 - Expected: Atreides collects 10 spice (5 × 2) - can collect even in storm sector (rock territory protected)
 - Expected: Harkonnen collects 6 spice (3 × 2) - normal collection
-
